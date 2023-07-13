@@ -248,10 +248,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     public int displayWidth;
     public int displayHeight;
 
-    /**
-     * True if the player is connected to a realms server
-     */
-    private boolean connectedToRealms;
     private final Timer timer = new Timer(20.0F);
 
     /**
@@ -2831,20 +2827,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     public FrameTimer getFrameTimer() {
         return this.frameTimer;
-    }
-
-    /**
-     * Return true if the player is connected to a realms server
-     */
-    public boolean isConnectedToRealms() {
-        return this.connectedToRealms;
-    }
-
-    /**
-     * Set if the player is connected to a realms server
-     */
-    public void setConnectedToRealms(boolean isConnected) {
-        this.connectedToRealms = isConnected;
     }
 
     public DataFixer getDataFixer() {

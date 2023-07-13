@@ -174,21 +174,6 @@
             <scope>pom</scope>
         </dependency>
         <dependency>
-            <groupId>org.lwjgl.lwjgl</groupId>
-            <artifactId>lwjgl</artifactId>
-            <version>2.9.2-nightly-20140822</version>
-        </dependency>
-        <dependency>
-            <groupId>org.lwjgl.lwjgl</groupId>
-            <artifactId>lwjgl_util</artifactId>
-            <version>2.9.2-nightly-20140822</version>
-        </dependency>
-        <dependency>
-            <groupId>org.lwjgl.lwjgl</groupId>
-            <artifactId>lwjgl-platform</artifactId>
-            <version>2.9.4-nightly-20150209</version>
-        </dependency>
-        <dependency>
             <groupId>net.java.jinput</groupId>
             <artifactId>jinput-platform</artifactId>
             <version>2.0.5</version>
@@ -200,17 +185,7 @@
             <artifactId>text2speech</artifactId>
             <version>1.10.3</version>
         </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>text2speech</artifactId>
-            <version>1.10.3</version>
-        </dependency>
-        <dependency>
-            <groupId>ca.weblite</groupId>
-            <artifactId>java-objc-bridge</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
+       <dependency>
             <groupId>ca.weblite</groupId>
             <artifactId>java-objc-bridge</artifactId>
             <version>1.0.0</version>
