@@ -1,6 +1,5 @@
 package net.minecraft.world;
 
-import cn.floatingpoint.min.management.Managers;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
@@ -898,7 +897,11 @@ public abstract class World implements IBlockAccess {
                     if (!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(this, blockpos) != Block.NULL_AABB) {
                         if (block1.canCollideCheck(iblockstate1, stopOnLiquid)) {
 
-                            return iblockstate1.collisionRayTrace(this, blockpos, vec31, vec32);
+                            RayTraceResult rayTraceResult1 = iblockstate1.collisionRayTrace(this, blockpos, vec31, vec32);
+
+                            if (rayTraceResult1 != null) {
+                                return rayTraceResult1;
+                            }
                         } else {
                             raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, enumfacing, blockpos);
                         }

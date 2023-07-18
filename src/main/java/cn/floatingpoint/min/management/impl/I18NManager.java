@@ -55,7 +55,7 @@ public class I18NManager implements Manager {
                 StringBuilder sb = new StringBuilder();
                 String s1;
                 while ((s1 = reader.readLine()) != null) {
-                    sb.append(s1);
+                    sb.append(s1).append(System.lineSeparator());
                 }
                 Managers.fileManager.save("translations/English.json", sb.toString(), false);
                 translations.put("English", new JSONObject(Managers.fileManager.readAsString("translations/English.json")).toMap());

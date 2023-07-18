@@ -2,11 +2,10 @@ package cn.floatingpoint.min.management;
 
 import cn.floatingpoint.min.management.impl.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 public class Managers {
-    public static Set<Manager> managers = new HashSet<>();
+    public static LinkedHashSet<Manager> managers = new LinkedHashSet<>();
     public static CheaterManager cheaterManager = new CheaterManager();
     public static ClientMateManager clientMateManager = new ClientMateManager();
     public static DraggableGameViewManager draggableGameViewManager = new DraggableGameViewManager();

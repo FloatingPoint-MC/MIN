@@ -1450,12 +1450,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
                                     if (enumactionresult == EnumActionResult.SUCCESS) {
                                         this.player.swingArm(enumhand);
-
-                                        if (itemstack.isEmpty()) {
-                                            return;
-                                        }
                                     }
-                                    if (itemstack.getCount() == i && !this.playerController.isInCreativeMode()) {
+                                    if (itemstack.isEmpty()) {
+                                        return;
+                                    }
+                                    if (!this.playerController.getIsHittingBlock() && itemstack.getCount() == i && !this.playerController.isInCreativeMode()) {
                                         this.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
                                     }
                                     if (enumactionresult == EnumActionResult.SUCCESS) {
