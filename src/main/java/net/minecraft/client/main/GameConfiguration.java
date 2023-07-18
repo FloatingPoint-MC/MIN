@@ -64,13 +64,11 @@ public class GameConfiguration
 
     public static class GameInformation
     {
-        public final boolean isDemo;
         public final String version;
         public final String versionType;
 
-        public GameInformation(boolean demo, String versionIn, String versionTypeIn)
+        public GameInformation(String versionIn, String versionTypeIn)
         {
-            this.isDemo = demo;
             this.version = versionIn;
             this.versionType = versionTypeIn;
         }

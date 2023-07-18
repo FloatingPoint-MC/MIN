@@ -45,7 +45,7 @@ public class CreativeSettings
         }
         catch (Exception exception)
         {
-            LOGGER.error("Failed to load creative mode options", (Throwable)exception);
+            LOGGER.error("Failed to load creative mode options", exception);
         }
     }
 
@@ -64,7 +64,7 @@ public class CreativeSettings
         }
         catch (Exception exception)
         {
-            LOGGER.error("Failed to save creative mode options", (Throwable)exception);
+            LOGGER.error("Failed to save creative mode options", exception);
         }
     }
 

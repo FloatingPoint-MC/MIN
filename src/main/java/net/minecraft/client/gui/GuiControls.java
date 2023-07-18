@@ -8,7 +8,7 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class GuiControls extends GuiScreen
 {
-    private static final GameSettings.Options[] OPTIONS_ARR = new GameSettings.Options[] {GameSettings.Options.INVERT_MOUSE, GameSettings.Options.SENSITIVITY, GameSettings.Options.TOUCHSCREEN, GameSettings.Options.AUTO_JUMP};
+    private static final GameSettings.Options[] OPTIONS_ARR = new GameSettings.Options[] {GameSettings.Options.INVERT_MOUSE, GameSettings.Options.SENSITIVITY, GameSettings.Options.TOUCHSCREEN};
 
     /**
      * A reference to the screen object that created this. Used for navigating between screens.
@@ -43,15 +43,15 @@ public class GuiControls extends GuiScreen
         this.screenTitle = I18n.format("controls.title");
         int i = 0;
 
-        for (GameSettings.Options gamesettings$options : OPTIONS_ARR)
+        for (GameSettings.Options options : OPTIONS_ARR)
         {
-            if (gamesettings$options.isFloat())
+            if (options.isFloat())
             {
-                this.buttonList.add(new GuiOptionSlider(gamesettings$options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), gamesettings$options));
+                this.buttonList.add(new GuiOptionSlider(options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), options));
             }
             else
             {
-                this.buttonList.add(new GuiOptionButton(gamesettings$options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), gamesettings$options, this.options.getKeyBinding(gamesettings$options)));
+                this.buttonList.add(new GuiOptionButton(options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), options, this.options.getKeyBinding(options)));
             }
 
             ++i;

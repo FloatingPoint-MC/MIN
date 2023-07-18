@@ -3,19 +3,12 @@ package net.minecraft.world.chunk;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -39,6 +32,14 @@ import net.minecraft.world.gen.IChunkGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+@SuppressWarnings("all")
 public class Chunk
 {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -116,9 +117,9 @@ public class Chunk
         this.blockBiomeArray = new byte[256];
         this.precipitationHeightMap = new int[256];
         this.updateSkylightColumns = new boolean[256];
-        this.tileEntities = Maps.<BlockPos, TileEntity>newHashMap();
+        this.tileEntities = Maps.newHashMap();
         this.queuedLightChecks = 4096;
-        this.tileEntityPosQueue = Queues.<BlockPos>newConcurrentLinkedQueue();
+        this.tileEntityPosQueue = Queues.newConcurrentLinkedQueue();
         this.entityLists = (ClassInheritanceMultiMap[])(new ClassInheritanceMultiMap[16]);
         this.world = worldIn;
         this.x = x;
@@ -127,7 +128,7 @@ public class Chunk
 
         for (int i = 0; i < this.entityLists.length; ++i)
         {
-            this.entityLists[i] = new ClassInheritanceMultiMap(Entity.class);
+            this.entityLists[i] = new ClassInheritanceMultiMap<>(Entity.class);
         }
 
         Arrays.fill(this.precipitationHeightMap, -999);
@@ -137,7 +138,6 @@ public class Chunk
     public Chunk(World worldIn, ChunkPrimer primer, int x, int z)
     {
         this(worldIn, x, z);
-        int i = 256;
         boolean flag = worldIn.provider.hasSkyLight();
 
         for (int j = 0; j < 16; ++j)
@@ -286,23 +286,19 @@ public class Chunk
                     int k1 = 15;
                     int i1 = i + 16 - 1;
 
-                    while (true)
-                    {
+                    do {
                         int j1 = this.getBlockLightOpacity(j, i1, k);
 
-                        if (j1 == 0 && k1 != 15)
-                        {
+                        if (j1 == 0 && k1 != 15) {
                             j1 = 1;
                         }
 
                         k1 -= j1;
 
-                        if (k1 > 0)
-                        {
+                        if (k1 > 0) {
                             ExtendedBlockStorage extendedblockstorage = this.storageArrays[i1 >> 4];
 
-                            if (extendedblockstorage != NULL_BLOCK_STORAGE)
-                            {
+                            if (extendedblockstorage != NULL_BLOCK_STORAGE) {
                                 extendedblockstorage.setSkyLight(j, i1 & 15, k, k1);
                                 this.world.notifyLightSet(new BlockPos((this.x << 4) + j, i1, (this.z << 4) + k));
                             }
@@ -310,11 +306,7 @@ public class Chunk
 
                         --i1;
 
-                        if (i1 <= 0 || k1 <= 0)
-                        {
-                            break;
-                        }
-                    }
+                    } while (i1 > 0 && k1 > 0);
                 }
             }
         }
@@ -412,12 +404,8 @@ public class Chunk
     private void relightBlock(int x, int y, int z)
     {
         int i = this.heightMap[z << 4 | x] & 255;
-        int j = i;
 
-        if (y > i)
-        {
-            j = y;
-        }
+        int j = Math.max(y, i);
 
         while (j > 0 && this.getBlockLightOpacity(x, j - 1, z) == 0)
         {
@@ -570,13 +558,7 @@ public class Chunk
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting block state");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being got");
-                crashreportcategory.addDetail("Location", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return CrashReportCategory.getCoordinateInfo(x, y, z);
-                    }
-                });
+                crashreportcategory.addDetail("Location", () -> CrashReportCategory.getCoordinateInfo(x, y, z));
                 throw new ReportedException(crashreport);
             }
         }
@@ -792,7 +774,7 @@ public class Chunk
 
         if (i != this.x || j != this.z)
         {
-            LOGGER.warn("Wrong location! ({}, {}) should be ({}, {}), {}", Integer.valueOf(i), Integer.valueOf(j), Integer.valueOf(this.x), Integer.valueOf(this.z), entityIn);
+            LOGGER.warn("Wrong location! ({}, {}) should be ({}, {}), {}", i, j, this.x, this.z, entityIn);
             entityIn.setDead();
         }
 
@@ -902,7 +884,7 @@ public class Chunk
         {
             if (this.tileEntities.containsKey(pos))
             {
-                ((TileEntity)this.tileEntities.get(pos)).invalidate();
+                this.tileEntities.get(pos).invalidate();
             }
 
             tileEntityIn.validate();
@@ -981,7 +963,7 @@ public class Chunk
                 {
                     if (entity.getEntityBoundingBox().intersects(aabb) && entity != entityIn)
                     {
-                        if (filter == null || filter.apply(entity))
+                        if (filter.apply(entity))
                         {
                             listToFill.add(entity);
                         }
@@ -992,7 +974,7 @@ public class Chunk
                         {
                             for (Entity entity1 : aentity)
                             {
-                                if (entity1 != entityIn && entity1.getEntityBoundingBox().intersects(aabb) && (filter == null || filter.apply(entity1)))
+                                if (entity1 != entityIn && entity1.getEntityBoundingBox().intersects(aabb) && filter.apply(entity1))
                                 {
                                     listToFill.add(entity1);
                                 }
@@ -1015,7 +997,7 @@ public class Chunk
         {
             for (T t : this.entityLists[k].getByClass(entityClass))
             {
-                if (t.getEntityBoundingBox().intersects(aabb) && (filter == null || filter.apply(t)))
+                if (t.getEntityBoundingBox().intersects(aabb) && filter.apply(t))
                 {
                     listToFill.add(t);
                 }
@@ -1045,7 +1027,7 @@ public class Chunk
 
     public Random getRandomWithSeed(long seed)
     {
-        return new Random(this.world.getSeed() + (long)(this.x * this.x * 4987142) + (long)(this.x * 5947611) + (long)(this.z * this.z) * 4392871L + (long)(this.z * 389711) ^ seed);
+        return new Random(this.world.getSeed() + ((long) this.x * this.x * 4987142) + (this.x * 5947611L) + (long) this.z * this.z * 4392871L + (this.z * 389711L) ^ seed);
     }
 
     public boolean isEmpty()
@@ -1215,7 +1197,7 @@ public class Chunk
     {
         if (this.storageArrays.length != newStorageArrays.length)
         {
-            LOGGER.warn("Could not set level chunk sections, array length is {} instead of {}", Integer.valueOf(newStorageArrays.length), Integer.valueOf(this.storageArrays.length));
+            LOGGER.warn("Could not set level chunk sections, array length is {} instead of {}", newStorageArrays.length, this.storageArrays.length);
         }
         else
         {
@@ -1317,7 +1299,7 @@ public class Chunk
     {
         if (this.blockBiomeArray.length != biomeArray.length)
         {
-            LOGGER.warn("Could not set level chunk biomes, array length is {} instead of {}", Integer.valueOf(biomeArray.length), Integer.valueOf(this.blockBiomeArray.length));
+            LOGGER.warn("Could not set level chunk biomes, array length is {} instead of {}", biomeArray.length, this.blockBiomeArray.length);
         }
         else
         {
@@ -1424,10 +1406,7 @@ public class Chunk
 
     private void setSkylightUpdated()
     {
-        for (int i = 0; i < this.updateSkylightColumns.length; ++i)
-        {
-            this.updateSkylightColumns[i] = true;
-        }
+        Arrays.fill(this.updateSkylightColumns, true);
 
         this.recheckGaps(false);
     }
@@ -1531,7 +1510,7 @@ public class Chunk
     {
         if (this.heightMap.length != newHeightMap.length)
         {
-            LOGGER.warn("Could not set level chunk heightmap, array length is {} instead of {}", Integer.valueOf(newHeightMap.length), Integer.valueOf(this.heightMap.length));
+            LOGGER.warn("Could not set level chunk heightmap, array length is {} instead of {}", newHeightMap.length, this.heightMap.length);
         }
         else
         {
@@ -1599,10 +1578,10 @@ public class Chunk
         this.inhabitedTime = newInhabitedTime;
     }
 
-    public static enum EnumCreateEntityType
+    public enum EnumCreateEntityType
     {
         IMMEDIATE,
         QUEUED,
-        CHECK;
+        CHECK
     }
 }

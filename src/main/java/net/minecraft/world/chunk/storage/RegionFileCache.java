@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class RegionFileCache
 {
-    private static final Map<File, RegionFile> REGIONS_BY_FILE = Maps.<File, RegionFile>newHashMap();
+    private static final Map<File, RegionFile> REGIONS_BY_FILE = Maps.newHashMap();
 
     public static synchronized RegionFile createOrLoadRegionFile(File worldDir, int chunkX, int chunkZ)
     {
@@ -110,6 +110,6 @@ public class RegionFileCache
     public static boolean chunkExists(File worldDir, int chunkX, int chunkZ)
     {
         RegionFile regionfile = getRegionFileIfExists(worldDir, chunkX, chunkZ);
-        return regionfile != null ? regionfile.isChunkSaved(chunkX & 31, chunkZ & 31) : false;
+        return regionfile.isChunkSaved(chunkX & 31, chunkZ & 31);
     }
 }

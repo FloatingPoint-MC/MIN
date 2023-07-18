@@ -8,8 +8,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -27,6 +31,22 @@ public class ItemSword extends Item
         this.attackDamage = 3.0F + material.getAttackDamage();
     }
 
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        return EnumAction.BLOCK;
+    }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 72000;
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack itemstack = playerIn.getHeldItem(handIn);
+        playerIn.setActiveHand(handIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemstack);
+    }
     /**
      * Returns the amount of damage this item will deal. One heart of damage is equal to 2 damage points.
      */
@@ -113,7 +133,7 @@ public class ItemSword extends Item
      */
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+        return this.material.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
     public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
@@ -122,8 +142,7 @@ public class ItemSword extends Item
 
         if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
         {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4000000953674316D, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
         }
 
         return multimap;

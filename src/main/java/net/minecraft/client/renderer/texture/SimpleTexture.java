@@ -42,7 +42,7 @@ public class SimpleTexture extends AbstractTexture
             {
                 try
                 {
-                    TextureMetadataSection texturemetadatasection = (TextureMetadataSection)iresource.getMetadata("texture");
+                    TextureMetadataSection texturemetadatasection = iresource.getMetadata("texture");
 
                     if (texturemetadatasection != null)
                     {

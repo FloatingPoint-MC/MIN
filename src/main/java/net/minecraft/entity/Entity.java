@@ -725,7 +725,7 @@ public abstract class Entity implements ICommandSender
      */
     private boolean isLiquidPresentInAABB(AxisAlignedBB bb)
     {
-        return this.world.getCollisionBoxes(this, bb).isEmpty() && !this.world.containsAnyLiquid(bb);
+        return this.world.getCollisionBoxes(this, bb).isEmpty() && this.world.containsNoLiquid(bb);
     }
 
     /**
@@ -2746,31 +2746,31 @@ public abstract class Entity implements ICommandSender
             EnumFacing enumfacing = EnumFacing.UP;
             double d3 = Double.MAX_VALUE;
 
-            if (!this.world.isBlockFullCube(blockpos.west()) && d0 < d3)
+            if (this.world.isBlockNotFullCube(blockpos.west()) && d0 < d3)
             {
                 d3 = d0;
                 enumfacing = EnumFacing.WEST;
             }
 
-            if (!this.world.isBlockFullCube(blockpos.east()) && 1.0D - d0 < d3)
+            if (this.world.isBlockNotFullCube(blockpos.east()) && 1.0D - d0 < d3)
             {
                 d3 = 1.0D - d0;
                 enumfacing = EnumFacing.EAST;
             }
 
-            if (!this.world.isBlockFullCube(blockpos.north()) && d2 < d3)
+            if (this.world.isBlockNotFullCube(blockpos.north()) && d2 < d3)
             {
                 d3 = d2;
                 enumfacing = EnumFacing.NORTH;
             }
 
-            if (!this.world.isBlockFullCube(blockpos.south()) && 1.0D - d2 < d3)
+            if (this.world.isBlockNotFullCube(blockpos.south()) && 1.0D - d2 < d3)
             {
                 d3 = 1.0D - d2;
                 enumfacing = EnumFacing.SOUTH;
             }
 
-            if (!this.world.isBlockFullCube(blockpos.up()) && 1.0D - d1 < d3)
+            if (this.world.isBlockNotFullCube(blockpos.up()) && 1.0D - d1 < d3)
             {
                 d3 = 1.0D - d1;
                 enumfacing = EnumFacing.UP;

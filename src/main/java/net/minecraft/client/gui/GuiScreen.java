@@ -12,10 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -58,8 +56,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     /** The height of the screen object. */
     public int height;
-    protected List<GuiButton> buttonList = Lists.<GuiButton>newArrayList();
-    protected List<GuiLabel> labelList = Lists.<GuiLabel>newArrayList();
+    protected List<GuiButton> buttonList = Lists.newArrayList();
+    protected List<GuiLabel> labelList = Lists.newArrayList();
     public boolean allowUserInput;
 
     /** The FontRenderer used by GuiScreen */
@@ -84,12 +82,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         for (int i = 0; i < this.buttonList.size(); ++i)
         {
-            ((GuiButton)this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY, partialTicks);
+            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY, partialTicks);
         }
 
         for (int j = 0; j < this.labelList.size(); ++j)
         {
-            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+            this.labelList.get(j).drawLabel(this.mc, mouseX, mouseY);
         }
     }
 
@@ -101,7 +99,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (keyCode == 1)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen == null)
             {
@@ -123,7 +121,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         try
         {
-            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
+            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
             if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
             {
@@ -132,7 +130,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         }
         catch (Exception var1)
         {
-            ;
         }
 
         return "";
@@ -148,11 +145,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             try
             {
                 StringSelection stringselection = new StringSelection(copyText);
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner)null);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
             }
             catch (Exception var2)
             {
-                ;
             }
         }
     }
@@ -170,11 +166,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         {
             if (i == 0)
             {
-                list.set(i, p_191927_1_.getRarity().color + (String)list.get(i));
+                list.set(i, p_191927_1_.getRarity().color + list.get(i));
             }
             else
             {
-                list.set(i, TextFormatting.GRAY + (String)list.get(i));
+                list.set(i, TextFormatting.GRAY + list.get(i));
             }
         }
 
@@ -186,7 +182,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
      */
     public void drawHoveringText(String text, int x, int y)
     {
-        this.drawHoveringText(Arrays.asList(text), x, y);
+        this.drawHoveringText(Collections.singletonList(text), x, y);
     }
 
     public void setFocused(boolean hasFocusedControlIn)
@@ -302,7 +298,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 }
                 catch (NBTException var9)
                 {
-                    ;
                 }
 
                 if (itemstack.isEmpty())
@@ -321,7 +316,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                     try
                     {
                         NBTTagCompound nbttagcompound = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
-                        List<String> list = Lists.<String>newArrayList();
+                        List<String> list = Lists.newArrayList();
                         list.add(nbttagcompound.getString("name"));
 
                         if (nbttagcompound.hasKey("type", 8))
@@ -429,7 +424,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 }
                 else
                 {
-                    LOGGER.error("Don't know how to handle {}", (Object)clickevent);
+                    LOGGER.error("Don't know how to handle {}", clickevent);
                 }
 
                 return true;
@@ -675,12 +670,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         this.mc.getTextureManager().bindTexture(OPTIONS_BACKGROUND);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        float f = 32.0F;
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        bufferbuilder.pos(0.0D, (double)this.height, 0.0D).tex(0.0D, (double)((float)this.height / 32.0F + (float)tint)).color(64, 64, 64, 255).endVertex();
-        bufferbuilder.pos((double)this.width, (double)this.height, 0.0D).tex((double)((float)this.width / 32.0F), (double)((float)this.height / 32.0F + (float)tint)).color(64, 64, 64, 255).endVertex();
-        bufferbuilder.pos((double)this.width, 0.0D, 0.0D).tex((double)((float)this.width / 32.0F), (double)tint).color(64, 64, 64, 255).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, (double)tint).color(64, 64, 64, 255).endVertex();
+        bufferbuilder.pos(0.0D, this.height, 0.0D).tex(0.0D, (float)this.height / 32.0F + (float)tint).color(64, 64, 64, 255).endVertex();
+        bufferbuilder.pos(this.width, this.height, 0.0D).tex((float)this.width / 32.0F, (float)this.height / 32.0F + (float)tint).color(64, 64, 64, 255).endVertex();
+        bufferbuilder.pos(this.width, 0.0D, 0.0D).tex((float)this.width / 32.0F, tint).color(64, 64, 64, 255).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, tint).color(64, 64, 64, 255).endVertex();
         tessellator.draw();
     }
 
@@ -711,13 +705,13 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         try
         {
             Class<?> oclass = Class.forName("java.awt.Desktop");
-            Object object = oclass.getMethod("getDesktop").invoke((Object)null);
+            Object object = oclass.getMethod("getDesktop").invoke(null);
             oclass.getMethod("browse", URI.class).invoke(object, url);
         }
         catch (Throwable throwable1)
         {
             Throwable throwable = throwable1.getCause();
-            LOGGER.error("Couldn't open link: {}", (Object)(throwable == null ? "<UNKNOWN>" : throwable.getMessage()));
+            LOGGER.error("Couldn't open link: {}", throwable == null ? "<UNKNOWN>" : throwable.getMessage());
         }
     }
 

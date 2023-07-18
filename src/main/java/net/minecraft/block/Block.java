@@ -908,10 +908,10 @@ public class Block
     @Nullable
     protected RayTraceResult rayTrace(BlockPos pos, Vec3d start, Vec3d end, AxisAlignedBB boundingBox)
     {
-        Vec3d vec3d = start.subtract((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
-        Vec3d vec3d1 = end.subtract((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
+        Vec3d vec3d = start.subtract(pos.getX(), pos.getY(), pos.getZ());
+        Vec3d vec3d1 = end.subtract(pos.getX(), pos.getY(), pos.getZ());
         RayTraceResult raytraceresult = boundingBox.calculateIntercept(vec3d, vec3d1);
-        return raytraceresult == null ? null : new RayTraceResult(raytraceresult.hitVec.add((double)pos.getX(), (double)pos.getY(), (double)pos.getZ()), raytraceresult.sideHit, pos);
+        return raytraceresult == null ? null : new RayTraceResult(raytraceresult.hitVec.add(pos.getX(), pos.getY(), pos.getZ()), raytraceresult.sideHit, pos);
     }
 
     /**
@@ -1233,7 +1233,7 @@ public class Block
     {
         if (blockIn != null && other != null)
         {
-            return blockIn == other ? true : blockIn.isAssociatedBlock(other);
+            return blockIn == other || blockIn.isAssociatedBlock(other);
         }
         else
         {
@@ -1265,7 +1265,7 @@ public class Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[0]);
+        return new BlockStateContainer(this);
     }
 
     public BlockStateContainer getBlockState()
@@ -1662,10 +1662,10 @@ public class Block
         registerBlock(id, new ResourceLocation(textualID), block_);
     }
 
-    public static enum EnumOffsetType
+    public enum EnumOffsetType
     {
         NONE,
         XZ,
-        XYZ;
+        XYZ
     }
 }

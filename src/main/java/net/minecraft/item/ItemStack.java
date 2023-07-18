@@ -482,7 +482,7 @@ public final class ItemStack
     /**
      * compares ItemStack argument to the instance ItemStack; returns true if both ItemStacks are equal
      */
-    private boolean isItemStackEqual(ItemStack other)
+    public boolean isItemStackEqual(ItemStack other)
     {
         if (this.stackSize != other.stackSize)
         {
@@ -858,11 +858,6 @@ public final class ItemStack
                         {
                             d0 = d0 + playerIn.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue();
                             d0 = d0 + (double)EnchantmentHelper.getModifierForCreature(this, EnumCreatureAttribute.UNDEFINED);
-                            flag = true;
-                        }
-                        else if (attributemodifier.getID() == Item.ATTACK_SPEED_MODIFIER)
-                        {
-                            d0 += playerIn.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue();
                             flag = true;
                         }
                     }

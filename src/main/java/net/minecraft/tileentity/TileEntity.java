@@ -162,7 +162,7 @@ public abstract class TileEntity
         {
             IBlockState iblockstate = this.world.getBlockState(this.pos);
             this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
-            this.world.markChunkDirty(this.pos, this);
+            this.world.markChunkDirty(this.pos);
 
             if (this.getBlockType() != Blocks.AIR)
             {

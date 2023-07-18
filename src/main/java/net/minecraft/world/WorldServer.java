@@ -14,7 +14,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.AdvancementManager;
@@ -524,10 +523,10 @@ public class WorldServer extends World implements IThreadListener
         }
     }
 
-    public boolean isBlockTickPending(BlockPos pos, Block blockType)
+    public boolean isBlockTickNotPending(BlockPos pos, Block blockType)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(pos, blockType);
-        return this.pendingTickListEntriesThisTick.contains(nextticklistentry);
+        return !this.pendingTickListEntriesThisTick.contains(nextticklistentry);
     }
 
     /**
@@ -697,11 +696,10 @@ public class WorldServer extends World implements IThreadListener
     /**
      * Runs through the list of updates to run and ticks them
      */
-    public boolean tickUpdates(boolean runAllPending)
+    public void tickUpdates(boolean runAllPending)
     {
         if (this.worldInfo.getTerrainType() == WorldType.DEBUG_ALL_BLOCK_STATES)
         {
-            return false;
         }
         else
         {
@@ -771,7 +769,6 @@ public class WorldServer extends World implements IThreadListener
 
                 this.profiler.endSection();
                 this.pendingTickListEntriesThisTick.clear();
-                return !this.pendingTickListEntriesTreeSet.isEmpty();
             }
         }
     }
@@ -1213,7 +1210,7 @@ public class WorldServer extends World implements IThreadListener
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean causesFire, boolean damagesTerrain)
+    public void newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean causesFire, boolean damagesTerrain)
     {
         Explosion explosion = new Explosion(this, entityIn, x, y, z, strength, causesFire, damagesTerrain);
         explosion.doExplosionA();
@@ -1232,7 +1229,6 @@ public class WorldServer extends World implements IThreadListener
             }
         }
 
-        return explosion;
     }
 
     public void addBlockEvent(BlockPos pos, Block blockIn, int eventID, int eventParam)

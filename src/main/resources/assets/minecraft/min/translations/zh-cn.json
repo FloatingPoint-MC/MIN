@@ -1,0 +1,19 @@
+{
+  "language.identity": "简体中文",
+  "module.category.Boost": "优化类",
+  "module.category.Misc": "杂项类",
+  "module.category.Render": "视觉类",
+  "module.implement.Sprint": "强制疾跑",
+  "module.implement.Sprint.description": "使你一直处于疾跑状态。",
+  "module.implement.Sprint.ShowText": "显示文字",
+  "module.implement.Sprint.ShowText.description": "在游戏界面显示一串文字。",
+  "module.implement.Sprint.Text": "文字",
+  "module.implement.Sprint.Text.description": "待显示的文字。",
+  "module.implement.ClickGUI": "Click GUI",
+  "module.implement.ClickGUI.description": "你现在看到的界面。",
+  "module.implement.FullBright": "明亮视野",
+  "module.implement.FullBright.description": "使你的视野明亮起来。",
+  "clickgui.bind": "按下一个按键(按下Esc解绑按键)...",
+  "clickgui.setting": "设置",
+  "clickgui.language": "语言"
+}

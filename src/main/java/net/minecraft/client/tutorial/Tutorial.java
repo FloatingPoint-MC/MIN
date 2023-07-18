@@ -149,7 +149,7 @@ public class Tutorial
     public static ITextComponent createKeybindComponent(String keybind)
     {
         TextComponentKeybind textcomponentkeybind = new TextComponentKeybind("key." + keybind);
-        textcomponentkeybind.getStyle().setBold(Boolean.valueOf(true));
+        textcomponentkeybind.getStyle().setBold(Boolean.TRUE);
         return textcomponentkeybind;
     }
 }

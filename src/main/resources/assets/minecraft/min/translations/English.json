@@ -1,0 +1,19 @@
+{
+  "language.identity": "English",
+  "module.category.Boost": "Boost",
+  "module.category.Misc": "Misc",
+  "module.category.Render": "Render",
+  "module.implement.Sprint": "Sprint",
+  "module.implement.Sprint.description": "Make you sprint all the time.",
+  "module.implement.Sprint.ShowText": "Show Text",
+  "module.implement.Sprint.ShowText.description": "Show a text in the game hud.",
+  "module.implement.Sprint.Text": "Text",
+  "module.implement.Sprint.Text.description": "Text to be shown.",
+  "module.implement.ClickGUI": "Click GUI",
+  "module.implement.ClickGUI.description": "The gui you're now looking at.",
+  "module.implement.FullBright": "Full Bright",
+  "module.implement.FullBright.description": "Make your sight bright.",
+  "clickgui.bind": "Press a key(Press Escape to unbind key)...",
+  "clickgui.setting": "Settings",
+  "clickgui.language": "Language"
+}

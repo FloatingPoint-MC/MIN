@@ -14,13 +14,9 @@ public class PacketThreadUtil
     {
         if (!scheduler.isCallingFromMinecraftThread())
         {
-            scheduler.addScheduledTask(new Runnable()
-            {
-                public void run()
-                {
-                    PacketThreadUtil.clientPreProcessPacket(packetIn);
-                    packetIn.processPacket(processor);
-                }
+            scheduler.addScheduledTask(() -> {
+                PacketThreadUtil.clientPreProcessPacket(packetIn);
+                packetIn.processPacket(processor);
             });
             throw ThreadQuickExitException.INSTANCE;
         }

@@ -483,12 +483,8 @@ public abstract class PlayerList
         UUID uuid = EntityPlayer.getUUID(profile);
         List<EntityPlayerMP> list = Lists.<EntityPlayerMP>newArrayList();
 
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
-            if (entityplayermp.getUniqueID().equals(uuid))
-            {
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
+            if (entityplayermp.getUniqueID().equals(uuid)) {
                 list.add(entityplayermp);
             }
         }
@@ -505,16 +501,7 @@ public abstract class PlayerList
             entityplayermp1.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login", new Object[0]));
         }
 
-        PlayerInteractionManager playerinteractionmanager;
-
-        if (this.server.isDemo())
-        {
-            playerinteractionmanager = new DemoPlayerInteractionManager(this.server.getWorld(0));
-        }
-        else
-        {
-            playerinteractionmanager = new PlayerInteractionManager(this.server.getWorld(0));
-        }
+        PlayerInteractionManager playerinteractionmanager = new PlayerInteractionManager(this.server.getWorld(0));
 
         return new EntityPlayerMP(this.server, this.server.getWorld(0), profile, playerinteractionmanager);
     }
@@ -533,16 +520,7 @@ public abstract class PlayerList
         BlockPos blockpos = playerIn.getBedLocation();
         boolean flag = playerIn.isSpawnForced();
         playerIn.dimension = dimension;
-        PlayerInteractionManager playerinteractionmanager;
-
-        if (this.server.isDemo())
-        {
-            playerinteractionmanager = new DemoPlayerInteractionManager(this.server.getWorld(playerIn.dimension));
-        }
-        else
-        {
-            playerinteractionmanager = new PlayerInteractionManager(this.server.getWorld(playerIn.dimension));
-        }
+        PlayerInteractionManager playerinteractionmanager = new PlayerInteractionManager(this.server.getWorld(playerIn.dimension));
 
         EntityPlayerMP entityplayermp = new EntityPlayerMP(this.server, this.server.getWorld(playerIn.dimension), playerIn.getGameProfile(), playerinteractionmanager);
         entityplayermp.connection = playerIn.connection;

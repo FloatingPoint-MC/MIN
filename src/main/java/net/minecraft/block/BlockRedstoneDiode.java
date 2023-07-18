@@ -154,7 +154,7 @@ public abstract class BlockRedstoneDiode extends BlockHorizontal
         {
             boolean flag = this.shouldBePowered(worldIn, pos, state);
 
-            if (this.isRepeaterPowered != flag && !worldIn.isBlockTickPending(pos, this))
+            if (this.isRepeaterPowered != flag && worldIn.isBlockTickNotPending(pos, this))
             {
                 int i = -1;
 

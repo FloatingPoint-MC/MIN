@@ -45,7 +45,7 @@ public class EntityMagmaCube extends EntitySlime
      */
     public boolean isNotColliding()
     {
-        return this.world.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.world.containsAnyLiquid(this.getEntityBoundingBox());
+        return this.world.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && this.world.containsNoLiquid(this.getEntityBoundingBox());
     }
 
     protected void setSlimeSize(int size, boolean resetHealth)

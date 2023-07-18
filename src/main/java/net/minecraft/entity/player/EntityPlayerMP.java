@@ -83,8 +83,6 @@ import net.minecraft.stats.StatisticsManagerServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.CooldownTrackerServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
@@ -362,11 +360,6 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     protected void onInsideBlock(IBlockState p_191955_1_)
     {
         CriteriaTriggers.ENTER_BLOCK.trigger(this, p_191955_1_);
-    }
-
-    protected CooldownTracker createCooldownTracker()
-    {
-        return new CooldownTrackerServer(this);
     }
 
     /**
@@ -1577,7 +1570,6 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     public void swingArm(EnumHand hand)
     {
         super.swingArm(hand);
-        this.resetCooldown();
     }
 
     public boolean isInvulnerableDimensionChange()

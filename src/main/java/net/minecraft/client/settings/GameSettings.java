@@ -10,11 +10,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -105,8 +103,8 @@ public class GameSettings
 
     /** Smooth Lighting */
     public int ambientOcclusion = 2;
-    public List<String> resourcePacks = Lists.<String>newArrayList();
-    public List<String> incompatibleResourcePacks = Lists.<String>newArrayList();
+    public List<String> resourcePacks = Lists.newArrayList();
+    public List<String> incompatibleResourcePacks = Lists.newArrayList();
     public EntityPlayer.EnumChatVisibility chatVisibility = EntityPlayer.EnumChatVisibility.FULL;
     public boolean chatColours = true;
     public boolean chatLinks = true;
@@ -143,7 +141,6 @@ public class GameSettings
     public int attackIndicator = 1;
     public boolean enableWeakAttacks;
     public boolean showSubtitles;
-    public boolean autoJump = true;
     public TutorialSteps tutorialStep = TutorialSteps.MOVEMENT;
     public KeyBinding keyBindForward = new KeyBinding("key.forward", 17, "key.categories.movement");
     public KeyBinding keyBindLeft = new KeyBinding("key.left", 30, "key.categories.movement");
@@ -292,7 +289,7 @@ public class GameSettings
     public GameSettings(Minecraft mcIn, File mcDataDir)
     {
         this.setForgeKeybindProperties();
-        this.keyBindings = (KeyBinding[])ArrayUtils.addAll(new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindSprint, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand, this.keyBindScreenshot, this.keyBindTogglePerspective, this.keyBindSmoothCamera, this.keyBindFullscreen, this.keyBindSpectatorOutlines, this.keyBindSwapHands, this.keyBindSaveToolbar, this.keyBindLoadToolbar, this.keyBindAdvancements}, this.keyBindsHotbar);
+        this.keyBindings = ArrayUtils.addAll(new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindSprint, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand, this.keyBindScreenshot, this.keyBindTogglePerspective, this.keyBindSmoothCamera, this.keyBindFullscreen, this.keyBindSpectatorOutlines, this.keyBindSwapHands, this.keyBindSaveToolbar, this.keyBindLoadToolbar, this.keyBindAdvancements}, this.keyBindsHotbar);
         this.difficulty = EnumDifficulty.NORMAL;
         this.lastServer = "";
         this.fovSetting = 70.0F;
@@ -324,7 +321,7 @@ public class GameSettings
         this.optionsFileOF = new File(mcDataDir, "optionsof.txt");
         this.limitFramerate = (int)GameSettings.Options.FRAMERATE_LIMIT.getValueMax();
         this.ofKeyBindZoom = new KeyBinding("of.key.zoom", 46, "key.categories.misc");
-        this.keyBindings = (KeyBinding[])ArrayUtils.add(this.keyBindings, this.ofKeyBindZoom);
+        this.keyBindings = ArrayUtils.add(this.keyBindings, this.ofKeyBindZoom);
         KeyUtils.fixKeyConflicts(this.keyBindings, new KeyBinding[] {this.ofKeyBindZoom});
         this.renderDistanceChunks = 8;
         this.loadOptions();
@@ -334,7 +331,7 @@ public class GameSettings
     public GameSettings()
     {
         this.setForgeKeybindProperties();
-        this.keyBindings = (KeyBinding[])ArrayUtils.addAll(new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindSprint, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand, this.keyBindScreenshot, this.keyBindTogglePerspective, this.keyBindSmoothCamera, this.keyBindFullscreen, this.keyBindSpectatorOutlines, this.keyBindSwapHands, this.keyBindSaveToolbar, this.keyBindLoadToolbar, this.keyBindAdvancements}, this.keyBindsHotbar);
+        this.keyBindings = ArrayUtils.addAll(new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindSprint, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand, this.keyBindScreenshot, this.keyBindTogglePerspective, this.keyBindSmoothCamera, this.keyBindFullscreen, this.keyBindSpectatorOutlines, this.keyBindSwapHands, this.keyBindSaveToolbar, this.keyBindLoadToolbar, this.keyBindAdvancements}, this.keyBindsHotbar);
         this.difficulty = EnumDifficulty.NORMAL;
         this.lastServer = "";
         this.fovSetting = 70.0F;
@@ -664,11 +661,6 @@ public class GameSettings
             this.showSubtitles = !this.showSubtitles;
         }
 
-        if (settingsOption == GameSettings.Options.AUTO_JUMP)
-        {
-            this.autoJump = !this.autoJump;
-        }
-
         if (settingsOption == GameSettings.Options.NARRATOR)
         {
             if (NarratorChatListener.INSTANCE.isActive())
@@ -798,9 +790,6 @@ public class GameSettings
 
             case ENABLE_WEAK_ATTACKS:
                 return this.enableWeakAttacks;
-
-            case AUTO_JUMP:
-                return this.autoJump;
 
             default:
                 return false;
@@ -1003,7 +992,7 @@ public class GameSettings
                         }
                         catch (Exception var18)
                         {
-                            LOGGER.warn("Skipping bad option: {}", (Object)s);
+                            LOGGER.warn("Skipping bad option: {}", s);
                         }
                     }
 
@@ -1151,21 +1140,21 @@ public class GameSettings
 
                             if ("resourcePacks".equals(s1))
                             {
-                                this.resourcePacks = (List)JsonUtils.gsonDeserialize(GSON, s2, TYPE_LIST_STRING);
+                                this.resourcePacks = JsonUtils.gsonDeserialize(GSON, s2, TYPE_LIST_STRING);
 
                                 if (this.resourcePacks == null)
                                 {
-                                    this.resourcePacks = Lists.<String>newArrayList();
+                                    this.resourcePacks = Lists.newArrayList();
                                 }
                             }
 
                             if ("incompatibleResourcePacks".equals(s1))
                             {
-                                this.incompatibleResourcePacks = (List)JsonUtils.gsonDeserialize(GSON, s2, TYPE_LIST_STRING);
+                                this.incompatibleResourcePacks = JsonUtils.gsonDeserialize(GSON, s2, TYPE_LIST_STRING);
 
                                 if (this.incompatibleResourcePacks == null)
                                 {
-                                    this.incompatibleResourcePacks = Lists.<String>newArrayList();
+                                    this.incompatibleResourcePacks = Lists.newArrayList();
                                 }
                             }
 
@@ -1326,11 +1315,6 @@ public class GameSettings
                                 this.enableWeakAttacks = "true".equals(s2);
                             }
 
-                            if ("autoJump".equals(s1))
-                            {
-                                this.autoJump = "true".equals(s2);
-                            }
-
                             if ("narrator".equals(s1))
                             {
                                 this.narrator = Integer.parseInt(s2);
@@ -1390,12 +1374,12 @@ public class GameSettings
             }
             catch (Exception exception1)
             {
-                LOGGER.error("Failed to load options", (Throwable)exception1);
+                LOGGER.error("Failed to load options", exception1);
                 break label707;
             }
             finally
             {
-                IOUtils.closeQuietly((InputStream)fileinputstream);
+                IOUtils.closeQuietly(fileinputstream);
             }
 
             return;
@@ -1413,7 +1397,6 @@ public class GameSettings
         }
         catch (RuntimeException var4)
         {
-            ;
         }
 
         return this.mc.getDataFixer().process(FixTypes.OPTIONS, p_189988_1_, i);
@@ -1518,7 +1501,6 @@ public class GameSettings
             printwriter.println("attackIndicator:" + this.attackIndicator);
             printwriter.println("showSubtitles:" + this.showSubtitles);
             printwriter.println("enableWeakAttacks:" + this.enableWeakAttacks);
-            printwriter.println("autoJump:" + this.autoJump);
             printwriter.println("narrator:" + this.narrator);
             printwriter.println("tutorialStep:" + this.tutorialStep.getName());
 
@@ -1549,11 +1531,11 @@ public class GameSettings
         }
         catch (Exception exception)
         {
-            LOGGER.error("Failed to save options", (Throwable)exception);
+            LOGGER.error("Failed to save options", exception);
         }
         finally
         {
-            IOUtils.closeQuietly((Writer)printwriter);
+            IOUtils.closeQuietly(printwriter);
         }
 
         this.saveOfOptions();
@@ -1562,7 +1544,7 @@ public class GameSettings
 
     public float getSoundLevel(SoundCategory category)
     {
-        return this.soundLevels.containsKey(category) ? ((Float)this.soundLevels.get(category)).floatValue() : 1.0F;
+        return this.soundLevels.containsKey(category) ? this.soundLevels.get(category).floatValue() : 1.0F;
     }
 
     public void setSoundLevel(SoundCategory category, float volume)
@@ -1688,7 +1670,6 @@ public class GameSettings
 
             for (this.ofAfLevel = 1; this.ofAfLevel * 2 <= k; this.ofAfLevel *= 2)
             {
-                ;
             }
 
             this.ofAfLevel = Config.limit(this.ofAfLevel, 1, 16);
@@ -1771,7 +1752,7 @@ public class GameSettings
                 case 1:
                     this.ofFogType = 2;
 
-                    if (!Config.isFancyFogAvailable())
+                    if (Config.isFancyFogUnavailable())
                     {
                         this.ofFogType = 3;
                     }
@@ -2327,7 +2308,7 @@ public class GameSettings
                 s2 = s1 + "+";
             }
 
-            return s + i1 + " " + s2 + "";
+            return s + i1 + " " + s2;
         }
         else if (p_getKeyBindingOF_1_ == GameSettings.Options.FOG_FANCY)
         {
@@ -3568,7 +3549,7 @@ public class GameSettings
         }
     }
 
-    public static enum Options
+    public enum Options
     {
         INVERT_MOUSE("options.invertMouse", false, true),
         SENSITIVITY("options.sensitivity", true, false),
@@ -3607,7 +3588,6 @@ public class GameSettings
         ATTACK_INDICATOR("options.attackIndicator", false, false),
         ENABLE_WEAK_ATTACKS("options.enableWeakAttacks", false, true),
         SHOW_SUBTITLES("options.showSubtitles", false, true),
-        AUTO_JUMP("options.autoJump", false, true),
         NARRATOR("options.narrator", false, false),
         FOG_FANCY("of.options.FOG_FANCY", false, false),
         FOG_START("of.options.FOG_START", false, false),
@@ -3686,7 +3666,7 @@ public class GameSettings
         private final boolean isBoolean;
         private final String translation;
         private final float valueStep;
-        private float valueMin;
+        private final float valueMin;
         private float valueMax;
 
         public static GameSettings.Options byOrdinal(int ordinal)
@@ -3702,12 +3682,12 @@ public class GameSettings
             return null;
         }
 
-        private Options(String translation, boolean isFloat, boolean isBoolean)
+        Options(String translation, boolean isFloat, boolean isBoolean)
         {
             this(translation, isFloat, isBoolean, 0.0F, 1.0F, 0.0F);
         }
 
-        private Options(String translation, boolean isFloat, boolean isBoolean, float valMin, float valMax, float valStep)
+        Options(String translation, boolean isFloat, boolean isBoolean, float valMin, float valMax, float valStep)
         {
             this.translation = translation;
             this.isFloat = isFloat;

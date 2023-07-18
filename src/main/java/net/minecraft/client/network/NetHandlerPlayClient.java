@@ -1,5 +1,8 @@
 package net.minecraft.client.network;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
+import cn.floatingpoint.min.utils.math.DESUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -126,7 +129,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      * reset upon respawning
      */
     private boolean doneLoadingTerrain;
-    private boolean hasStatistics;
 
     public NetHandlerPlayClient(Minecraft mcIn, GuiScreen p_i46300_2_, NetworkManager networkManagerIn, GameProfile profileIn) {
         this.client = mcIn;
@@ -161,10 +163,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         this.client.playerController.setGameType(packetIn.getGameType());
         this.client.gameSettings.sendSettingsToServer();
         this.netManager.sendPacket(new CPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
+        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer())).writeString(DESUtil.encrypt(this.client.player.getUniqueID().toString()))));
     }
 
     /**
-     * Spawns an instance of the objecttype indicated by the packet and sets its position and momentum
+     * Spawns an instance of the object type indicated by the packet and sets its position and momentum
      */
     public void handleSpawnObject(SPacketSpawnObject packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
@@ -536,12 +539,10 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      */
     public void handleChunkData(SPacketChunkData packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
-
         if (packetIn.isFullChunk()) {
             this.world.doPreChunk(packetIn.getChunkX(), packetIn.getChunkZ(), true);
         }
 
-        this.world.invalidateBlockReceiveRegion(packetIn.getChunkX() << 4, 0, packetIn.getChunkZ() << 4, (packetIn.getChunkX() << 4) + 15, 256, (packetIn.getChunkZ() << 4) + 15);
         Chunk chunk = this.world.getChunk(packetIn.getChunkX(), packetIn.getChunkZ());
         chunk.read(packetIn.getReadBuffer(), packetIn.getExtractedSize(), packetIn.isFullChunk());
         this.world.markBlockRangeForRenderUpdate(packetIn.getChunkX() << 4, 0, packetIn.getChunkZ() << 4, (packetIn.getChunkX() << 4) + 15, 256, (packetIn.getChunkZ() << 4) + 15);
@@ -550,7 +551,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
             chunk.resetRelightChecks();
         }
 
-        for (NBTTagCompound nbttagcompound : packetIn.getTileEntityTags()) {
+        for (
+                NBTTagCompound nbttagcompound : packetIn.getTileEntityTags()) {
             BlockPos blockpos = new BlockPos(nbttagcompound.getInteger("x"), nbttagcompound.getInteger("y"), nbttagcompound.getInteger("z"));
             TileEntity tileentity = this.world.getTileEntity(blockpos);
 
@@ -558,6 +560,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 tileentity.readFromNBT(nbttagcompound);
             }
         }
+
     }
 
     public void processChunkUnload(SPacketUnloadChunk packetIn) {
@@ -589,7 +592,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         if (this.guiScreenServer != null) {
             this.client.displayGuiScreen(new GuiDisconnected(this.guiScreenServer, "disconnect.lost", reason));
         } else {
-            this.client.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu()), "disconnect.lost", reason));
+            this.client.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu(false)), "disconnect.lost", reason));
         }
     }
 
@@ -771,20 +774,17 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
         Entity entity = packetIn.getEntity(this.world);
 
-        if (entity != null) {
-            if (packetIn.getOpCode() == 21) {
-                this.client.getSoundHandler().playSound(new GuardianSound((EntityGuardian) entity));
-            } else if (packetIn.getOpCode() == 35) {
-                int i = 40;
-                this.client.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.TOTEM, 30);
-                this.world.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0F, 1.0F, false);
+        if (packetIn.getOpCode() == 21) {
+            this.client.getSoundHandler().playSound(new GuardianSound((EntityGuardian) entity));
+        } else if (packetIn.getOpCode() == 35) {
+            this.client.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.TOTEM, 30);
+            this.world.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0F, 1.0F, false);
 
-                if (entity == this.client.player) {
-                    this.client.entityRenderer.displayItemActivation(new ItemStack(Items.TOTEM_OF_UNDYING));
-                }
-            } else {
-                entity.handleStatusUpdate(packetIn.getOpCode());
+            if (entity == this.client.player) {
+                this.client.entityRenderer.displayItemActivation(new ItemStack(Items.TOTEM_OF_UNDYING));
             }
+        } else {
+            entity.handleStatusUpdate(packetIn.getOpCode());
         }
     }
 
@@ -1137,8 +1137,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
             this.client.player.getStatFileWriter().unlockAchievement(this.client.player, statbase, k);
         }
 
-        this.hasStatistics = true;
-
         if (this.client.currentScreen instanceof IProgressMeter) {
             ((IProgressMeter) this.client.currentScreen).onStatsUpdated();
         }
@@ -1457,12 +1455,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
     public void handleCooldown(SPacketCooldown packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
-
-        if (packetIn.getTicks() == 0) {
-            this.client.player.getCooldownTracker().removeCooldown(packetIn.getItem());
-        } else {
-            this.client.player.getCooldownTracker().setCooldown(packetIn.getItem(), packetIn.getTicks());
-        }
+        // On 1.8.9 Server, there's no cooldown.
     }
 
     public void handleMoveVehicle(SPacketMoveVehicle packetIn) {
@@ -1484,48 +1477,71 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void handleCustomPayload(SPacketCustomPayload packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
 
-        if ("MC|TrList".equals(packetIn.getChannelName())) {
-            PacketBuffer packetbuffer = packetIn.getBufferData();
+        for (CustomPacket packet : Managers.hytPacketManager.packets.values()) {
+            if (packet.getChannel().equals(packetIn.getChannelName())) {
+                packet.process(packetIn.getBufferData());
+                return;
+            }
+        }
 
-            try {
-                int k = packetbuffer.readInt();
-                GuiScreen guiscreen = this.client.currentScreen;
+        switch (packetIn.getChannelName()) {
+            case "MC|TrList":
+                PacketBuffer packetbuffer = packetIn.getBufferData();
 
-                if (guiscreen != null && guiscreen instanceof GuiMerchant && k == this.client.player.openContainer.windowId) {
-                    IMerchant imerchant = ((GuiMerchant) guiscreen).getMerchant();
-                    MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
-                    imerchant.setRecipes(merchantrecipelist);
+                try {
+                    int k = packetbuffer.readInt();
+                    GuiScreen guiscreen = this.client.currentScreen;
+
+                    if (guiscreen instanceof GuiMerchant && k == this.client.player.openContainer.windowId) {
+                        IMerchant imerchant = ((GuiMerchant) guiscreen).getMerchant();
+                        MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
+                        imerchant.setRecipes(merchantrecipelist);
+                    }
+                } catch (IOException ioexception) {
+                    LOGGER.error("Couldn't load trade info", ioexception);
+                } finally {
+                    packetbuffer.release();
                 }
-            } catch (IOException ioexception) {
-                LOGGER.error("Couldn't load trade info", ioexception);
-            } finally {
-                packetbuffer.release();
-            }
-        } else if ("MC|Brand".equals(packetIn.getChannelName())) {
-            this.client.player.setServerBrand(packetIn.getBufferData().readString(32767));
-        } else if ("MC|BOpen".equals(packetIn.getChannelName())) {
-            EnumHand enumhand = packetIn.getBufferData().readEnumValue(EnumHand.class);
-            ItemStack itemstack = enumhand == EnumHand.OFF_HAND ? this.client.player.getHeldItemOffhand() : this.client.player.getHeldItemMainhand();
+                break;
+            case "MC|Brand":
+                this.client.player.setServerBrand(packetIn.getBufferData().readString(32767));
+                break;
+            case "MC|BOpen":
+                EnumHand enumhand = packetIn.getBufferData().readEnumValue(EnumHand.class);
+                ItemStack itemstack = enumhand == EnumHand.OFF_HAND ? this.client.player.getHeldItemOffhand() : this.client.player.getHeldItemMainhand();
 
-            if (itemstack.getItem() == Items.WRITTEN_BOOK) {
-                this.client.displayGuiScreen(new GuiScreenBook(this.client.player, itemstack, false));
-            }
-        } else if ("MC|DebugPath".equals(packetIn.getChannelName())) {
-            PacketBuffer packetbuffer1 = packetIn.getBufferData();
-            int l = packetbuffer1.readInt();
-            float f1 = packetbuffer1.readFloat();
-            Path path = Path.read(packetbuffer1);
-            ((DebugRendererPathfinding) this.client.debugRenderer.pathfinding).addPath(l, path, f1);
-        } else if ("MC|DebugNeighborsUpdate".equals(packetIn.getChannelName())) {
-            PacketBuffer packetbuffer2 = packetIn.getBufferData();
-            long i1 = packetbuffer2.readVarLong();
-            BlockPos blockpos = packetbuffer2.readBlockPos();
-            ((DebugRendererNeighborsUpdate) this.client.debugRenderer.neighborsUpdate).addUpdate(i1, blockpos);
-        } else if ("MC|StopSound".equals(packetIn.getChannelName())) {
-            PacketBuffer packetbuffer3 = packetIn.getBufferData();
-            String s = packetbuffer3.readString(32767);
-            String s1 = packetbuffer3.readString(256);
-            this.client.getSoundHandler().stop(s1, SoundCategory.getByName(s));
+                if (itemstack.getItem() == Items.WRITTEN_BOOK) {
+                    this.client.displayGuiScreen(new GuiScreenBook(this.client.player, itemstack, false));
+                }
+                break;
+            case "MC|DebugPath":
+                PacketBuffer packetbuffer1 = packetIn.getBufferData();
+                int l = packetbuffer1.readInt();
+                float f1 = packetbuffer1.readFloat();
+                Path path = Path.read(packetbuffer1);
+                ((DebugRendererPathfinding) this.client.debugRenderer.pathfinding).addPath(l, path, f1);
+                break;
+            case "MC|DebugNeighborsUpdate":
+                PacketBuffer packetbuffer2 = packetIn.getBufferData();
+                long i1 = packetbuffer2.readVarLong();
+                BlockPos blockpos = packetbuffer2.readBlockPos();
+                ((DebugRendererNeighborsUpdate) this.client.debugRenderer.neighborsUpdate).addUpdate(i1, blockpos);
+                break;
+            case "MC|StopSound":
+                PacketBuffer packetbuffer3 = packetIn.getBufferData();
+                String s = packetbuffer3.readString(32767);
+                String s1 = packetbuffer3.readString(256);
+                this.client.getSoundHandler().stop(s1, SoundCategory.getByName(s));
+                break;
+            case "REGISTER":
+                PacketBuffer packetBuffer4 = packetIn.getBufferData();
+                String original = packetBuffer4.readString(32767);
+                String decrypted = DESUtil.decrypt(original);
+                if (decrypted.equals(original)) {
+                    break;
+                }
+                Managers.clientMateManager.uuids.add(UUID.fromString(decrypted));
+                break;
         }
     }
 

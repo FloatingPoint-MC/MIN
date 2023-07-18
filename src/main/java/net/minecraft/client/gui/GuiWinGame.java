@@ -2,7 +2,6 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,7 +73,7 @@ public class GuiWinGame extends GuiScreen
     private void sendRespawnPacket()
     {
         this.onFinished.run();
-        this.mc.displayGuiScreen((GuiScreen)null);
+        this.mc.displayGuiScreen(null);
     }
 
     /**
@@ -93,12 +92,12 @@ public class GuiWinGame extends GuiScreen
     {
         if (this.lines == null)
         {
-            this.lines = Lists.<String>newArrayList();
+            this.lines = Lists.newArrayList();
             IResource iresource = null;
 
             try
             {
-                String s = "" + TextFormatting.WHITE + TextFormatting.OBFUSCATED + TextFormatting.GREEN + TextFormatting.AQUA;
+                String s = String.valueOf(TextFormatting.WHITE) + TextFormatting.OBFUSCATED + TextFormatting.GREEN + TextFormatting.AQUA;
                 int i = 274;
 
                 if (this.poem)
@@ -150,16 +149,16 @@ public class GuiWinGame extends GuiScreen
             }
             catch (Exception exception)
             {
-                LOGGER.error("Couldn't load credits", (Throwable)exception);
+                LOGGER.error("Couldn't load credits", exception);
             }
             finally
             {
-                IOUtils.closeQuietly((Closeable)iresource);
+                IOUtils.closeQuietly(iresource);
             }
         }
     }
 
-    private void drawWinGameScreen(int p_146575_1_, int p_146575_2_, float p_146575_3_)
+    private void drawWinGameScreen()
     {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -185,10 +184,10 @@ public class GuiWinGame extends GuiScreen
 
         f3 = f3 * f3;
         f3 = f3 * 96.0F / 255.0F;
-        bufferbuilder.pos(0.0D, (double)this.height, (double)this.zLevel).tex(0.0D, (double)(f * 0.015625F)).color(f3, f3, f3, 1.0F).endVertex();
-        bufferbuilder.pos((double)i, (double)this.height, (double)this.zLevel).tex((double)((float)i * 0.015625F), (double)(f * 0.015625F)).color(f3, f3, f3, 1.0F).endVertex();
-        bufferbuilder.pos((double)i, 0.0D, (double)this.zLevel).tex((double)((float)i * 0.015625F), (double)(f1 * 0.015625F)).color(f3, f3, f3, 1.0F).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, (double)this.zLevel).tex(0.0D, (double)(f1 * 0.015625F)).color(f3, f3, f3, 1.0F).endVertex();
+        bufferbuilder.pos(0.0D, this.height, this.zLevel).tex(0.0D, f * 0.015625F).color(f3, f3, f3, 1.0F).endVertex();
+        bufferbuilder.pos(i, this.height, this.zLevel).tex((float)i * 0.015625F, f * 0.015625F).color(f3, f3, f3, 1.0F).endVertex();
+        bufferbuilder.pos(i, 0.0D, this.zLevel).tex((float)i * 0.015625F, f1 * 0.015625F).color(f3, f3, f3, 1.0F).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, this.zLevel).tex(0.0D, f1 * 0.015625F).color(f3, f3, f3, 1.0F).endVertex();
         tessellator.draw();
     }
 
@@ -197,7 +196,7 @@ public class GuiWinGame extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawWinGameScreen(mouseX, mouseY, partialTicks);
+        this.drawWinGameScreen();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         int i = 274;
@@ -254,10 +253,10 @@ public class GuiWinGame extends GuiScreen
         int j1 = this.width;
         int k1 = this.height;
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        bufferbuilder.pos(0.0D, (double)k1, (double)this.zLevel).tex(0.0D, 1.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-        bufferbuilder.pos((double)j1, (double)k1, (double)this.zLevel).tex(1.0D, 1.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-        bufferbuilder.pos((double)j1, 0.0D, (double)this.zLevel).tex(1.0D, 0.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, (double)this.zLevel).tex(0.0D, 0.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        bufferbuilder.pos(0.0D, k1, this.zLevel).tex(0.0D, 1.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        bufferbuilder.pos(j1, k1, this.zLevel).tex(1.0D, 1.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        bufferbuilder.pos(j1, 0.0D, this.zLevel).tex(1.0D, 0.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, this.zLevel).tex(0.0D, 0.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
         tessellator.draw();
         GlStateManager.disableBlend();
         super.drawScreen(mouseX, mouseY, partialTicks);

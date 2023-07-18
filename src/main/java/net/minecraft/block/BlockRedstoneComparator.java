@@ -199,7 +199,7 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
 
     protected void updateState(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isBlockTickPending(pos, this))
+        if (worldIn.isBlockTickNotPending(pos, this))
         {
             int i = this.calculateOutput(worldIn, pos, state);
             TileEntity tileentity = worldIn.getTileEntity(pos);

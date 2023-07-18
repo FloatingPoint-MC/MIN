@@ -2,7 +2,6 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import javax.annotation.Nullable;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
@@ -39,11 +38,6 @@ public class GuiGameOver extends GuiScreen
         {
             this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 72, I18n.format("deathScreen.respawn")));
             this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 96, I18n.format("deathScreen.titleScreen")));
-
-            if (this.mc.getSession() == null)
-            {
-                (this.buttonList.get(1)).enabled = false;
-            }
         }
 
         for (GuiButton guibutton : this.buttonList)
@@ -69,13 +63,13 @@ public class GuiGameOver extends GuiScreen
         {
             case 0:
                 this.mc.player.respawnPlayer();
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
                 break;
 
             case 1:
                 if (this.mc.world.getWorldInfo().isHardcoreModeEnabled())
                 {
-                    this.mc.displayGuiScreen(new GuiMainMenu());
+                    this.mc.displayGuiScreen(new GuiMainMenu(false));
                 }
                 else
                 {
@@ -95,13 +89,13 @@ public class GuiGameOver extends GuiScreen
                 this.mc.world.sendQuittingDisconnectingPacket();
             }
 
-            this.mc.loadWorld((WorldClient)null);
-            this.mc.displayGuiScreen(new GuiMainMenu());
+            this.mc.loadWorld(null);
+            this.mc.displayGuiScreen(new GuiMainMenu(false));
         }
         else
         {
             this.mc.player.respawnPlayer();
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
     }
 

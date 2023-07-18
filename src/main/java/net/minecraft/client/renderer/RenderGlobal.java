@@ -2111,7 +2111,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
     public void renderClouds(float partialTicks, int pass, double x, double y, double z)
     {
-        if (!Config.isCloudsOff())
+        if (Config.isCloudsOn())
         {
             if (Reflector.ForgeWorldProvider_getCloudRenderer.exists())
             {

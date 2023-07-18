@@ -58,39 +58,13 @@ import net.minecraft.world.World;
 
 public class Item
 {
-    public static final RegistryNamespaced<ResourceLocation, Item> REGISTRY = new RegistryNamespaced<ResourceLocation, Item>();
-    private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.<Block, Item>newHashMap();
-    private static final IItemPropertyGetter DAMAGED_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return stack.isItemDamaged() ? 1.0F : 0.0F;
-        }
-    };
-    private static final IItemPropertyGetter DAMAGE_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return MathHelper.clamp((float)stack.getItemDamage() / (float)stack.getMaxDamage(), 0.0F, 1.0F);
-        }
-    };
-    private static final IItemPropertyGetter LEFTHANDED_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return entityIn != null && entityIn.getPrimaryHand() != EnumHandSide.RIGHT ? 1.0F : 0.0F;
-        }
-    };
-    private static final IItemPropertyGetter COOLDOWN_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return entityIn instanceof EntityPlayer ? ((EntityPlayer)entityIn).getCooldownTracker().getCooldown(stack.getItem(), 0.0F) : 0.0F;
-        }
-    };
-    private final IRegistry<ResourceLocation, IItemPropertyGetter> properties = new RegistrySimple<ResourceLocation, IItemPropertyGetter>();
+    public static final RegistryNamespaced<ResourceLocation, Item> REGISTRY = new RegistryNamespaced<>();
+    private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.newHashMap();
+    private static final IItemPropertyGetter DAMAGED_GETTER = (stack, worldIn, entityIn) -> stack.isItemDamaged() ? 1.0F : 0.0F;
+    private static final IItemPropertyGetter DAMAGE_GETTER = (stack, worldIn, entityIn) -> MathHelper.clamp((float)stack.getItemDamage() / (float)stack.getMaxDamage(), 0.0F, 1.0F);
+    private static final IItemPropertyGetter LEFTHANDED_GETTER = (stack, worldIn, entityIn) -> entityIn.getPrimaryHand() != EnumHandSide.RIGHT ? 1.0F : 0.0F;
+    private final IRegistry<ResourceLocation, IItemPropertyGetter> properties = new RegistrySimple<>();
     protected static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-    protected static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
     private CreativeTabs tabToDisplayOn;
 
     /** The RNG used by the Item subclasses. */
@@ -148,7 +122,6 @@ public class Item
             }
             catch (NumberFormatException var3)
             {
-                ;
             }
         }
 
@@ -185,7 +158,6 @@ public class Item
     public Item()
     {
         this.addPropertyOverride(new ResourceLocation("lefthanded"), LEFTHANDED_GETTER);
-        this.addPropertyOverride(new ResourceLocation("cooldown"), COOLDOWN_GETTER);
     }
 
     public Item setMaxStackSize(int maxStackSize)
@@ -575,7 +547,7 @@ public class Item
 
     public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
     {
-        return HashMultimap.<String, AttributeModifier>create();
+        return HashMultimap.create();
     }
 
     public static void registerItems()
@@ -1052,7 +1024,7 @@ public class Item
         registerItem(419, "diamond_horse_armor", (new Item()).setTranslationKey("horsearmordiamond").setMaxStackSize(1).setCreativeTab(CreativeTabs.MISC));
         registerItem(420, "lead", (new ItemLead()).setTranslationKey("leash"));
         registerItem(421, "name_tag", (new ItemNameTag()).setTranslationKey("nameTag"));
-        registerItem(422, "command_block_minecart", (new ItemMinecart(EntityMinecart.Type.COMMAND_BLOCK)).setTranslationKey("minecartCommandBlock").setCreativeTab((CreativeTabs)null));
+        registerItem(422, "command_block_minecart", (new ItemMinecart(EntityMinecart.Type.COMMAND_BLOCK)).setTranslationKey("minecartCommandBlock").setCreativeTab(null));
         registerItem(423, "mutton", (new ItemFood(2, 0.3F, true)).setTranslationKey("muttonRaw"));
         registerItem(424, "cooked_mutton", (new ItemFood(6, 0.8F, true)).setTranslationKey("muttonCooked"));
         registerItem(425, "banner", (new ItemBanner()).setTranslationKey("banner"));
@@ -1129,7 +1101,7 @@ public class Item
         return new ItemStack(this);
     }
 
-    public static enum ToolMaterial
+    public enum ToolMaterial
     {
         WOOD(0, 59, 2.0F, 0.0F, 15),
         STONE(1, 131, 4.0F, 1.0F, 5),
@@ -1143,7 +1115,7 @@ public class Item
         private final float attackDamage;
         private final int enchantability;
 
-        private ToolMaterial(int harvestLevel, int maxUses, float efficiency, float damageVsEntity, int enchantability)
+        ToolMaterial(int harvestLevel, int maxUses, float efficiency, float damageVsEntity, int enchantability)
         {
             this.harvestLevel = harvestLevel;
             this.maxUses = maxUses;

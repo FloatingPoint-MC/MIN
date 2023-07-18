@@ -37,8 +37,8 @@ import org.apache.logging.log4j.Logger;
 public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Map<ChunkPos, NBTTagCompound> chunksToSave = Maps.<ChunkPos, NBTTagCompound>newConcurrentMap();
-    private final Set<ChunkPos> chunksBeingSaved = Collections.<ChunkPos>newSetFromMap(Maps.newConcurrentMap());
+    private final Map<ChunkPos, NBTTagCompound> chunksToSave = Maps.newConcurrentMap();
+    private final Set<ChunkPos> chunksBeingSaved = Collections.newSetFromMap(Maps.newConcurrentMap());
 
     /** Save directory for chunks using the Anvil format */
     private final File chunkSaveLocation;
@@ -51,11 +51,11 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         this.fixer = dataFixerIn;
     }
 
-    @Nullable
 
     /**
      * Loads the specified(XZ) chunk into the specified world.
      */
+    @Nullable
     public Chunk loadChunk(World worldIn, int x, int z) throws IOException
     {
         ChunkPos chunkpos = new ChunkPos(x, z);
@@ -64,11 +64,6 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         if (nbttagcompound == null)
         {
             DataInputStream datainputstream = RegionFileCache.getChunkInputStream(this.chunkSaveLocation, x, z);
-
-            if (datainputstream == null)
-            {
-                return null;
-            }
 
             nbttagcompound = this.fixer.process(FixTypes.CHUNK, CompressedStreamTools.read(datainputstream));
         }
@@ -80,7 +75,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
     {
         ChunkPos chunkpos = new ChunkPos(x, z);
         NBTTagCompound nbttagcompound = this.chunksToSave.get(chunkpos);
-        return nbttagcompound != null ? true : RegionFileCache.chunkExists(this.chunkSaveLocation, x, z);
+        return nbttagcompound != null || RegionFileCache.chunkExists(this.chunkSaveLocation, x, z);
     }
 
     @Nullable
@@ -136,7 +131,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         }
         catch (Exception exception)
         {
-            LOGGER.error("Failed to save chunk", (Throwable)exception);
+            LOGGER.error("Failed to save chunk", exception);
         }
     }
 
@@ -162,7 +157,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         {
             if (this.flushing)
             {
-                LOGGER.info("ThreadedAnvilChunkStorage ({}): All chunks are saved", (Object)this.chunkSaveLocation.getName());
+                LOGGER.info("ThreadedAnvilChunkStorage ({}): All chunks are saved", this.chunkSaveLocation.getName());
             }
 
             return false;
@@ -185,7 +180,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                     }
                     catch (Exception exception)
                     {
-                        LOGGER.error("Failed to save chunk", (Throwable)exception);
+                        LOGGER.error("Failed to save chunk", exception);
                     }
                 }
 
@@ -391,7 +386,6 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         chunk.setLightPopulated(compound.getBoolean("LightPopulated"));
         chunk.setInhabitedTime(compound.getLong("InhabitedTime"));
         NBTTagList nbttaglist = compound.getTagList("Sections", 10);
-        int k = 16;
         ExtendedBlockStorage[] aextendedblockstorage = new ExtendedBlockStorage[16];
         boolean flag = worldIn.provider.hasSkyLight();
 

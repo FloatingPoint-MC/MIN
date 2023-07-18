@@ -33,21 +33,11 @@
 §f          Tomas Alaeus
 §f          Tommaso Checchi
  
-§7Realms Developers
-§f          Alexandre Pretto Nunes
-§f          Amir Moulavi
-§f          Christian Westman
-§f          Daniel Frisk
-§f          David Marby
-§f          Leonard Gram
-§f          Magnus Jäderberg
-§f          Mats Henricson
-§f          Philip Vieira
- 
 §7Additional Programming
 §f          Paul Spooner
 §f          Ryan 'Scaevolus' Hitchman
 §f          Elliot 'Hippoplatimus' Segal
+§f          vlouboos
  
 §7Assistant Producers
 §f          Adrian Östergård

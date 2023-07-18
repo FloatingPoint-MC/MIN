@@ -22,7 +22,7 @@ public class ChunkProviderClient implements IChunkProvider
      * coordinates.
      */
     private final Chunk blankChunk;
-    private final Long2ObjectMap<Chunk> loadedChunks = new Long2ObjectOpenHashMap<Chunk>(8192)
+    public final Long2ObjectMap<Chunk> loadedChunks = new Long2ObjectOpenHashMap<Chunk>(8192)
     {
         protected void rehash(int p_rehash_1_)
         {
@@ -61,7 +61,7 @@ public class ChunkProviderClient implements IChunkProvider
     @Nullable
     public Chunk getLoadedChunk(int x, int z)
     {
-        return (Chunk)this.loadedChunks.get(ChunkPos.asLong(x, z));
+        return this.loadedChunks.get(ChunkPos.asLong(x, z));
     }
 
     /**
@@ -77,7 +77,7 @@ public class ChunkProviderClient implements IChunkProvider
 
     public Chunk provideChunk(int x, int z)
     {
-        return (Chunk)MoreObjects.firstNonNull(this.getLoadedChunk(x, z), this.blankChunk);
+        return MoreObjects.firstNonNull(this.getLoadedChunk(x, z), this.blankChunk);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ChunkProviderClient implements IChunkProvider
 
         if (System.currentTimeMillis() - i > 100L)
         {
-            LOGGER.info("Warning: Clientside chunk ticking took {} ms", (long)(System.currentTimeMillis() - i));
+            LOGGER.info("Warning: Clientside chunk ticking took {} ms", System.currentTimeMillis() - i);
         }
 
         return false;
@@ -114,4 +114,5 @@ public class ChunkProviderClient implements IChunkProvider
     {
         return this.loadedChunks.containsKey(ChunkPos.asLong(x, z));
     }
+
 }

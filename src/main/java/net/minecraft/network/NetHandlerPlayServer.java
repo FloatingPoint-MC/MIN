@@ -412,7 +412,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
 
                 this.server.getPlayerList().serverUpdateMovingPlayer(this.player);
                 this.player.addMovementStat(this.player.posX - d0, this.player.posY - d1, this.player.posZ - d2);
-                this.vehicleFloating = d11 >= -0.03125D && !this.server.isFlightAllowed() && !worldserver.checkBlockCollision(entity.getEntityBoundingBox().grow(0.0625D).expand(0.0D, -0.55D, 0.0D));
+                this.vehicleFloating = d11 >= -0.03125D && !this.server.isFlightAllowed() && worldserver.checkBlockDoesNotContainCollision(entity.getEntityBoundingBox().grow(0.0625D).expand(0.0D, -0.55D, 0.0D));
                 this.lowestRiddenX1 = entity.posX;
                 this.lowestRiddenY1 = entity.posY;
                 this.lowestRiddenZ1 = entity.posZ;
@@ -604,7 +604,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
 
                             this.floating = d12 >= -0.03125D;
                             this.floating &= !this.server.isFlightAllowed() && !this.player.capabilities.allowFlying;
-                            this.floating &= !this.player.isPotionActive(MobEffects.LEVITATION) && !this.player.isElytraFlying() && !worldserver.checkBlockCollision(this.player.getEntityBoundingBox().grow(0.0625D).expand(0.0D, -0.55D, 0.0D));
+                            this.floating &= !this.player.isPotionActive(MobEffects.LEVITATION) && !this.player.isElytraFlying() && worldserver.checkBlockDoesNotContainCollision(this.player.getEntityBoundingBox().grow(0.0625D).expand(0.0D, -0.55D, 0.0D));
                             this.player.onGround = packetIn.isOnGround();
                             this.server.getPlayerList().serverUpdateMovingPlayer(this.player);
                             this.player.handleFalling(this.player.posY - d3, packetIn.isOnGround());

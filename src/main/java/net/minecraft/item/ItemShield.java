@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityBanner;
@@ -23,16 +22,11 @@ public class ItemShield extends Item
         this.maxStackSize = 1;
         this.setCreativeTab(CreativeTabs.COMBAT);
         this.setMaxDamage(336);
-        this.addPropertyOverride(new ResourceLocation("blocking"), new IItemPropertyGetter()
-        {
-            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-            {
-                return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
-            }
-        });
+        this.addPropertyOverride(new ResourceLocation("blocking"), (stack, worldIn, entityIn) -> entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, ItemArmor.DISPENSER_BEHAVIOR);
     }
 
+    @SuppressWarnings("all")
     public String getItemStackDisplayName(ItemStack stack)
     {
         if (stack.getSubCompound("BlockEntityTag") != null)
@@ -74,7 +68,7 @@ public class ItemShield extends Item
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 
     /**
@@ -85,6 +79,6 @@ public class ItemShield extends Item
      */
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return repair.getItem() == Item.getItemFromBlock(Blocks.PLANKS) ? true : super.getIsRepairable(toRepair, repair);
+        return repair.getItem() == Item.getItemFromBlock(Blocks.PLANKS) || super.getIsRepairable(toRepair, repair);
     }
 }

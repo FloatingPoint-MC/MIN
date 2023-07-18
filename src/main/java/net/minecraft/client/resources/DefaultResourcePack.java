@@ -59,7 +59,7 @@ public class DefaultResourcePack implements IResourcePack
     }
 
     @Nullable
-    private InputStream getResourceStream(ResourceLocation location)
+    public InputStream getResourceStream(ResourceLocation location)
     {
         String s = "/assets/" + location.getNamespace() + "/" + location.getPath();
         InputStream inputstream = ReflectorForge.getOptiFineResourceStream(s);

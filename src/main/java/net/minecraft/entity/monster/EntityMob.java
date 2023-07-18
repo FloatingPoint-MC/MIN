@@ -136,7 +136,6 @@ public abstract class EntityMob extends EntityCreature implements IMob
 
                     if (this.rand.nextFloat() < f1)
                     {
-                        entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
                         this.world.setEntityState(entityplayer, (byte)30);
                     }
                 }

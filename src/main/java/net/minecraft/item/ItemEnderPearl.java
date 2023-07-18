@@ -28,8 +28,7 @@ public class ItemEnderPearl extends Item
             itemstack.shrink(1);
         }
 
-        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ENDERPEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-        playerIn.getCooldownTracker().setCooldown(this, 20);
+        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ENDERPEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         if (!worldIn.isRemote)
         {
@@ -39,6 +38,6 @@ public class ItemEnderPearl extends Item
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 }

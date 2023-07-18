@@ -69,7 +69,7 @@ public class RenderItem implements IResourceManagerReloadListener
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
     /** False when the renderer is rendering the item's effects into a GUI */
-    private boolean notRenderingEffectsInGUI = true;
+    private final boolean notRenderingEffectsInGUI = true;
 
     /** Defines the zLevel of rendering of item on GUI. */
     public float zLevel;
@@ -81,7 +81,7 @@ public class RenderItem implements IResourceManagerReloadListener
     public ModelManager modelManager = null;
     private boolean renderModelHasEmissive = false;
     private boolean renderModelEmissive = false;
-    private boolean forgeAllowEmissiveItems = Reflector.getFieldValueBoolean(Reflector.ForgeModContainer_allowEmissiveItems, false);
+    private final boolean forgeAllowEmissiveItems = Reflector.getFieldValueBoolean(Reflector.ForgeModContainer_allowEmissiveItems, false);
 
     public RenderItem(TextureManager p_i46552_1_, ModelManager p_i46552_2_, ItemColors p_i46552_3_)
     {
@@ -152,15 +152,15 @@ public class RenderItem implements IResourceManagerReloadListener
 
         for (EnumFacing enumfacing : EnumFacing.VALUES)
         {
-            this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
+            this.renderQuads(bufferbuilder, model.getQuads(null, enumfacing, 0L), color, stack);
         }
 
-        this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
+        this.renderQuads(bufferbuilder, model.getQuads(null, null, 0L), color, stack);
         tessellator.draw();
 
         if (flag1)
         {
-            bufferbuilder.setBlockLayer((BlockRenderLayer)null);
+            bufferbuilder.setBlockLayer(null);
             GlStateManager.bindCurrentTexture();
         }
     }
@@ -345,14 +345,14 @@ public class RenderItem implements IResourceManagerReloadListener
     public boolean shouldRenderItemIn3D(ItemStack stack)
     {
         IBakedModel ibakedmodel = this.itemModelMesher.getItemModel(stack);
-        return ibakedmodel == null ? false : ibakedmodel.isGui3d();
+        return ibakedmodel != null && ibakedmodel.isGui3d();
     }
 
     public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType cameraTransformType)
     {
         if (!stack.isEmpty())
         {
-            IBakedModel ibakedmodel = this.getItemModelWithOverrides(stack, (World)null, (EntityLivingBase)null);
+            IBakedModel ibakedmodel = this.getItemModelWithOverrides(stack, null, null);
             this.renderItemModel(stack, ibakedmodel, cameraTransformType, false);
         }
     }
@@ -451,7 +451,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
     public void renderItemIntoGUI(ItemStack stack, int x, int y)
     {
-        this.renderItemModelIntoGUI(stack, x, y, this.getItemModelWithOverrides(stack, (World)null, (EntityLivingBase)null));
+        this.renderItemModelIntoGUI(stack, x, y, this.getItemModelWithOverrides(stack, null, null));
     }
 
     protected void renderItemModelIntoGUI(ItemStack stack, int x, int y, IBakedModel bakedmodel)
@@ -517,7 +517,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
             try
             {
-                this.renderItemModelIntoGUI(p_184391_2_, p_184391_3_, p_184391_4_, this.getItemModelWithOverrides(p_184391_2_, (World)null, p_184391_1_));
+                this.renderItemModelIntoGUI(p_184391_2_, p_184391_3_, p_184391_4_, this.getItemModelWithOverrides(p_184391_2_, null, p_184391_1_));
             }
             catch (Throwable throwable)
             {
@@ -527,7 +527,7 @@ public class RenderItem implements IResourceManagerReloadListener
                 {
                     public String call() throws Exception
                     {
-                        return String.valueOf((Object)p_184391_2_.getItem());
+                        return String.valueOf(p_184391_2_.getItem());
                     }
                 });
 
@@ -547,7 +547,7 @@ public class RenderItem implements IResourceManagerReloadListener
                 {
                     public String call() throws Exception
                     {
-                        return String.valueOf((Object)p_184391_2_.getTagCompound());
+                        return String.valueOf(p_184391_2_.getTagCompound());
                     }
                 });
                 crashreportcategory.addDetail("Item Foil", new ICrashReportDetail<String>()
@@ -566,7 +566,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
     public void renderItemOverlays(FontRenderer fr, ItemStack stack, int xPosition, int yPosition)
     {
-        this.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, (String)null);
+        this.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, null);
     }
 
     /**
@@ -637,22 +637,6 @@ public class RenderItem implements IResourceManagerReloadListener
                 GlStateManager.enableLighting();
                 GlStateManager.enableDepth();
             }
-
-            EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
-            float f3 = entityplayersp == null ? 0.0F : entityplayersp.getCooldownTracker().getCooldown(stack.getItem(), Minecraft.getMinecraft().getRenderPartialTicks());
-
-            if (f3 > 0.0F)
-            {
-                GlStateManager.disableLighting();
-                GlStateManager.disableDepth();
-                GlStateManager.disableTexture2D();
-                Tessellator tessellator1 = Tessellator.getInstance();
-                BufferBuilder bufferbuilder1 = tessellator1.getBuffer();
-                this.draw(bufferbuilder1, xPosition, yPosition + MathHelper.floor(16.0F * (1.0F - f3)), 16, MathHelper.ceil(16.0F * f3), 255, 255, 255, 127);
-                GlStateManager.enableTexture2D();
-                GlStateManager.enableLighting();
-                GlStateManager.enableDepth();
-            }
         }
     }
 
@@ -662,10 +646,10 @@ public class RenderItem implements IResourceManagerReloadListener
     private void draw(BufferBuilder renderer, int x, int y, int width, int height, int red, int green, int blue, int alpha)
     {
         renderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        renderer.pos((double)(x + 0), (double)(y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
-        renderer.pos((double)(x + 0), (double)(y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-        renderer.pos((double)(x + width), (double)(y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-        renderer.pos((double)(x + width), (double)(y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos(x, y, 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos(x, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos(x + width, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos(x + width, y, 0.0D).color(red, green, blue, alpha).endVertex();
         Tessellator.getInstance().draw();
     }
 

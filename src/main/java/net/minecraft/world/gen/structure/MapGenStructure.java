@@ -277,7 +277,7 @@ public abstract class MapGenStructure extends MapGenBase
 
                         if (structureType.canSpawnStructureAtCoords(l1, i2))
                         {
-                            if (!findUnexplored || !worldIn.isChunkGeneratedAt(l1, i2))
+                            if (!findUnexplored || worldIn.isChunkNotGeneratedAt(l1, i2))
                             {
                                 return new BlockPos((l1 << 4) + 8, 64, (i2 << 4) + 8);
                             }
