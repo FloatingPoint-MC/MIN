@@ -99,7 +99,7 @@ public class WorldClient extends World {
                 module.enableOnStartUp();
             }
         });
-        Managers.clientMateManager.uuids.clear();
+        Managers.clientManager.clientMateUuids.clear();
         Managers.fileManager.shouldSave = true;
     }
 

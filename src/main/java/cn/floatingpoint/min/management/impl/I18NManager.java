@@ -38,6 +38,9 @@ public class I18NManager implements Manager {
         for (File file : files) {
             try {
                 JSONObject jsonObject = new JSONObject(Managers.fileManager.readAsString("translations/" + file.getName()));
+                if (!jsonObject.has("language.version") || jsonObject.getInt("language.version") != FileManager.VERSION) {
+                    continue;
+                }
                 String key = jsonObject.has("language.identity") ? jsonObject.getString("language.identity") : file.getName().substring(0, file.getName().length() - 5);
                 translations.put(key, jsonObject.toMap());
                 translationKeys.add(key);
@@ -72,9 +75,6 @@ public class I18NManager implements Manager {
                 Managers.fileManager.save("translations/zh-cn.json", sb.toString(), false);
                 translations.put("简体中文", new JSONObject(Managers.fileManager.readAsString("translations/zh-cn.json")).toMap());
                 translationKeys.add("简体中文");
-                String context = Managers.fileManager.readAsString("config.json");
-                JSONObject jsonObject = new JSONObject(context);
-                setSelectedLanguage(jsonObject.getString("Language"));
             } catch (Exception ignore) {
                 ignore.printStackTrace();
             }

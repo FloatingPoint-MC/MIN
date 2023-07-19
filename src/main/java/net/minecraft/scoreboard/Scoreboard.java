@@ -13,14 +13,14 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Scoreboard
 {
-    private final Map<String, ScoreObjective> scoreObjectives = Maps.<String, ScoreObjective>newHashMap();
-    private final Map<IScoreCriteria, List<ScoreObjective>> scoreObjectiveCriterias = Maps.<IScoreCriteria, List<ScoreObjective>>newHashMap();
-    private final Map<String, Map<ScoreObjective, Score>> entitiesScoreObjectives = Maps.<String, Map<ScoreObjective, Score>>newHashMap();
+    private final Map<String, ScoreObjective> scoreObjectives = Maps.newHashMap();
+    private final Map<IScoreCriteria, List<ScoreObjective>> scoreObjectiveCriterias = Maps.newHashMap();
+    private final Map<String, Map<ScoreObjective, Score>> entitiesScoreObjectives = Maps.newHashMap();
 
     /** Index 0 is tab menu, 1 is sidebar, and 2 is below name */
     private final ScoreObjective[] objectiveDisplaySlots = new ScoreObjective[19];
-    private final Map<String, ScorePlayerTeam> teams = Maps.<String, ScorePlayerTeam>newHashMap();
-    private final Map<String, ScorePlayerTeam> teamMemberships = Maps.<String, ScorePlayerTeam>newHashMap();
+    private final Map<String, ScorePlayerTeam> teams = Maps.newHashMap();
+    private final Map<String, ScorePlayerTeam> teamMemberships = Maps.newHashMap();
     private static String[] displaySlots;
 
     @Nullable
@@ -53,11 +53,11 @@ public class Scoreboard
             else
             {
                 scoreobjective = new ScoreObjective(this, name, criteria);
-                List<ScoreObjective> list = (List)this.scoreObjectiveCriterias.get(criteria);
+                List<ScoreObjective> list = this.scoreObjectiveCriterias.get(criteria);
 
                 if (list == null)
                 {
-                    list = Lists.<ScoreObjective>newArrayList();
+                    list = Lists.newArrayList();
                     this.scoreObjectiveCriterias.put(criteria, list);
                 }
 
@@ -71,7 +71,7 @@ public class Scoreboard
 
     public Collection<ScoreObjective> getObjectivesFromCriteria(IScoreCriteria criteria)
     {
-        Collection<ScoreObjective> collection = (Collection)this.scoreObjectiveCriterias.get(criteria);
+        Collection<ScoreObjective> collection = this.scoreObjectiveCriterias.get(criteria);
         return collection == null ? Lists.newArrayList() : Lists.newArrayList(collection);
     }
 
@@ -80,7 +80,7 @@ public class Scoreboard
      */
     public boolean entityHasObjective(String name, ScoreObjective objective)
     {
-        Map<ScoreObjective, Score> map = (Map)this.entitiesScoreObjectives.get(name);
+        Map<ScoreObjective, Score> map = this.entitiesScoreObjectives.get(name);
 
         if (map == null)
         {
@@ -104,13 +104,7 @@ public class Scoreboard
         }
         else
         {
-            Map<ScoreObjective, Score> map = (Map)this.entitiesScoreObjectives.get(username);
-
-            if (map == null)
-            {
-                map = Maps.<ScoreObjective, Score>newHashMap();
-                this.entitiesScoreObjectives.put(username, map);
-            }
+            Map<ScoreObjective, Score> map = this.entitiesScoreObjectives.computeIfAbsent(username, k -> Maps.newHashMap());
 
             Score score = map.get(objective);
 
@@ -126,7 +120,7 @@ public class Scoreboard
 
     public Collection<Score> getSortedScores(ScoreObjective objective)
     {
-        List<Score> list = Lists.<Score>newArrayList();
+        List<Score> list = Lists.newArrayList();
 
         for (Map<ScoreObjective, Score> map : this.entitiesScoreObjectives.values())
         {
@@ -159,7 +153,7 @@ public class Scoreboard
     {
         if (objective == null)
         {
-            Map<ScoreObjective, Score> map = (Map)this.entitiesScoreObjectives.remove(name);
+            Map<ScoreObjective, Score> map = this.entitiesScoreObjectives.remove(name);
 
             if (map != null)
             {
@@ -168,7 +162,7 @@ public class Scoreboard
         }
         else
         {
-            Map<ScoreObjective, Score> map2 = (Map)this.entitiesScoreObjectives.get(name);
+            Map<ScoreObjective, Score> map2 = this.entitiesScoreObjectives.get(name);
 
             if (map2 != null)
             {
@@ -176,7 +170,7 @@ public class Scoreboard
 
                 if (map2.size() < 1)
                 {
-                    Map<ScoreObjective, Score> map1 = (Map)this.entitiesScoreObjectives.remove(name);
+                    Map<ScoreObjective, Score> map1 = this.entitiesScoreObjectives.remove(name);
 
                     if (map1 != null)
                     {
@@ -194,7 +188,7 @@ public class Scoreboard
     public Collection<Score> getScores()
     {
         Collection<Map<ScoreObjective, Score>> collection = this.entitiesScoreObjectives.values();
-        List<Score> list = Lists.<Score>newArrayList();
+        List<Score> list = Lists.newArrayList();
 
         for (Map<ScoreObjective, Score> map : collection)
         {
@@ -206,11 +200,11 @@ public class Scoreboard
 
     public Map<ScoreObjective, Score> getObjectivesForEntity(String name)
     {
-        Map<ScoreObjective, Score> map = (Map)this.entitiesScoreObjectives.get(name);
+        Map<ScoreObjective, Score> map = this.entitiesScoreObjectives.get(name);
 
         if (map == null)
         {
-            map = Maps.<ScoreObjective, Score>newHashMap();
+            map = Maps.newHashMap();
         }
 
         return map;
@@ -224,11 +218,11 @@ public class Scoreboard
         {
             if (this.getObjectiveInDisplaySlot(i) == objective)
             {
-                this.setObjectiveInDisplaySlot(i, (ScoreObjective)null);
+                this.setObjectiveInDisplaySlot(i, null);
             }
         }
 
-        List<ScoreObjective> list = (List)this.scoreObjectiveCriterias.get(objective.getCriteria());
+        List<ScoreObjective> list = this.scoreObjectiveCriterias.get(objective.getCriteria());
 
         if (list != null)
         {
@@ -518,7 +512,7 @@ public class Scoreboard
         if (entityIn != null && !(entityIn instanceof EntityPlayer) && !entityIn.isEntityAlive())
         {
             String s = entityIn.getCachedUniqueIdString();
-            this.removeObjectiveFromEntity(s, (ScoreObjective)null);
+            this.removeObjectiveFromEntity(s, null);
             this.removePlayerFromTeams(s);
         }
     }

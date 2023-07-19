@@ -14,7 +14,7 @@ import net.minecraft.util.math.Vec3d;
 public class GuiSubtitleOverlay extends Gui implements ISoundEventListener
 {
     private final Minecraft client;
-    private final List<GuiSubtitleOverlay.Subtitle> subtitles = Lists.<GuiSubtitleOverlay.Subtitle>newArrayList();
+    private final List<GuiSubtitleOverlay.Subtitle> subtitles = Lists.newArrayList();
     private boolean enabled;
 
     public GuiSubtitleOverlay(Minecraft clientIn)
@@ -77,10 +77,10 @@ public class GuiSubtitleOverlay extends Gui implements ISoundEventListener
                 int j1 = i1 / 2;
                 float f = 1.0F;
                 int k1 = this.client.fontRenderer.getStringWidth(s);
-                int l1 = MathHelper.floor(MathHelper.clampedLerp(255.0D, 75.0D, (double)((float)(Minecraft.getSystemTime() - guisubtitleoverlay$subtitle1.getStartTime()) / 3000.0F)));
+                int l1 = MathHelper.floor(MathHelper.clampedLerp(255.0D, 75.0D, (float)(Minecraft.getSystemTime() - guisubtitleoverlay$subtitle1.getStartTime()) / 3000.0F));
                 int i2 = l1 << 16 | l1 << 8 | l1;
                 GlStateManager.pushMatrix();
-                GlStateManager.translate((float)resolution.getScaledWidth() - (float)l * 1.0F - 2.0F, (float)(resolution.getScaledHeight() - 30) - (float)(i * (i1 + 1)) * 1.0F, 0.0F);
+                GlStateManager.translate((float)resolution.getScaledWidth() - (float) l - 2.0F, (float)(resolution.getScaledHeight() - 30) - (float) (i * (i1 + 1)), 0.0F);
                 GlStateManager.scale(1.0F, 1.0F, 1.0F);
                 drawRect(-l - 1, -j1 - 1, l + 1, j1 + 1, -872415232);
                 GlStateManager.enableBlend();
@@ -119,13 +119,13 @@ public class GuiSubtitleOverlay extends Gui implements ISoundEventListener
                 {
                     if (guisubtitleoverlay$subtitle.getString().equals(s))
                     {
-                        guisubtitleoverlay$subtitle.refresh(new Vec3d((double)soundIn.getXPosF(), (double)soundIn.getYPosF(), (double)soundIn.getZPosF()));
+                        guisubtitleoverlay$subtitle.refresh(new Vec3d(soundIn.getXPosF(), soundIn.getYPosF(), soundIn.getZPosF()));
                         return;
                     }
                 }
             }
 
-            this.subtitles.add(new GuiSubtitleOverlay.Subtitle(s, new Vec3d((double)soundIn.getXPosF(), (double)soundIn.getYPosF(), (double)soundIn.getZPosF())));
+            this.subtitles.add(new GuiSubtitleOverlay.Subtitle(s, new Vec3d(soundIn.getXPosF(), soundIn.getYPosF(), soundIn.getZPosF())));
         }
     }
 

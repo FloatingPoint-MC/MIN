@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
@@ -1598,7 +1599,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         this.mc.profiler.endStartSection("hand");
 
-        Managers.moduleManager.renderModules.values().forEach(RenderModule::onRender3D);
+        Managers.moduleManager.renderModules.values().stream().filter(Module::isEnabled).forEach(RenderModule::onRender3D);
 
         if (!Shaders.isShadowPass) {
             if (flag) {

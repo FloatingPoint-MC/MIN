@@ -6,7 +6,9 @@ import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.value.Value;
 import cn.floatingpoint.min.system.module.value.impl.*;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
+import cn.floatingpoint.min.utils.math.Vec3f;
 import cn.floatingpoint.min.utils.render.RenderUtil;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +28,7 @@ public class ClickUI extends GuiScreen {
 
     private Module moduleToBindKey;
     private static Category selectedCategory = null;
-    private boolean openSetting;
+    private static boolean openSetting;
     private static final ArrayList<Module> modulesOpenedValues = new ArrayList<>();
     private static final HashMap<Module, Integer> moduleAnimations = new HashMap<>();
     private static final HashMap<Module, Integer> modulePositions = new HashMap<>();
@@ -34,7 +37,18 @@ public class ClickUI extends GuiScreen {
     private static final HashMap<Value<?>, Integer> valueColorAnimations = new HashMap<>();
     private static final HashMap<Value<?>, Integer> valueAnimations = new HashMap<>();
     private static final HashMap<Value<?>, Integer> valuePositions = new HashMap<>();
+    private static final HashMap<PaletteValue, Vec3f> palettes = new HashMap<>();
+    private static int titleSizeAnimation;
+    private static int titleSizeColorAnimation;
+    private static boolean selectedTitleSize;
+    private static int titleXAnimation;
+    private static int titleXColorAnimation;
+    private static boolean selectedTitleX;
+    private static int titleYAnimation;
+    private static int titleYColorAnimation;
+    private static boolean selectedTitleY;
     private Value<?> selectedValue;
+    private int selectType = -1;
 
     @Override
     public void initGui() {
@@ -93,6 +107,9 @@ public class ClickUI extends GuiScreen {
                         for (Map.Entry<String, Value<?>> valueEntry : module.getValues().entrySet()) {
                             Value<?> value = valueEntry.getValue();
                             if (value.isDisplayable()) {
+                                if (value instanceof PaletteValue) {
+                                    moduleY += 40;
+                                }
                                 moduleY += 30;
                             }
                         }
@@ -100,14 +117,16 @@ public class ClickUI extends GuiScreen {
                     } else {
                         modulePositions.put(module, 0);
                     }
-                    y += moduleAnimations.get(module);
                     y += 34;
+                    y += moduleAnimations.get(module);
                 }
                 GL11.glPopMatrix();
                 y = height / 2 - 140 - categoryAnimations.get(selectedCategory);
                 for (Map.Entry<String, ? extends Module> moduleEntry : Managers.moduleManager.getModulesByCategory(selectedCategory).entrySet()) {
                     Module module = moduleEntry.getValue();
-                    RenderUtil.doGlScissor(animationRight + 140, Math.max(y, height / 2 - 140), 280, Math.min(y + 30 + moduleAnimations.get(module) - Math.max(y, height / 2 - 140), height / 2 + 140 - y));
+                    int minY = Math.max(y, height / 2 - 140);
+                    if (minY >= height / 2 + 140) continue;
+                    RenderUtil.doGlScissor(animationRight + 140, minY, 280, Math.min(Math.min(y + 30 + moduleAnimations.get(module) - Math.max(y, height / 2 - 140), height / 2 + 140 - y), 280));
                     int moduleY = 20;
                     for (Map.Entry<String, Value<?>> valueEntry : module.getValues().entrySet()) {
                         Value<?> value = valueEntry.getValue();
@@ -120,21 +139,14 @@ public class ClickUI extends GuiScreen {
                             Managers.fontManager.sourceHansSansCN_Regular_18.drawString(valueName, animationRight + 150, y + moduleY + 16, textColor);
                             Managers.fontManager.sourceHansSansCN_Regular_14.drawString(valueDescription, animationRight + 150, y + moduleY + 26, textColor);
                             if (value instanceof DecimalValue) {
-                                boolean hovered = isHovered(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, mouseX, mouseY);
-                                if (hovered || value == selectedValue) {
-                                    valueColorAnimations.put(value, FunctionUtil.smooth(valueColorAnimations.get(value), 255, 3.0f));
-                                } else {
-                                    valueColorAnimations.put(value, FunctionUtil.smooth(valueColorAnimations.get(value), 0, 3.0f));
-                                }
+                                doNumberValueAnimations(mouseX, mouseY, y, moduleY, value);
                                 int colorCode = (int) ((valueColorAnimations.get(value) / 255.0f) * 39 + 216);
                                 int cardColor = new Color(colorCode, colorCode, colorCode).getRGB();
                                 int textColorInNumberValue = new Color(216, 216, 216, valueColorAnimations.get(value)).getRGB();
                                 drawRect(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, categoryColor);
                                 double dist = (((DecimalValue) value).getMaximum() - ((DecimalValue) value).getMinimum());
                                 double valuePercent = (((DecimalValue) value).getValue() - ((DecimalValue) value).getMinimum()) / dist;
-                                valuePositions.put(value, (int) (valuePercent * 120));
-                                drawRect(animationRight + 279 + valueAnimations.get(value), y + moduleY + 17, animationRight + 280 + valueAnimations.get(value), y + moduleY + 27, cardColor);
-                                Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(String.valueOf(value.getValue()), animationRight + 280 + valueAnimations.get(value), y + moduleY + 28, textColorInNumberValue);
+                                doNumberValueDraw(y, moduleY, value, cardColor, textColorInNumberValue, valuePercent);
                                 if (value == selectedValue) {
                                     if (Mouse.isButtonDown(0) && moduleToBindKey == null) {
                                         double percentage = Math.max(0.0, Math.min(mouseX - animationRight - 280.0, 120.0)) / 120.0;
@@ -150,21 +162,14 @@ public class ClickUI extends GuiScreen {
                                     }
                                 }
                             } else if (value instanceof IntegerValue) {
-                                boolean hovered = isHovered(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, mouseX, mouseY);
-                                if (hovered || value == selectedValue) {
-                                    valueColorAnimations.put(value, FunctionUtil.smooth(valueColorAnimations.get(value), 255, 3.0f));
-                                } else {
-                                    valueColorAnimations.put(value, FunctionUtil.smooth(valueColorAnimations.get(value), 0, 3.0f));
-                                }
+                                doNumberValueAnimations(mouseX, mouseY, y, moduleY, value);
                                 int colorCode = (int) ((valueColorAnimations.get(value) / 255.0f) * 39 + 216);
                                 int cardColor = new Color(colorCode, colorCode, colorCode).getRGB();
                                 int textColorInNumberValue = new Color(216, 216, 216, valueColorAnimations.get(value)).getRGB();
                                 drawRect(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, categoryColor);
                                 int dist = (((IntegerValue) value).getMaximum() - ((IntegerValue) value).getMinimum());
                                 float valuePercent = (((IntegerValue) value).getValue() - ((IntegerValue) value).getMinimum()) / (float) dist;
-                                valuePositions.put(value, (int) (valuePercent * 120));
-                                drawRect(animationRight + 279 + valueAnimations.get(value), y + moduleY + 17, animationRight + 280 + valueAnimations.get(value), y + moduleY + 27, cardColor);
-                                Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(String.valueOf(value.getValue()), animationRight + 280 + valueAnimations.get(value), y + moduleY + 28, textColorInNumberValue);
+                                doNumberValueDraw(y, moduleY, value, cardColor, textColorInNumberValue, valuePercent);
                                 if (value == selectedValue) {
                                     if (Mouse.isButtonDown(0) && moduleToBindKey == null) {
                                         float percentage = Math.max(0.0f, Math.min(mouseX - animationRight - 280.0f, 120.0f)) / 120.0f;
@@ -189,12 +194,72 @@ public class ClickUI extends GuiScreen {
                                 int cardColor = new Color(colorCode, colorCode, colorCode).getRGB();
                                 RenderUtil.drawRoundedRect(animationRight + 340, y + moduleY + 19, animationRight + 400, y + moduleY + 29, 2, categoryColor);
                                 Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(((ModeValue) value).getValue(), animationRight + 370, y + moduleY + 20, cardColor);
-                                moduleY += valueAnimations.get(value);
                             } else if (value instanceof OptionValue) {
                                 RenderUtil.drawRoundedRect(animationRight + 394, y + moduleY + 23, animationRight + 400, y + moduleY + 29, 3, ((OptionValue) value).getValue() ? enableColor : disableColor);
                             } else if (value instanceof TextValue) {
                                 RenderUtil.drawRoundedRect(animationRight + 300, y + moduleY + 18, animationRight + 400, y + moduleY + 30, 2, categoryColor);
                                 mc.fontRenderer.drawStringWithShadow(((TextValue) value).getValue(), animationRight + 304, y + moduleY + 20, selectedValue == value ? brightTextColor : textValueTextColor);
+                            } else if (value instanceof PaletteValue) {
+                                int color = ((PaletteValue) value).getValue();
+                                if (!palettes.containsKey(value)) {
+                                    float[] values = Color.RGBtoHSB(color >> 16 & 255, color >> 8 & 255, color & 255, null);
+                                    palettes.put((PaletteValue) value, new Vec3f(values[0], values[1], values[2]));
+                                }
+                                Vec3f vec3f = palettes.get(value);
+                                float hue = vec3f.x;
+                                float saturation = vec3f.y;
+                                float brightness = vec3f.z;
+                                float alpha = (color >> 24 & 255) / 255f;
+                                // Brightness
+                                RenderUtil.drawGradientSideways(animationRight + 344, y + moduleY + 20, animationRight + 384, y + moduleY + 60, -1, Color.HSBtoRGB(hue, 1, 1));
+                                RenderUtil.drawGradientRect(animationRight + 344, y + moduleY + 20, animationRight + 384, y + moduleY + 60, new Color(0, 0, 0).getRGB(), new Color(255, 255, 255, 26).getRGB());
+
+                                // Saturation
+                                for (int i = 0; i < 5; i++) {
+                                    RenderUtil.drawGradientRect(animationRight + 386, y + moduleY + 20 + 8 * i, animationRight + 392, y + moduleY + 20 + 8 * (i + 1), Color.HSBtoRGB(1 - 0.2f * (i + 1), 1, 1), Color.HSBtoRGB(1 - 0.2f * i, 1, 1));
+                                }
+
+                                drawRect(animationRight + 394, y + moduleY + 20, animationRight + 400, y + moduleY + 60, new Color(82, 82, 82, 102).getRGB());
+                                RenderUtil.drawGradientRect(animationRight + 394, y + moduleY + 20, animationRight + 400, y + moduleY + 60, RenderUtil.reAlpha(color, 1), RenderUtil.reAlpha(color, 0));
+                                int bY = (int) (40 - brightness * 40);
+                                int sX = (int) (saturation * 40);
+                                RenderUtil.drawFilledCircle(animationRight + 344 + sX, y + moduleY + 20 + bY, 1, new Color(255, 255, 255).getRGB(), 5);
+
+                                int hueY = (int) ((1.0f - hue) * 40);
+                                Gui.drawRect(animationRight + 386, y + moduleY + 20 + hueY, animationRight + 392, y + moduleY + 20 + hueY + 1, new Color(255, 255, 255, 255).getRGB());
+                                int alphaY = (int) ((1 - alpha) * 40);
+                                Gui.drawRect(animationRight + 394, y + moduleY + 20 + alphaY, animationRight + 400, y + moduleY + 20 + alphaY + 1, new Color(255, 255, 255, 255).getRGB());
+                                if (selectedValue == value) {
+                                    if (Mouse.isButtonDown(0)) {
+                                        if (selectType == 0) {
+                                            int currentX = mouseX - animationRight - 344;
+                                            int currentY = mouseY - y - moduleY - 20;
+                                            currentX = Math.min(40, currentX);
+                                            currentX = Math.max(0, currentX);
+                                            currentY = Math.min(40, currentY);
+                                            currentY = Math.max(0, currentY);
+                                            saturation = currentX / 40.0f;
+                                            brightness = 1.0f - currentY / 40.0f;
+                                        } else if (selectType == 1) {
+                                            int currentY = mouseY - y - moduleY - 20;
+                                            currentY = Math.min(40, currentY);
+                                            currentY = Math.max(0, currentY);
+                                            hue = 1.0f - currentY / 40.0f;
+                                        } else if (selectType == 2) {
+                                            int currentY = mouseY - y - moduleY - 20;
+                                            currentY = Math.min(40, currentY);
+                                            currentY = Math.max(0, currentY);
+                                            alpha = 1.0f - currentY / 40.0f;
+                                        }
+                                    } else {
+                                        selectedValue = null;
+                                        selectType = -1;
+                                    }
+                                }
+                                color = new Color(RenderUtil.reAlpha(Color.HSBtoRGB(hue, saturation, brightness), (int) (alpha * 255)), true).getRGB();
+                                palettes.put((PaletteValue) value, new Vec3f(hue, saturation, brightness));
+                                ((PaletteValue) value).setValue(color);
+                                moduleY += 40;
                             }
                             moduleY += 30;
                         }
@@ -207,7 +272,7 @@ public class ClickUI extends GuiScreen {
                 if (isHovered(animationRight + 140, height / 2 - 140, animationRight + 420, height / 2 + 140, mouseX, mouseY)) {
                     if (dWheel < 0) {
                         int current = categoryPositions.get(selectedCategory);
-                        if (current + y <= -20) {
+                        if (y > height / 2 + 140) {
                             current += 20;
                         }
                         categoryPositions.put(selectedCategory, current);
@@ -227,6 +292,69 @@ public class ClickUI extends GuiScreen {
             Managers.fontManager.sourceHansSansCN_Regular_20.drawString(language, animationRight + 150, height / 2 - 110, textColor);
             RenderUtil.drawRoundedRect(animationRight + 340, height / 2 - 110, animationRight + 400, height / 2 - 100, 2, categoryColor);
             Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(Managers.i18NManager.getSelectedLanguage(), animationRight + 370, height / 2 - 109, cardColor);
+
+            String title = Managers.i18NManager.getTranslation("clickgui.titleSize");
+            Managers.fontManager.sourceHansSansCN_Regular_20.drawString(title, animationRight + 150, height / 2 - 80, textColor);
+            float valuePercent = Managers.clientManager.titleSize;
+            titleSizeAnimation = titleSizeAnimation + Integer.compare((int) (valuePercent * 120), titleSizeAnimation);
+            int textColorInNumberValue = new Color(216, 216, 216, titleSizeColorAnimation).getRGB();
+            if (isHovered(animationRight + 280, height / 2 - 82, animationRight + 400, height / 2 - 74, mouseX, mouseY) || selectedTitleSize) {
+                titleSizeColorAnimation = FunctionUtil.smooth(titleSizeColorAnimation, 255, 3.0f);
+            } else {
+                titleSizeColorAnimation = FunctionUtil.smooth(titleSizeColorAnimation, 0, 3.0f);
+            }
+            if (selectedTitleSize) {
+                if (Mouse.isButtonDown(0)) {
+                    Managers.clientManager.titleSize = Math.max(0.0f, Math.min(mouseX - animationRight - 280.0f, 120.0f)) / 120.0f;
+                } else {
+                    selectedTitleSize = false;
+                }
+            }
+            drawRect(animationRight + 280, height / 2 - 82, animationRight + 400, height / 2 - 74, categoryColor);
+            drawRect(animationRight + 279 + titleSizeAnimation, height / 2 - 83, animationRight + 280 + titleSizeAnimation, height / 2 - 73, cardColor);
+            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(new DecimalFormat("#.##").format(valuePercent), animationRight + 280 + titleSizeAnimation, height / 2 - 71, textColorInNumberValue);
+
+            title = Managers.i18NManager.getTranslation("clickgui.titleX");
+            Managers.fontManager.sourceHansSansCN_Regular_20.drawString(title, animationRight + 150, height / 2 - 50, textColor);
+            valuePercent = (400.0f + Managers.clientManager.titleX) / 800.0f;
+            titleXAnimation = titleXAnimation + Integer.compare((int) (valuePercent * 120), titleXAnimation);
+            textColorInNumberValue = new Color(216, 216, 216, titleXColorAnimation).getRGB();
+            if (isHovered(animationRight + 280, height / 2 - 52, animationRight + 400, height / 2 - 44, mouseX, mouseY) || selectedTitleX) {
+                titleXColorAnimation = FunctionUtil.smooth(titleXColorAnimation, 255, 3.0f);
+            } else {
+                titleXColorAnimation = FunctionUtil.smooth(titleXColorAnimation, 0, 3.0f);
+            }
+            if (selectedTitleX) {
+                if (Mouse.isButtonDown(0)) {
+                    Managers.clientManager.titleX = Math.max(0.0f, Math.min(mouseX - animationRight - 280.0f, 120.0f)) / 120.0f * 800.0f - 400.0f;
+                } else {
+                    selectedTitleX = false;
+                }
+            }
+            drawRect(animationRight + 280, height / 2 - 52, animationRight + 400, height / 2 - 44, categoryColor);
+            drawRect(animationRight + 279 + titleXAnimation, height / 2 - 53, animationRight + 280 + titleXAnimation, height / 2 - 43, cardColor);
+            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(new DecimalFormat("#.##").format(Managers.clientManager.titleX), animationRight + 280 + titleXAnimation, height / 2 - 41, textColorInNumberValue);
+
+            title = Managers.i18NManager.getTranslation("clickgui.titleY");
+            Managers.fontManager.sourceHansSansCN_Regular_20.drawString(title, animationRight + 150, height / 2 - 20, textColor);
+            valuePercent = (400.0f + Managers.clientManager.titleY) / 800.0f;
+            titleYAnimation = titleYAnimation + Integer.compare((int) (valuePercent * 120), titleYAnimation);
+            textColorInNumberValue = new Color(216, 216, 216, titleYColorAnimation).getRGB();
+            if (isHovered(animationRight + 280, height / 2 - 22, animationRight + 400, height / 2 - 14, mouseX, mouseY) || selectedTitleY) {
+                titleYColorAnimation = FunctionUtil.smooth(titleYColorAnimation, 255, 3.0f);
+            } else {
+                titleYColorAnimation = FunctionUtil.smooth(titleYColorAnimation, 0, 3.0f);
+            }
+            if (selectedTitleY) {
+                if (Mouse.isButtonDown(0)) {
+                    Managers.clientManager.titleY = Math.max(0.0f, Math.min(mouseX - animationRight - 280.0f, 120.0f)) / 120.0f * 800.0f - 400.0f;
+                } else {
+                    selectedTitleY = false;
+                }
+            }
+            drawRect(animationRight + 280, height / 2 - 22, animationRight + 400, height / 2 - 14, categoryColor);
+            drawRect(animationRight + 279 + titleYAnimation, height / 2 - 23, animationRight + 280 + titleYAnimation, height / 2 - 13, cardColor);
+            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(new DecimalFormat("#.##").format(Managers.clientManager.titleY), animationRight + 280 + titleYAnimation, height / 2 - 11, textColorInNumberValue);
         }
         RenderUtil.drawImage(new ResourceLocation("min/logo.png"), animationLeft - 110, height / 2 - 140, 100, 100);
         RenderUtil.drawImage(new ResourceLocation("min/uis/setting.png"), animationLeft - 118, height / 2 + 142, 16, 16);
@@ -237,8 +365,24 @@ public class ClickUI extends GuiScreen {
         GlStateManager.disableBlend();
     }
 
+    private void doNumberValueAnimations(int mouseX, int mouseY, int y, int moduleY, Value<?> value) {
+        boolean hovered = isHovered(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, mouseX, mouseY);
+        if ((hovered && selectedValue == null) || value == selectedValue) {
+            valueColorAnimations.put(value, FunctionUtil.smooth(valueColorAnimations.get(value), 255, 3.0f));
+        } else {
+            valueColorAnimations.put(value, FunctionUtil.smooth(valueColorAnimations.get(value), 0, 3.0f));
+        }
+    }
+
+    private void doNumberValueDraw(int y, int moduleY, Value<?> value, int cardColor, int textColorInNumberValue, double valuePercent) {
+        valuePositions.put(value, (int) (valuePercent * 120));
+        drawRect(animationRight + 279 + valueAnimations.get(value), y + moduleY + 17, animationRight + 280 + valueAnimations.get(value), y + moduleY + 27, cardColor);
+        Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(String.valueOf(value.getValue()), animationRight + 280 + valueAnimations.get(value), y + moduleY + 28, textColorInNumberValue);
+    }
+
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        if (moduleToBindKey != null) return;
         int y = height / 2 - 10;
         for (Category category : Category.values()) {
             if (isHovered(animationLeft - 100, y, animationLeft - 20, y + 20, mouseX, mouseY)) {
@@ -255,21 +399,25 @@ public class ClickUI extends GuiScreen {
                     y = height / 2 - 140 - categoryAnimations.get(selectedCategory);
                     for (Map.Entry<String, ? extends Module> moduleEntry : Managers.moduleManager.getModulesByCategory(selectedCategory).entrySet()) {
                         Module module = moduleEntry.getValue();
-                        if (isHovered(animationRight + 140, y - categoryAnimations.get(selectedCategory), animationRight + 420, y + 30 - categoryAnimations.get(selectedCategory), mouseX, mouseY)) {
+                        if (isHovered(animationRight + 140, y, animationRight + 420, y + 30, mouseX, mouseY)) {
                             if (mouseButton == 0) {
                                 if (module.canBeEnabled()) {
                                     module.toggle();
+                                    return;
                                 }
                             } else if (mouseButton == 1) {
                                 if (!module.getValues().isEmpty()) {
                                     if (modulesOpenedValues.contains(module)) {
                                         modulesOpenedValues.remove(module);
+                                        return;
                                     } else {
                                         modulesOpenedValues.add(module);
+                                        return;
                                     }
                                 }
                             } else if (mouseButton == 2) {
                                 moduleToBindKey = module;
+                                return;
                             }
                         }
                         if (mouseButton == 0) {
@@ -277,30 +425,47 @@ public class ClickUI extends GuiScreen {
                                 int moduleY = 20;
                                 for (Map.Entry<String, Value<?>> valueEntry : module.getValues().entrySet()) {
                                     Value<?> value = valueEntry.getValue();
-                                    if (!valueColorAnimations.containsKey(value)) {
-                                        valueColorAnimations.put(value, 0);
-                                    }
                                     if (value.isDisplayable()) {
                                         if (value instanceof DecimalValue) {
-                                            if (isHovered(animationRight + 280, y + moduleY + 8, animationRight + 400, y + moduleY + 16, mouseX, mouseY)) {
+                                            if (isHovered(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, mouseX, mouseY)) {
                                                 selectedValue = value;
+                                                return;
                                             }
                                         } else if (value instanceof IntegerValue) {
-                                            if (isHovered(animationRight + 280, y + moduleY + 8, animationRight + 400, y + moduleY + 16, mouseX, mouseY)) {
+                                            if (isHovered(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, mouseX, mouseY)) {
                                                 selectedValue = value;
+                                                return;
                                             }
                                         } else if (value instanceof ModeValue) {
                                             if (isHovered(animationRight + 340, y + moduleY + 19, animationRight + 400, y + moduleY + 29, mouseX, mouseY)) {
                                                 ((ModeValue) value).nextMode();
+                                                return;
                                             }
                                         } else if (value instanceof OptionValue) {
                                             if (isHovered(animationRight + 394, y + moduleY + 23, animationRight + 400, y + moduleY + 29, mouseX, mouseY)) {
                                                 ((OptionValue) value).setValue(!((OptionValue) value).getValue());
+                                                return;
                                             }
                                         } else if (value instanceof TextValue) {
                                             if (isHovered(animationRight + 300, y + moduleY + 18, animationRight + 400, y + moduleY + 30, mouseX, mouseY)) {
                                                 selectedValue = value;
+                                                return;
                                             }
+                                        } else if (value instanceof PaletteValue) {
+                                            if (isHovered(animationRight + 344, y + moduleY + 20, animationRight + 384, y + moduleY + 60, mouseX, mouseY)) {
+                                                selectedValue = value;
+                                                selectType = 0;
+                                                return;
+                                            } else if (isHovered(animationRight + 386, y + moduleY + 20, animationRight + 392, y + moduleY + 60, mouseX, mouseY)) {
+                                                selectedValue = value;
+                                                selectType = 1;
+                                                return;
+                                            } else if (isHovered(animationRight + 394, y + moduleY + 20, animationRight + 400, y + moduleY + 60, mouseX, mouseY)) {
+                                                selectedValue = value;
+                                                selectType = 2;
+                                                return;
+                                            }
+                                            moduleY += 40;
                                         }
                                         moduleY += 30;
                                     }
@@ -321,6 +486,12 @@ public class ClickUI extends GuiScreen {
             if (isHovered(animationRight + 120, height / 2 - 140, animationRight + 420, height / 2 + 140, mouseX, mouseY)) {
                 if (isHovered(animationRight + 340, height / 2 - 110, animationRight + 400, height / 2 - 100, mouseX, mouseY)) {
                     Managers.i18NManager.nextLanguage();
+                } else if (isHovered(animationRight + 280, height / 2 - 82, animationRight + 400, height / 2 - 74, mouseX, mouseY)) {
+                    selectedTitleSize = true;
+                } else if (isHovered(animationRight + 280, height / 2 - 52, animationRight + 400, height / 2 - 44, mouseX, mouseY)) {
+                    selectedTitleX = true;
+                } else if (isHovered(animationRight + 280, height / 2 - 22, animationRight + 400, height / 2 - 14, mouseX, mouseY)) {
+                    selectedTitleY = true;
                 }
             } else {
                 selectedCategory = null;

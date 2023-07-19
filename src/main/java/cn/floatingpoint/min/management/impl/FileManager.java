@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.lwjgl.input.Keyboard;
 
 public class FileManager implements Manager {
+    public static final int VERSION = 1;
     public File dir;
     public boolean shouldSave = false;
 
@@ -159,7 +160,6 @@ public class FileManager implements Manager {
             moduleStatusMap.put(entry.getKey(), statusMap);
         }
         save("module/status.json", moduleStatusMap.toString(), false);
-        save("config.json", new JSONObject().put("Language", Managers.i18NManager.getSelectedLanguage()).toString(), false);
         JSONObject draggableMap = new JSONObject();
         for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
             Vec2i position = entry.getValue();
@@ -169,5 +169,9 @@ public class FileManager implements Manager {
             draggableMap.put(entry.getKey().getIdentity(), positionMap);
         }
         save("draggable.json", draggableMap.toString(), false);
+        save("config.json", new JSONObject()
+                .put("Config-Version", FileManager.VERSION)
+                .put("Language", Managers.i18NManager.getSelectedLanguage())
+                .toString(), false);
     }
 }

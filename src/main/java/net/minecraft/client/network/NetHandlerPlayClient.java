@@ -163,7 +163,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         this.client.playerController.setGameType(packetIn.getGameType());
         this.client.gameSettings.sendSettingsToServer();
         this.netManager.sendPacket(new CPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
-        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer())).writeString(DESUtil.encrypt(this.client.player.getUniqueID().toString()))));
+        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer())).writeString(DESUtil.encrypt("I_Am_Your_Client_Mate_<3:" + this.client.player.getUniqueID().toString()))));
     }
 
     /**
@@ -1540,7 +1540,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 if (decrypted.equals(original)) {
                     break;
                 }
-                Managers.clientMateManager.uuids.add(UUID.fromString(decrypted));
+                if (decrypted.startsWith("I_Am_Your_Client_Mate_<3:")) {
+                    Managers.clientManager.clientMateUuids.add(UUID.fromString(decrypted.substring(25)));
+                }
                 break;
         }
     }
@@ -1710,7 +1712,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                     IAttributeInstance iattributeinstance = abstractattributemap.getAttributeInstanceByName(spacketentityproperties$snapshot.getName());
 
                     if (iattributeinstance == null) {
-                        iattributeinstance = abstractattributemap.registerAttribute(new RangedAttribute(null, spacketentityproperties$snapshot.getName(), 0.0D, 2.2250738585072014E-308D, Double.MAX_VALUE));
+                        iattributeinstance = abstractattributemap.registerAttribute(new RangedAttribute(null, spacketentityproperties$snapshot.getName(), 2.2250738585072014E-308D, 0.0D, Double.MAX_VALUE));
                     }
 
                     iattributeinstance.setBaseValue(spacketentityproperties$snapshot.getBaseValue());

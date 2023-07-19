@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -8,16 +9,12 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import java.awt.*;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.IChatListener;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -45,7 +42,6 @@ import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.optifine.Config;
 import net.minecraft.util.EnumHandSide;
@@ -151,7 +147,7 @@ public class GuiIngame extends Gui {
      * Used with updateCounter to make the heart bar flash
      */
     private long healthUpdateCounter;
-    private final Map<ChatType, List<IChatListener>> chatListeners = Maps.<ChatType, List<IChatListener>>newHashMap();
+    private final Map<ChatType, List<IChatListener>> chatListeners = Maps.newHashMap();
 
     public GuiIngame(Minecraft mcIn) {
         this.mc = mcIn;
@@ -221,7 +217,7 @@ public class GuiIngame extends Gui {
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        Managers.moduleManager.renderModules.values().forEach(RenderModule::onRender2D);
+        Managers.moduleManager.renderModules.values().stream().filter(Module::isEnabled).forEach(RenderModule::onRender2D);
         if (mc.currentScreen instanceof GuiChat) {
             int color = new Color(40, 40, 40, 102).getRGB();
             Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(vec2i.x, vec2i.y, vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
@@ -332,21 +328,29 @@ public class GuiIngame extends Gui {
             i2 = MathHelper.clamp(i2, 0, 255);
 
             if (i2 > 8) {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate((float) (i / 2), (float) (j / 2), 0.0F);
-                GlStateManager.enableBlend();
-                GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(4.0F, 4.0F, 4.0F);
-                int j2 = i2 << 24 & -16777216;
-                fontrenderer.drawString(this.displayedTitle, (float) (-fontrenderer.getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
-                GlStateManager.popMatrix();
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                fontrenderer.drawString(this.displayedSubTitle, (float) (-fontrenderer.getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
-                GlStateManager.popMatrix();
-                GlStateManager.disableBlend();
-                GlStateManager.popMatrix();
+                // 调整大小
+                float titleSize = Managers.clientManager.titleSize;
+                if (titleSize != 0.0f) {
+                    float titleX = Managers.clientManager.titleX;
+                    float titleY = Managers.clientManager.titleY;
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(titleSize, titleSize, titleSize);
+                    GlStateManager.translate(titleX, titleY, 0.0f);
+                    GlStateManager.translate((float) (i / 2), (float) (j / 2), 0.0F);
+                    GlStateManager.enableBlend();
+                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(4.0F, 4.0F, 4.0F);
+                    int j2 = i2 << 24 & -16777216;
+                    fontrenderer.drawString(this.displayedTitle, (float) (-fontrenderer.getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
+                    GlStateManager.popMatrix();
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(2.0F, 2.0F, 2.0F);
+                    fontrenderer.drawString(this.displayedSubTitle, (float) (-fontrenderer.getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
+                    GlStateManager.popMatrix();
+                    GlStateManager.disableBlend();
+                    GlStateManager.popMatrix();
+                }
             }
 
             this.mc.profiler.endSection();
@@ -383,7 +387,7 @@ public class GuiIngame extends Gui {
 
         if (this.mc.gameSettings.keyBindPlayerList.isKeyDown() && (!this.mc.isIntegratedServerRunning() || this.mc.player.connection.getPlayerInfoMap().size() > 1 || scoreobjective1 != null)) {
             this.overlayPlayerList.updatePlayerList(true);
-            this.overlayPlayerList.renderPlayerlist(i, scoreboard, scoreobjective1);
+            this.overlayPlayerList.renderPlayerList(i, scoreboard, scoreobjective1);
         } else {
             this.overlayPlayerList.updatePlayerList(false);
         }
@@ -403,9 +407,6 @@ public class GuiIngame extends Gui {
                 if (raytraceresult == null || raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
                     return;
                 }
-
-                BlockPos blockpos = raytraceresult.getBlockPos();
-                IBlockState iblockstate = this.mc.world.getBlockState(blockpos);
                 return;
             }
 
@@ -416,6 +417,7 @@ public class GuiIngame extends Gui {
                 GlStateManager.pushMatrix();
                 GlStateManager.translate((float) (l / 2), (float) (i1 / 2), this.zLevel);
                 Entity entity = this.mc.getRenderViewEntity();
+                assert entity != null;
                 GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, -1.0F, 0.0F, 0.0F);
                 GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F, 1.0F, 0.0F);
                 GlStateManager.scale(-1.0F, -1.0F, -1.0F);
@@ -652,20 +654,23 @@ public class GuiIngame extends Gui {
 
     private void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes) {
         Scoreboard scoreboard = objective.getScoreboard();
-        Collection<Score> collection = scoreboard.getSortedScores(objective);
-        List<Score> list = collection.stream().filter(p_apply_1_ -> !p_apply_1_.getPlayerName().startsWith("#")).collect(Collectors.toList());
+        List<Score> list = scoreboard.getSortedScores(objective).stream().filter(p_apply_1_ -> !p_apply_1_.getPlayerName().startsWith("#")).collect(Collectors.toList());
+        ArrayList<Score> collection = new ArrayList<>();
+        Score score = new Score(scoreboard, objective, "  \247fMIN官方QQ群: \247b710042765  ");
+        score.setScorePoints(0);
+        collection.add(score);
 
         if (list.size() > 15) {
-            collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
+            collection.addAll(Lists.newArrayList(Iterables.skip(list, collection.size() - 15)));
         } else {
-            collection = list;
+            collection.addAll(list);
         }
 
         int i = this.getFontRenderer().getStringWidth(objective.getDisplayName());
 
-        for (Score score : collection) {
-            ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
-            String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + TextFormatting.RED + score.getScorePoints();
+        for (Score score1 : collection) {
+            ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score1.getPlayerName());
+            String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score1.getPlayerName()) + ": " + TextFormatting.RED + score1.getScorePoints();
             i = Math.max(i, this.getFontRenderer().getStringWidth(s));
         }
 
@@ -702,10 +707,10 @@ public class GuiIngame extends Gui {
 
             if (i < this.playerHealth && entityplayer.hurtResistantTime > 0) {
                 this.lastSystemTime = Minecraft.getSystemTime();
-                this.healthUpdateCounter = (long) (this.updateCounter + 20);
+                this.healthUpdateCounter = this.updateCounter + 20;
             } else if (i > this.playerHealth && entityplayer.hurtResistantTime > 0) {
                 this.lastSystemTime = Minecraft.getSystemTime();
-                this.healthUpdateCounter = (long) (this.updateCounter + 10);
+                this.healthUpdateCounter = this.updateCounter + 10;
             }
 
             if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L) {
@@ -883,7 +888,7 @@ public class GuiIngame extends Gui {
             if (entity instanceof EntityLivingBase) {
                 this.mc.profiler.endStartSection("mountHealth");
                 EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
-                int i = (int) Math.ceil((double) entitylivingbase.getHealth());
+                int i = (int) Math.ceil(entitylivingbase.getHealth());
                 float f = entitylivingbase.getMaxHealth();
                 int j = (int) (f + 0.5F) / 2;
 
@@ -924,19 +929,23 @@ public class GuiIngame extends Gui {
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlpha();
-        this.mc.getTextureManager().bindTexture(PUMPKIN_BLUR_TEX_PATH);
+        texture(scaledRes, PUMPKIN_BLUR_TEX_PATH);
+        GlStateManager.enableAlpha();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    private void texture(ScaledResolution scaledRes, ResourceLocation pumpkinBlurTexPath) {
+        this.mc.getTextureManager().bindTexture(pumpkinBlurTexPath);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, (double) scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-        bufferbuilder.pos((double) scaledRes.getScaledWidth(), (double) scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-        bufferbuilder.pos((double) scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+        bufferbuilder.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
+        bufferbuilder.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
+        bufferbuilder.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
         bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
-        GlStateManager.enableAlpha();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /**
@@ -952,7 +961,7 @@ public class GuiIngame extends Gui {
             WorldBorder worldborder = this.mc.world.getWorldBorder();
             float f = (float) worldborder.getClosestDistance(this.mc.player);
             double d0 = Math.min(worldborder.getResizeSpeed() * (double) worldborder.getWarningTime() * 1000.0D, Math.abs(worldborder.getTargetSize() - worldborder.getDiameter()));
-            double d1 = Math.max((double) worldborder.getWarningDistance(), d0);
+            double d1 = Math.max(worldborder.getWarningDistance(), d0);
 
             if ((double) f < d1) {
                 f = 1.0F - (float) ((double) f / d1);
@@ -971,17 +980,7 @@ public class GuiIngame extends Gui {
                 GlStateManager.color(this.prevVignetteBrightness, this.prevVignetteBrightness, this.prevVignetteBrightness, 1.0F);
             }
 
-            this.mc.getTextureManager().bindTexture(VIGNETTE_TEX_PATH);
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
-            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos(0.0D, (double) scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-            bufferbuilder.pos((double) scaledRes.getScaledWidth(), (double) scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-            bufferbuilder.pos((double) scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
-            bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
-            tessellator.draw();
-            GlStateManager.depthMask(true);
-            GlStateManager.enableDepth();
+            texture(scaledRes, VIGNETTE_TEX_PATH);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         }
@@ -1008,10 +1007,10 @@ public class GuiIngame extends Gui {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, (double) scaledRes.getScaledHeight(), -90.0D).tex((double) f, (double) f3).endVertex();
-        bufferbuilder.pos((double) scaledRes.getScaledWidth(), (double) scaledRes.getScaledHeight(), -90.0D).tex((double) f2, (double) f3).endVertex();
-        bufferbuilder.pos((double) scaledRes.getScaledWidth(), 0.0D, -90.0D).tex((double) f2, (double) f1).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex((double) f, (double) f1).endVertex();
+        bufferbuilder.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(f, f3).endVertex();
+        bufferbuilder.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(f2, f3).endVertex();
+        bufferbuilder.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(f2, f1).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(f, f1).endVertex();
         tessellator.draw();
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
