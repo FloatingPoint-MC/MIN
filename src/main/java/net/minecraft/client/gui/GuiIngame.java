@@ -3,6 +3,7 @@ package net.minecraft.client.gui;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
+import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -217,13 +218,6 @@ public class GuiIngame extends Gui {
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        Managers.moduleManager.renderModules.values().stream().filter(Module::isEnabled).forEach(RenderModule::onRender2D);
-        if (mc.currentScreen instanceof GuiChat) {
-            int color = new Color(40, 40, 40, 102).getRGB();
-            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(vec2i.x, vec2i.y, vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
-        }
-        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(vec2i.x, vec2i.y));
-
         this.mc.getTextureManager().bindTexture(ICONS);
         GlStateManager.enableBlend();
         this.renderAttackIndicator(partialTicks, scaledresolution);
@@ -371,7 +365,7 @@ public class GuiIngame extends Gui {
         ScoreObjective scoreobjective1 = scoreobjective != null ? scoreobjective : scoreboard.getObjectiveInDisplaySlot(1);
 
         if (scoreobjective1 != null) {
-            this.renderScoreboard(scoreobjective1, scaledresolution);
+            cn.floatingpoint.min.system.module.impl.render.impl.Scoreboard.scoreObjective = scoreobjective1;
         }
 
         GlStateManager.enableBlend();
@@ -391,6 +385,14 @@ public class GuiIngame extends Gui {
         } else {
             this.overlayPlayerList.updatePlayerList(false);
         }
+
+        GlStateManager.pushMatrix();
+        if (mc.currentScreen instanceof GuiChat) {
+            int color = new Color(40, 40, 40, 102).getRGB();
+            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(vec2i.x, vec2i.y, vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
+        }
+        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(vec2i.x, vec2i.y));
+        GlStateManager.popMatrix();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
@@ -650,53 +652,6 @@ public class GuiIngame extends Gui {
         }
 
         this.mc.profiler.endSection();
-    }
-
-    private void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes) {
-        Scoreboard scoreboard = objective.getScoreboard();
-        List<Score> list = scoreboard.getSortedScores(objective).stream().filter(p_apply_1_ -> !p_apply_1_.getPlayerName().startsWith("#")).collect(Collectors.toList());
-        ArrayList<Score> collection = new ArrayList<>();
-        Score score = new Score(scoreboard, objective, "  \247fMIN官方QQ群: \247b710042765  ");
-        score.setScorePoints(0);
-        collection.add(score);
-
-        if (list.size() > 15) {
-            collection.addAll(Lists.newArrayList(Iterables.skip(list, collection.size() - 15)));
-        } else {
-            collection.addAll(list);
-        }
-
-        int i = this.getFontRenderer().getStringWidth(objective.getDisplayName());
-
-        for (Score score1 : collection) {
-            ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score1.getPlayerName());
-            String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score1.getPlayerName()) + ": " + TextFormatting.RED + score1.getScorePoints();
-            i = Math.max(i, this.getFontRenderer().getStringWidth(s));
-        }
-
-        int i1 = collection.size() * this.getFontRenderer().FONT_HEIGHT;
-        int j1 = scaledRes.getScaledHeight() / 2 + i1 / 3;
-        int l1 = scaledRes.getScaledWidth() - i - 3;
-        int j = 0;
-
-        for (Score score1 : collection) {
-            ++j;
-            ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
-            String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
-            String s2 = TextFormatting.RED + String.valueOf(score1.getScorePoints());
-            int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
-            int l = scaledRes.getScaledWidth() - 3 + 2;
-            drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
-            this.getFontRenderer().drawString(s1, l1, k, 553648127);
-            this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
-
-            if (j == collection.size()) {
-                String s3 = objective.getDisplayName();
-                drawRect(l1 - 2, k - this.getFontRenderer().FONT_HEIGHT - 1, l, k - 1, 1610612736);
-                drawRect(l1 - 2, k - 1, l, k, 1342177280);
-                this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, 553648127);
-            }
-        }
     }
 
     private void renderPlayerStats(ScaledResolution scaledRes) {

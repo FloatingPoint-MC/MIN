@@ -9,6 +9,7 @@ import cn.floatingpoint.min.system.module.Module;
  * @date: 2023-07-18 11:51:10
  */
 public interface DraggableGameView {
+
     boolean draw(int x, int y);
 
     int getWidth();

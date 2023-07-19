@@ -8,7 +8,5 @@ public abstract class RenderModule extends Module {
         super(Category.Render);
     }
 
-    public abstract void onRender2D();
-
     public abstract void onRender3D();
 }

@@ -17,11 +17,6 @@ public class FullBright extends RenderModule {
     }
 
     @Override
-    public void onRender2D() {
-
-    }
-
-    @Override
     public void onRender3D() {
 
     }

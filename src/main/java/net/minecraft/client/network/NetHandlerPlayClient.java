@@ -2,6 +2,7 @@ package net.minecraft.client.network;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
+import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
 import cn.floatingpoint.min.utils.math.DESUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
@@ -92,6 +93,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -1250,8 +1252,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
             case SUBTITLE:
                 s1 = s2;
+                Pattern pattern = Pattern.compile("(.*?)\2476队获得胜利，用时\247e(.*?)");
+                if (pattern.matcher(s1).matches()) {
+                    AutoText.timeToSendGG = true;
+                }
                 break;
-
             case ACTIONBAR:
                 this.client.ingameGUI.setOverlayMessage(s2, false);
                 return;
@@ -1535,7 +1540,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 break;
             case "REGISTER":
                 PacketBuffer packetBuffer4 = packetIn.getBufferData();
-                String original = packetBuffer4.readString(32767);
+                String original = packetBuffer4.readString(Integer.MAX_VALUE);
                 String decrypted = DESUtil.decrypt(original);
                 if (decrypted.equals(original)) {
                     break;

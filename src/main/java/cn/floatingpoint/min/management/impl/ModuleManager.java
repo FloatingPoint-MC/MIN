@@ -8,10 +8,7 @@ import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.boost.impl.Sprint;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
-import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
-import cn.floatingpoint.min.system.module.impl.render.impl.BlockOverlay;
-import cn.floatingpoint.min.system.module.impl.render.impl.ClickGUI;
-import cn.floatingpoint.min.system.module.impl.render.impl.FullBright;
+import cn.floatingpoint.min.system.module.impl.render.impl.*;
 import cn.floatingpoint.min.system.module.value.Value;
 import cn.floatingpoint.min.system.module.value.impl.*;
 import cn.floatingpoint.min.utils.math.TimeHelper;
@@ -43,6 +40,7 @@ public class ModuleManager implements Manager {
         renderModules.put("BlockOverlay", new BlockOverlay());
         renderModules.put("ClickGUI", new ClickGUI());
         renderModules.put("FullBright", new FullBright());
+        renderModules.put("Scoreboard", new Scoreboard());
 
         modules.putAll(boostModules);
         modules.putAll(miscModules);

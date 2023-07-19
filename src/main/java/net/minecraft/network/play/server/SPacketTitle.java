@@ -92,6 +92,7 @@ public class SPacketTitle implements Packet<INetHandlerPlayClient>
         return this.type;
     }
 
+    @Nullable
     public ITextComponent getMessage()
     {
         return this.message;

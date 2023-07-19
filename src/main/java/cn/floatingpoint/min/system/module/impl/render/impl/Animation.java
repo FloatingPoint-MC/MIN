@@ -38,11 +38,6 @@ public class Animation extends RenderModule {
     }
 
     @Override
-    public void onRender2D() {
-
-    }
-
-    @Override
     public void onRender3D() {
     }
 }
