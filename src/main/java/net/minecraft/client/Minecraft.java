@@ -5,6 +5,7 @@ import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
+import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -126,9 +127,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemMonsterPlacer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -288,6 +287,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      * Mouse left click counter
      */
     private int leftClickCounter;
+
+    /**
+     * Fake mouse left click counter
+     */
+    private int fakeLeftClickCounter;
 
     /**
      * Display width
@@ -1363,6 +1367,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     private void sendClickBlockToController(boolean leftClick) {
         if (!leftClick) {
             this.leftClickCounter = 0;
+            this.fakeLeftClickCounter = 0;
         }
 
         if (this.leftClickCounter <= 0 && !this.player.isHandActive()) {
@@ -1597,6 +1602,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
         if (this.currentScreen != null) {
             this.leftClickCounter = 10000;
+            this.fakeLeftClickCounter = 10000;
         }
 
         if (this.currentScreen != null) {
@@ -1627,6 +1633,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
             if (this.leftClickCounter > 0) {
                 --this.leftClickCounter;
+            }
+
+            if (this.fakeLeftClickCounter > 0) {
+                --this.fakeLeftClickCounter;
             }
 
             this.profiler.endStartSection("keyboard");
@@ -1942,7 +1952,79 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (!this.gameSettings.keyBindUseItem.isKeyDown()) {
                 this.playerController.onStoppedUsingItem(this.player);
             }
-            this.gameSettings.keyBindAttack.clearKeyPressed();
+            if (!this.player.isRowingBoat()) {
+                if (this.player.getActiveItemStack().getItem() instanceof ItemSword) {
+                    switch (Animation.blockSwingMode.getValue()) {
+                        case "None":
+                        case "Old":
+                            this.gameSettings.keyBindAttack.clearKeyPressed();
+                            break;
+                        case "AimBlock":
+                            if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
+                                this.gameSettings.keyBindAttack.clearKeyPressed();
+                            }
+                            break;
+                    }
+                    while (this.gameSettings.keyBindAttack.isPressed()) {
+                        if (this.fakeLeftClickCounter <= 0) {
+                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS) {
+                                if (this.playerController.isNotCreative()) {
+                                    this.fakeLeftClickCounter = 10;
+                                }
+                            }
+                            this.player.swingArm(EnumHand.MAIN_HAND);
+                        }
+                    }
+                } else if (this.player.getActiveItemStack().getItem() instanceof ItemBow) {
+                    switch (Animation.bowSwingMode.getValue()) {
+                        case "None":
+                        case "Old":
+                            this.gameSettings.keyBindAttack.clearKeyPressed();
+                            break;
+                        case "AimBlock":
+                            if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
+                                this.gameSettings.keyBindAttack.clearKeyPressed();
+                            }
+                            break;
+                    }
+                    while (this.gameSettings.keyBindAttack.isPressed()) {
+                        if (this.fakeLeftClickCounter <= 0) {
+                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS) {
+                                if (this.playerController.isNotCreative()) {
+                                    this.fakeLeftClickCounter = 10;
+                                }
+                            }
+                            this.player.swingArm(EnumHand.MAIN_HAND);
+                        }
+                    }
+                } else if (this.player.getActiveItemStack().getItem() instanceof ItemFood || this.player.getActiveItemStack().getItem() instanceof ItemPotion) {
+                    switch (Animation.foodSwingMode.getValue()) {
+                        case "None":
+                        case "Old":
+                            this.gameSettings.keyBindAttack.clearKeyPressed();
+                            break;
+                        case "AimBlock":
+                            if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
+                                this.gameSettings.keyBindAttack.clearKeyPressed();
+                            }
+                            break;
+                    }
+                    while (this.gameSettings.keyBindAttack.isPressed()) {
+                        if (this.fakeLeftClickCounter <= 0) {
+                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS) {
+                                if (this.playerController.isNotCreative()) {
+                                    this.fakeLeftClickCounter = 10;
+                                }
+                            }
+                            this.player.swingArm(EnumHand.MAIN_HAND);
+                        }
+                    }
+                } else {
+                    this.gameSettings.keyBindAttack.clearKeyPressed();
+                }
+            } else {
+                this.gameSettings.keyBindAttack.clearKeyPressed();
+            }
             this.gameSettings.keyBindUseItem.clearKeyPressed();
             this.gameSettings.keyBindPickBlock.clearKeyPressed();
         } else {

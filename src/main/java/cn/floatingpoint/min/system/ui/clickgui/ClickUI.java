@@ -140,10 +140,10 @@ public class ClickUI extends GuiScreen {
                             Managers.fontManager.sourceHansSansCN_Regular_14.drawString(valueDescription, animationRight + 150, y + moduleY + 26, textColor);
                             if (value instanceof DecimalValue) {
                                 doNumberValueAnimations(mouseX, mouseY, y, moduleY, value);
+                                drawRect(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, categoryColor);
                                 int colorCode = (int) ((valueColorAnimations.get(value) / 255.0f) * 39 + 216);
                                 int cardColor = new Color(colorCode, colorCode, colorCode).getRGB();
                                 int textColorInNumberValue = new Color(216, 216, 216, valueColorAnimations.get(value)).getRGB();
-                                drawRect(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, categoryColor);
                                 double dist = (((DecimalValue) value).getMaximum() - ((DecimalValue) value).getMinimum());
                                 double valuePercent = (((DecimalValue) value).getValue() - ((DecimalValue) value).getMinimum()) / dist;
                                 doNumberValueDraw(y, moduleY, value, cardColor, textColorInNumberValue, valuePercent);
@@ -163,10 +163,10 @@ public class ClickUI extends GuiScreen {
                                 }
                             } else if (value instanceof IntegerValue) {
                                 doNumberValueAnimations(mouseX, mouseY, y, moduleY, value);
+                                drawRect(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, categoryColor);
                                 int colorCode = (int) ((valueColorAnimations.get(value) / 255.0f) * 39 + 216);
                                 int cardColor = new Color(colorCode, colorCode, colorCode).getRGB();
                                 int textColorInNumberValue = new Color(216, 216, 216, valueColorAnimations.get(value)).getRGB();
-                                drawRect(animationRight + 280, y + moduleY + 18, animationRight + 400, y + moduleY + 26, categoryColor);
                                 int dist = (((IntegerValue) value).getMaximum() - ((IntegerValue) value).getMinimum());
                                 float valuePercent = (((IntegerValue) value).getValue() - ((IntegerValue) value).getMinimum()) / (float) dist;
                                 doNumberValueDraw(y, moduleY, value, cardColor, textColorInNumberValue, valuePercent);
@@ -193,7 +193,7 @@ public class ClickUI extends GuiScreen {
                                 int colorCode = (int) ((valueColorAnimations.get(value) / 255.0f) * 39 + 216);
                                 int cardColor = new Color(colorCode, colorCode, colorCode).getRGB();
                                 RenderUtil.drawRoundedRect(animationRight + 340, y + moduleY + 19, animationRight + 400, y + moduleY + 29, 2, categoryColor);
-                                Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(((ModeValue) value).getValue(), animationRight + 370, y + moduleY + 20, cardColor);
+                                Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(Managers.i18NManager.getTranslation("module.implement." + moduleEntry.getKey() + "." + valueEntry.getKey() + ".sub." + ((ModeValue) value).getValue()), animationRight + 370, y + moduleY + 20, cardColor);
                             } else if (value instanceof OptionValue) {
                                 RenderUtil.drawRoundedRect(animationRight + 394, y + moduleY + 23, animationRight + 400, y + moduleY + 29, 3, ((OptionValue) value).getValue() ? enableColor : disableColor);
                             } else if (value instanceof TextValue) {

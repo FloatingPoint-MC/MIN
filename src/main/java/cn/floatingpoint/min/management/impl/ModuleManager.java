@@ -8,6 +8,7 @@ import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.boost.impl.Sprint;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
+import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.BlockOverlay;
 import cn.floatingpoint.min.system.module.impl.render.impl.ClickGUI;
 import cn.floatingpoint.min.system.module.impl.render.impl.FullBright;
@@ -38,6 +39,7 @@ public class ModuleManager implements Manager {
         // Boost
         boostModules.put("Sprint", new Sprint());
         // Render
+        renderModules.put("Animation", new Animation());
         renderModules.put("BlockOverlay", new BlockOverlay());
         renderModules.put("ClickGUI", new ClickGUI());
         renderModules.put("FullBright", new FullBright());

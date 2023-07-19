@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import cn.floatingpoint.min.management.Managers;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -2709,6 +2710,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
      */
     public void drawSelectionBox(EntityPlayer player, RayTraceResult movingObjectPositionIn, int execute, float partialTicks)
     {
+        if (Managers.moduleManager.renderModules.get("BlockOverlay").isEnabled()) return;
         if (execute == 0 && movingObjectPositionIn.typeOfHit == RayTraceResult.Type.BLOCK)
         {
             GlStateManager.enableBlend();

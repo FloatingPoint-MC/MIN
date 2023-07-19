@@ -33,7 +33,8 @@ public class BlockOverlay extends RenderModule {
     private final OptionValue throughBlock = new OptionValue(true, outline::getValue);
 
     public BlockOverlay() {
-        addValues(new Pair<>("Fill", fill),
+        addValues(
+                new Pair<>("Fill", fill),
                 new Pair<>("FillChroma", fillChroma),
                 new Pair<>("FillColor", fillColor),
                 new Pair<>("FillChromaOpacity", fillChromaOpacity),
