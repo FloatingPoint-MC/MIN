@@ -106,6 +106,8 @@
   "module.implement.BlockOverlay.OutlineChromaOpacity.description": "这条彩虹线的透明度。",
   "module.implement.BlockOverlay.ThroughBlock": "穿过方块",
   "module.implement.BlockOverlay.ThroughBlock.description": "使线条不被方块阻挡。",
+  "module.implement.BoundingBox": "碰撞箱",
+  "module.implement.BoundingBox.description": "显示玩家的碰撞箱。",
   "module.implement.CleanView": "清洁视角",
   "module.implement.CleanView.description": "移除自身的药水粒子。",
   "module.implement.ClickGUI": "Click GUI",
@@ -128,6 +130,8 @@
   "module.implement.NameProtect.description": "用一个假名字将你在游戏里的名字隐藏起来。",
   "module.implement.NameProtect.Name": "名字",
   "module.implement.NameProtect.Name.description": "用于替换你游戏内的名字的假名字。",
+  "module.implement.NameTag": "名字标签",
+  "module.implement.NameTag.description": "显示你自己的名字标签。",
   "module.implement.PotionDisplay": "药水显示",
   "module.implement.PotionDisplay.description": "显示你拥有的药水信息。",
   "module.implement.PotionDisplay.Mode": "模式",
@@ -153,5 +157,6 @@
   "clickgui.language": "语言",
   "clickgui.titleSize": "标题大小",
   "clickgui.titleX": "标题X轴",
-  "clickgui.titleY": "标题Y轴"
+  "clickgui.titleY": "标题Y轴",
+  "mark.cheater": "[作弊者]"
 }

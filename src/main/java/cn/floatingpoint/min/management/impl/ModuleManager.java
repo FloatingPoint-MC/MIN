@@ -51,6 +51,7 @@ public class ModuleManager implements Manager {
         // Render
         renderModules.put("Animation", new Animation());
         renderModules.put("BlockOverlay", new BlockOverlay());
+        renderModules.put("BoundingBox", new BoundingBox());
         renderModules.put("CleanView", new CleanView());
         renderModules.put("ClickGUI", new ClickGUI());
         renderModules.put("FullBright", new FullBright());
@@ -58,6 +59,7 @@ public class ModuleManager implements Manager {
         renderModules.put("MinimizedBobbing", new MinimizedBobbing());
         renderModules.put("MoreParticles", new MoreParticles());
         renderModules.put("NameProtect", new NameProtect());
+        renderModules.put("NameTag", new NameTag());
         renderModules.put("PotionDisplay", new PotionDisplay());
         renderModules.put("Scoreboard", new Scoreboard());
 

@@ -106,6 +106,8 @@
   "module.implement.BlockOverlay.OutlineChromaOpacity.description": "The opacity of the chroma color on outline.",
   "module.implement.BlockOverlay.ThroughBlock": "Through Block",
   "module.implement.BlockOverlay.ThroughBlock.description": "Draw the line across the block.",
+  "module.implement.BoundingBox": "Bounding Box",
+  "module.implement.BoundingBox.description": "Show the bounding boxes of players.",
   "module.implement.CleanView": "Clean View",
   "module.implement.CleanView.description": "Remove the potion particles of yourself.",
   "module.implement.ClickGUI": "Click GUI",
@@ -128,6 +130,8 @@
   "module.implement.NameProtect.description": "Hide your in-game name with a fake name.",
   "module.implement.NameProtect.Name": "Name",
   "module.implement.NameProtect.Name.description": "A fake name to replace your in-game name.",
+  "module.implement.NameTag": "Name Tag",
+  "module.implement.NameTag.description": "Display a name tag of yourself.",
   "module.implement.PotionDisplay": "Potion Display",
   "module.implement.PotionDisplay.description": "Display the potion info.",
   "module.implement.PotionDisplay.Mode": "Mode",
@@ -153,5 +157,6 @@
   "clickgui.language": "Language",
   "clickgui.titleSize": "Title Size",
   "clickgui.titleX": "Title X",
-  "clickgui.titleY": "Title Y"
+  "clickgui.titleY": "Title Y",
+  "mark.cheater": "[CHEATER]"
 }

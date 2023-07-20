@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.utils.client.CheatDetection;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
@@ -79,7 +81,34 @@ public class GuiPlayerTabOverlay extends Gui {
             i = Math.max(i, k);
 
             if (scoreObjectiveIn != null && scoreObjectiveIn.getRenderType() != IScoreCriteria.EnumRenderType.HEARTS) {
-                k = this.mc.fontRenderer.getStringWidth(" " + scoreboardIn.getOrCreateScore(networkplayerinfo.getGameProfile().getName(), scoreObjectiveIn).getScorePoints());
+                String name = networkplayerinfo.getGameProfile().getName();
+                EntityPlayer player = mc.world.getPlayerEntityByName(name);
+                if (player != null) {
+                    if (Managers.clientManager.cheaterUuids.getOrDefault(player.getUniqueID(), new CheatDetection()).hacks) {
+                        name = "\247c\247l" + Managers.i18NManager.getTranslation("mark.cheater") + " \2474" + name
+                                .replace("\2471", "")
+                                .replace("\2472", "")
+                                .replace("\2473", "")
+                                .replace("\2474", "")
+                                .replace("\2475", "")
+                                .replace("\2476", "")
+                                .replace("\2477", "")
+                                .replace("\2478", "")
+                                .replace("\2479", "")
+                                .replace("\2470", "")
+                                .replace("\247a", "")
+                                .replace("\247b", "")
+                                .replace("\247d", "")
+                                .replace("\247e", "")
+                                .replace("\247f", "")
+                                .replace("\247m", "")
+                                .replace("\247l", "")
+                                .replace("\247o", "")
+                                .replace("\247n", "")
+                                .replace("\247r", "") + "\247f";
+                    }
+                }
+                k = this.mc.fontRenderer.getStringWidth(" " + scoreboardIn.getOrCreateScore(name, scoreObjectiveIn).getScorePoints());
                 j = Math.max(j, k);
             }
         }
@@ -183,6 +212,34 @@ public class GuiPlayerTabOverlay extends Gui {
                 }
 
                 String s4 = this.getPlayerName(networkplayerinfo1);
+
+                EntityPlayer player = mc.world.getPlayerEntityByName(s4);
+
+                if (player != null) {
+                    if (Managers.clientManager.cheaterUuids.getOrDefault(player.getUniqueID(), new CheatDetection()).hacks) {
+                        s4 = "\247c\247l" + Managers.i18NManager.getTranslation("mark.cheater") + " \2474" + s4
+                                .replace("\2471", "")
+                                .replace("\2472", "")
+                                .replace("\2473", "")
+                                .replace("\2474", "")
+                                .replace("\2475", "")
+                                .replace("\2476", "")
+                                .replace("\2477", "")
+                                .replace("\2478", "")
+                                .replace("\2479", "")
+                                .replace("\2470", "")
+                                .replace("\247a", "")
+                                .replace("\247b", "")
+                                .replace("\247d", "")
+                                .replace("\247e", "")
+                                .replace("\247f", "")
+                                .replace("\247m", "")
+                                .replace("\247l", "")
+                                .replace("\247o", "")
+                                .replace("\247n", "")
+                                .replace("\247r", "") + "\247f";
+                    }
+                }
 
                 if (networkplayerinfo1.getGameType() == GameType.SPECTATOR) {
                     this.mc.fontRenderer.drawStringWithShadow(TextFormatting.ITALIC + s4, (float) j2, (float) k2, -1862270977);

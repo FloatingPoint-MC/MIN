@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.utils.client.CheatDetection;
 import com.google.common.collect.Lists;
 import java.nio.FloatBuffer;
 import java.util.List;
@@ -32,7 +34,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
     private static final DynamicTexture TEXTURE_BRIGHTNESS = new DynamicTexture(16, 16);
     public ModelBase mainModel;
     protected FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);
-    protected List<LayerRenderer<T>> layerRenderers = Lists.<LayerRenderer<T>>newArrayList();
+    protected List<LayerRenderer<T>> layerRenderers = Lists.newArrayList();
     protected boolean renderMarker;
     public static float NAME_TAG_RANGE = 64.0F;
     public static float NAME_TAG_RANGE_SNEAK = 32.0F;
@@ -77,7 +79,6 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
         for (f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F)
         {
-            ;
         }
 
         while (f >= 180.0F)
@@ -191,7 +192,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
                 if (this.renderOutlines)
                 {
-                    boolean flag1 = this.setScoreTeamColor(entity);
+                    boolean flag1 = this.setScoreTeamColor();
                     GlStateManager.enableColorMaterial();
                     GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 
@@ -271,7 +272,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
             }
             catch (Exception exception1)
             {
-                LOGGER.error("Couldn't render entity", (Throwable)exception1);
+                LOGGER.error("Couldn't render entity", exception1);
             }
 
             GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
@@ -293,12 +294,11 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         this.preRenderCallback(entitylivingbaseIn, partialTicks);
-        float f = 0.0625F;
         GlStateManager.translate(0.0F, -1.501F, 0.0F);
         return 0.0625F;
     }
 
-    protected boolean setScoreTeamColor(T entityLivingBaseIn)
+    protected boolean setScoreTeamColor()
     {
         GlStateManager.disableLighting();
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
@@ -519,7 +519,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         {
             String s = TextFormatting.getTextWithoutFormattingCodes(entityLiving.getName());
 
-            if (s != null && ("Dinnerbone".equals(s) || "Grumm".equals(s)) && (!(entityLiving instanceof EntityPlayer) || ((EntityPlayer)entityLiving).isWearing(EnumPlayerModelParts.CAPE)))
+            if (("Dinnerbone".equals(s) || "Grumm".equals(s)) && (!(entityLiving instanceof EntityPlayer) || ((EntityPlayer) entityLiving).isWearing(EnumPlayerModelParts.CAPE)))
             {
                 GlStateManager.translate(0.0F, entityLiving.height + 0.1F, 0.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
@@ -620,6 +620,31 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                 if (d0 < (double)(f * f))
                 {
                     String s = entity.getDisplayName().getFormattedText();
+                    if (entity instanceof EntityPlayer) {
+                        if (Managers.clientManager.cheaterUuids.getOrDefault(entity.getUniqueID(), new CheatDetection()).hacks) {
+                            s = "\247c\247l" + Managers.i18NManager.getTranslation("mark.cheater") + " \2474" + s
+                                    .replace("\2471", "")
+                                    .replace("\2472", "")
+                                    .replace("\2473", "")
+                                    .replace("\2474", "")
+                                    .replace("\2475", "")
+                                    .replace("\2476", "")
+                                    .replace("\2477", "")
+                                    .replace("\2478", "")
+                                    .replace("\2479", "")
+                                    .replace("\2470", "")
+                                    .replace("\247a", "")
+                                    .replace("\247b", "")
+                                    .replace("\247d", "")
+                                    .replace("\247e", "")
+                                    .replace("\247f", "")
+                                    .replace("\247m", "")
+                                    .replace("\247l", "")
+                                    .replace("\247o", "")
+                                    .replace("\247n", "")
+                                    .replace("\247r", "") + "\247f";
+                        }
+                    }
                     GlStateManager.alphaFunc(516, 0.1F);
                     this.renderEntityName(entity, x, y, z, s, d0);
                 }
@@ -666,7 +691,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
             }
         }
 
-        return Minecraft.isGuiEnabled() && entity != this.renderManager.renderViewEntity && flag && !entity.isBeingRidden();
+        return Minecraft.isGuiEnabled() && (entity != this.renderManager.renderViewEntity || (Managers.moduleManager.renderModules.get("NameTag").isEnabled() && entity == Minecraft.getMinecraft().player)) && flag && !entity.isBeingRidden();
     }
 
     public List<LayerRenderer<T>> getLayerRenderers()

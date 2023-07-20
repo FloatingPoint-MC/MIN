@@ -402,7 +402,7 @@ public class RenderManager {
 
                 if (this.debugBoundingBox && !entityIn.isInvisible() && !p_188391_10_ && !Minecraft.getMinecraft().isReducedDebug()) {
                     try {
-                        this.renderDebugBoundingBox(entityIn, x, y, z, yaw, partialTicks);
+                        this.renderDebugBoundingBox(entityIn, x, y, z, partialTicks);
                     } catch (Throwable throwable) {
                         throw new ReportedException(CrashReport.makeCrashReport(throwable, "Rendering entity hitbox in world"));
                     }
@@ -452,7 +452,7 @@ public class RenderManager {
     /**
      * Renders the bounding box around an entity when F3+B is pressed
      */
-    private void renderDebugBoundingBox(Entity entityIn, double x, double y, double z, float entityYaw, float partialTicks) {
+    private void renderDebugBoundingBox(Entity entityIn, double x, double y, double z, float partialTicks) {
         if (!Shaders.isShadowPass) {
             GlStateManager.depthMask(false);
             GlStateManager.disableTexture2D();
