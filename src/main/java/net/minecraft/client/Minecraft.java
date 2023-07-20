@@ -1453,7 +1453,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                                     if (itemstack.isEmpty()) {
                                         return;
                                     }
-                                    if (!this.playerController.getIsHittingBlock() && itemstack.getCount() == i && !this.playerController.isInCreativeMode()) {
+                                    if (itemstack.getCount() != i || this.playerController.isInCreativeMode()) {
                                         this.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
                                     }
                                     if (enumactionresult == EnumActionResult.SUCCESS) {
@@ -2079,7 +2079,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     @SuppressWarnings("all")
     public void launchIntegratedServer(String folderName, String worldName, @Nullable WorldSettings worldSettingsIn) {
         this.loadWorld(null);
-        System.gc();
+        if (!Managers.moduleManager.boostModules.get("FastLoad").isEnabled()) {
+            System.gc();
+        }
         ISaveHandler isavehandler = this.saveLoader.getSaveLoader(folderName, false);
         WorldInfo worldinfo = isavehandler.loadWorldInfo();
 
@@ -2221,7 +2223,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             this.player = null;
         }
 
-        System.gc();
+        if (!Managers.moduleManager.boostModules.get("FastLoad").isEnabled()) {
+            System.gc();
+        }
         this.systemTime = 0L;
     }
 

@@ -5,6 +5,8 @@ import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.Category;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
+import cn.floatingpoint.min.system.module.impl.boost.impl.FastLoad;
+import cn.floatingpoint.min.system.module.impl.boost.impl.MemoryManager;
 import cn.floatingpoint.min.system.module.impl.boost.impl.Sprint;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
@@ -36,6 +38,8 @@ public class ModuleManager implements Manager {
     @Override
     public void init() {
         // Boost
+        boostModules.put("FastLoad", new FastLoad());
+        boostModules.put("MemoryManager", new MemoryManager());
         boostModules.put("Sprint", new Sprint());
         // Misc
         miscModules.put("AutoText", new AutoText());
@@ -46,6 +50,7 @@ public class ModuleManager implements Manager {
         renderModules.put("CleanView", new CleanView());
         renderModules.put("ClickGUI", new ClickGUI());
         renderModules.put("FullBright", new FullBright());
+        renderModules.put("ItemPhysics", new ItemPhysics());
         renderModules.put("MinimizedBobbing", new MinimizedBobbing());
         renderModules.put("MoreParticles", new MoreParticles());
         renderModules.put("PotionDisplay", new PotionDisplay());

@@ -51,7 +51,7 @@ public class Sprint extends BoostModule implements DraggableGameView {
 
     @Override
     public int getWidth() {
-        return mc.fontRenderer.getStringWidth(text.getValue());
+        return showText.getValue() ? mc.fontRenderer.getStringWidth(text.getValue()) : 0;
     }
 
     @Override

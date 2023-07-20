@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.optifine.reflect.Reflector;
 
@@ -58,6 +57,7 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
 
     @Override
     public boolean draw(int x, int y) {
+        if (!this.isEnabled()) return false;
         Collection<PotionEffect> collection = this.mc.player.getActivePotionEffects();
         if (!collection.isEmpty()) {
             if (mode.isCurrentMode("FPSMaster")) {
