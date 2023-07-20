@@ -34,7 +34,7 @@ public class DraggableGameViewManager implements Manager {
                 draggableMap.put(draggableGameView, new Vec2i(positionMap.getInt("x"), positionMap.getInt("y")));
             }
         } catch (Exception ignore) {}
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Sprint"), new Vec2i(800, 4));
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Scoreboard"), new Vec2i(800, 50));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Sprint"), new Vec2i(440, 4));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Scoreboard"), new Vec2i(400, 50));
     }
 }

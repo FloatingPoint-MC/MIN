@@ -139,7 +139,7 @@ public class EntityEvokerFangs extends Entity
     {
         EntityLivingBase entitylivingbase = this.getCaster();
 
-        if (p_190551_1_.isEntityAlive() && !p_190551_1_.getIsInvulnerable() && p_190551_1_ != entitylivingbase)
+        if (p_190551_1_.isEntityAlive() && p_190551_1_.isNotInvulnerable() && p_190551_1_ != entitylivingbase)
         {
             if (entitylivingbase == null)
             {

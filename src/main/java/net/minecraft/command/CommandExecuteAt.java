@@ -1,8 +1,5 @@
 package net.minecraft.command;
 
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -10,6 +7,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandExecuteAt extends CommandBase
 {
@@ -61,7 +62,7 @@ public class CommandExecuteAt extends CommandBase
                 double d3 = parseDouble(d0, args[5], false);
                 double d4 = parseDouble(d1, args[6], false);
                 double d5 = parseDouble(d2, args[7], false);
-                Block block = getBlockByText(sender, args[8]);
+                Block block = getBlockByText(args[8]);
                 BlockPos blockpos = new BlockPos(d3, d4, d5);
 
                 if (!world.isBlockLoaded(blockpos))
@@ -76,7 +77,7 @@ public class CommandExecuteAt extends CommandBase
                     throw new CommandException("commands.execute.failed", new Object[] {"detect", entity.getName()});
                 }
 
-                if (!CommandBase.convertArgToBlockStatePredicate(block, args[9]).apply(iblockstate))
+                if (!CommandBase.convertArgToBlockStatePredicate(block, args[9]).test(iblockstate))
                 {
                     throw new CommandException("commands.execute.failed", new Object[] {"detect", entity.getName()});
                 }

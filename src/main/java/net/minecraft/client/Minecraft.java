@@ -238,7 +238,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     public int displayWidth;
     public int displayHeight;
 
-    private final Timer timer = new Timer(20.0F);
+    public final Timer timer = new Timer(20.0F);
 
     /**
      * Instance of PlayerUsageSnooper.
@@ -1566,8 +1566,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         if (this.world != null) {
             Managers.moduleManager.boostModules.values().stream().filter(Module::isEnabled).forEach(BoostModule::tick);
             Managers.moduleManager.miscModules.values().stream().filter(Module::isEnabled).forEach(MiscModule::tick);
+            this.player.lastAttackTick--;
+            if (this.player.lastAttackTick < 0) {
+                this.player.attackedOther = false;
+            }
         }
-
 
         this.profiler.startSection("gui");
 
@@ -1952,7 +1955,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (!this.gameSettings.keyBindUseItem.isKeyDown()) {
                 this.playerController.onStoppedUsingItem(this.player);
             }
-            if (!this.player.isRowingBoat()) {
+            if (!this.player.isRowingBoat() && this.objectMouseOver != null) {
                 if (this.player.getActiveItemStack().getItem() instanceof ItemSword) {
                     switch (Animation.blockSwingMode.getValue()) {
                         case "None":

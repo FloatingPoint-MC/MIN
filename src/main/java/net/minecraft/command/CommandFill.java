@@ -1,9 +1,6 @@
 package net.minecraft.command;
 
 import com.google.common.collect.Lists;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -15,6 +12,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandFill extends CommandBase
 {
@@ -56,7 +57,7 @@ public class CommandFill extends CommandBase
             sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 0);
             BlockPos blockpos = parseBlockPos(sender, args, 0, false);
             BlockPos blockpos1 = parseBlockPos(sender, args, 3, false);
-            Block block = CommandBase.getBlockByText(sender, args[6]);
+            Block block = CommandBase.getBlockByText(args[6]);
             IBlockState iblockstate;
 
             if (args.length >= 8)
@@ -137,9 +138,9 @@ public class CommandFill extends CommandBase
                                     }
                                     else if ("replace".equals(args[8]) && !block.hasTileEntity() && args.length > 9)
                                     {
-                                        Block block1 = CommandBase.getBlockByText(sender, args[9]);
+                                        Block block1 = CommandBase.getBlockByText(args[9]);
 
-                                        if (world.getBlockState(blockpos4).getBlock() != block1 || args.length > 10 && !"-1".equals(args[10]) && !"*".equals(args[10]) && !CommandBase.convertArgToBlockStatePredicate(block1, args[10]).apply(world.getBlockState(blockpos4)))
+                                        if (world.getBlockState(blockpos4).getBlock() != block1 || args.length > 10 && !"-1".equals(args[10]) && !"*".equals(args[10]) && !CommandBase.convertArgToBlockStatePredicate(block1, args[10]).test(world.getBlockState(blockpos4)))
                                         {
                                             continue;
                                         }

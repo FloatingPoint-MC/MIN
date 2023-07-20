@@ -3,6 +3,8 @@ package net.minecraft.client.network;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
+import cn.floatingpoint.min.system.module.impl.misc.impl.CheaterDetector;
+import cn.floatingpoint.min.utils.client.CheatDetection;
 import cn.floatingpoint.min.utils.math.DESUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
@@ -628,10 +630,27 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     }
 
     /**
-     * Prints a chatmessage in the chat GUI
+     * Prints a chat message in the chat GUI
      */
     public void handleChat(SPacketChat packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
+        String text = packetIn.getChatComponent().getUnformattedText();
+        if (Managers.moduleManager.miscModules.get("CheaterDetector").isEnabled() && CheaterDetector.autoTaunt.getValue()) {
+            for (Entry<UUID, CheatDetection> entry : Managers.clientManager.cheaterUuids.entrySet()) {
+                if (!entry.getValue().hacks) continue;
+                EntityPlayer player = this.client.world.getPlayerEntityByUUID(entry.getKey());
+                if (player == null) continue;
+                if (Pattern.compile("起床战争>> " + this.client.player.getName() + "\\[(.*?)] \\((.*?)之队\\)杀死了 " + player.getName() + " \\((.*?)之队\\)!").matcher(text).matches()) {
+                    ArrayList<String> messages = Managers.clientManager.sarcasticMessages;
+                    this.client.player.sendChatMessage(messages.get(new Random().nextInt(messages.size())).replace("{0}", player.getName()));
+                }
+            }
+        }
+        if (Managers.moduleManager.miscModules.get("AutoText").isEnabled() && AutoText.whenToSend.isCurrentMode("End")) {
+            if (Pattern.compile("起床战争>> 恭喜 ！(.*?)之队队获得胜利!").matcher(text).matches()) {
+                AutoText.timeToSendGG = true;
+            }
+        }
         this.client.ingameGUI.addChatMessage(packetIn.getType(), packetIn.getChatComponent());
     }
 
@@ -1252,9 +1271,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
             case SUBTITLE:
                 s1 = s2;
-                Pattern pattern = Pattern.compile("(.*?)\2476队获得胜利，用时\247e(.*?)");
-                if (pattern.matcher(s1).matches()) {
-                    AutoText.timeToSendGG = true;
+                if (Managers.moduleManager.modules.get("AutoText").isEnabled() && AutoText.whenToSend.isCurrentMode("Win")) {
+                    Pattern pattern = Pattern.compile("(.*?)\2476队获得胜利，用时\247e(.*?)");
+                    if (pattern.matcher(s1).matches()) {
+                        AutoText.timeToSendGG = true;
+                    }
                 }
                 break;
             case ACTIONBAR:

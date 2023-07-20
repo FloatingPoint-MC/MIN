@@ -126,7 +126,7 @@ public class ClickUI extends GuiScreen {
                     Module module = moduleEntry.getValue();
                     int minY = Math.max(y, height / 2 - 140);
                     if (minY >= height / 2 + 140) continue;
-                    RenderUtil.doGlScissor(animationRight + 140, minY, 280, Math.min(Math.min(y + 30 + moduleAnimations.get(module) - Math.max(y, height / 2 - 140), height / 2 + 140 - y), 280));
+                    RenderUtil.doGlScissor(animationRight + 140, minY, 280, Math.max(Math.min(Math.min(y + 30 + moduleAnimations.get(module) - Math.max(y, height / 2 - 140), height / 2 + 140 - y), 280), 0));
                     int moduleY = 20;
                     for (Map.Entry<String, Value<?>> valueEntry : module.getValues().entrySet()) {
                         Value<?> value = valueEntry.getValue();

@@ -294,7 +294,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 
             this.addPotionEffect(new PotionEffect(MobEffects.POISON, 900));
 
-            if (player.isCreative() || !this.getIsInvulnerable())
+            if (player.isCreative() || this.isNotInvulnerable())
             {
                 this.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
             }

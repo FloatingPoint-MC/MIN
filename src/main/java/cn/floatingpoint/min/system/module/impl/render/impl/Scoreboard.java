@@ -9,7 +9,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
@@ -28,13 +27,11 @@ import java.util.stream.Collectors;
 public class Scoreboard extends RenderModule implements DraggableGameView {
     public static ScoreObjective scoreObjective;
     private final ModeValue font = new ModeValue(new String[]{"Minecraft", "SourceSans"}, "Minecraft");
-    private final ModeValue alignMode = new ModeValue(new String[]{"Right", "Left"}, "Right");
     private int width, height;
 
     public Scoreboard() {
         addValues(
-                new Pair<>("Font", font),
-                new Pair<>("AlignMode", alignMode)
+                new Pair<>("Font", font)
         );
         setCanBeEnabled(false);
     }
@@ -57,6 +54,8 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
     @Override
     public boolean draw(int x, int y) {
         if (scoreObjective == null) {
+            width = 0;
+            height = 0;
             return false;
         }
         FontRenderer fontRenderer = font.isCurrentMode("Minecraft") ? mc.fontRenderer : font.isCurrentMode("SourceSans") ? Managers.fontManager.sourceHansSansCN_Regular_18 : null;

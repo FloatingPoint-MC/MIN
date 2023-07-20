@@ -762,7 +762,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         this.hurtCameraEffect(partialTicks);
 
         if (this.mc.gameSettings.viewBobbing) {
-            this.applyBobbing(partialTicks);
+            if (!Managers.moduleManager.renderModules.get("MinimizedBobbing").isEnabled()) {
+                this.applyBobbing(partialTicks);
+            }
         }
 
         float f1 = this.mc.player.prevTimeInPortal + (this.mc.player.timeInPortal - this.mc.player.prevTimeInPortal) * partialTicks;

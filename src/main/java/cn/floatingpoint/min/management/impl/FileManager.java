@@ -92,8 +92,38 @@ public class FileManager implements Manager {
         }
     }
 
+    public ArrayList<String> readAsList(final String file) {
+        try {
+            final File f = new File(this.dir, file);
+            if (!f.exists()) {
+                if (f.getParentFile() != null && !f.getParentFile().exists()) {
+                    if (!f.getParentFile().mkdirs()) {
+                        return new ArrayList<>();
+                    }
+                }
+                if (!f.createNewFile()) {
+                    return new ArrayList<>();
+                }
+            }
+            ArrayList<String> arrayList = new ArrayList<>();
+            try (FileInputStream fis = new FileInputStream(f)) {
+                try (InputStreamReader isr = new InputStreamReader(fis)) {
+                    try (BufferedReader br = new BufferedReader(isr)) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            arrayList.add(line);
+                        }
+                    }
+                }
+            }
+            return arrayList;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     public String readAsString(final String file) {
-        StringBuilder out = new StringBuilder();
         try {
             final File f = new File(this.dir, file);
             if (!f.exists()) {
@@ -106,6 +136,7 @@ public class FileManager implements Manager {
                     return "";
                 }
             }
+            StringBuilder out = new StringBuilder();
             try (FileInputStream fis = new FileInputStream(f)) {
                 try (InputStreamReader isr = new InputStreamReader(fis)) {
                     try (BufferedReader br = new BufferedReader(isr)) {
@@ -115,9 +146,8 @@ public class FileManager implements Manager {
                         }
                     }
                 }
-                fis.close();
-                return out.toString();
             }
+            return out.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,5 +203,10 @@ public class FileManager implements Manager {
                 .put("Config-Version", FileManager.VERSION)
                 .put("Language", Managers.i18NManager.getSelectedLanguage())
                 .toString(), false);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String sarcasticMessage : Managers.clientManager.sarcasticMessages) {
+            stringBuilder.append(sarcasticMessage).append(System.lineSeparator());
+        }
+        save("SarcasticMessages.txt", stringBuilder.toString(), false);
     }
 }

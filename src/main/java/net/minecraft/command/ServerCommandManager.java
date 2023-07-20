@@ -33,12 +33,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
-public class ServerCommandManager extends CommandHandler implements ICommandListener
-{
+public class ServerCommandManager extends CommandHandler implements ICommandListener {
     private final MinecraftServer server;
 
-    public ServerCommandManager(MinecraftServer serverIn)
-    {
+    public ServerCommandManager(MinecraftServer serverIn) {
         this.server = serverIn;
         this.registerCommand(new CommandTime());
         this.registerCommand(new CommandGameMode());
@@ -90,8 +88,7 @@ public class ServerCommandManager extends CommandHandler implements ICommandList
         this.registerCommand(new CommandReload());
         this.registerCommand(new CommandFunction());
 
-        if (serverIn.isDedicatedServer())
-        {
+        if (serverIn.isDedicatedServer()) {
             this.registerCommand(new CommandOp());
             this.registerCommand(new CommandDeOp());
             this.registerCommand(new CommandStop());
@@ -107,9 +104,7 @@ public class ServerCommandManager extends CommandHandler implements ICommandList
             this.registerCommand(new CommandListPlayers());
             this.registerCommand(new CommandWhitelist());
             this.registerCommand(new CommandSetPlayerTimeout());
-        }
-        else
-        {
+        } else {
             this.registerCommand(new CommandPublishLocalServer());
         }
 
@@ -119,57 +114,47 @@ public class ServerCommandManager extends CommandHandler implements ICommandList
     /**
      * Send an informative message to the server operators
      */
-    public void notifyListener(ICommandSender sender, ICommand command, int flags, String translationKey, Object... translationArgs)
-    {
+    public void notifyListener(ICommandSender sender, ICommand command, int flags, String translationKey, Object... translationArgs) {
         boolean flag = true;
         MinecraftServer minecraftserver = this.server;
 
-        if (!sender.sendCommandFeedback())
-        {
+        if (!sender.sendCommandFeedback()) {
             flag = false;
         }
 
-        ITextComponent itextcomponent = new TextComponentTranslation("chat.type.admin", new Object[] {sender.getName(), new TextComponentTranslation(translationKey, translationArgs)});
+        ITextComponent itextcomponent = new TextComponentTranslation("chat.type.admin", sender.getName(), new TextComponentTranslation(translationKey, translationArgs));
         itextcomponent.getStyle().setColor(TextFormatting.GRAY);
-        itextcomponent.getStyle().setItalic(Boolean.valueOf(true));
+        itextcomponent.getStyle().setItalic(Boolean.TRUE);
 
-        if (flag)
-        {
-            for (EntityPlayer entityplayer : minecraftserver.getPlayerList().getPlayers())
-            {
-                if (entityplayer != sender && minecraftserver.getPlayerList().canSendCommands(entityplayer.getGameProfile()) && command.checkPermission(this.server, sender))
-                {
+        if (flag) {
+            for (EntityPlayer entityplayer : minecraftserver.getPlayerList().getPlayers()) {
+                if (entityplayer != sender && minecraftserver.getPlayerList().canSendCommands(entityplayer.getGameProfile()) && command.checkPermission(this.server, sender)) {
                     boolean flag1 = sender instanceof MinecraftServer && this.server.shouldBroadcastConsoleToOps();
                     boolean flag2 = sender instanceof RConConsoleSource && this.server.shouldBroadcastRconToOps();
 
-                    if (flag1 || flag2 || !(sender instanceof RConConsoleSource) && !(sender instanceof MinecraftServer))
-                    {
+                    if (flag1 || flag2 || !(sender instanceof RConConsoleSource) && !(sender instanceof MinecraftServer)) {
                         entityplayer.sendMessage(itextcomponent);
                     }
                 }
             }
         }
 
-        if (sender != minecraftserver && minecraftserver.worlds[0].getGameRules().getBoolean("logAdminCommands"))
-        {
+        if (sender != minecraftserver && minecraftserver.worlds[0].getGameRules().getBoolean("logAdminCommands")) {
             minecraftserver.sendMessage(itextcomponent);
         }
 
         boolean flag3 = minecraftserver.worlds[0].getGameRules().getBoolean("sendCommandFeedback");
 
-        if (sender instanceof CommandBlockBaseLogic)
-        {
-            flag3 = ((CommandBlockBaseLogic)sender).shouldTrackOutput();
+        if (sender instanceof CommandBlockBaseLogic) {
+            flag3 = ((CommandBlockBaseLogic) sender).shouldTrackOutput();
         }
 
-        if ((flags & 1) != 1 && flag3 || sender instanceof MinecraftServer)
-        {
+        if ((flags & 1) != 1 && flag3 || sender instanceof MinecraftServer) {
             sender.sendMessage(new TextComponentTranslation(translationKey, translationArgs));
         }
     }
 
-    protected MinecraftServer getServer()
-    {
+    protected MinecraftServer getServer() {
         return this.server;
     }
 }

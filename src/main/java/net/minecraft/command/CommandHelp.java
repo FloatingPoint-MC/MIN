@@ -1,6 +1,5 @@
 package net.minecraft.command;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class CommandHelp extends CommandBase
 
     public List<String> getAliases()
     {
-        return Arrays.<String>asList("?");
+        return Collections.singletonList("?");
     }
 
     /**
@@ -77,7 +76,7 @@ public class CommandHelp extends CommandBase
 
                 if (icommand != null)
                 {
-                    throw new WrongUsageException(icommand.getUsage(sender), new Object[0]);
+                    throw new WrongUsageException(icommand.getUsage(sender));
                 }
 
                 if (MathHelper.getInt(args[0], -1) == -1 && MathHelper.getInt(args[0], -2) == -2)
@@ -89,21 +88,21 @@ public class CommandHelp extends CommandBase
             }
 
             int l = Math.min((k + 1) * 7, list.size());
-            TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.help.header", new Object[] {k + 1, j + 1});
+            TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.help.header", k + 1, j + 1);
             textcomponenttranslation1.getStyle().setColor(TextFormatting.DARK_GREEN);
             sender.sendMessage(textcomponenttranslation1);
 
             for (int i1 = k * 7; i1 < l; ++i1)
             {
                 ICommand icommand1 = list.get(i1);
-                TextComponentTranslation textcomponenttranslation = new TextComponentTranslation(icommand1.getUsage(sender), new Object[0]);
+                TextComponentTranslation textcomponenttranslation = new TextComponentTranslation(icommand1.getUsage(sender));
                 textcomponenttranslation.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + icommand1.getName() + " "));
                 sender.sendMessage(textcomponenttranslation);
             }
 
             if (k == 0)
             {
-                TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.help.footer", new Object[0]);
+                TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.help.footer");
                 textcomponenttranslation2.getStyle().setColor(TextFormatting.GREEN);
                 sender.sendMessage(textcomponenttranslation2);
             }
@@ -127,11 +126,11 @@ public class CommandHelp extends CommandBase
         if (args.length == 1)
         {
             Set<String> set = this.getCommandMap(server).keySet();
-            return getListOfStringsMatchingLastWord(args, (String[])set.toArray(new String[set.size()]));
+            return getListOfStringsMatchingLastWord(args, set.toArray(new String[set.size()]));
         }
         else
         {
-            return Collections.<String>emptyList();
+            return Collections.emptyList();
         }
     }
 }

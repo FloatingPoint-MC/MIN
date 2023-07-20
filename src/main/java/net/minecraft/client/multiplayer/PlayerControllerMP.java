@@ -1,5 +1,7 @@
 package net.minecraft.client.multiplayer;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.MoreParticles;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCommandBlock;
@@ -33,17 +35,15 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.StatisticsManager;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class PlayerControllerMP {
     /**
@@ -437,6 +437,24 @@ public class PlayerControllerMP {
      */
     public void attackEntity(EntityPlayer playerIn, Entity targetEntity) {
         this.syncCurrentPlayItem();
+        mc.player.attackedOther = true;
+        mc.player.lastAttackTick = 10;
+        if (Managers.moduleManager.modules.get("MoreParticles").isEnabled()) {
+            for (int i = 0; i < MoreParticles.critParticles.getValue(); i++) {
+                mc.effectRenderer.emitParticleAtEntity(targetEntity, EnumParticleTypes.CRIT);
+            }
+
+            for (int i = 0; i < MoreParticles.sharpParticles.getValue().byteValue(); i++) {
+                mc.effectRenderer.emitParticleAtEntity(targetEntity, EnumParticleTypes.CRIT_MAGIC);
+            }
+            Random random = new Random();
+            for (int i = 0; i < MoreParticles.bloodParticles.getValue().byteValue(); i++) {
+                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), -random.nextFloat() * 2, random.nextFloat(), random.nextFloat() * 2, 152);
+                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), random.nextFloat() * 2, random.nextFloat(), -random.nextFloat() * 2, 152);
+                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), -random.nextFloat() * 2, random.nextFloat(), random.nextFloat() * 2, 152);
+                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), -random.nextFloat() * 2, random.nextFloat(), -random.nextFloat() * 2, 152);
+            }
+        }
         this.connection.sendPacket(new CPacketUseEntity(targetEntity));
 
         if (this.currentGameType != GameType.SPECTATOR) {

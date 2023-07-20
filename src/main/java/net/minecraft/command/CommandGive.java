@@ -52,7 +52,7 @@ public class CommandGive extends CommandBase
         else
         {
             EntityPlayer entityplayer = getPlayer(server, sender, args[0]);
-            Item item = getItemByText(sender, args[1]);
+            Item item = getItemByText(args[1]);
             int i = args.length >= 3 ? parseInt(args[2], 1, item.getItemStackLimit()) : 1;
             int j = args.length >= 4 ? parseInt(args[3]) : 0;
             ItemStack itemstack = new ItemStack(item, i, j);

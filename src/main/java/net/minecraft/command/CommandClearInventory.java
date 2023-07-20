@@ -44,7 +44,7 @@ public class CommandClearInventory extends CommandBase
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP entityplayermp = args.length == 0 ? getCommandSenderAsPlayer(sender) : getPlayer(server, sender, args[0]);
-        Item item = args.length >= 2 ? getItemByText(sender, args[1]) : null;
+        Item item = args.length >= 2 ? getItemByText(args[1]) : null;
         int i = args.length >= 3 ? parseInt(args[2], -1) : -1;
         int j = args.length >= 4 ? parseInt(args[3], -1) : -1;
         NBTTagCompound nbttagcompound = null;

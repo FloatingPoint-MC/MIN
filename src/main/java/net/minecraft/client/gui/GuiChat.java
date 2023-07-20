@@ -95,7 +95,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         }
 
         if (keyCode == 1) {
-            this.mc.displayGuiScreen((GuiScreen) null);
+            this.mc.displayGuiScreen(null);
         } else if (keyCode != 28 && keyCode != 156) {
             if (keyCode == 200) {
                 this.getSentHistory(-1);
@@ -115,7 +115,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
                 this.sendChatMessage(s);
             }
 
-            this.mc.displayGuiScreen((GuiScreen) null);
+            this.mc.displayGuiScreen(null);
         }
     }
 
@@ -156,11 +156,12 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         }
 
         this.inputField.mouseClicked(mouseX, mouseY, mouseButton);
+        ScaledResolution scaledresolution = new ScaledResolution(mc);
         if (clickedDraggable == null && mouseButton == 0) {
             for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
                 DraggableGameView draggableGameView = entry.getKey();
                 Vec2i position = entry.getValue();
-                if (isHovered(position.x, position.y, position.x + draggableGameView.getWidth(), position.y + draggableGameView.getHeight(), mouseX, mouseY)) {
+                if (isHovered(scaledresolution.getScaledWidth() / 2 + position.x, position.y, scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.getWidth(), position.y + draggableGameView.getHeight(), mouseX, mouseY)) {
                     clickedDraggable = draggableGameView;
                     return;
                 }
@@ -218,8 +219,8 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
                 ScaledResolution scaledResolution = new ScaledResolution(mc);
                 int width = scaledResolution.getScaledWidth();
                 int height = scaledResolution.getScaledHeight();
-                if (x + clickedDraggable.getWidth() > width) {
-                    x = width - clickedDraggable.getWidth();
+                if (scaledResolution.getScaledWidth() / 2 + x + clickedDraggable.getWidth() > width) {
+                    x = width - clickedDraggable.getWidth() - scaledResolution.getScaledWidth() / 2;
                 }
                 if (y + clickedDraggable.getHeight() > height) {
                     y = height - clickedDraggable.getHeight();

@@ -1,10 +1,6 @@
 package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
-import cn.floatingpoint.min.system.module.Module;
-import cn.floatingpoint.min.system.module.impl.render.RenderModule;
-import cn.floatingpoint.min.system.ui.components.DraggableGameView;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -12,7 +8,6 @@ import com.google.common.collect.Ordering;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
@@ -39,7 +34,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
@@ -389,9 +383,9 @@ public class GuiIngame extends Gui {
         GlStateManager.pushMatrix();
         if (mc.currentScreen instanceof GuiChat) {
             int color = new Color(40, 40, 40, 102).getRGB();
-            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(vec2i.x, vec2i.y, vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
+            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y, scaledresolution.getScaledWidth() / 2 + vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
         }
-        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(vec2i.x, vec2i.y));
+        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y));
         GlStateManager.popMatrix();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

@@ -1,16 +1,8 @@
 package net.minecraft.command.server;
 
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.CommandResultStats;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +11,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandTestForBlock extends CommandBase
 {
@@ -59,7 +55,7 @@ public class CommandTestForBlock extends CommandBase
         {
             sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 0);
             BlockPos blockpos = parseBlockPos(sender, args, 0, false);
-            Block block = getBlockByText(sender, args[3]);
+            Block block = getBlockByText(args[3]);
 
             if (block == null)
             {
@@ -100,7 +96,7 @@ public class CommandTestForBlock extends CommandBase
                     {
                         throw new CommandException("commands.testforblock.failed.tile", new Object[] {blockpos.getX(), blockpos.getY(), blockpos.getZ(), block1.getLocalizedName(), block.getLocalizedName()});
                     }
-                    else if (args.length >= 5 && !CommandBase.convertArgToBlockStatePredicate(block, args[4]).apply(iblockstate))
+                    else if (args.length >= 5 && !CommandBase.convertArgToBlockStatePredicate(block, args[4]).test(iblockstate))
                     {
                         try
                         {

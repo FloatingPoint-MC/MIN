@@ -47,19 +47,7 @@ public class ClickEvent
             }
             else
             {
-                if (this.value != null)
-                {
-                    if (!this.value.equals(clickevent.value))
-                    {
-                        return false;
-                    }
-                }
-                else if (clickevent.value != null)
-                {
-                    return false;
-                }
-
-                return true;
+                return this.value.equals(clickevent.value);
             }
         }
         else
@@ -76,11 +64,11 @@ public class ClickEvent
     public int hashCode()
     {
         int i = this.action.hashCode();
-        i = 31 * i + (this.value != null ? this.value.hashCode() : 0);
+        i = 31 * i + this.value.hashCode();
         return i;
     }
 
-    public static enum Action
+    public enum Action
     {
         OPEN_URL("open_url", true),
         OPEN_FILE("open_file", false),
@@ -88,11 +76,11 @@ public class ClickEvent
         SUGGEST_COMMAND("suggest_command", true),
         CHANGE_PAGE("change_page", true);
 
-        private static final Map<String, ClickEvent.Action> NAME_MAPPING = Maps.<String, ClickEvent.Action>newHashMap();
+        private static final Map<String, ClickEvent.Action> NAME_MAPPING = Maps.newHashMap();
         private final boolean allowedInChat;
         private final String canonicalName;
 
-        private Action(String canonicalNameIn, boolean allowedInChatIn)
+        Action(String canonicalNameIn, boolean allowedInChatIn)
         {
             this.canonicalName = canonicalNameIn;
             this.allowedInChat = allowedInChatIn;

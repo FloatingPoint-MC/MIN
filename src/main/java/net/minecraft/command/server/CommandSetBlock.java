@@ -59,7 +59,7 @@ public class CommandSetBlock extends CommandBase
         {
             sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 0);
             BlockPos blockpos = parseBlockPos(sender, args, 0, false);
-            Block block = CommandBase.getBlockByText(sender, args[3]);
+            Block block = CommandBase.getBlockByText(args[3]);
             IBlockState iblockstate;
 
             if (args.length >= 5)

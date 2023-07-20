@@ -7,6 +7,8 @@ import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.boost.impl.Sprint;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
+import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
+import cn.floatingpoint.min.system.module.impl.misc.impl.CheaterDetector;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.*;
 import cn.floatingpoint.min.system.module.value.Value;
@@ -35,11 +37,16 @@ public class ModuleManager implements Manager {
     public void init() {
         // Boost
         boostModules.put("Sprint", new Sprint());
+        // Misc
+        miscModules.put("AutoText", new AutoText());
+        miscModules.put("CheaterDetector", new CheaterDetector());
         // Render
         renderModules.put("Animation", new Animation());
         renderModules.put("BlockOverlay", new BlockOverlay());
         renderModules.put("ClickGUI", new ClickGUI());
         renderModules.put("FullBright", new FullBright());
+        renderModules.put("MinimizedBobbing", new MinimizedBobbing());
+        renderModules.put("MoreParticles", new MoreParticles());
         renderModules.put("Scoreboard", new Scoreboard());
 
         modules.putAll(boostModules);

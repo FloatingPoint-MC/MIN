@@ -102,7 +102,7 @@ public class CommandReplaceItem extends CommandBase
 
             try
             {
-                item = getItemByText(sender, args[i]);
+                item = getItemByText(args[i]);
             }
             catch (NumberInvalidException numberinvalidexception)
             {

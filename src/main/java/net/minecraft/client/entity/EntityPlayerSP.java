@@ -1,6 +1,12 @@
 package net.minecraft.client.entity;
 
 import javax.annotation.Nullable;
+
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.command.CommandMin;
+import cn.floatingpoint.min.system.module.impl.misc.impl.CheaterDetector;
+import cn.floatingpoint.min.utils.client.ChatUtil;
+import cn.floatingpoint.min.utils.client.CheatDetection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ElytraSound;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -31,14 +37,13 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemElytra;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.play.client.CPacketAnimation;
@@ -76,6 +81,7 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -156,6 +162,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
     private EnumHand activeHand;
     private boolean rowingBoat;
     private boolean wasFallFlying;
+    public boolean attackedOther;
+    public int lastAttackTick;
 
     public EntityPlayerSP(Minecraft p_i47378_1_, World p_i47378_2_, NetHandlerPlayClient p_i47378_3_, StatisticsManager p_i47378_4_, RecipeBook p_i47378_5_)
     {
@@ -362,6 +370,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void sendChatMessage(String message)
     {
+        if (message.toLowerCase().startsWith("/min")) {
+            if (!CommandMin.execute(message.substring(5).split(" "))) {
+                return;
+            }
+        }
         this.connection.sendPacket(new CPacketChatMessage(message));
     }
 
@@ -384,7 +397,57 @@ public class EntityPlayerSP extends AbstractClientPlayer
     {
         if (!this.isEntityInvulnerable(damageSrc))
         {
+            if (Managers.moduleManager.miscModules.get("CheaterDetector").isEnabled() && CheaterDetector.reachCheck.getValue()) {
+                if (this.fire != 20.0F) return;
+                if (damageSrc == DamageSource.GENERIC && !damageSrc.isFireDamage() && !damageSrc.isMagicDamage() && damageSrc.isUnblockable() && !damageSrc.isExplosion() && !damageSrc.isProjectile()) {
+                    int i = 0;
+                    EntityPlayer entityPlayer = null;
+                    for (Entity entity : mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityPlayer && entity != this && entity.getDistance(this) <= 6.02f).collect(Collectors.toList())) {
+                        i++;
+                        entityPlayer = (EntityPlayer) entity;
+                        if (this.reachCheck(entity, (((EntityPlayer) entity).isPotionActive(Objects.requireNonNull(Potion.getPotionById(1))) ? (0.5 * (Objects.requireNonNull(((EntityPlayer) entity).getActivePotionEffect(Objects.requireNonNull(Potion.getPotionById(1)))).getAmplifier() + 1) + 5.0 / (Objects.requireNonNull(((EntityPlayer) entity).getActivePotionEffect(Objects.requireNonNull(Potion.getPotionById(1)))).getAmplifier() + 1)) * 0.2 : 0.0) + (((EntityPlayer) entity).getMoveSpeed() / 0.2873 * 0.5) + (attackedOther ? 0.0 : 0.2625))) {
+                            return;
+                        }
+                    }
+                    if (i == 1) {
+                        if (!entityPlayer.getActiveItemStack().isEmpty() && (entityPlayer.getActiveItemStack().getItem() instanceof ItemBow || entityPlayer.getActiveItemStack().getItem() instanceof ItemFishingRod)) {
+                            return;
+                        }
+                        CheatDetection detection = Managers.clientManager.cheaterUuids.getOrDefault(entityPlayer.getUniqueID(), new CheatDetection());
+                        detection.reachPercentage += 20;
+                        if (detection.reachPercentage >= 100) {
+                            detection.reach++;
+                            if (detection.reach == CheaterDetector.reachMaxVL.getValue()) {
+                                CheaterDetector.markCheating(entityPlayer, detection);
+                            }
+                            detection.sprintPercentage = 0;
+                            if (CheaterDetector.printVLToChat.getValue()) {
+                                ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("module.implement.CheaterDetector.vlNotice")
+                                        .replace("{0}", entityPlayer.getName())
+                                        .replace("{1}", Managers.i18NManager.getTranslation("module.implement.CheaterDetector.ReachCheck"))
+                                        .replace("{2}", String.valueOf(detection.sprint)));
+                            }
+                        } else if (CheaterDetector.verbose.getValue()) {
+
+                            ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("module.implement.CheaterDetector.verboseNotice")
+                                    .replace("{0}", entityPlayer.getName())
+                                    .replace("{1}", Managers.i18NManager.getTranslation("module.implement.CheaterDetector.ReachCheck"))
+                                    .replace("{2}", String.valueOf(detection.noSlowPercentage)));
+                        }
+                    }
+                }
+            }
             this.setHealth(this.getHealth() - damageAmount);
+        }
+    }
+
+    private boolean reachCheck(Entity entity, double addition) {
+        if (mc.player.posY > entity.getPositionEyes(mc.timer.renderPartialTicks).y) {
+            return entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector()) <= 3.72 + addition;
+        } else if (mc.player.posY + 1.8 < entity.getPositionEyes(mc.timer.renderPartialTicks).y) {
+            return Math.min(entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.78 + addition;
+        } else {
+            return Math.min(entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector().add(0.0D, 0.9D, 0.0D))) <= 3.46 + addition;
         }
     }
 
