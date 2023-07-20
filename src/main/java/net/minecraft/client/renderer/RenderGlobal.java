@@ -3018,17 +3018,17 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
     public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
         if (progress >= 0 && progress < 10) {
-            DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(Integer.valueOf(breakerId));
+            DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(breakerId);
 
             if (destroyblockprogress == null || destroyblockprogress.getPosition().getX() != pos.getX() || destroyblockprogress.getPosition().getY() != pos.getY() || destroyblockprogress.getPosition().getZ() != pos.getZ()) {
                 destroyblockprogress = new DestroyBlockProgress(breakerId, pos);
-                this.damagedBlocks.put(Integer.valueOf(breakerId), destroyblockprogress);
+                this.damagedBlocks.put(breakerId, destroyblockprogress);
             }
 
             destroyblockprogress.setPartialBlockDamage(progress);
             destroyblockprogress.setCloudUpdateTick(this.cloudTickCounter);
         } else {
-            this.damagedBlocks.remove(Integer.valueOf(breakerId));
+            this.damagedBlocks.remove(breakerId);
         }
     }
 

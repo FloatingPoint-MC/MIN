@@ -104,7 +104,7 @@ public class RenderEntityItem extends Render<EntityItem> {
 
         if (Managers.moduleManager.renderModules.get("ItemPhysics").isEnabled()) {
             GlStateManager.translate((float) x, (float) y, (float) z);
-            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            GlStateManager.scale(f, f1, f2);
             GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(entity.rotationYaw, 0.0F, 0.0F, 1.0F);
             if (flag1) {

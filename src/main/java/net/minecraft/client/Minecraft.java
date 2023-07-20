@@ -1416,7 +1416,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     @SuppressWarnings("incomplete-switch")
     private void rightClickMouse() {
-        if (!this.playerController.getIsHittingBlock()) {
+        if (!this.playerController.getIsHittingBlock() || Managers.moduleManager.miscModules.get("TerminateBreakingBlock").isEnabled()) {
             this.rightClickDelayTimer = 4;
 
             if (!this.player.isRowingBoat()) {
@@ -2022,7 +2022,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             this.rightClickMouse();
         }
 
-        this.sendClickBlockToController(this.currentScreen == null && this.gameSettings.keyBindAttack.isKeyDown() && this.inGameHasFocus);
+        this.sendClickBlockToController(this.currentScreen == null && (this.gameSettings.keyBindAttack.isKeyDown() && (!Managers.moduleManager.miscModules.get("TerminateBreakingBlock").isEnabled() || !this.player.isHandActive())) && this.inGameHasFocus);
     }
 
     private void runTickMouse() throws IOException {

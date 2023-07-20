@@ -54,6 +54,8 @@
   "module.implement.CheaterDetector.confirmDelete": "\u00A7aNot a cheater? \u00A7e\u00A7nClick here to make the player innocence.",
   "module.implement.CheaterDetector.clickDelete": "\u00A7eClick to delete the player from cheater list.",
   "module.implement.CheaterDetector.delete": "\u00A7aPlayer \u00A7e{0}\u00A7a is no longer marked as a cheater.",
+  "module.implement.TerminateBreakingBlock": "Terminate Breaking Block",
+  "module.implement.TerminateBreakingBlock.description": "Stop breaking when you start blocking.",
   "module.implement.Animation": "Animation",
   "module.implement.Animation.description": "Modify some animations in game.",
   "module.implement.Animation.OldRodAnimation": "Old Rod Animation",
