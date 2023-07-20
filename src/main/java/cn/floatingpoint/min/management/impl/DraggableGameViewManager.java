@@ -36,5 +36,6 @@ public class DraggableGameViewManager implements Manager {
         } catch (Exception ignore) {}
         draggableMap.putIfAbsent(DraggableGameView.getDraggable("Sprint"), new Vec2i(440, 4));
         draggableMap.putIfAbsent(DraggableGameView.getDraggable("Scoreboard"), new Vec2i(400, 50));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("PotionDisplay"), new Vec2i(340, 200));
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.SPacketChunkData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.EnumFacing;
@@ -652,7 +653,7 @@ public class Chunk
 
                 if (block1 instanceof ITileEntityProvider)
                 {
-                    TileEntity tileentity = this.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK);
+                    TileEntity tileentity = this.getTileEntity(pos, EnumCreateEntityType.CHECK);
 
                     if (tileentity != null)
                     {
@@ -667,7 +668,7 @@ public class Chunk
 
                 if (block instanceof ITileEntityProvider)
                 {
-                    TileEntity tileentity1 = this.getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK);
+                    TileEntity tileentity1 = this.getTileEntity(pos, EnumCreateEntityType.CHECK);
 
                     if (tileentity1 == null)
                     {
@@ -840,18 +841,18 @@ public class Chunk
     }
 
     @Nullable
-    public TileEntity getTileEntity(BlockPos pos, Chunk.EnumCreateEntityType creationMode)
+    public TileEntity getTileEntity(BlockPos pos, EnumCreateEntityType creationMode)
     {
         TileEntity tileentity = this.tileEntities.get(pos);
 
         if (tileentity == null)
         {
-            if (creationMode == Chunk.EnumCreateEntityType.IMMEDIATE)
+            if (creationMode == EnumCreateEntityType.IMMEDIATE)
             {
                 tileentity = this.createNewTileEntity(pos);
                 this.world.setTileEntity(pos, tileentity);
             }
-            else if (creationMode == Chunk.EnumCreateEntityType.QUEUED)
+            else if (creationMode == EnumCreateEntityType.QUEUED)
             {
                 this.tileEntityPosQueue.add(pos);
             }
@@ -948,7 +949,7 @@ public class Chunk
     /**
      * Fills the given list of all entities that intersect within the given bounding box that aren't the passed entity.
      */
-    public void getEntitiesWithinAABBForEntity(@Nullable Entity entityIn, AxisAlignedBB aabb, List<Entity> listToFill, Predicate <? super Entity > filter)
+    public void getEntitiesWithinAABBForEntity(@Nullable Entity entityIn, AxisAlignedBB aabb, List<Entity> listToFill, java.util.function.Predicate<Entity> filter)
     {
         int i = MathHelper.floor((aabb.minY - 2.0D) / 16.0D);
         int j = MathHelper.floor((aabb.maxY + 2.0D) / 16.0D);
@@ -963,7 +964,7 @@ public class Chunk
                 {
                     if (entity.getEntityBoundingBox().intersects(aabb) && entity != entityIn)
                     {
-                        if (filter.apply(entity))
+                        if (filter.test(entity))
                         {
                             listToFill.add(entity);
                         }
@@ -974,7 +975,7 @@ public class Chunk
                         {
                             for (Entity entity1 : aentity)
                             {
-                                if (entity1 != entityIn && entity1.getEntityBoundingBox().intersects(aabb) && filter.apply(entity1))
+                                if (entity1 != entityIn && entity1.getEntityBoundingBox().intersects(aabb) && filter.test(entity1))
                                 {
                                     listToFill.add(entity1);
                                 }
@@ -1137,7 +1138,7 @@ public class Chunk
         {
             BlockPos blockpos = this.tileEntityPosQueue.poll();
 
-            if (this.getTileEntity(blockpos, Chunk.EnumCreateEntityType.CHECK) == null && this.getBlockState(blockpos).getBlock().hasTileEntity())
+            if (this.getTileEntity(blockpos, EnumCreateEntityType.CHECK) == null && this.getBlockState(blockpos).getBlock().hasTileEntity())
             {
                 TileEntity tileentity = this.createNewTileEntity(blockpos);
                 this.world.setTileEntity(blockpos, tileentity);
@@ -1208,7 +1209,7 @@ public class Chunk
     /**
      * Loads this chunk from the given buffer.
      *  
-     * @see net.minecraft.network.play.server.SPacketChunkData#getReadBuffer()
+     * @see SPacketChunkData#getReadBuffer()
      */
     public void read(PacketBuffer buf, int availableSections, boolean groundUpContinuous)
     {

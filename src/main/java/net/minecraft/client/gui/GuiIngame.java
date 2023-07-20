@@ -1,9 +1,9 @@
 package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.PotionDisplay;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 
 import java.awt.*;
 import java.util.*;
@@ -16,7 +16,6 @@ import net.minecraft.client.gui.chat.IChatListener;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.chat.NormalChatListener;
 import net.minecraft.client.gui.chat.OverlayChatListener;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -32,8 +31,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
@@ -50,7 +47,6 @@ import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 import net.optifine.CustomItems;
 import net.optifine.TextureAnimations;
-import net.optifine.reflect.Reflector;
 
 public class GuiIngame extends Gui {
     private static final ResourceLocation VIGNETTE_TEX_PATH = new ResourceLocation("textures/misc/vignette.png");
@@ -263,7 +259,7 @@ public class GuiIngame extends Gui {
             this.spectatorGui.renderSelectedItem(scaledresolution);
         }
 
-        this.renderPotionEffects(scaledresolution);
+        PotionDisplay.guiIngame = this;
 
         if (this.mc.gameSettings.showDebugInfo) {
             this.overlayDebug.renderDebugInfo(scaledresolution);
@@ -423,86 +419,6 @@ public class GuiIngame extends Gui {
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GlStateManager.enableAlpha();
                 this.drawTexturedModalRect(l / 2 - 7, i1 / 2 - 7, 0, 0, 16, 16);
-            }
-        }
-    }
-
-    protected void renderPotionEffects(ScaledResolution resolution) {
-        Collection<PotionEffect> collection = this.mc.player.getActivePotionEffects();
-
-        if (!collection.isEmpty()) {
-            this.mc.getTextureManager().bindTexture(GuiContainer.INVENTORY_BACKGROUND);
-            GlStateManager.enableBlend();
-            int i = 0;
-            int j = 0;
-            Iterator<PotionEffect> iterator = Ordering.natural().reverse().sortedCopy(collection).iterator();
-
-            while (true) {
-                PotionEffect potioneffect;
-                Potion potion;
-                boolean flag;
-
-                while (true) {
-                    if (!iterator.hasNext()) {
-                        return;
-                    }
-
-                    potioneffect = iterator.next();
-                    potion = potioneffect.getPotion();
-                    flag = potion.hasStatusIcon();
-
-                    if (!Reflector.ForgePotion_shouldRenderHUD.exists()) {
-                        break;
-                    }
-
-                    if (Reflector.callBoolean(potion, Reflector.ForgePotion_shouldRenderHUD, potioneffect)) {
-                        this.mc.getTextureManager().bindTexture(GuiContainer.INVENTORY_BACKGROUND);
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (flag && potioneffect.doesShowParticles()) {
-                    int k = resolution.getScaledWidth();
-                    int l = 1;
-
-                    int i1 = potion.getStatusIconIndex();
-
-                    if (potion.isBeneficial()) {
-                        ++i;
-                        k = k - 25 * i;
-                    } else {
-                        ++j;
-                        k = k - 25 * j;
-                        l += 26;
-                    }
-
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    float f = 1.0F;
-
-                    if (potioneffect.getIsAmbient()) {
-                        this.drawTexturedModalRect(k, l, 165, 166, 24, 24);
-                    } else {
-                        this.drawTexturedModalRect(k, l, 141, 166, 24, 24);
-
-                        if (potioneffect.getDuration() <= 200) {
-                            int j1 = 10 - potioneffect.getDuration() / 20;
-                            f = MathHelper.clamp((float) potioneffect.getDuration() / 10.0F / 5.0F * 0.5F, 0.0F, 0.5F) + MathHelper.cos((float) potioneffect.getDuration() * (float) Math.PI / 5.0F) * MathHelper.clamp((float) j1 / 10.0F * 0.25F, 0.0F, 0.25F);
-                        }
-                    }
-
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, f);
-
-                    if (Reflector.ForgePotion_renderHUDEffect.exists()) {
-                        if (potion.hasStatusIcon()) {
-                            this.drawTexturedModalRect(k + 3, l + 3, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
-                        }
-
-                        Reflector.call(potion, Reflector.ForgePotion_renderHUDEffect, potioneffect, this, k, l, this.zLevel, f);
-                    } else {
-                        this.drawTexturedModalRect(k + 3, l + 3, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
-                    }
-                }
             }
         }
     }

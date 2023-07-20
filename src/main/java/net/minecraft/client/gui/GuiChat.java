@@ -214,12 +214,12 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         if (clickedDraggable != null) {
             if (Mouse.isButtonDown(0)) {
                 Vec2i prevPosition = Managers.draggableGameViewManager.draggableMap.get(clickedDraggable);
-                int x = Math.max(prevPosition.x + mouseX - prevMouseX, 0);
-                int y = Math.max(prevPosition.y + mouseY - prevMouseY, 0);
                 ScaledResolution scaledResolution = new ScaledResolution(mc);
                 int width = scaledResolution.getScaledWidth();
                 int height = scaledResolution.getScaledHeight();
-                if (scaledResolution.getScaledWidth() / 2 + x + clickedDraggable.getWidth() > width) {
+                int x = Math.max(prevPosition.x + mouseX - prevMouseX, -width / 2);
+                int y = Math.max(prevPosition.y + mouseY - prevMouseY, 0);
+                if (width / 2 + x + clickedDraggable.getWidth() > width) {
                     x = width - clickedDraggable.getWidth() - scaledResolution.getScaledWidth() / 2;
                 }
                 if (y + clickedDraggable.getHeight() > height) {

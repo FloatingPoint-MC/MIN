@@ -6,6 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+
 public class PotionEffect implements Comparable<PotionEffect>
 {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -221,6 +223,7 @@ public class PotionEffect implements Comparable<PotionEffect>
     /**
      * Read a custom potion effect from a potion item's NBT data.
      */
+    @Nullable
     public static PotionEffect readCustomPotionEffectFromNBT(NBTTagCompound nbt)
     {
         int i = nbt.getByte("Id");
@@ -242,7 +245,7 @@ public class PotionEffect implements Comparable<PotionEffect>
                 flag1 = nbt.getBoolean("ShowParticles");
             }
 
-            return new PotionEffect(potion, k, j < 0 ? 0 : j, flag, flag1);
+            return new PotionEffect(potion, k, Math.max(j, 0), flag, flag1);
         }
     }
 

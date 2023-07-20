@@ -1,14 +1,17 @@
 package net.minecraft.init;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.ResourceLocation;
 
-public class Enchantments
-{
+public class Enchantments {
     public static final Enchantment PROTECTION = getRegisteredEnchantment("protection");
 
-    /** Protection against fire */
+    /**
+     * Protection against fire
+     */
     public static final Enchantment FIRE_PROTECTION = getRegisteredEnchantment("fire_protection");
     public static final Enchantment FEATHER_FALLING = getRegisteredEnchantment("feather_falling");
     public static final Enchantment BLAST_PROTECTION = getRegisteredEnchantment("blast_protection");
@@ -24,7 +27,9 @@ public class Enchantments
     public static final Enchantment BANE_OF_ARTHROPODS = getRegisteredEnchantment("bane_of_arthropods");
     public static final Enchantment KNOCKBACK = getRegisteredEnchantment("knockback");
 
-    /** Lights mobs on fire */
+    /**
+     * Lights mobs on fire
+     */
     public static final Enchantment FIRE_ASPECT = getRegisteredEnchantment("fire_aspect");
     public static final Enchantment LOOTING = getRegisteredEnchantment("looting");
     public static final Enchantment SWEEPING = getRegisteredEnchantment("sweeping");
@@ -41,25 +46,19 @@ public class Enchantments
     public static final Enchantment MENDING = getRegisteredEnchantment("mending");
     public static final Enchantment VANISHING_CURSE = getRegisteredEnchantment("vanishing_curse");
 
-    @Nullable
-    private static Enchantment getRegisteredEnchantment(String id)
-    {
+    @Nonnull
+    private static Enchantment getRegisteredEnchantment(String id) {
         Enchantment enchantment = Enchantment.REGISTRY.getObject(new ResourceLocation(id));
 
-        if (enchantment == null)
-        {
+        if (enchantment == null) {
             throw new IllegalStateException("Invalid Enchantment requested: " + id);
-        }
-        else
-        {
+        } else {
             return enchantment;
         }
     }
 
-    static
-    {
-        if (!Bootstrap.isRegistered())
-        {
+    static {
+        if (!Bootstrap.isRegistered()) {
             throw new RuntimeException("Accessed Enchantments before Bootstrap!");
         }
     }

@@ -289,11 +289,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     private int leftClickCounter;
 
     /**
-     * Fake mouse left click counter
-     */
-    private int fakeLeftClickCounter;
-
-    /**
      * Display width
      */
     private final int tempDisplayWidth;
@@ -1367,7 +1362,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     private void sendClickBlockToController(boolean leftClick) {
         if (!leftClick) {
             this.leftClickCounter = 0;
-            this.fakeLeftClickCounter = 0;
         }
 
         if (this.leftClickCounter <= 0 && !this.player.isHandActive()) {
@@ -1605,7 +1599,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
         if (this.currentScreen != null) {
             this.leftClickCounter = 10000;
-            this.fakeLeftClickCounter = 10000;
         }
 
         if (this.currentScreen != null) {
@@ -1636,10 +1629,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
             if (this.leftClickCounter > 0) {
                 --this.leftClickCounter;
-            }
-
-            if (this.fakeLeftClickCounter > 0) {
-                --this.fakeLeftClickCounter;
             }
 
             this.profiler.endStartSection("keyboard");
@@ -1963,20 +1952,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
-                            if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
-                                this.gameSettings.keyBindAttack.clearKeyPressed();
-                            }
-                            break;
-                    }
-                    while (this.gameSettings.keyBindAttack.isPressed()) {
-                        if (this.fakeLeftClickCounter <= 0) {
-                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS) {
-                                if (this.playerController.isNotCreative()) {
-                                    this.fakeLeftClickCounter = 10;
+                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
+                                if (!this.player.isSwingInProgress) {
+                                    this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
-                            this.player.swingArm(EnumHand.MAIN_HAND);
-                        }
+                            break;
+                        case "Whenever":
+                            if (!this.player.isSwingInProgress) {
+                                this.player.swingArm(EnumHand.MAIN_HAND, false);
+                            }
+                            break;
                     }
                 } else if (this.player.getActiveItemStack().getItem() instanceof ItemBow) {
                     switch (Animation.bowSwingMode.getValue()) {
@@ -1985,20 +1971,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
-                            if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
-                                this.gameSettings.keyBindAttack.clearKeyPressed();
-                            }
-                            break;
-                    }
-                    while (this.gameSettings.keyBindAttack.isPressed()) {
-                        if (this.fakeLeftClickCounter <= 0) {
-                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS) {
-                                if (this.playerController.isNotCreative()) {
-                                    this.fakeLeftClickCounter = 10;
+                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
+                                if (!this.player.isSwingInProgress) {
+                                    this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
-                            this.player.swingArm(EnumHand.MAIN_HAND);
-                        }
+                            break;
+                        case "Whenever":
+                            if (!this.player.isSwingInProgress) {
+                                this.player.swingArm(EnumHand.MAIN_HAND, false);
+                            }
+                            break;
                     }
                 } else if (this.player.getActiveItemStack().getItem() instanceof ItemFood || this.player.getActiveItemStack().getItem() instanceof ItemPotion) {
                     switch (Animation.foodSwingMode.getValue()) {
@@ -2007,20 +1990,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
-                            if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
-                                this.gameSettings.keyBindAttack.clearKeyPressed();
-                            }
-                            break;
-                    }
-                    while (this.gameSettings.keyBindAttack.isPressed()) {
-                        if (this.fakeLeftClickCounter <= 0) {
-                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS) {
-                                if (this.playerController.isNotCreative()) {
-                                    this.fakeLeftClickCounter = 10;
+                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
+                                if (!this.player.isSwingInProgress) {
+                                    this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
-                            this.player.swingArm(EnumHand.MAIN_HAND);
-                        }
+                            break;
+                        case "Whenever":
+                            if (!this.player.isSwingInProgress) {
+                                this.player.swingArm(EnumHand.MAIN_HAND, false);
+                            }
+                            break;
                     }
                 } else {
                     this.gameSettings.keyBindAttack.clearKeyPressed();

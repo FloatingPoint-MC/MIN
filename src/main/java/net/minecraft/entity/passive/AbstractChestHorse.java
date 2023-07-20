@@ -20,6 +20,8 @@ import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public abstract class AbstractChestHorse extends AbstractHorse
 {
     private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.<Boolean>createKey(AbstractChestHorse.class, DataSerializers.BOOLEAN);
@@ -76,7 +78,7 @@ public abstract class AbstractChestHorse extends AbstractHorse
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource cause)
+    public void onDeath(@Nullable DamageSource cause)
     {
         super.onDeath(cause);
 

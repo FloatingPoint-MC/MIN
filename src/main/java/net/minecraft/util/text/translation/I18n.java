@@ -1,6 +1,5 @@
 package net.minecraft.util.text.translation;
 
-@Deprecated
 public class I18n
 {
     private static final LanguageMap localizedName = LanguageMap.getInstance();
@@ -11,7 +10,6 @@ public class I18n
      */
     private static final LanguageMap fallbackTranslator = new LanguageMap();
 
-    @Deprecated
 
     /**
      * Translates a Stat name
@@ -21,7 +19,6 @@ public class I18n
         return localizedName.translateKey(key);
     }
 
-    @Deprecated
 
     /**
      * Translates a Stat name with format args
@@ -31,7 +28,6 @@ public class I18n
         return localizedName.translateKeyFormat(key, format);
     }
 
-    @Deprecated
 
     /**
      * Translates a Stat name using the fallback (hardcoded en_US) locale.  Looks like it's only intended to be used if
@@ -42,7 +38,6 @@ public class I18n
         return fallbackTranslator.translateKey(key);
     }
 
-    @Deprecated
 
     /**
      * Determines whether or not translateToLocal will find a translation for the given key.

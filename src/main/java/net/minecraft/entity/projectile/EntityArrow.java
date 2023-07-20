@@ -2,8 +2,6 @@ package net.minecraft.entity.projectile;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -28,12 +26,11 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public abstract class EntityArrow extends Entity implements IProjectile
 {
@@ -54,7 +51,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
     protected int timeInGround;
 
     /** 1 if the player can pick up the arrow */
-    public EntityArrow.PickupStatus pickupStatus;
+    public PickupStatus pickupStatus;
 
     /** Seems to be some sort of timer for animating an arrow. */
     public int arrowShake;
@@ -74,7 +71,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
         this.xTile = -1;
         this.yTile = -1;
         this.zTile = -1;
-        this.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+        this.pickupStatus = PickupStatus.DISALLOWED;
         this.damage = 2.0D;
         this.setSize(0.5F, 0.5F);
     }
@@ -92,7 +89,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
 
         if (shooter instanceof EntityPlayer)
         {
-            this.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+            this.pickupStatus = PickupStatus.ALLOWED;
         }
     }
 
@@ -274,7 +271,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
             {
                 EntityPlayer entityplayer = (EntityPlayer)raytraceresult.entityHit;
 
-                if (this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
+                if (this.shootingEntity instanceof EntityPlayer && ((EntityPlayer) this.shootingEntity).canNotAttackPlayer(entityplayer))
                 {
                     raytraceresult = null;
                 }
@@ -440,7 +437,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
 
                 if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D)
                 {
-                    if (this.pickupStatus == EntityArrow.PickupStatus.ALLOWED)
+                    if (this.pickupStatus == PickupStatus.ALLOWED)
                     {
                         this.entityDropItem(this.getArrowStack(), 0.1F);
                     }
@@ -500,7 +497,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
     protected Entity findEntityOnPath(Vec3d start, Vec3d end)
     {
         Entity entity = null;
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS);
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS::test);
         double d0 = 0.0D;
 
         for (int i = 0; i < list.size(); ++i)
@@ -586,11 +583,11 @@ public abstract class EntityArrow extends Entity implements IProjectile
 
         if (compound.hasKey("pickup", 99))
         {
-            this.pickupStatus = EntityArrow.PickupStatus.getByOrdinal(compound.getByte("pickup"));
+            this.pickupStatus = PickupStatus.getByOrdinal(compound.getByte("pickup"));
         }
         else if (compound.hasKey("player", 99))
         {
-            this.pickupStatus = compound.getBoolean("player") ? EntityArrow.PickupStatus.ALLOWED : EntityArrow.PickupStatus.DISALLOWED;
+            this.pickupStatus = compound.getBoolean("player") ? PickupStatus.ALLOWED : PickupStatus.DISALLOWED;
         }
 
         this.setIsCritical(compound.getBoolean("crit"));
@@ -603,9 +600,9 @@ public abstract class EntityArrow extends Entity implements IProjectile
     {
         if (!this.world.isRemote && this.inGround && this.arrowShake <= 0)
         {
-            boolean flag = this.pickupStatus == EntityArrow.PickupStatus.ALLOWED || this.pickupStatus == EntityArrow.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
+            boolean flag = this.pickupStatus == PickupStatus.ALLOWED || this.pickupStatus == PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
-            if (this.pickupStatus == EntityArrow.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getArrowStack()))
+            if (this.pickupStatus == PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getArrowStack()))
             {
                 flag = false;
             }
@@ -714,7 +711,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
         ALLOWED,
         CREATIVE_ONLY;
 
-        public static EntityArrow.PickupStatus getByOrdinal(int ordinal)
+        public static PickupStatus getByOrdinal(int ordinal)
         {
             if (ordinal < 0 || ordinal > values().length)
             {

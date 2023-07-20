@@ -112,7 +112,7 @@ public abstract class EntityMob extends EntityCreature implements IMob
         {
             if (i > 0 && entityIn instanceof EntityLivingBase)
             {
-                ((EntityLivingBase)entityIn).knockBack(this, (float)i * 0.5F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                ((EntityLivingBase)entityIn).knockBack((float)i * 0.5F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                 this.motionX *= 0.6D;
                 this.motionZ *= 0.6D;
             }

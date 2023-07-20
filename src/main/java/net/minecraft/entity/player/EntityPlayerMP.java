@@ -526,7 +526,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource cause)
+    public void onDeath(@Nullable DamageSource cause)
     {
         boolean flag = this.world.getGameRules().getBoolean("showDeathMessages");
         this.connection.sendPacket(new SPacketCombatEvent(this.getCombatTracker(), SPacketCombatEvent.Event.ENTITY_DIED, flag));
@@ -673,7 +673,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
                 {
                     Entity entity = source.getTrueSource();
 
-                    if (entity instanceof EntityPlayer && !this.canAttackPlayer((EntityPlayer)entity))
+                    if (entity instanceof EntityPlayer && this.canNotAttackPlayer((EntityPlayer) entity))
                     {
                         return false;
                     }
@@ -682,7 +682,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
                     {
                         EntityArrow entityarrow = (EntityArrow)entity;
 
-                        if (entityarrow.shootingEntity instanceof EntityPlayer && !this.canAttackPlayer((EntityPlayer)entityarrow.shootingEntity))
+                        if (entityarrow.shootingEntity instanceof EntityPlayer && this.canNotAttackPlayer((EntityPlayer) entityarrow.shootingEntity))
                         {
                             return false;
                         }
@@ -694,9 +694,9 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         }
     }
 
-    public boolean canAttackPlayer(EntityPlayer other)
+    public boolean canNotAttackPlayer(EntityPlayer other)
     {
-        return !this.canPlayersAttack() ? false : super.canAttackPlayer(other);
+        return !this.canPlayersAttack() ? true : super.canNotAttackPlayer(other);
     }
 
     /**

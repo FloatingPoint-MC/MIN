@@ -648,7 +648,7 @@ public class EntityWolf extends EntityTameable
                 }
             }
 
-            if (target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)target))
+            if (target instanceof EntityPlayer && owner instanceof EntityPlayer && ((EntityPlayer) owner).canNotAttackPlayer((EntityPlayer) target))
             {
                 return false;
             }

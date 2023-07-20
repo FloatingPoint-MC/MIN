@@ -40,7 +40,7 @@ public class DamageSource
     private boolean isDamageAllowedInCreativeMode;
 
     /**
-     * Whether or not the damage ignores modification by potion effects or enchantments.
+     * Whether the damage ignores modification by potion effects or enchantments.
      */
     private boolean damageIsAbsolute;
     private float hungerDamage = 0.1F;
@@ -182,22 +182,22 @@ public class DamageSource
         this.damageType = damageTypeIn;
     }
 
-    @Nullable
 
     /**
      * Retrieves the immediate causer of the damage, e.g. the arrow entity, not its shooter
      */
+    @Nullable
     public Entity getImmediateSource()
     {
         return this.getTrueSource();
     }
 
-    @Nullable
 
     /**
      * Retrieves the true causer of the damage, e.g. the player who fired an arrow, the shulker who fired the bullet,
      * etc.
      */
+    @Nullable
     public Entity getTrueSource()
     {
         return null;
@@ -244,7 +244,7 @@ public class DamageSource
         EntityLivingBase entitylivingbase = entityLivingBaseIn.getAttackingEntity();
         String s = "death.attack." + this.damageType;
         String s1 = s + ".player";
-        return entitylivingbase != null && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, new Object[] {entityLivingBaseIn.getDisplayName(), entitylivingbase.getDisplayName()}) : new TextComponentTranslation(s, new Object[] {entityLivingBaseIn.getDisplayName()});
+        return entitylivingbase != null && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName(), entitylivingbase.getDisplayName()) : new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName());
     }
 
     /**
@@ -303,11 +303,10 @@ public class DamageSource
         return entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode;
     }
 
-    @Nullable
-
     /**
      * Gets the location from which the damage originates.
      */
+    @Nullable
     public Vec3d getDamageLocation()
     {
         return null;

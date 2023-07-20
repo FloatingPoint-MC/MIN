@@ -3,6 +3,7 @@ package cn.floatingpoint.min.system.module.impl.render.impl;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import cn.floatingpoint.min.system.module.value.impl.ModeValue;
+import cn.floatingpoint.min.system.module.value.impl.OptionValue;
 import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import cn.floatingpoint.min.utils.client.Pair;
 import com.google.common.collect.Iterables;
@@ -25,13 +26,17 @@ import java.util.stream.Collectors;
  * @date: 2023-07-19 20:49:37
  */
 public class Scoreboard extends RenderModule implements DraggableGameView {
-    public static ScoreObjective scoreObjective;
     private final ModeValue font = new ModeValue(new String[]{"Minecraft", "SourceSans"}, "Minecraft");
+    private final OptionValue redNumber = new OptionValue(true);
+    private final OptionValue background = new OptionValue(true);
+    public static ScoreObjective scoreObjective;
     private int width, height;
 
     public Scoreboard() {
         addValues(
-                new Pair<>("Font", font)
+                new Pair<>("Font", font),
+                new Pair<>("RedNumber", redNumber),
+                new Pair<>("Background", background)
         );
         setCanBeEnabled(false);
     }
@@ -103,15 +108,23 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
             String s2 = TextFormatting.RED + String.valueOf(score1.getScorePoints());
             int k = y - j * fontRenderer.FONT_HEIGHT + height;
             int l = x - 3 + 2 + width;
-            Gui.drawRect(l1 - 2, k, l, k + fontRenderer.FONT_HEIGHT, 1342177280);
+            if (background.getValue()) {
+                Gui.drawRect(l1 - 2, k, l, k + fontRenderer.FONT_HEIGHT, 1342177280);
+            }
             fontRenderer.drawString(s1, l1, k, new Color(553648127).getRGB());
-            fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, new Color(553648127).getRGB());
+            if (redNumber.getValue()) {
+                fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, new Color(553648127).getRGB());
+            }
 
             if (j == scores.size()) {
                 String s3 = scoreObjective.getDisplayName();
-                Gui.drawRect(l1 - 2, k - fontRenderer.FONT_HEIGHT - 1, l, k - 1, 1610612736);
-                Gui.drawRect(l1 - 2, k - 1, l, k, 1342177280);
-                fontRenderer.drawString(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
+                if (background.getValue()) {
+                    Gui.drawRect(l1 - 2, k - fontRenderer.FONT_HEIGHT - 1, l, k - 1, 1610612736);
+                    Gui.drawRect(l1 - 2, k - 1, l, k, 1342177280);
+                }
+                if (redNumber.getValue()) {
+                    fontRenderer.drawString(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
+                }
             }
         }
         scoreObjective = null;

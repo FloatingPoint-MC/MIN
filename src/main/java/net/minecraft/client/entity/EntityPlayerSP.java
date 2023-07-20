@@ -1,5 +1,6 @@
 package net.minecraft.client.entity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cn.floatingpoint.min.management.Managers;
@@ -384,6 +385,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.connection.sendPacket(new CPacketAnimation(hand));
     }
 
+    public void swingArm(EnumHand hand, boolean sendPacket)
+    {
+        super.swingArm(hand);
+        if (sendPacket) {
+            this.connection.sendPacket(new CPacketAnimation(hand));
+        }
+    }
+
     public void respawnPlayer()
     {
         this.connection.sendPacket(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
@@ -505,7 +514,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     /**
      * Adds a value to a statistic field.
      */
-    public void addStat(StatBase stat, int amount)
+    public void addStat(@Nonnull StatBase stat, int amount)
     {
         if (stat.isIndependent) {
             super.addStat(stat, amount);

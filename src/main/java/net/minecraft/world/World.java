@@ -2422,10 +2422,10 @@ public abstract class World implements IBlockAccess {
     }
 
     public List<Entity> getEntitiesWithinAABBExcludingEntity(@Nullable Entity entityIn, AxisAlignedBB bb) {
-        return this.getEntitiesInAABBexcluding(entityIn, bb, EntitySelectors.NOT_SPECTATING);
+        return this.getEntitiesInAABBexcluding(entityIn, bb, EntitySelectors.NOT_SPECTATING::test);
     }
 
-    public List<Entity> getEntitiesInAABBexcluding(@Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+    public List<Entity> getEntitiesInAABBexcluding(@Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable java.util.function.Predicate<Entity> predicate) {
         List<Entity> list = Lists.newArrayList();
         int j2 = MathHelper.floor((boundingBox.minX - 2.0D) / 16.0D);
         int k2 = MathHelper.floor((boundingBox.maxX + 2.0D) / 16.0D);

@@ -1,19 +1,15 @@
 package net.minecraft.tileentity;
 
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockHopper;
+import net.minecraft.block.*;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerHopper;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
@@ -27,6 +23,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class TileEntityHopper extends TileEntityLockableLoot implements IHopper, ITickable
 {
@@ -119,25 +118,25 @@ public class TileEntityHopper extends TileEntityLockableLoot implements IHopper,
      * name} then this <em>should</em> be a direct string; otherwise it <em>should</em> be a valid translation
      * string.</dd>
      * <dd>However, note that <strong>the translation string may be invalid</strong>, as is the case for {@link
-     * net.minecraft.tileentity.TileEntityBanner TileEntityBanner} (always returns nonexistent translation code
-     * <code>banner</code> without a custom name), {@link net.minecraft.block.BlockAnvil.Anvil BlockAnvil$Anvil} (always
-     * returns <code>anvil</code>), {@link net.minecraft.block.BlockWorkbench.InterfaceCraftingTable
+     * TileEntityBanner TileEntityBanner} (always returns nonexistent translation code
+     * <code>banner</code> without a custom name), {@link BlockAnvil.Anvil BlockAnvil$Anvil} (always
+     * returns <code>anvil</code>), {@link BlockWorkbench.InterfaceCraftingTable
      * BlockWorkbench$InterfaceCraftingTable} (always returns <code>crafting_table</code>), {@link
-     * net.minecraft.inventory.InventoryCraftResult InventoryCraftResult} (always returns <code>Result</code>) and the
-     * {@link net.minecraft.entity.item.EntityMinecart EntityMinecart} family (uses the entity definition). This is not
+     * InventoryCraftResult InventoryCraftResult} (always returns <code>Result</code>) and the
+     * {@link EntityMinecart EntityMinecart} family (uses the entity definition). This is not
      * an exaustive list.</dd>
      * <dd>In general, this method should be safe to use on tile entities that implement IInventory.</dd>
-     * <dt>{@link net.minecraft.command.ICommandSender#getName() ICommandSender.getName()} and {@link
-     * net.minecraft.entity.Entity#getName() Entity.getName()}</dt>
+     * <dt>{@link ICommandSender#getName() ICommandSender.getName()} and {@link
+     * Entity#getName() Entity.getName()}</dt>
      * <dd>Returns a valid, displayable name (which may be localized). For most entities, this is the translated version
-     * of its translation string (obtained via {@link net.minecraft.entity.EntityList#getEntityString
+     * of its translation string (obtained via {@link EntityList#getEntityString
      * EntityList.getEntityString}).</dd>
      * <dd>If this entity has a custom name set, this will return that name.</dd>
      * <dd>For some entities, this will attempt to translate a nonexistent translation string; see <a
      * href="https://bugs.mojang.com/browse/MC-68446">MC-68446</a>. For {@linkplain
-     * net.minecraft.entity.player.EntityPlayer#getName() players} this returns the player's name. For {@linkplain
-     * net.minecraft.entity.passive.EntityOcelot ocelots} this may return the translation of
-     * <code>entity.Cat.name</code> if it is tamed. For {@linkplain net.minecraft.entity.item.EntityItem#getName() item
+     * EntityPlayer#getName() players} this returns the player's name. For {@linkplain
+     * EntityOcelot ocelots} this may return the translation of
+     * <code>entity.Cat.name</code> if it is tamed. For {@linkplain EntityItem#getName() item
      * entities}, this will attempt to return the name of the item in that item entity. In all cases other than players,
      * the custom name will overrule this.</dd>
      * <dd>For non-entity command senders, this will return some arbitrary name, such as "Rcon" or "Server".</dd>
@@ -352,7 +351,7 @@ public class TileEntityHopper extends TileEntityLockableLoot implements IHopper,
     }
 
     /**
-     * Pull dropped {@link net.minecraft.entity.item.EntityItem EntityItem}s from the world above the hopper and items
+     * Pull dropped {@link EntityItem EntityItem}s from the world above the hopper and items
      * from any inventory attached to this hopper into the hopper's inventory.
 
      * @param hopper the hopper in question
@@ -627,7 +626,7 @@ public class TileEntityHopper extends TileEntityLockableLoot implements IHopper,
 
         if (iinventory == null)
         {
-            List<Entity> list = worldIn.getEntitiesInAABBexcluding((Entity)null, new AxisAlignedBB(x - 0.5D, y - 0.5D, z - 0.5D, x + 0.5D, y + 0.5D, z + 0.5D), EntitySelectors.HAS_INVENTORY);
+            List<Entity> list = worldIn.getEntitiesInAABBexcluding((Entity)null, new AxisAlignedBB(x - 0.5D, y - 0.5D, z - 0.5D, x + 0.5D, y + 0.5D, z + 0.5D), EntitySelectors.HAS_INVENTORY::test);
 
             if (!list.isEmpty())
             {

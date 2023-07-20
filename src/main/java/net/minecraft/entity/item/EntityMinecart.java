@@ -1,9 +1,6 @@
 package net.minecraft.entity.item;
 
 import com.google.common.collect.Maps;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailPowered;
@@ -33,6 +30,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
 
 public abstract class EntityMinecart extends Entity implements IWorldNameable
 {
@@ -65,7 +66,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
         this.setSize(0.98F, 0.7F);
     }
 
-    public static EntityMinecart create(World worldIn, double x, double y, double z, EntityMinecart.Type typeIn)
+    public static EntityMinecart create(World worldIn, double x, double y, double z, Type typeIn)
     {
         switch (typeIn)
         {
@@ -405,9 +406,9 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
             this.setRotation(this.rotationYaw, this.rotationPitch);
 
-            if (this.getType() == EntityMinecart.Type.RIDEABLE && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D)
+            if (this.getType() == Type.RIDEABLE && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D)
             {
-                List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
+                List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this)::test);
 
                 if (!list.isEmpty())
                 {
@@ -947,7 +948,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
                             double d7 = entityIn.motionX + this.motionX;
                             double d8 = entityIn.motionZ + this.motionZ;
 
-                            if (((EntityMinecart)entityIn).getType() == EntityMinecart.Type.FURNACE && this.getType() != EntityMinecart.Type.FURNACE)
+                            if (((EntityMinecart)entityIn).getType() == Type.FURNACE && this.getType() != Type.FURNACE)
                             {
                                 this.motionX *= 0.20000000298023224D;
                                 this.motionZ *= 0.20000000298023224D;
@@ -955,7 +956,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
                                 entityIn.motionX *= 0.949999988079071D;
                                 entityIn.motionZ *= 0.949999988079071D;
                             }
-                            else if (((EntityMinecart)entityIn).getType() != EntityMinecart.Type.FURNACE && this.getType() == EntityMinecart.Type.FURNACE)
+                            else if (((EntityMinecart)entityIn).getType() != Type.FURNACE && this.getType() == Type.FURNACE)
                             {
                                 entityIn.motionX *= 0.20000000298023224D;
                                 entityIn.motionZ *= 0.20000000298023224D;
@@ -1065,7 +1066,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
         return ((Integer)this.dataManager.get(ROLLING_DIRECTION)).intValue();
     }
 
-    public abstract EntityMinecart.Type getType();
+    public abstract Type getType();
 
     public IBlockState getDisplayTile()
     {
@@ -1119,7 +1120,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
         HOPPER(5, "MinecartHopper"),
         COMMAND_BLOCK(6, "MinecartCommandBlock");
 
-        private static final Map<Integer, EntityMinecart.Type> BY_ID = Maps.<Integer, EntityMinecart.Type>newHashMap();
+        private static final Map<Integer, Type> BY_ID = Maps.<Integer, Type>newHashMap();
         private final int id;
         private final String name;
 
@@ -1139,14 +1140,14 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
             return this.name;
         }
 
-        public static EntityMinecart.Type getById(int idIn)
+        public static Type getById(int idIn)
         {
-            EntityMinecart.Type entityminecart$type = BY_ID.get(Integer.valueOf(idIn));
+            Type entityminecart$type = BY_ID.get(Integer.valueOf(idIn));
             return entityminecart$type == null ? RIDEABLE : entityminecart$type;
         }
 
         static {
-            for (EntityMinecart.Type entityminecart$type : values())
+            for (Type entityminecart$type : values())
             {
                 BY_ID.put(Integer.valueOf(entityminecart$type.getId()), entityminecart$type);
             }
