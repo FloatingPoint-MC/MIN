@@ -116,14 +116,14 @@ public class RenderEntityItem extends Render<EntityItem> {
                 double rotation;
                 if (flag1) {
                     if (!entity.onGround) {
-                        rotation = 1.89D;
+                        rotation = 1.1D;
                         entity.rotationPitch = (float) ((double) entity.rotationPitch + rotation);
                     }
                 } else if (!Double.isNaN(entity.posX) && !Double.isNaN(entity.posY) && !Double.isNaN(entity.posZ) && entity.world != null) {
                     if (entity.onGround) {
                         entity.rotationPitch = 0.0F;
                     } else {
-                        rotation = 1.89D;
+                        rotation = 1.1D;
                         entity.rotationPitch = (float) ((double) entity.rotationPitch + rotation);
                     }
                 }
