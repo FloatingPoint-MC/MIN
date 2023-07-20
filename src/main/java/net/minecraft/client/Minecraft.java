@@ -1952,14 +1952,14 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
-                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
-                                if (!this.player.isSwingInProgress) {
+                            if (this.gameSettings.keyBindAttack.isKeyDown()) {
+                                if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                                     this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
                             break;
                         case "Whenever":
-                            if (!this.player.isSwingInProgress) {
+                            if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 this.player.swingArm(EnumHand.MAIN_HAND, false);
                             }
                             break;
@@ -1971,14 +1971,14 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
-                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
-                                if (!this.player.isSwingInProgress) {
+                            if (this.gameSettings.keyBindAttack.isKeyDown()) {
+                                if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                                     this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
                             break;
                         case "Whenever":
-                            if (!this.player.isSwingInProgress) {
+                            if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 this.player.swingArm(EnumHand.MAIN_HAND, false);
                             }
                             break;
@@ -1990,14 +1990,14 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
-                            if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
-                                if (!this.player.isSwingInProgress) {
+                            if (this.gameSettings.keyBindAttack.isKeyDown()) {
+                                if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                                     this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
                             break;
                         case "Whenever":
-                            if (!this.player.isSwingInProgress) {
+                            if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 this.player.swingArm(EnumHand.MAIN_HAND, false);
                             }
                             break;
