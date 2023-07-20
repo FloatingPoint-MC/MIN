@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.NameProtect;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
@@ -461,6 +463,9 @@ public class FontRenderer implements IResourceManagerReloadListener
     @SuppressWarnings("all")
     private void renderStringAtPos(String text, boolean shadow)
     {
+        if (Minecraft.getMinecraft().player != null && Managers.moduleManager.renderModules.get("NameProtect").isEnabled()) {
+            text = text.replace(Minecraft.getMinecraft().player.getName(), NameProtect.name.getValue());
+        }
         for (int i = 0; i < text.length(); ++i)
         {
             char c0 = text.charAt(i);

@@ -55,6 +55,7 @@ public class ModuleManager implements Manager {
         renderModules.put("ItemPhysics", new ItemPhysics());
         renderModules.put("MinimizedBobbing", new MinimizedBobbing());
         renderModules.put("MoreParticles", new MoreParticles());
+        renderModules.put("NameProtect", new NameProtect());
         renderModules.put("PotionDisplay", new PotionDisplay());
         renderModules.put("Scoreboard", new Scoreboard());
 

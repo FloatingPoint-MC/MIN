@@ -132,12 +132,10 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
                     Gui.drawRect(l1 - 2, k - fontRenderer.FONT_HEIGHT - 1, l, k - 1, 1610612736);
                     Gui.drawRect(l1 - 2, k - 1, l, k, 1342177280);
                 }
-                if (redNumber.getValue()) {
-                    if (shadow.getValue()) {
-                        fontRenderer.drawStringWithShadow(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
-                    } else {
-                        fontRenderer.drawString(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
-                    }
+                if (shadow.getValue()) {
+                    fontRenderer.drawStringWithShadow(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
+                } else {
+                    fontRenderer.drawString(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
                 }
             }
         }
