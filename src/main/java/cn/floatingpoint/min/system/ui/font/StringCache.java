@@ -1,5 +1,8 @@
 package cn.floatingpoint.min.system.ui.font;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.NameProtect;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -403,6 +406,10 @@ public class StringCache {
         /* Check for invalid arguments */
         if (str == null || str.isEmpty()) {
             return 0;
+        }
+
+        if (Minecraft.getMinecraft().player != null && Managers.moduleManager.renderModules.get("NameProtect").isEnabled()) {
+            str = str.replace(Minecraft.getMinecraft().player.getName(), NameProtect.name.getValue());
         }
 
         // Fix for what RenderLivingBase#setBrightness does

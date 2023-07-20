@@ -1,6 +1,8 @@
 package cn.floatingpoint.min.system.command;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.hyt.party.VexViewButton;
+import cn.floatingpoint.min.system.ui.hyt.party.GuiHandleInvitation;
 import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.CheatDetection;
 import net.minecraft.client.Minecraft;
@@ -36,6 +38,22 @@ public class CommandMin {
                         cheatDetection.hacks = true;
                         Managers.clientManager.cheaterUuids.put(uuid, cheatDetection);
                         return true;
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("hyt")) {
+                if (args.length != 1) {
+                    if (args[1].equalsIgnoreCase("party")) {
+                        if (args.length != 2) {
+                            if (args[2].equalsIgnoreCase("handle")) {
+                                if (args.length == 5) {
+                                    try {
+                                        String accept = args[3];
+                                        String deny = args[4];
+                                        Minecraft.getMinecraft().displayGuiScreen(new GuiHandleInvitation(new VexViewButton("同意", accept), new VexViewButton("拒绝", deny)));
+                                    } catch (Exception ignore) {}
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -2,6 +2,7 @@ package cn.floatingpoint.min.system.hyt.party;
 
 import io.netty.buffer.ByteBuf;
 
+import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,11 +10,22 @@ import java.util.zip.GZIPInputStream;
 
 public class ButtonDecoder {
     private final String[] elements;
+    public final boolean invited;
+    public final String inviter;
 
     public ButtonDecoder(ByteBuf byteBuf) {
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
         elements = decode(bytes).split("<&>");
+        int index = this.containsString("邀请你加入队伍");
+        if (index != -1) {
+            invited = true;
+            System.out.println(this.elements[index - 3]);
+            inviter = this.elements[index - 3].replace(":<#>[txt]50", "").replace("\2476玩家 \2473\247l", "");
+        } else {
+            invited = false;
+            inviter = "";
+        }
     }
 
     private String decode(byte[] bytes) {
@@ -67,6 +79,16 @@ public class ButtonDecoder {
             }
         }
         return 0;
+    }
+
+    public int containsString(String s) {
+        for (int i = 0; i < this.elements.length; ++i) {
+            String e = this.elements[i];
+            if (e.contains(s)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public String getElement(int index) {

@@ -1,5 +1,7 @@
 package net.minecraft.world;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.misc.impl.WorldTimeChange;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
@@ -2838,6 +2840,9 @@ public abstract class World implements IBlockAccess {
      * Sets the world time.
      */
     public void setWorldTime(long time) {
+        if (Managers.moduleManager.miscModules.get("WorldTimeChanger").isEnabled()) {
+            time = WorldTimeChange.time.getValue();
+        }
         this.worldInfo.setWorldTime(time);
     }
 

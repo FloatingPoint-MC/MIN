@@ -678,6 +678,9 @@ public class FontRenderer implements IResourceManagerReloadListener
      */
     public int getStringWidth(String text)
     {
+        if (Minecraft.getMinecraft().player != null && Managers.moduleManager.renderModules.get("NameProtect").isEnabled()) {
+            text = text.replace(Minecraft.getMinecraft().player.getName(), NameProtect.name.getValue());
+        }
         float f = 0.0F;
         boolean flag = false;
 

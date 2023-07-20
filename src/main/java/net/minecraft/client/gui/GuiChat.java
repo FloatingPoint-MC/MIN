@@ -228,11 +228,10 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
                 Managers.draggableGameViewManager.draggableMap.put(clickedDraggable, new Vec2i(x, y));
                 prevMouseX = mouseX;
                 prevMouseY = mouseY;
-                return;
             } else {
                 clickedDraggable = null;
-                return;
             }
+            return;
         }
         prevMouseX = mouseX;
         prevMouseY = mouseY;

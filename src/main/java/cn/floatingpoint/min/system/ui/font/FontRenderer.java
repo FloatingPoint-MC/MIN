@@ -6,6 +6,8 @@
 */
 package cn.floatingpoint.min.system.ui.font;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.NameProtect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -108,6 +110,9 @@ public class FontRenderer extends net.minecraft.client.gui.FontRenderer {
     }
 
     public int getStringWidth(String text) {
+        if (Minecraft.getMinecraft().player != null && Managers.moduleManager.renderModules.get("NameProtect").isEnabled()) {
+            text = text.replace(Minecraft.getMinecraft().player.getName(), NameProtect.name.getValue());
+        }
         return getStringCache().getStringWidth(text);
     }
 

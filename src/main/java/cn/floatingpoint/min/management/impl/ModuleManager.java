@@ -12,6 +12,7 @@ import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
 import cn.floatingpoint.min.system.module.impl.misc.impl.CheaterDetector;
 import cn.floatingpoint.min.system.module.impl.misc.impl.TerminateBreakingBlock;
+import cn.floatingpoint.min.system.module.impl.misc.impl.WorldTimeChange;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.*;
 import cn.floatingpoint.min.system.module.value.Value;
@@ -46,6 +47,7 @@ public class ModuleManager implements Manager {
         miscModules.put("AutoText", new AutoText());
         miscModules.put("CheaterDetector", new CheaterDetector());
         miscModules.put("TerminateBreakingBlock", new TerminateBreakingBlock());
+        miscModules.put("WorldTimeChanger", new WorldTimeChange());
         // Render
         renderModules.put("Animation", new Animation());
         renderModules.put("BlockOverlay", new BlockOverlay());
