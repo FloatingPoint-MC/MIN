@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  */
 public class Scoreboard extends RenderModule implements DraggableGameView {
     private final ModeValue font = new ModeValue(new String[]{"Minecraft", "SourceSans"}, "Minecraft");
+    private final OptionValue shadow = new OptionValue(false);
     private final OptionValue redNumber = new OptionValue(true);
     private final OptionValue background = new OptionValue(true);
     public static ScoreObjective scoreObjective;
@@ -35,6 +36,7 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
     public Scoreboard() {
         addValues(
                 new Pair<>("Font", font),
+                new Pair<>("Shadow", shadow),
                 new Pair<>("RedNumber", redNumber),
                 new Pair<>("Background", background)
         );
@@ -111,9 +113,17 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
             if (background.getValue()) {
                 Gui.drawRect(l1 - 2, k, l, k + fontRenderer.FONT_HEIGHT, 1342177280);
             }
-            fontRenderer.drawString(s1, l1, k, new Color(553648127).getRGB());
+            if (shadow.getValue()) {
+                fontRenderer.drawStringWithShadow(s1, l1, k, new Color(553648127).getRGB());
+            } else {
+                fontRenderer.drawString(s1, l1, k, new Color(553648127).getRGB());
+            }
             if (redNumber.getValue()) {
-                fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, new Color(553648127).getRGB());
+                if (shadow.getValue()) {
+                    fontRenderer.drawStringWithShadow(s2, l - fontRenderer.getStringWidth(s2), k, new Color(553648127).getRGB());
+                } else {
+                    fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, new Color(553648127).getRGB());
+                }
             }
 
             if (j == scores.size()) {
@@ -123,7 +133,11 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
                     Gui.drawRect(l1 - 2, k - 1, l, k, 1342177280);
                 }
                 if (redNumber.getValue()) {
-                    fontRenderer.drawString(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
+                    if (shadow.getValue()) {
+                        fontRenderer.drawStringWithShadow(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
+                    } else {
+                        fontRenderer.drawString(s3, l1 + i / 2 - fontRenderer.getStringWidth(s3) / 2, k - fontRenderer.FONT_HEIGHT, new Color(553648127).getRGB());
+                    }
                 }
             }
         }

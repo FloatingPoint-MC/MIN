@@ -134,6 +134,8 @@
   "module.implement.Scoreboard.Font.description": "显示在计分板上的子的字体。",
   "module.implement.Scoreboard.Font.sub.Minecraft": "MC原版",
   "module.implement.Scoreboard.Font.sub.SourceSans": "思源黑体",
+  "module.implement.Scoreboard.Shadow": "字体阴影",
+  "module.implement.Scoreboard.Shadow.description": "让文字有阴影。",
   "module.implement.Scoreboard.RedNumber": "红色数字",
   "module.implement.Scoreboard.RedNumber.description": "是否在计分板右侧显示红色数字。",
   "module.implement.Scoreboard.Background": "背景",

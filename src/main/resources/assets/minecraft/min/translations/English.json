@@ -134,6 +134,8 @@
   "module.implement.Scoreboard.Font.description": "The font of the texts on the scoreboard.",
   "module.implement.Scoreboard.Font.sub.Minecraft": "MC Original",
   "module.implement.Scoreboard.Font.sub.SourceSans": "Source Sans",
+  "module.implement.Scoreboard.Shadow": "Font Shadow",
+  "module.implement.Scoreboard.Shadow.description": "Whether the texts have shadow.",
   "module.implement.Scoreboard.RedNumber": "Red Number",
   "module.implement.Scoreboard.RedNumber.description": "Whether display the red numbers on the right side.",
   "module.implement.Scoreboard.Background": "Background",
