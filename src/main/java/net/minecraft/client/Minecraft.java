@@ -1949,7 +1949,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     switch (Animation.blockSwingMode.getValue()) {
                         case "None":
                         case "Old":
-                            this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
@@ -1968,7 +1967,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     switch (Animation.bowSwingMode.getValue()) {
                         case "None":
                         case "Old":
-                            this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
@@ -1987,7 +1985,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     switch (Animation.foodSwingMode.getValue()) {
                         case "None":
                         case "Old":
-                            this.gameSettings.keyBindAttack.clearKeyPressed();
                             break;
                         case "AimBlock":
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
@@ -2002,13 +1999,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             }
                             break;
                     }
-                } else {
-                    this.gameSettings.keyBindAttack.clearKeyPressed();
                 }
-            } else {
-                this.gameSettings.keyBindAttack.clearKeyPressed();
             }
             this.gameSettings.keyBindUseItem.clearKeyPressed();
+            this.gameSettings.keyBindAttack.clearKeyPressed();
             this.gameSettings.keyBindPickBlock.clearKeyPressed();
         } else {
             while (this.gameSettings.keyBindAttack.isPressed()) {
