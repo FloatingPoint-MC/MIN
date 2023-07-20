@@ -202,6 +202,9 @@ public class FileManager implements Manager {
         save("config.json", new JSONObject()
                 .put("Config-Version", FileManager.VERSION)
                 .put("Language", Managers.i18NManager.getSelectedLanguage())
+                .put("Title-Size", Managers.clientManager.titleSize)
+                .put("Title-X", Managers.clientManager.titleX)
+                .put("Title-Y", Managers.clientManager.titleY)
                 .toString(), false);
         StringBuilder stringBuilder = new StringBuilder();
         for (String sarcasticMessage : Managers.clientManager.sarcasticMessages) {

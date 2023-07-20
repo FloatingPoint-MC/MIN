@@ -44,6 +44,8 @@ public class ClientManager implements Manager {
             }
             Managers.i18NManager.setSelectedLanguage(jsonObject.getString("Language"));
             titleSize = jsonObject.getFloat("Title-Size");
+            titleX = jsonObject.getFloat("Title-X");
+            titleY = jsonObject.getFloat("Title-Y");
         } catch (Exception ignore) {}
         sarcasticMessages = Managers.fileManager.readAsList("SarcasticMessages.txt");
         if (sarcasticMessages.isEmpty()) {
