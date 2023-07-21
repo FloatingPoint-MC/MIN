@@ -113,6 +113,7 @@ public class BlockOverlay extends RenderModule {
             }
             GL11.glDepthMask(true);
             GL11.glPopMatrix();
+            GL11.glLineWidth(1.0F);
         }
     }
 }
