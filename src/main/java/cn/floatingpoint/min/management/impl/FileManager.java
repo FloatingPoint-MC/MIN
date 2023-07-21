@@ -174,8 +174,11 @@ public class FileManager implements Manager {
                     valueMap.put(entryValue.getKey(), ((ModeValue) v).getValue());
                 } else if (v instanceof TextValue) {
                     valueMap.put(entryValue.getKey(), ((TextValue) v).getValue());
+                } else if (v instanceof PaletteValue) {
+                    valueMap.put(entryValue.getKey(), ((PaletteValue) v).getValue());
                 }
             }
+
             if (!valueMap.isEmpty()) {
                 moduleValueMap.put(entry.getKey(), valueMap);
             }
