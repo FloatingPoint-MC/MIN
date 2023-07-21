@@ -165,9 +165,17 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         this.currentServerMaxPlayers = packetIn.getMaxPlayers();
         this.client.player.setReducedDebug(packetIn.isReducedDebugInfo());
         this.client.playerController.setGameType(packetIn.getGameType());
+        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer().writeBytes(new byte[]{
+                70, 77, 76, 124, 72, 83, 0, 70, 77, 76,
+                0, 70, 77, 76, 124, 77, 80, 0, 70, 77,
+                76, 0, 70, 79, 82, 71, 69, 0, 103, 101,
+                114, 109, 112, 108, 117, 103, 105, 110, 45, 110,
+                101, 116, 101, 97, 115, 101, 0, 104, 121, 116,
+                48, 0, 97, 114, 109, 111, 117, 114, 101, 114,
+                115})))));
         this.client.gameSettings.sendSettingsToServer();
         this.netManager.sendPacket(new CPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
-        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer())).writeString(DESUtil.encrypt("I_Am_Your_Client_Mate_<3:" + this.client.player.getUniqueID().toString()))));
+        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer())).writeString(DESUtil.encrypt("I_Am_Your_Client_Mate_<3:" + this.client.player.getUniqueID()))));
     }
 
     /**

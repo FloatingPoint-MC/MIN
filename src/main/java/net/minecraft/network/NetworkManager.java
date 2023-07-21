@@ -66,7 +66,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
             return new LocalEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
         }
     };
-    private final EnumPacketDirection direction;
     private final Queue<NetworkManager.InboundHandlerTuplePacketListener> outboundPacketsQueue = Queues.newConcurrentLinkedQueue();
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
@@ -92,8 +91,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     private boolean isEncrypted;
     private boolean disconnected;
 
-    public NetworkManager(EnumPacketDirection packetDirection) {
-        this.direction = packetDirection;
+    public NetworkManager() {
     }
 
     public void channelActive(ChannelHandlerContext p_channelActive_1_) throws Exception {
@@ -287,7 +285,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
      * Create a new NetworkManager from the server host and connect it to the server
      */
     public static NetworkManager createNetworkManagerAndConnect(InetAddress address, int serverPort, boolean useNativeTransport) {
-        final NetworkManager networkmanager = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
+        final NetworkManager networkmanager = new NetworkManager();
         Class<? extends SocketChannel> oclass;
         LazyLoadBase<? extends EventLoopGroup> lazyloadbase;
 
@@ -316,7 +314,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
      * pipeline. Returns the newly created instance.
      */
     public static NetworkManager provideLocalClient(SocketAddress address) {
-        final NetworkManager networkmanager = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
+        final NetworkManager networkmanager = new NetworkManager();
         (new Bootstrap()).group(CLIENT_LOCAL_EVENTLOOP.getValue()).handler(new ChannelInitializer<Channel>() {
             protected void initChannel(Channel p_initChannel_1_) throws Exception {
                 p_initChannel_1_.pipeline().addLast("packet_handler", networkmanager);

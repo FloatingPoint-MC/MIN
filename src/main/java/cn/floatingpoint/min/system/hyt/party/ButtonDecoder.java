@@ -1,8 +1,8 @@
 package cn.floatingpoint.min.system.hyt.party;
 
+import cn.floatingpoint.min.system.ui.hyt.party.VexViewButton;
 import io.netty.buffer.ByteBuf;
 
-import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

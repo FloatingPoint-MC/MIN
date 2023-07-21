@@ -1,4 +1,4 @@
-package cn.floatingpoint.min.system.hyt.party;
+package cn.floatingpoint.min.system.ui.hyt.party;
 
 public class VexViewButton extends VexViewComponent {
     private final String name;

@@ -2,12 +2,10 @@ package cn.floatingpoint.min.system.ui.hyt.party;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.party.Sender;
-import cn.floatingpoint.min.system.hyt.party.VexViewButton;
 import cn.floatingpoint.min.system.ui.components.ClickableButton;
 import cn.floatingpoint.min.system.ui.components.InputField;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
@@ -39,7 +37,7 @@ public class GuiInput extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GlStateManager.enableBlend();
-        RenderUtil.drawImage(new ResourceLocation("min/hyt/init.png"), width / 2 - 100, height / 2 - 81, 200, 162);
+        RenderUtil.drawImage(new ResourceLocation("min/hyt/background.png"), width / 2 - 100, height / 2 - 81, 200, 162);
         Managers.fontManager.sourceHansSansCN_Regular_20.drawCenteredString("花雨庭组队系统", width / 2, height / 2 - 72, new Color(216, 216, 216).getRGB());
         inputField.drawTextBox();
         confirm.drawScreen();
