@@ -30,9 +30,9 @@ public class BoundingBox extends RenderModule {
     public void onRender3D() {
         if (!Shaders.isShadowPass) {
             for (Entity entity : mc.world.loadedEntityList.stream().filter(e -> e != mc.player && e instanceof EntityPlayer && !e.isInvisible()).collect(Collectors.toList())) {
-                double d_0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) mc.timer.renderPartialTicks;
-                double d_1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) mc.timer.renderPartialTicks;
-                double d_2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) mc.timer.renderPartialTicks;
+                double d_0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) mc.getRenderPartialTicks();
+                double d_1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) mc.getRenderPartialTicks();
+                double d_2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) mc.getRenderPartialTicks();
                 double x = d_0 - mc.getRenderManager().getRenderPosX(), y = d_1 - mc.getRenderManager().getRenderPosY(), z = d_2 - mc.getRenderManager().getRenderPosZ();
                 GlStateManager.depthMask(false);
                 GlStateManager.disableTexture2D();

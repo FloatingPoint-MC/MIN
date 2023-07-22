@@ -52,14 +52,21 @@ public class ModuleManager implements Manager {
         renderModules.put("BoundingBox", new BoundingBox());
         renderModules.put("CleanView", new CleanView());
         renderModules.put("ClickGUI", new ClickGUI());
+        renderModules.put("FireFilter", new FireFilter());
+        renderModules.put("FreeLook", new FreeLook());
         renderModules.put("FullBright", new FullBright());
         renderModules.put("ItemPhysics", new ItemPhysics());
+        renderModules.put("KeyStrokes", new KeyStrokes());
         renderModules.put("MinimizedBobbing", new MinimizedBobbing());
         renderModules.put("MoreParticles", new MoreParticles());
         renderModules.put("NameProtect", new NameProtect());
         renderModules.put("NameTag", new NameTag());
+        renderModules.put("NoHurtCam", new NoHurtCam());
         renderModules.put("PotionDisplay", new PotionDisplay());
         renderModules.put("Scoreboard", new Scoreboard());
+        renderModules.put("SmoothZoom", new SmoothZoom());
+        renderModules.put("StatusDisplay", new StatusDisplay());
+        renderModules.put("TNTTimer", new TNTTimer());
 
         modules.putAll(boostModules);
         modules.putAll(miscModules);

@@ -452,12 +452,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
     }
 
     private boolean reachCheck(Entity entity, double addition) {
-        if (mc.player.posY > entity.getPositionEyes(mc.timer.renderPartialTicks).y) {
-            return entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector()) <= 3.72 + addition;
-        } else if (mc.player.posY + 1.8 < entity.getPositionEyes(mc.timer.renderPartialTicks).y) {
-            return Math.min(entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.78 + addition;
+        if (mc.player.posY > entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
+            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.72 + addition;
+        } else if (mc.player.posY + 1.8 < entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
+            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.78 + addition;
         } else {
-            return Math.min(entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.timer.renderPartialTicks).distanceTo(mc.player.getPositionVector().add(0.0D, 0.9D, 0.0D))) <= 3.46 + addition;
+            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 0.9D, 0.0D))) <= 3.46 + addition;
         }
     }
 

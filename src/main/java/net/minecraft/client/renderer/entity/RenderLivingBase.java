@@ -538,58 +538,6 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
                 if (d0 < (double) (f * f)) {
                     String s = entity.getDisplayName().getFormattedText();
-                    if (entity instanceof EntityPlayer) {
-                        if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled()) {
-                            if (Managers.clientManager.ranks.containsKey(entity.getName())) {
-                                int rank = Managers.clientManager.ranks.get(entity.getName());
-                                String rankLabel;
-                                if (rank <= 999) {
-                                    if (rank <= 100) {
-                                        rankLabel = "\2474[No." + rank + "]";
-                                    } else {
-                                        rankLabel = "\247c[No." + rank + "]";
-                                    }
-                                } else {
-                                    rank /= 1000;
-                                    if (rank <= 9) {
-                                        rankLabel = "\2476[No." + rank + "k+]\247f";
-                                    } else {
-                                        rank /= 10;
-                                        rankLabel = "\247e[No." + rank + "w+]\247f";
-                                    }
-                                }
-                                if (entity.getDistance(this.renderManager.renderViewEntity) <= 64) {
-                                    boolean flag = entity.isSneaking();
-                                    boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-                                    float f2 = entity.height + 0.5F - (flag ? 0.25F : 0.0F);
-                                    EntityRenderer.drawNameplate(entity, this.getFontRendererFromRenderManager(), rankLabel, (float) x, (float) y + f2, (float) z, -10, this.renderManager.playerViewY, this.renderManager.playerViewX, flag1, flag);
-                                }
-                            }
-                        }
-                        if (Managers.clientManager.cheaterUuids.getOrDefault(entity.getUniqueID(), new CheatDetection()).hacks) {
-                            s = "\247c\247l" + Managers.i18NManager.getTranslation("mark.cheater") + " \2474" + s
-                                    .replace("\2471", "")
-                                    .replace("\2472", "")
-                                    .replace("\2473", "")
-                                    .replace("\2474", "")
-                                    .replace("\2475", "")
-                                    .replace("\2476", "")
-                                    .replace("\2477", "")
-                                    .replace("\2478", "")
-                                    .replace("\2479", "")
-                                    .replace("\2470", "")
-                                    .replace("\247a", "")
-                                    .replace("\247b", "")
-                                    .replace("\247d", "")
-                                    .replace("\247e", "")
-                                    .replace("\247f", "")
-                                    .replace("\247m", "")
-                                    .replace("\247l", "")
-                                    .replace("\247o", "")
-                                    .replace("\247n", "")
-                                    .replace("\247r", "") + "\247f";
-                        }
-                    }
                     GlStateManager.alphaFunc(516, 0.1F);
                     this.renderEntityName(entity, x, y, z, s, d0);
                 }

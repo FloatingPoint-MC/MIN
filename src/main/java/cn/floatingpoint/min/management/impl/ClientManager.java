@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -25,7 +26,8 @@ public class ClientManager implements Manager {
     public HashMap<String, Integer> ranks;
     public HashMap<UUID, CheatDetection> cheaterUuids;
     public float titleSize, titleX, titleY;
-    public ArrayList<String> sarcasticMessages = new ArrayList<>();
+    public ArrayList<String> sarcasticMessages;
+    public HashSet<String> cooldown;
 
     @Override
     public String getName() {
@@ -37,6 +39,8 @@ public class ClientManager implements Manager {
         clientMateUuids = new HashMap<>();
         cheaterUuids = new HashMap<>();
         ranks = new HashMap<>();
+        sarcasticMessages = new ArrayList<>();
+        cooldown = new HashSet<>();
         titleSize = 1.0f;
         titleX = 0.0f;
         titleY = 0.0f;
@@ -82,21 +86,25 @@ public class ClientManager implements Manager {
 
     @SuppressWarnings("all")
     public void getRank(String id) {
-        MIN.runAsync(() -> {
-            try {
-                JSONObject json = null;
-                if (RankDisplay.game.isCurrentMode("bw")) {
-                    json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwars.html?uid=" + id);
-                } else if (RankDisplay.game.isCurrentMode("bw-xp")) {
-                    json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwarsxp.html?uid=" + id);
-                } else if (RankDisplay.game.isCurrentMode("sw")) {
-                    json = WebUtil.getJSON("http://mc-api.16163.com/search/skywars.html?uid=" + id);
-                } else if (RankDisplay.game.isCurrentMode("kit")) {
-                    json = WebUtil.getJSON("http://mc-api.16163.com/search/kitbattle.html?uid=" + id);
+        if (!ranks.containsKey(id) && !cooldown.contains(id)) {
+            cooldown.add(id);
+            MIN.runAsync(() -> {
+                try {
+                    JSONObject json = null;
+                    if (RankDisplay.game.isCurrentMode("bw")) {
+                        json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwars.html?uid=" + id);
+                    } else if (RankDisplay.game.isCurrentMode("bw-xp")) {
+                        json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwarsxp.html?uid=" + id);
+                    } else if (RankDisplay.game.isCurrentMode("sw")) {
+                        json = WebUtil.getJSON("http://mc-api.16163.com/search/skywars.html?uid=" + id);
+                    } else if (RankDisplay.game.isCurrentMode("kit")) {
+                        json = WebUtil.getJSON("http://mc-api.16163.com/search/kitbattle.html?uid=" + id);
+                    }
+                    ranks.put(id, json.getInt("rank"));
+                    cooldown.remove(id);
+                } catch (IOException | URISyntaxException | JSONException ignore) {
                 }
-                ranks.put(id, json.getInt("rank"));
-            } catch (IOException | URISyntaxException | JSONException ignore) {
-            }
-        });
+            });
+        }
     }
 }

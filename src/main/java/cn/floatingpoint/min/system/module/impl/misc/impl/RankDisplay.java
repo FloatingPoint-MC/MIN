@@ -5,6 +5,7 @@ import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.value.impl.ModeValue;
 import cn.floatingpoint.min.system.module.value.impl.OptionValue;
 import cn.floatingpoint.min.utils.client.Pair;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * @projectName: MIN
@@ -16,12 +17,17 @@ public class RankDisplay extends MiscModule {
         @Override
         public void setValue(String value) {
             Managers.clientManager.ranks.clear();
+            Managers.clientManager.cooldown.clear();
             super.setValue(value);
         }
     };
+    private OptionValue self = new OptionValue(true);
 
     public RankDisplay() {
-        addValues(new Pair<>("Game", game));
+        addValues(
+                new Pair<>("Game", game),
+                new Pair<>("Self", self)
+        );
     }
 
     @Override
@@ -36,6 +42,8 @@ public class RankDisplay extends MiscModule {
 
     @Override
     public void tick() {
-
+        for (EntityPlayer player : mc.world.playerEntities) {
+            Managers.clientManager.getRank(player.getName());
+        }
     }
 }

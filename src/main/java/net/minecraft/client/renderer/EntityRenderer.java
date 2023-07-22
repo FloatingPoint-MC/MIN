@@ -3,6 +3,9 @@ package net.minecraft.client.renderer;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
+import cn.floatingpoint.min.system.module.impl.render.impl.FreeLook;
+import cn.floatingpoint.min.system.module.impl.render.impl.SmoothZoom;
+import cn.floatingpoint.min.utils.math.FunctionUtil;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.block.Block;
@@ -231,6 +234,8 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     private int serverWaitTime = 0;
     private final ShaderGroup[] fxaaShaders = new ShaderGroup[10];
     private boolean loadVisibleChunks = false;
+    private float screenScale = -1;
+    private float screenScale2 = -1;
 
     public EntityRenderer(Minecraft mcIn, IResourceManager resourceManagerIn) {
         this.shaderIndex = SHADER_COUNT;
@@ -524,6 +529,16 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             flag = GameSettings.isKeyDown(this.mc.gameSettings.ofKeyBindZoom);
         }
 
+        if (useFOVSetting) {
+            if (screenScale == -1) {
+                screenScale = f;
+            }
+        } else {
+            if (screenScale2 == -1) {
+                screenScale2 = f;
+            }
+        }
+
         if (flag) {
             if (!Config.zoomMode) {
                 Config.zoomMode = true;
@@ -531,7 +546,19 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 this.mc.gameSettings.smoothCamera = true;
                 this.mc.renderGlobal.displayListEntitiesDirty = true;
             }
-            f /= 4.0F;
+            if (useFOVSetting) {
+                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue());
+                } else {
+                    screenScale = f / 4.0F;
+                }
+            } else {
+                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue());
+                } else {
+                    screenScale2 = f / 4.0F;
+                }
+            }
         } else if (Config.zoomMode) {
             Config.zoomMode = false;
             this.mc.gameSettings.smoothCamera = Config.zoomSmoothCamera;
@@ -540,21 +567,48 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             this.mc.renderGlobal.displayListEntitiesDirty = true;
         }
 
+        if (!Config.zoomMode) {
+            if (useFOVSetting) {
+                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue());
+                } else {
+                    screenScale = f;
+                }
+            } else {
+                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale2, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue());
+                } else {
+                    screenScale2 = f;
+                }
+            }
+        }
+
         if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).getHealth() <= 0.0F) {
             float f1 = (float) ((EntityLivingBase) entity).deathTime + partialTicks;
-            f /= (1.0F - 500.0F / (f1 + 500.0F)) * 2.0F + 1.0F;
+            if (useFOVSetting) {
+                screenScale /= (1.0F - 500.0F / (f1 + 500.0F)) * 2.0F + 1.0F;
+            } else {
+                screenScale2 /= (1.0F - 500.0F / (f1 + 500.0F)) * 2.0F + 1.0F;
+            }
         }
 
         IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
 
         if (iblockstate.getMaterial() == Material.WATER) {
-            f = f * 60.0F / 70.0F;
+            if (useFOVSetting) {
+                screenScale = screenScale * 60.0F / 70.0F;
+            } else {
+                screenScale2 = screenScale2 * 60.0F / 70.0F;
+            }
         }
 
-        return Reflector.ForgeHooksClient_getFOVModifier.exists() ? Reflector.callFloat(Reflector.ForgeHooksClient_getFOVModifier, this, entity, iblockstate, partialTicks, f) : f;
+        return Reflector.ForgeHooksClient_getFOVModifier.exists() ? Reflector.callFloat(Reflector.ForgeHooksClient_getFOVModifier, this, entity, iblockstate, partialTicks, useFOVSetting ? screenScale : screenScale2) : useFOVSetting ? screenScale : screenScale2;
     }
 
     private void hurtCameraEffect(float partialTicks) {
+        if (Managers.moduleManager.renderModules.get("NoHurtCam").isEnabled()) {
+            return;
+        }
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase) {
             EntityLivingBase entitylivingbase = (EntityLivingBase) this.mc.getRenderViewEntity();
             float f = (float) entitylivingbase.hurtTime - partialTicks;
@@ -1044,7 +1098,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         this.mc.profiler.startSection("mouse");
 
-        if (flag && Minecraft.IS_RUNNING_ON_MAC && this.mc.inGameHasFocus && !Mouse.isInsideWindow()) {
+        if (flag && Minecraft.IS_RUNNING_ON_MAC && this.mc.inGameHasFocus && !Mouse.isInsideWindow() && ((FreeLook) Managers.moduleManager.renderModules.get("FreeLook")).overrideMouse()) {
             Mouse.setGrabbed(false);
             Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2 - 20);
             Mouse.setGrabbed(true);

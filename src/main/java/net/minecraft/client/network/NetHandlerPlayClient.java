@@ -1325,7 +1325,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 if (packetIn.getAction() == SPacketPlayerListItem.Action.ADD_PLAYER) {
                     networkplayerinfo = new NetworkPlayerInfo(playerData);
                     this.playerInfoMap.put(networkplayerinfo.getGameProfile().getId(), networkplayerinfo);
-                    Managers.clientManager.getRank(playerData.getProfile().getName());
                 }
 
                 if (networkplayerinfo != null) {
@@ -1772,22 +1771,22 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         return this.playerInfoMap.values();
     }
 
+    @Nullable
     public NetworkPlayerInfo getPlayerInfo(UUID uniqueId) {
         return this.playerInfoMap.get(uniqueId);
     }
 
-    @Nullable
 
     /**
      * Gets the client's description information about another player on the server.
      */
+    @Nullable
     public NetworkPlayerInfo getPlayerInfo(String name) {
         for (NetworkPlayerInfo networkplayerinfo : this.playerInfoMap.values()) {
             if (networkplayerinfo.getGameProfile().getName().equals(name)) {
                 return networkplayerinfo;
             }
         }
-
         return null;
     }
 

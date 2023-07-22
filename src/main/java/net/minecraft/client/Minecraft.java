@@ -6,6 +6,7 @@ import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
+import cn.floatingpoint.min.system.module.impl.render.impl.KeyStrokes;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -1380,6 +1381,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
     private void clickMouse() {
         if (this.leftClickCounter <= 0) {
+            KeyStrokes.leftCounter.add(System.currentTimeMillis());
             if (this.objectMouseOver == null) {
                 LOGGER.error("Null returned as 'hitResult', this shouldn't happen!");
 
@@ -2010,6 +2012,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             }
 
             while (this.gameSettings.keyBindUseItem.isPressed()) {
+                KeyStrokes.rightCounter.add(System.currentTimeMillis());
                 this.rightClickMouse();
             }
 
