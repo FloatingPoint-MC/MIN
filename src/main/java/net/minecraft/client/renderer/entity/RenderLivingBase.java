@@ -622,8 +622,8 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                     String s = entity.getDisplayName().getFormattedText();
                     if (entity instanceof EntityPlayer) {
                         if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled()) {
-                            if (Managers.clientManager.ranks.containsKey(entity.getUniqueID())) {
-                                s = "\2476[No." + Managers.clientManager.ranks.get(entity.getUniqueID()) + "]";
+                            if (Managers.clientManager.ranks.containsKey(entity.getName())) {
+                                s = "\2476[No." + Managers.clientManager.ranks.get(entity.getName()) + "]";
                             }
                         }
                         if (Managers.clientManager.cheaterUuids.getOrDefault(entity.getUniqueID(), new CheatDetection()).hacks) {
