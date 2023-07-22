@@ -91,8 +91,7 @@ public abstract class TileEntitySpecialRenderer<T extends TileEntity> implements
         {
             float f = this.rendererDispatcher.entityYaw;
             float f1 = this.rendererDispatcher.entityPitch;
-            boolean flag = false;
-            EntityRenderer.drawNameplate(this.getFontRenderer(), str, (float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F, 0, f, f1, false, false);
+            EntityRenderer.drawNameplate(null, this.getFontRenderer(), str, (float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F, 0, f, f1, false, false);
         }
     }
 

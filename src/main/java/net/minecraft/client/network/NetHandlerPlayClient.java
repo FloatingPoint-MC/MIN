@@ -175,7 +175,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 115})))));
         this.client.gameSettings.sendSettingsToServer();
         this.netManager.sendPacket(new CPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
-        this.netManager.sendPacket(new CPacketCustomPayload("REGISTER", (new PacketBuffer(Unpooled.buffer())).writeString(DESUtil.encrypt("I_Am_Your_Client_Mate_<3:" + this.client.player.getUniqueID()))));
     }
 
     /**
@@ -1317,34 +1316,35 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void handlePlayerListItem(SPacketPlayerListItem packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
 
-        for (SPacketPlayerListItem.AddPlayerData spacketplayerlistitem$addplayerdata : packetIn.getEntries()) {
+        for (SPacketPlayerListItem.AddPlayerData playerData : packetIn.getEntries()) {
             if (packetIn.getAction() == SPacketPlayerListItem.Action.REMOVE_PLAYER) {
-                this.playerInfoMap.remove(spacketplayerlistitem$addplayerdata.getProfile().getId());
+                this.playerInfoMap.remove(playerData.getProfile().getId());
             } else {
-                NetworkPlayerInfo networkplayerinfo = this.playerInfoMap.get(spacketplayerlistitem$addplayerdata.getProfile().getId());
+                NetworkPlayerInfo networkplayerinfo = this.playerInfoMap.get(playerData.getProfile().getId());
 
                 if (packetIn.getAction() == SPacketPlayerListItem.Action.ADD_PLAYER) {
-                    networkplayerinfo = new NetworkPlayerInfo(spacketplayerlistitem$addplayerdata);
+                    networkplayerinfo = new NetworkPlayerInfo(playerData);
                     this.playerInfoMap.put(networkplayerinfo.getGameProfile().getId(), networkplayerinfo);
+                    Managers.clientManager.getRank(playerData.getProfile().getName());
                 }
 
                 if (networkplayerinfo != null) {
                     switch (packetIn.getAction()) {
                         case ADD_PLAYER:
-                            networkplayerinfo.setGameType(spacketplayerlistitem$addplayerdata.getGameMode());
-                            networkplayerinfo.setResponseTime(spacketplayerlistitem$addplayerdata.getPing());
+                            networkplayerinfo.setGameType(playerData.getGameMode());
+                            networkplayerinfo.setResponseTime(playerData.getPing());
                             break;
 
                         case UPDATE_GAME_MODE:
-                            networkplayerinfo.setGameType(spacketplayerlistitem$addplayerdata.getGameMode());
+                            networkplayerinfo.setGameType(playerData.getGameMode());
                             break;
 
                         case UPDATE_LATENCY:
-                            networkplayerinfo.setResponseTime(spacketplayerlistitem$addplayerdata.getPing());
+                            networkplayerinfo.setResponseTime(playerData.getPing());
                             break;
 
                         case UPDATE_DISPLAY_NAME:
-                            networkplayerinfo.setDisplayName(spacketplayerlistitem$addplayerdata.getDisplayName());
+                            networkplayerinfo.setDisplayName(playerData.getDisplayName());
                     }
                 }
             }
@@ -1566,17 +1566,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 String s = packetbuffer3.readString(32767);
                 String s1 = packetbuffer3.readString(256);
                 this.client.getSoundHandler().stop(s1, SoundCategory.getByName(s));
-                break;
-            case "REGISTER":
-                PacketBuffer packetBuffer4 = packetIn.getBufferData();
-                String original = packetBuffer4.readString(Integer.MAX_VALUE);
-                String decrypted = DESUtil.decrypt(original);
-                if (decrypted.equals(original)) {
-                    break;
-                }
-                if (decrypted.startsWith("I_Am_Your_Client_Mate_<3:")) {
-                    Managers.clientManager.clientMateUuids.add(UUID.fromString(decrypted.substring(25)));
-                }
                 break;
         }
     }

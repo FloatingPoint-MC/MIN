@@ -1,13 +1,17 @@
 package cn.floatingpoint.min.management.impl;
 
+import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Manager;
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
 import cn.floatingpoint.min.utils.client.CheatDetection;
+import cn.floatingpoint.min.utils.client.WebUtil;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -16,7 +20,8 @@ import java.util.UUID;
  * @date: 2023-07-18 11:26:03
  */
 public class ClientManager implements Manager {
-    public HashSet<UUID> clientMateUuids;
+    public HashMap<UUID, Boolean> clientMateUuids;
+    public HashMap<String, Integer> ranks;
     public HashMap<UUID, CheatDetection> cheaterUuids;
     public float titleSize, titleX, titleY;
     public ArrayList<String> sarcasticMessages = new ArrayList<>();
@@ -28,7 +33,7 @@ public class ClientManager implements Manager {
 
     @Override
     public void init() {
-        clientMateUuids = new HashSet<>();
+        clientMateUuids = new HashMap<>();
         cheaterUuids = new HashMap<>();
         titleSize = 1.0f;
         titleX = 0.0f;
@@ -67,5 +72,32 @@ public class ClientManager implements Manager {
             sarcasticMessages.add("{0}，你应该还有点自知之明吧，你不要开好吗？你一开就把你的Low技术与低智商暴露了。");
             sarcasticMessages.add("{0}，飞起来的不必须是天使，也可能是鸟人。");
         }
+    }
+
+    public boolean isClientMate(UUID uniqueID) {
+        return false;
+    }
+
+    @SuppressWarnings("all")
+    public void getRank(String id) {
+        MIN.runAsync(() -> {
+            try {
+                JSONObject json = null;
+                if (RankDisplay.game.isCurrentMode("bw")) {
+                    json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwars.html?uid=" + id);
+                } else if (RankDisplay.game.isCurrentMode("bw-xp")) {
+                    json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwarsxp.html?uid=" + id);
+                } else if (RankDisplay.game.isCurrentMode("sw")) {
+                    json = WebUtil.getJSON("http://mc-api.16163.com/search/skywars.html?uid=" + id);
+                } else if (RankDisplay.game.isCurrentMode("kit")) {
+                    json = WebUtil.getJSON("http://mc-api.16163.com/search/kitbattle.html?uid=" + id);
+                }
+                ranks.put(id, json.getInt("rank"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (JSONException ignored) {
+
+            }
+        });
     }
 }

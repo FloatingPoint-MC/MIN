@@ -422,7 +422,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
                         if (!entityPlayer.getActiveItemStack().isEmpty() && (entityPlayer.getActiveItemStack().getItem() instanceof ItemBow || entityPlayer.getActiveItemStack().getItem() instanceof ItemFishingRod)) {
                             return;
                         }
-                        CheatDetection detection = Managers.clientManager.cheaterUuids.getOrDefault(entityPlayer.getUniqueID(), new CheatDetection());
+                        Managers.clientManager.cheaterUuids.putIfAbsent(entityPlayer.getUniqueID(), new CheatDetection());
+                        CheatDetection detection = Managers.clientManager.cheaterUuids.get(entityPlayer.getUniqueID());
                         detection.reachPercentage += 20;
                         if (detection.reachPercentage >= 100) {
                             detection.reach++;

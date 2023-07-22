@@ -60,7 +60,8 @@ public class CheaterDetector extends MiscModule {
     public void tick() {
         for (EntityPlayer player : mc.world.playerEntities) {
             if (player != null && player != mc.player) {
-                CheatDetection detection = Managers.clientManager.cheaterUuids.getOrDefault(player.getUniqueID(), new CheatDetection());
+                Managers.clientManager.cheaterUuids.putIfAbsent(player.getUniqueID(), new CheatDetection());
+                CheatDetection detection = Managers.clientManager.cheaterUuids.get(player.getUniqueID());
                 if (detection.hacks) continue;
                 if (sprintCheck.getValue()) {
                     if (player.getMoveSpeed() >= player.getAIMoveSpeed() * 0.93 && (player.moveForward < 0.0F || player.moveForward == 0.0F && player.moveStrafing != 0.0F)) {
