@@ -35,6 +35,7 @@ public class ClientManager implements Manager {
     public void init() {
         clientMateUuids = new HashMap<>();
         cheaterUuids = new HashMap<>();
+        ranks = new HashMap<>();
         titleSize = 1.0f;
         titleX = 0.0f;
         titleY = 0.0f;
