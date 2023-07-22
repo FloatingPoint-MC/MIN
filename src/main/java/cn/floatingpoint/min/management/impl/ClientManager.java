@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -94,10 +95,7 @@ public class ClientManager implements Manager {
                     json = WebUtil.getJSON("http://mc-api.16163.com/search/kitbattle.html?uid=" + id);
                 }
                 ranks.put(id, json.getInt("rank"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (JSONException ignored) {
-
+            } catch (IOException | URISyntaxException | JSONException ignore) {
             }
         });
     }

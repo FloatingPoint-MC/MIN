@@ -623,7 +623,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                     if (entity instanceof EntityPlayer) {
                         if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled()) {
                             if (Managers.clientManager.ranks.containsKey(entity.getName())) {
-                                s = "\2476[No." + Managers.clientManager.ranks.get(entity.getName()) + "]";
+                                s = "\2476[No." + Managers.clientManager.ranks.get(entity.getName()) + "]\247f" + s;
                             }
                         }
                         if (Managers.clientManager.cheaterUuids.getOrDefault(entity.getUniqueID(), new CheatDetection()).hacks) {
