@@ -96,7 +96,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
     {
         if (this.canRenderName(entity))
         {
-            this.renderLivingLabel(entity, entity.getDisplayName().getFormattedText(), x, y, z, 64);
+            this.renderLivingLabel(entity, entity.getDisplayName().getFormattedText(), x, y, z);
         }
     }
 
@@ -107,7 +107,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
     protected void renderEntityName(T entityIn, double x, double y, double z, String name, double distanceSq)
     {
-        this.renderLivingLabel(entityIn, name, x, y, z, 64);
+        this.renderLivingLabel(entityIn, name, x, y, z);
     }
 
     @Nullable
@@ -390,11 +390,11 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
     /**
      * Renders an entity's name above its head
      */
-    protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
+    protected void renderLivingLabel(T entityIn, String str, double x, double y, double z)
     {
         double d0 = entityIn.getDistanceSq(this.renderManager.renderViewEntity);
 
-        if (d0 <= (double)(maxDistance * maxDistance))
+        if (d0 <= (double)(64 * 64))
         {
             boolean flag = entityIn.isSneaking();
             float f = this.renderManager.playerViewY;

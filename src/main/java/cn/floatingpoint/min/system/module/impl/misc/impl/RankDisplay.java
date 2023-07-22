@@ -3,6 +3,7 @@ package cn.floatingpoint.min.system.module.impl.misc.impl;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.value.impl.ModeValue;
+import cn.floatingpoint.min.system.module.value.impl.OptionValue;
 import cn.floatingpoint.min.utils.client.Pair;
 
 /**
