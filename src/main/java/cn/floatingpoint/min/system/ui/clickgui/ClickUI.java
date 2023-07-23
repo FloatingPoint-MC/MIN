@@ -47,6 +47,7 @@ public class ClickUI extends GuiScreen {
     private static int titleYAnimation;
     private static int titleYColorAnimation;
     private static boolean selectedTitleY;
+    private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
     private Value<?> selectedValue;
     private int selectType = -1;
 
@@ -333,7 +334,7 @@ public class ClickUI extends GuiScreen {
             }
             drawRect(animationRight + 280, height / 2 - 52, animationRight + 400, height / 2 - 44, categoryColor);
             drawRect(animationRight + 279 + titleXAnimation, height / 2 - 53, animationRight + 280 + titleXAnimation, height / 2 - 43, cardColor);
-            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(new DecimalFormat("#.##").format(Managers.clientManager.titleX), animationRight + 280 + titleXAnimation, height / 2 - 41, textColorInNumberValue);
+            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(decimalFormat.format(Managers.clientManager.titleX), animationRight + 280 + titleXAnimation, height / 2 - 41, textColorInNumberValue);
 
             title = Managers.i18NManager.getTranslation("clickgui.titleY");
             Managers.fontManager.sourceHansSansCN_Regular_20.drawString(title, animationRight + 150, height / 2 - 20, textColor);
@@ -354,7 +355,7 @@ public class ClickUI extends GuiScreen {
             }
             drawRect(animationRight + 280, height / 2 - 22, animationRight + 400, height / 2 - 14, categoryColor);
             drawRect(animationRight + 279 + titleYAnimation, height / 2 - 23, animationRight + 280 + titleYAnimation, height / 2 - 13, cardColor);
-            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(new DecimalFormat("#.##").format(Managers.clientManager.titleY), animationRight + 280 + titleYAnimation, height / 2 - 11, textColorInNumberValue);
+            Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(decimalFormat.format(Managers.clientManager.titleY), animationRight + 280 + titleYAnimation, height / 2 - 11, textColorInNumberValue);
         }
         RenderUtil.drawImage(new ResourceLocation("min/logo.png"), animationLeft - 110, height / 2 - 140, 100, 100);
         RenderUtil.drawImage(new ResourceLocation("min/uis/setting.png"), animationLeft - 118, height / 2 + 142, 16, 16);
@@ -377,7 +378,7 @@ public class ClickUI extends GuiScreen {
     private void doNumberValueDraw(int y, int moduleY, Value<?> value, int cardColor, int textColorInNumberValue, double valuePercent) {
         valuePositions.put(value, (int) (valuePercent * 120));
         drawRect(animationRight + 279 + valueAnimations.get(value), y + moduleY + 17, animationRight + 280 + valueAnimations.get(value), y + moduleY + 27, cardColor);
-        Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(String.valueOf(value.getValue()), animationRight + 280 + valueAnimations.get(value), y + moduleY + 28, textColorInNumberValue);
+        Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(decimalFormat.format(value.getValue()), animationRight + 280 + valueAnimations.get(value), y + moduleY + 28, textColorInNumberValue);
     }
 
     @Override
