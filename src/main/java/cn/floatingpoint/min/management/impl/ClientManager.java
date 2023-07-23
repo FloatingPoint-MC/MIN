@@ -28,6 +28,7 @@ public class ClientManager implements Manager {
     public float titleSize, titleX, titleY;
     public ArrayList<String> sarcasticMessages;
     public HashSet<String> cooldown = new HashSet<>();
+    public boolean firstStart;
 
     @Override
     public String getName() {
@@ -42,6 +43,7 @@ public class ClientManager implements Manager {
         titleSize = 1.0f;
         titleX = 0.0f;
         titleY = 0.0f;
+        firstStart = false;
         try {
             String context = Managers.fileManager.readAsString("config.json");
             JSONObject jsonObject = new JSONObject(context);
@@ -55,7 +57,9 @@ public class ClientManager implements Manager {
             titleSize = jsonObject.getFloat("Title-Size");
             titleX = jsonObject.getFloat("Title-X");
             titleY = jsonObject.getFloat("Title-Y");
-        } catch (Exception ignore) {}
+        } catch (Exception e) {
+            firstStart = true;
+        }
         sarcasticMessages = Managers.fileManager.readAsList("SarcasticMessages.txt");
         if (sarcasticMessages.isEmpty()) {
             sarcasticMessages.add("{0}，上帝是公平的，给了你丑的外表，一定也会给你低的智商，所以让你开，以免让你显得不协调。");

@@ -120,6 +120,10 @@ public class FontRenderer extends net.minecraft.client.gui.FontRenderer {
         getStringCache().renderString(text, x - getStringCache().getStringWidth(text) / 2f, y, color, false);
     }
 
+    public void drawCenteredStringWithShadow(String text, int x, int y, int color) {
+        getStringCache().renderString(text, x - getStringCache().getStringWidth(text) / 2f, y, color, true);
+    }
+
     public float getHeight() {
         return 8;
     }

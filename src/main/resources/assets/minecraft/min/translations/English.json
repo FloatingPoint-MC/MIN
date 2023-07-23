@@ -200,5 +200,10 @@
   "clickgui.titleSize": "Title Size",
   "clickgui.titleX": "Title X",
   "clickgui.titleY": "Title Y",
-  "mark.cheater": "[CHEATER]"
+  "mark.cheater": "[CHEATER]",
+  "start.welcome": "Welcome to Min Client, dear Minecraft player.",
+  "start.continue": "Start travel with Min!",
+  "start.skip": "Skip",
+  "start.clickUiSetting": "You can click here to edit some client settings.",
+  "start.press": "Press any key to continue..."
 }

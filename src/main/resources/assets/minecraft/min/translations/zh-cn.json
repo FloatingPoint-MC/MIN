@@ -200,5 +200,10 @@
   "clickgui.titleSize": "标题大小",
   "clickgui.titleX": "标题X轴",
   "clickgui.titleY": "标题Y轴",
-  "mark.cheater": "[作弊者]"
+  "mark.cheater": "[作弊者]",
+  "start.welcome": "欢迎使用Min客户端，亲爱的玩家。",
+  "start.continue": "开始旅程!",
+  "start.skip": "跳过",
+  "start.clickUiSetting": "点此可以更改客户端设置。",
+  "start.press": "按下任意按键继续..."
 }

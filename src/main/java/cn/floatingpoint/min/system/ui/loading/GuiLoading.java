@@ -57,8 +57,12 @@ public class GuiLoading extends GuiScreen {
             animation = 0.0f;
             stage = 2;
         } else if (stage == 2) {
-            if (animation > 10.0f){
-                mc.displayGuiScreen(new GuiMainMenu(true));
+            if (animation > 10.0f) {
+                if (Managers.clientManager.firstStart) {
+                    mc.displayGuiScreen(new GuiFirstStart());
+                } else {
+                    mc.displayGuiScreen(new GuiMainMenu(true));
+                }
             }
         }
         animation = Math.max(animation, 0.0f);
