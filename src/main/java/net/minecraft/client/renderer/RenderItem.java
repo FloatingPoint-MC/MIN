@@ -68,9 +68,6 @@ public class RenderItem implements IResourceManagerReloadListener
 {
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
-    /** False when the renderer is rendering the item's effects into a GUI */
-    private final boolean notRenderingEffectsInGUI = true;
-
     /** Defines the zLevel of rendering of item on GUI. */
     public float zLevel;
     private final ItemModelMesher itemModelMesher;
@@ -78,10 +75,9 @@ public class RenderItem implements IResourceManagerReloadListener
     private final ItemColors itemColors;
     private ResourceLocation modelLocation = null;
     private boolean renderItemGui = false;
-    public ModelManager modelManager = null;
+    public ModelManager modelManager;
     private boolean renderModelHasEmissive = false;
     private boolean renderModelEmissive = false;
-    private final boolean forgeAllowEmissiveItems = Reflector.getFieldValueBoolean(Reflector.ForgeModContainer_allowEmissiveItems, false);
 
     public RenderItem(TextureManager p_i46552_1_, ModelManager p_i46552_2_, ItemColors p_i46552_3_)
     {

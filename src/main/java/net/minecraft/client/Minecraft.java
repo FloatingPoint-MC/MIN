@@ -1566,6 +1566,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (this.player.lastAttackTick < 0) {
                 this.player.attackedOther = false;
             }
+            if (this.player.ticksExisted % 600000 == 0) {
+                MIN.runAsync(Managers.fileManager::saveConfig);
+            }
         }
 
         this.profiler.startSection("gui");

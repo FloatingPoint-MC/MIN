@@ -1278,7 +1278,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
             case SUBTITLE:
                 s1 = s2;
-                if (Managers.moduleManager.modules.get("AutoText").isEnabled() && AutoText.whenToSend.isCurrentMode("Win")) {
+                if (Managers.moduleManager.miscModules.get("AutoText").isEnabled() && AutoText.whenToSend.isCurrentMode("Win")) {
                     Pattern pattern = Pattern.compile("(.*?)\2476队获得胜利，用时\247e(.*?)");
                     if (pattern.matcher(s1).matches()) {
                         AutoText.timeToSendGG = true;

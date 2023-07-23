@@ -15,7 +15,7 @@ import net.optifine.reflect.Reflector;
 public class ItemOverrideList
 {
     public static final ItemOverrideList NONE = new ItemOverrideList();
-    private final List<ItemOverride> overrides = Lists.<ItemOverride>newArrayList();
+    private final List<ItemOverride> overrides = Lists.newArrayList();
     private ItemOverrideCache itemOverrideCache;
 
     private ItemOverrideList()

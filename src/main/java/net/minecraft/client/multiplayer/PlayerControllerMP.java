@@ -440,7 +440,7 @@ public class PlayerControllerMP {
         this.syncCurrentPlayItem();
         mc.player.attackedOther = true;
         mc.player.lastAttackTick = 10;
-        if (Managers.moduleManager.modules.get("MoreParticles").isEnabled()) {
+        if (Managers.moduleManager.renderModules.get("MoreParticles").isEnabled()) {
             for (int i = 0; i < MoreParticles.critParticles.getValue(); i++) {
                 mc.effectRenderer.emitParticleAtEntity(targetEntity, EnumParticleTypes.CRIT);
             }

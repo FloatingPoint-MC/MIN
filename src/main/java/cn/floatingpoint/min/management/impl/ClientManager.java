@@ -23,11 +23,11 @@ import java.util.UUID;
  */
 public class ClientManager implements Manager {
     public HashMap<UUID, Boolean> clientMateUuids;
-    public HashMap<String, Integer> ranks;
+    public HashMap<String, Integer> ranks = new HashMap<>();
     public HashMap<UUID, CheatDetection> cheaterUuids;
     public float titleSize, titleX, titleY;
     public ArrayList<String> sarcasticMessages;
-    public HashSet<String> cooldown;
+    public HashSet<String> cooldown = new HashSet<>();
 
     @Override
     public String getName() {
@@ -38,9 +38,7 @@ public class ClientManager implements Manager {
     public void init() {
         clientMateUuids = new HashMap<>();
         cheaterUuids = new HashMap<>();
-        ranks = new HashMap<>();
         sarcasticMessages = new ArrayList<>();
-        cooldown = new HashSet<>();
         titleSize = 1.0f;
         titleX = 0.0f;
         titleY = 0.0f;

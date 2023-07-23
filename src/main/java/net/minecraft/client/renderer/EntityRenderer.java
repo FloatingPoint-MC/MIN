@@ -530,11 +530,11 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         }
 
         if (useFOVSetting) {
-            if (screenScale == -1) {
+            if (screenScale == -1 || Double.isNaN(screenScale)) {
                 screenScale = f;
             }
         } else {
-            if (screenScale2 == -1) {
+            if (screenScale2 == -1 || Double.isNaN(screenScale2)) {
                 screenScale2 = f;
             }
         }

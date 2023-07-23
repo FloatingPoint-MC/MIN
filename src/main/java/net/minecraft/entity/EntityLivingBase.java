@@ -668,7 +668,7 @@ public abstract class EntityLivingBase extends Entity {
             this.potionsNeedUpdate = false;
         }
 
-        if (Managers.moduleManager.modules.get("CleanView").isEnabled() && this == Minecraft.getMinecraft().player) {
+        if (Managers.moduleManager.renderModules.get("CleanView").isEnabled() && this == Minecraft.getMinecraft().player) {
             return;
         }
 

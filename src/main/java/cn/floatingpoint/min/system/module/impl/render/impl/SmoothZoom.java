@@ -10,7 +10,7 @@ import cn.floatingpoint.min.utils.client.Pair;
  * @date: 2023-07-22 17:41:10
  */
 public class SmoothZoom extends RenderModule {
-    public final static DecimalValue speed = new DecimalValue(0.1, 5.0, 0.1, 4.0);
+    public final static DecimalValue speed = new DecimalValue(0.1, 5.0, 0.1, 2.0);
 
     public SmoothZoom() {
         addValues(
