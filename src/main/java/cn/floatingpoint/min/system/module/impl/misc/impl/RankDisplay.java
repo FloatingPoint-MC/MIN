@@ -21,7 +21,7 @@ public class RankDisplay extends MiscModule {
             super.setValue(value);
         }
     };
-    private OptionValue self = new OptionValue(true);
+    public static final OptionValue self = new OptionValue(true);
 
     public RankDisplay() {
         addValues(

@@ -29,24 +29,24 @@ public class BoundingBox extends RenderModule {
     @Override
     public void onRender3D() {
         if (!Shaders.isShadowPass) {
+            GlStateManager.depthMask(false);
+            GlStateManager.disableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.disableCull();
+            GlStateManager.disableBlend();
             for (Entity entity : mc.world.loadedEntityList.stream().filter(e -> e != mc.player && e instanceof EntityPlayer && !e.isInvisible()).collect(Collectors.toList())) {
                 double d_0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) mc.getRenderPartialTicks();
                 double d_1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) mc.getRenderPartialTicks();
                 double d_2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) mc.getRenderPartialTicks();
                 double x = d_0 - mc.getRenderManager().getRenderPosX(), y = d_1 - mc.getRenderManager().getRenderPosY(), z = d_2 - mc.getRenderManager().getRenderPosZ();
-                GlStateManager.depthMask(false);
-                GlStateManager.disableTexture2D();
-                GlStateManager.disableLighting();
-                GlStateManager.disableCull();
-                GlStateManager.disableBlend();
                 AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
                 RenderGlobal.drawBoundingBox(boundingBox.minX - entity.posX + x, boundingBox.minY - entity.posY + y, boundingBox.minZ - entity.posZ + z, boundingBox.maxX - entity.posX + x, boundingBox.maxY - entity.posY + y, boundingBox.maxZ - entity.posZ + z, 1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager.enableBlend();
-                GlStateManager.enableCull();
-                GlStateManager.enableLighting();
-                GlStateManager.enableTexture2D();
-                GlStateManager.depthMask(true);
             }
+            GlStateManager.enableBlend();
+            GlStateManager.enableCull();
+            GlStateManager.enableLighting();
+            GlStateManager.enableTexture2D();
+            GlStateManager.depthMask(true);
         }
     }
 }

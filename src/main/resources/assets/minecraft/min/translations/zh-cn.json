@@ -62,6 +62,8 @@
   "module.implement.RankDisplay.Game.sub.bw-xp": "起床战争-无限火力",
   "module.implement.RankDisplay.Game.sub.sw": "空岛战争",
   "module.implement.RankDisplay.Game.sub.kit": "职业战争",
+  "module.implement.RankDisplay.Self": "自己",
+  "module.implement.RankDisplay.Self.description": "显示你自己的排名。",
   "module.implement.TerminateBreakingBlock": "终止挖掘",
   "module.implement.TerminateBreakingBlock.description": "当你开始防砍的时候停止挖掘。",
   "module.implement.WorldTimeChanger": "世界时间改变",

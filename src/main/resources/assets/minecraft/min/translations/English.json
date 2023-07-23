@@ -62,6 +62,8 @@
   "module.implement.RankDisplay.Game.sub.bw-xp": "Bed Wars-Infinity Fire",
   "module.implement.RankDisplay.Game.sub.sw": "Sky Wars",
   "module.implement.RankDisplay.Game.sub.kit": "Kit Battle",
+  "module.implement.RankDisplay.Self": "Self",
+  "module.implement.RankDisplay.Self.description": "Display rank of yourself.",
   "module.implement.TerminateBreakingBlock": "Terminate Breaking Block",
   "module.implement.TerminateBreakingBlock.description": "Stop breaking when you start blocking.",
   "module.implement.WorldTimeChanger": "World Time Changer",

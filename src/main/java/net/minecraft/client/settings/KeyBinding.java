@@ -12,10 +12,10 @@ import net.minecraft.util.IntHashMap;
 import org.lwjgl.input.Keyboard;
 
 public class KeyBinding implements Comparable<KeyBinding> {
-    private static final Map<String, KeyBinding> KEYBIND_ARRAY = Maps.<String, KeyBinding>newHashMap();
+    private static final Map<String, KeyBinding> KEYBIND_ARRAY = Maps.newHashMap();
     private static final IntHashMap<KeyBinding> HASH = new IntHashMap<KeyBinding>();
-    private static final Set<String> KEYBIND_SET = Sets.<String>newHashSet();
-    private static final Map<String, Integer> CATEGORY_ORDER = Maps.<String, Integer>newHashMap();
+    private static final Set<String> KEYBIND_SET = Sets.newHashSet();
+    private static final Map<String, Integer> CATEGORY_ORDER = Maps.newHashMap();
     private final String keyDescription;
     private final int keyCodeDefault;
     private final String keyCategory;
@@ -55,7 +55,6 @@ public class KeyBinding implements Comparable<KeyBinding> {
             try {
                 setKeyBindState(keybinding.keyCode, keybinding.keyCode < 256 && Keyboard.isKeyDown(keybinding.keyCode));
             } catch (IndexOutOfBoundsException var3) {
-                ;
             }
         }
     }
@@ -138,7 +137,7 @@ public class KeyBinding implements Comparable<KeyBinding> {
     }
 
     public int compareTo(KeyBinding p_compareTo_1_) {
-        return this.keyCategory.equals(p_compareTo_1_.keyCategory) ? I18n.format(this.keyDescription).compareTo(I18n.format(p_compareTo_1_.keyDescription)) : ((Integer) CATEGORY_ORDER.get(this.keyCategory)).compareTo(CATEGORY_ORDER.get(p_compareTo_1_.keyCategory));
+        return this.keyCategory.equals(p_compareTo_1_.keyCategory) ? I18n.format(this.keyDescription).compareTo(I18n.format(p_compareTo_1_.keyDescription)) : CATEGORY_ORDER.get(this.keyCategory).compareTo(CATEGORY_ORDER.get(p_compareTo_1_.keyCategory));
     }
 
     public static Supplier<String> getDisplayString(String key) {
@@ -154,5 +153,6 @@ public class KeyBinding implements Comparable<KeyBinding> {
         CATEGORY_ORDER.put("key.categories.multiplayer", 5);
         CATEGORY_ORDER.put("key.categories.ui", 6);
         CATEGORY_ORDER.put("key.categories.misc", 7);
+        CATEGORY_ORDER.put("MIN Client", 8);
     }
 }

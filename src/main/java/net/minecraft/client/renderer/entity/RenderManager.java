@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.FreeLook;
 import com.google.common.collect.Maps;
 
 import java.util.Collections;
@@ -307,8 +309,9 @@ public class RenderManager {
                 this.playerViewX = 0.0F;
             }
         } else {
-            this.playerViewY = livingPlayerIn.prevRotationYaw + (livingPlayerIn.rotationYaw - livingPlayerIn.prevRotationYaw) * partialTicks;
-            this.playerViewX = livingPlayerIn.prevRotationPitch + (livingPlayerIn.rotationPitch - livingPlayerIn.prevRotationPitch) * partialTicks;
+            FreeLook freeLook = (FreeLook) Managers.moduleManager.renderModules.get("FreeLook");
+            this.playerViewY = freeLook.getCameraPrevYaw() + (freeLook.getCameraYaw() - freeLook.getCameraPrevYaw()) * partialTicks;
+            this.playerViewX = freeLook.getCameraPrevPitch() + (freeLook.getCameraPitch() - freeLook.getCameraPrevPitch()) * partialTicks;
         }
 
         if (optionsIn.thirdPersonView == 2) {
