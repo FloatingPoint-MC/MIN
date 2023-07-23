@@ -126,6 +126,8 @@
   "module.implement.FireFilter.description": "当你有抗火药水效果时不显示火焰。",
   "module.implement.FreeLook": "自由视角",
   "module.implement.FreeLook.description": "解锁视角转动。",
+  "module.implement.FreeLook.InvertY": "Y轴反转",
+  "module.implement.FreeLook.InvertY.description": "将鼠标的垂直方向反转。",
   "module.implement.FullBright": "明亮视野",
   "module.implement.FullBright.description": "使你的视野明亮起来。",
   "module.implement.ItemPhysics": "物理掉落",

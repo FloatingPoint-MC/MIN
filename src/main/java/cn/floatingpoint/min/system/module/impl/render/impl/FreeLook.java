@@ -1,6 +1,8 @@
 package cn.floatingpoint.min.system.module.impl.render.impl;
 
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
+import cn.floatingpoint.min.system.module.value.impl.OptionValue;
+import cn.floatingpoint.min.utils.client.Pair;
 import org.lwjgl.opengl.Display;
 
 /**
@@ -9,10 +11,17 @@ import org.lwjgl.opengl.Display;
  * @date: 2023-07-22 17:41:55
  */
 public class FreeLook extends RenderModule {
+    private final OptionValue invertY = new OptionValue(false);
     public static boolean perspectiveToggled;
     private static float cameraYaw;
     private static float cameraPitch;
     private static int previousPerspective;
+
+    public FreeLook() {
+        addValues(
+                new Pair<>("InvertY", invertY)
+        );
+    }
 
     @Override
     public void onEnable() {
@@ -86,6 +95,9 @@ public class FreeLook extends RenderModule {
             float f2 = f1 * f1 * f1 * 8.0f;
             float f3 = mc.mouseHelper.deltaX * f2;
             float f4 = mc.mouseHelper.deltaY * f2;
+            if (invertY.getValue()) {
+                f4 *= -1.0F;
+            }
             cameraYaw += f3 * 0.15f;
             cameraPitch += f4 * 0.15f;
             if (cameraPitch > 90.0f) {

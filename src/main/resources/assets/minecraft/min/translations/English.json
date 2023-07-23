@@ -126,6 +126,8 @@
   "module.implement.FireFilter.description": "Hide fire when you are of Fire Resistance.",
   "module.implement.FreeLook": "Free Look",
   "module.implement.FreeLook.description": "Unlock the look angle.",
+  "module.implement.FreeLook.InvertY": "Invert Y",
+  "module.implement.FreeLook.InvertY.description": "Invert the vertical direction of moving of mouse.",
   "module.implement.FullBright": "Full Bright",
   "module.implement.FullBright.description": "Make your sight bright.",
   "module.implement.ItemPhysics": "Item Physics",
