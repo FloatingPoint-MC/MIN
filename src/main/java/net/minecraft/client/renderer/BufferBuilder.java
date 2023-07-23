@@ -8,7 +8,6 @@ import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.util.Arrays;
 import java.util.BitSet;
-import java.util.Comparator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -24,6 +23,8 @@ import net.optifine.util.TextureUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nullable;
 
 public class BufferBuilder
 {
@@ -71,7 +72,7 @@ public class BufferBuilder
         {
             int i = this.byteBuffer.capacity();
             int j = i + MathHelper.roundUp(increaseAmount, 2097152);
-            LOGGER.debug("Needed to grow BufferBuilder buffer: Old size {} bytes, new size {} bytes.", Integer.valueOf(i), Integer.valueOf(j));
+            LOGGER.debug("Needed to grow BufferBuilder buffer: Old size {} bytes, new size {} bytes.", i, j);
             int k = this.rawIntBuffer.position();
             ByteBuffer bytebuffer = GLAllocation.createDirectByteBuffer(j);
             this.byteBuffer.position(0);
@@ -112,20 +113,14 @@ public class BufferBuilder
             ainteger[k] = k;
         }
 
-        Arrays.sort(ainteger, new Comparator<Integer>()
-        {
-            public int compare(Integer p_compare_1_, Integer p_compare_2_)
-            {
-                return Floats.compare(afloat[p_compare_2_.intValue()], afloat[p_compare_1_.intValue()]);
-            }
-        });
+        Arrays.sort(ainteger, (p_compare_1_, p_compare_2_) -> Floats.compare(afloat[p_compare_2_], afloat[p_compare_1_]));
         BitSet bitset = new BitSet();
         int l = this.vertexFormat.getSize();
         int[] aint = new int[l];
 
         for (int i1 = bitset.nextClearBit(0); i1 < ainteger.length; i1 = bitset.nextClearBit(i1 + 1))
         {
-            int j1 = ainteger[i1].intValue();
+            int j1 = ainteger[i1];
 
             if (j1 != i1)
             {
@@ -134,7 +129,7 @@ public class BufferBuilder
                 this.rawIntBuffer.get(aint);
                 int k1 = j1;
 
-                for (int l1 = ainteger[j1].intValue(); k1 != i1; l1 = ainteger[l1].intValue())
+                for (int l1 = ainteger[j1]; k1 != i1; l1 = ainteger[l1])
                 {
                     this.rawIntBuffer.limit(l1 * l + l);
                     this.rawIntBuffer.position(l1 * l);
@@ -160,11 +155,9 @@ public class BufferBuilder
         if (this.quadSprites != null)
         {
             TextureAtlasSprite[] atextureatlassprite = new TextureAtlasSprite[this.vertexCount / 4];
-            int i2 = this.vertexFormat.getSize() / 4 * 4;
-
             for (int j2 = 0; j2 < ainteger.length; ++j2)
             {
-                int k2 = ainteger[j2].intValue();
+                int k2 = ainteger[j2];
                 atextureatlassprite[j2] = this.quadSprites[k2];
             }
 
@@ -190,7 +183,7 @@ public class BufferBuilder
             System.arraycopy(this.quadSprites, 0, atextureatlassprite, 0, j);
         }
 
-        return new BufferBuilder.State(aint, new VertexFormat(this.vertexFormat), atextureatlassprite);
+        return new State(aint, new VertexFormat(this.vertexFormat), atextureatlassprite);
     }
 
     public int getBufferSize()
@@ -200,16 +193,16 @@ public class BufferBuilder
 
     private static float getDistanceSq(FloatBuffer floatBufferIn, float x, float y, float z, int integerSize, int offset)
     {
-        float f = floatBufferIn.get(offset + integerSize * 0 + 0);
-        float f1 = floatBufferIn.get(offset + integerSize * 0 + 1);
-        float f2 = floatBufferIn.get(offset + integerSize * 0 + 2);
-        float f3 = floatBufferIn.get(offset + integerSize * 1 + 0);
-        float f4 = floatBufferIn.get(offset + integerSize * 1 + 1);
-        float f5 = floatBufferIn.get(offset + integerSize * 1 + 2);
-        float f6 = floatBufferIn.get(offset + integerSize * 2 + 0);
+        float f = floatBufferIn.get(offset);
+        float f1 = floatBufferIn.get(offset + 1);
+        float f2 = floatBufferIn.get(offset + 2);
+        float f3 = floatBufferIn.get(offset + integerSize);
+        float f4 = floatBufferIn.get(offset + integerSize + 1);
+        float f5 = floatBufferIn.get(offset + integerSize + 2);
+        float f6 = floatBufferIn.get(offset + integerSize * 2);
         float f7 = floatBufferIn.get(offset + integerSize * 2 + 1);
         float f8 = floatBufferIn.get(offset + integerSize * 2 + 2);
-        float f9 = floatBufferIn.get(offset + integerSize * 3 + 0);
+        float f9 = floatBufferIn.get(offset + integerSize * 3);
         float f10 = floatBufferIn.get(offset + integerSize * 3 + 1);
         float f11 = floatBufferIn.get(offset + integerSize * 3 + 2);
         float f12 = (f + f3 + f6 + f9) * 0.25F - x;
@@ -766,7 +759,7 @@ public class BufferBuilder
         }
     }
 
-    public void putSprite(TextureAtlasSprite p_putSprite_1_)
+    public void putSprite(@Nullable TextureAtlasSprite p_putSprite_1_)
     {
         if (this.animatedSprites != null && p_putSprite_1_ != null && p_putSprite_1_.getAnimationIndex() >= 0)
         {
@@ -780,7 +773,7 @@ public class BufferBuilder
         }
     }
 
-    public void setSprite(TextureAtlasSprite p_setSprite_1_)
+    public void setSprite(@Nullable TextureAtlasSprite p_setSprite_1_)
     {
         if (this.animatedSprites != null && p_setSprite_1_ != null && p_setSprite_1_.getAnimationIndex() >= 0)
         {
@@ -810,7 +803,6 @@ public class BufferBuilder
             }
 
             Arrays.fill(this.drawnIcons, false);
-            int j = 0;
             int k = -1;
             int l = this.vertexCount / 4;
 
@@ -834,7 +826,6 @@ public class BufferBuilder
                         else
                         {
                             i1 = this.drawForIcon(textureatlassprite, i1) - 1;
-                            ++j;
 
                             if (this.blockLayer != BlockRenderLayer.TRANSLUCENT)
                             {
@@ -848,12 +839,6 @@ public class BufferBuilder
             if (k >= 0)
             {
                 this.drawForIcon(TextureUtils.iconGrassSideOverlay, k);
-                ++j;
-            }
-
-            if (j > 0)
-            {
-                ;
             }
         }
     }
@@ -919,7 +904,7 @@ public class BufferBuilder
         }
     }
 
-    public void setBlockLayer(BlockRenderLayer p_setBlockLayer_1_)
+    public void setBlockLayer(@Nullable BlockRenderLayer p_setBlockLayer_1_)
     {
         this.blockLayer = p_setBlockLayer_1_;
 
@@ -937,8 +922,7 @@ public class BufferBuilder
 
     private int getBufferQuadSize()
     {
-        int i = this.rawIntBuffer.capacity() * 4 / (this.vertexFormat.getIntegerSize() * 4);
-        return i;
+        return this.rawIntBuffer.capacity() * 4 / (this.vertexFormat.getIntegerSize() * 4);
     }
 
     public RenderEnv getRenderEnv(IBlockState p_getRenderEnv_1_, BlockPos p_getRenderEnv_2_)
@@ -1084,13 +1068,13 @@ public class BufferBuilder
         }
     }
 
-    public class State
+    public static class State
     {
         private final int[] stateRawBuffer;
         private final VertexFormat stateVertexFormat;
         private TextureAtlasSprite[] stateQuadSprites;
 
-        public State(int[] p_i5_2_, VertexFormat p_i5_3_, TextureAtlasSprite[] p_i5_4_)
+        public State(int[] p_i5_2_, VertexFormat p_i5_3_, @Nullable TextureAtlasSprite[] p_i5_4_)
         {
             this.stateRawBuffer = p_i5_2_;
             this.stateVertexFormat = p_i5_3_;

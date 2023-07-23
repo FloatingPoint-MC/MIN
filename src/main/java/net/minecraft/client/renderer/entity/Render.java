@@ -131,10 +131,10 @@ public abstract class Render<T extends Entity> implements IEntityRenderer {
     /**
      * Renders a layer of fire on top of an entity.
      */
-    private void renderEntityOnFire(Entity entity, double x, double y, double z, float partialTicks) {
+    private void renderEntityOnFire(Entity entity, double x, double y, double z) {
         if (Managers.moduleManager.renderModules.get("FireFilter").isEnabled()) {
-            if (entity instanceof EntityPlayer) {
-                if (((EntityPlayer) entity).isPotionActive(Objects.requireNonNull(Potion.getPotionById(12)))) {
+            if (entity == Minecraft.getMinecraft().player) {
+                if (Minecraft.getMinecraft().player.isPotionActive(Objects.requireNonNull(Potion.getPotionById(12)))) {
                     return;
                 }
             }
@@ -150,7 +150,6 @@ public abstract class Render<T extends Entity> implements IEntityRenderer {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         float f1 = 0.5F;
-        float f2 = 0.0F;
         float f3 = entity.height / f;
         float f4 = (float) (entity.posY - entity.getEntityBoundingBox().minY);
         GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
@@ -345,7 +344,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer {
             }
 
             if (entityIn.canRenderOnFire() && (!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).isSpectator())) {
-                this.renderEntityOnFire(entityIn, x, y, z, partialTicks);
+                this.renderEntityOnFire(entityIn, x, y, z);
             }
         }
     }

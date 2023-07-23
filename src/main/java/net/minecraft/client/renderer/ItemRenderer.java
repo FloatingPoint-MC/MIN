@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import com.google.common.base.MoreObjects;
 
@@ -20,6 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.potion.Potion;
 import net.optifine.Config;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -142,6 +144,7 @@ public class ItemRenderer {
         this.mc.getTextureManager().bindTexture(this.mc.player.getLocationSkin());
         Render<AbstractClientPlayer> render = this.renderManager.getEntityRenderObject(this.mc.player);
         RenderPlayer renderplayer = (RenderPlayer) render;
+        assert renderplayer != null;
         GlStateManager.pushMatrix();
         float f = p_187455_1_ == EnumHandSide.RIGHT ? 1.0F : -1.0F;
         GlStateManager.rotate(92.0F, 0.0F, 1.0F, 0.0F);
@@ -230,7 +233,7 @@ public class ItemRenderer {
         float f2 = -0.3F * MathHelper.sin(f1 * (float) Math.PI);
         float f3 = 0.4F * MathHelper.sin(f1 * ((float) Math.PI * 2F));
         float f4 = -0.4F * MathHelper.sin(p_187456_2_ * (float) Math.PI);
-        GlStateManager.translate(f * (f2 + 0.64000005F), f3 + -0.6F + p_187456_1_ * -0.6F, f4 + -0.71999997F);
+        GlStateManager.translate(f * (f2 + 0.64000005F), f3 - 0.6F + p_187456_1_ * -0.6F, f4 - 0.71999997F);
         GlStateManager.rotate(f * 45.0F, 0.0F, 1.0F, 0.0F);
         float f5 = MathHelper.sin(p_187456_2_ * p_187456_2_ * (float) Math.PI);
         float f6 = MathHelper.sin(f1 * (float) Math.PI);
@@ -244,6 +247,7 @@ public class ItemRenderer {
         GlStateManager.rotate(f * -135.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(f * 5.6F, 0.0F, 0.0F);
         RenderPlayer renderplayer = (RenderPlayer) this.renderManager.<AbstractClientPlayer>getEntityRenderObject(abstractclientplayer);
+        assert renderplayer != null;
         GlStateManager.disableCull();
 
         if (flag) {
@@ -460,8 +464,8 @@ public class ItemRenderer {
     }
 
     private void doSwingAnimation(float swingProgress) {
-        float f = MathHelper.sin(swingProgress * swingProgress * (float)Math.PI);
-        float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float)Math.PI);
+        float f = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
+        float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
         GlStateManager.rotate(f * -20.0F, 0, 1, 0);
         GlStateManager.rotate(f1 * -20.0F, 0, 0, 1);
         GlStateManager.rotate(f1 * -80.0F, 1, 0, 0);
@@ -568,6 +572,11 @@ public class ItemRenderer {
      * Renders the fire on the screen for first person mode. Arg: partialTickTime
      */
     private void renderFireInFirstPerson() {
+        if (Managers.moduleManager.renderModules.get("FireFilter").isEnabled()) {
+            if (Minecraft.getMinecraft().player.isPotionActive(Objects.requireNonNull(Potion.getPotionById(12)))) {
+                return;
+            }
+        }
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
