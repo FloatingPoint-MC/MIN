@@ -120,5 +120,6 @@ public class CheaterDetector extends MiscModule {
         ITextComponent textComponent = new TextComponentString(Managers.i18NManager.getTranslation("module.implement.CheaterDetector.confirmDelete"));
         textComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("module.implement.CheaterDetector.clickDelete")));
         textComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/min cheaters remove " + player.getUniqueID()));
+        ChatUtil.printToChat(textComponent);
     }
 }

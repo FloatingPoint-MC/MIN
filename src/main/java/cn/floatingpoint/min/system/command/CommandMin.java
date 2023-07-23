@@ -21,9 +21,20 @@ public class CommandMin {
             if (args[0].equalsIgnoreCase("cheaters")) {
                 if (args.length == 3) {
                     if (args[1].equalsIgnoreCase("remove")) {
-                        UUID uuid = UUID.fromString(args[2]);
+                        UUID uuid;
+                        try {
+                            uuid = UUID.fromString(args[2]);
+                        } catch (IllegalArgumentException e) {
+                            EntityPlayer player = Minecraft.getMinecraft().world.getPlayerEntityByName(args[2]);
+                            if (player == null) return false;
+                            uuid = player.getUniqueID();
+                        }
                         Managers.clientManager.cheaterUuids.put(uuid, new CheatDetection());
-                        ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("module.implement.CheaterDetector.delete"));
+                        EntityPlayer player = Minecraft.getMinecraft().world.getPlayerEntityByUUID(uuid);
+                        if (player != null) {
+                            ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("module.implement.CheaterDetector.delete")
+                                    .replace("{0}", player.getName()));
+                        }
                         return true;
                     } else if (args[1].equalsIgnoreCase("add")) {
                         UUID uuid;
@@ -50,7 +61,8 @@ public class CommandMin {
                                         String accept = args[3];
                                         String deny = args[4];
                                         Minecraft.getMinecraft().displayGuiScreen(new GuiHandleInvitation(new VexViewButton("同意", accept), new VexViewButton("拒绝", deny)));
-                                    } catch (Exception ignore) {}
+                                    } catch (Exception ignore) {
+                                    }
                                 }
                             }
                         }

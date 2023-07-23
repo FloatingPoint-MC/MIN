@@ -583,6 +583,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
         }
 
+        float screenScale = this.screenScale;
+        float screenScale2 = this.screenScale2;
+
         if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).getHealth() <= 0.0F) {
             float f1 = (float) ((EntityLivingBase) entity).deathTime + partialTicks;
             if (useFOVSetting) {

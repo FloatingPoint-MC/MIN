@@ -370,8 +370,8 @@ public abstract class Render<T extends Entity> implements IEntityRenderer {
             boolean flag1 = this.renderManager.options.thirdPersonView == 2;
             float f2 = entityIn.height + 0.5F - (flag ? 0.25F : 0.0F);
             int i = "deadmau5".equals(str) ? -10 : 0;
-            if (entityIn instanceof EntityPlayer) {
-                if (str.contains(entityIn.getName()) && Managers.moduleManager.miscModules.get("RankDisplay").isEnabled()) {
+            if (entityIn instanceof EntityPlayer && str.contains(entityIn.getName())) {
+                if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled()) {
                     if (RankDisplay.self.getValue() || entityIn != Minecraft.getMinecraft().player) {
                         if (Managers.clientManager.ranks.containsKey(entityIn.getName())) {
                             int rank = Managers.clientManager.ranks.get(entityIn.getName());
