@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -55,6 +56,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.potion.Potion;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
@@ -1513,14 +1515,14 @@ public abstract class EntityPlayer extends EntityLivingBase {
     /**
      * Add a stat once
      */
-    public void addStat(@Nullable StatBase stat) {
+    public void addStat(@Nonnull StatBase stat) {
         this.addStat(stat, 1);
     }
 
     /**
      * Adds a value to a statistic field.
      */
-    public void addStat(@Nullable StatBase stat, int amount) {
+    public void addStat(@Nonnull StatBase stat, int amount) {
     }
 
     public void takeStat(StatBase stat) {
@@ -2226,6 +2228,14 @@ public abstract class EntityPlayer extends EntityLivingBase {
         double xDist = posX - lastTickPosX;
         double zDist = posZ - lastTickPosZ;
         return MathHelper.sqrt(xDist * xDist + zDist * zDist);
+    }
+
+    public double getPredictSpeed() {
+        float moveSpeed = 0.2873f;
+        if (this.isPotionActive(Objects.requireNonNull(Potion.getPotionById(1)))) {
+            moveSpeed *= 1 + 0.2 * (Objects.requireNonNull(this.getActivePotionEffect(Objects.requireNonNull(Potion.getPotionById(1)))).getAmplifier());
+        }
+        return moveSpeed;
     }
 
     public enum EnumChatVisibility {

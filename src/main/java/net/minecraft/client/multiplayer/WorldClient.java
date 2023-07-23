@@ -101,6 +101,7 @@ public class WorldClient extends World {
         });
         Managers.clientManager.clientMateUuids.clear();
         Managers.fileManager.shouldSave = true;
+        Managers.clientManager.cooldown.clear();
     }
 
     public static WorldProvider makeWorldProvider(int p_makeWorldProvider_0_) {

@@ -64,7 +64,7 @@ public class CheaterDetector extends MiscModule {
                 CheatDetection detection = Managers.clientManager.cheaterUuids.get(player.getUniqueID());
                 if (detection.hacks) continue;
                 if (sprintCheck.getValue()) {
-                    if (player.getMoveSpeed() >= player.getAIMoveSpeed() * 0.93 && (player.moveForward < 0.0F || player.moveForward == 0.0F && player.moveStrafing != 0.0F)) {
+                    if (player.getMoveSpeed() >= player.getPredictSpeed() * 0.93 && (player.moveForward < 0.0F || player.moveForward == 0.0F && player.moveStrafing != 0.0F)) {
                         detection.sprintPercentage += 20;
                         if (detection.sprintPercentage >= 100) {
                             detection.sprint++;
@@ -87,7 +87,7 @@ public class CheaterDetector extends MiscModule {
                     }
                 }
                 if (noSlowCheck.getValue()) {
-                    if (player.isHandActive() && player.onGround && player.hurtResistantTime == 0 && !player.isPotionActive(Objects.requireNonNull(Potion.getPotionById(1))) && player.getMoveSpeed() >= player.getAIMoveSpeed() * 0.9 && !player.getActiveItemStack().getDisplayName().toLowerCase().contains("bow")) {
+                    if (player.isHandActive() && player.onGround && player.hurtResistantTime == 0 && !player.isPotionActive(Objects.requireNonNull(Potion.getPotionById(1))) && player.getMoveSpeed() >= player.getPredictSpeed() * 0.9 && !player.getActiveItemStack().getDisplayName().toLowerCase().contains("bow")) {
                         detection.noSlowPercentage += 20;
                         if (detection.noSlowPercentage >= 100) {
                             detection.noSlow++;

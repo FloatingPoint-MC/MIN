@@ -453,11 +453,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     private boolean reachCheck(Entity entity, double addition) {
         if (mc.player.posY > entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
-            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.72 + addition;
+            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.46 + addition;
         } else if (mc.player.posY + 1.8 < entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
-            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.78 + addition;
+            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.46 + addition;
         } else {
-            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 0.9D, 0.0D))) <= 3.46 + addition;
+            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionEyes(mc.getRenderPartialTicks()))) <= 3.46 + addition;
         }
     }
 
@@ -610,67 +610,53 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     protected boolean pushOutOfBlocks(double x, double y, double z)
     {
-        if (this.noClip)
-        {
-            return false;
-        }
-        else
-        {
+        if (!this.noClip) {
             BlockPos blockpos = new BlockPos(x, y, z);
-            double d0 = x - (double)blockpos.getX();
-            double d1 = z - (double)blockpos.getZ();
+            double d0 = x - (double) blockpos.getX();
+            double d1 = z - (double) blockpos.getZ();
 
-            if (!this.isOpenBlockSpace(blockpos))
-            {
+            if (!this.isOpenBlockSpace(blockpos)) {
                 int i = -1;
                 double d2 = 9999.0D;
 
-                if (this.isOpenBlockSpace(blockpos.west()) && d0 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.west()) && d0 < d2) {
                     d2 = d0;
                     i = 0;
                 }
 
-                if (this.isOpenBlockSpace(blockpos.east()) && 1.0D - d0 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.east()) && 1.0D - d0 < d2) {
                     d2 = 1.0D - d0;
                     i = 1;
                 }
 
-                if (this.isOpenBlockSpace(blockpos.north()) && d1 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.north()) && d1 < d2) {
                     d2 = d1;
                     i = 4;
                 }
 
-                if (this.isOpenBlockSpace(blockpos.south()) && 1.0D - d1 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.south()) && 1.0D - d1 < d2) {
                     i = 5;
                 }
 
-                if (i == 0)
-                {
+                if (i == 0) {
                     this.motionX = -0.10000000149011612D;
                 }
 
-                if (i == 1)
-                {
+                if (i == 1) {
                     this.motionX = 0.10000000149011612D;
                 }
 
-                if (i == 4)
-                {
+                if (i == 4) {
                     this.motionZ = -0.10000000149011612D;
                 }
 
-                if (i == 5)
-                {
+                if (i == 5) {
                     this.motionZ = 0.10000000149011612D;
                 }
             }
 
-            return false;
         }
+        return false;
     }
 
     /**
