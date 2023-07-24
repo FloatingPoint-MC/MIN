@@ -407,7 +407,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         if (!this.isEntityInvulnerable(damageSrc))
         {
             if (Managers.moduleManager.miscModules.get("CheaterDetector").isEnabled() && CheaterDetector.reachCheck.getValue()) {
-                if (this.fire != 20.0F) return;
                 if (damageSrc == DamageSource.GENERIC && !damageSrc.isFireDamage() && !damageSrc.isMagicDamage() && damageSrc.isUnblockable() && !damageSrc.isExplosion() && !damageSrc.isProjectile()) {
                     int i = 0;
                     EntityPlayer entityPlayer = null;
@@ -453,11 +452,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     private boolean reachCheck(Entity entity, double addition) {
         if (mc.player.posY > entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
-            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.46 + addition;
+            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.42 + addition;
         } else if (mc.player.posY + 1.8 < entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
-            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.46 + addition;
+            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.42 + addition;
         } else {
-            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionEyes(mc.getRenderPartialTicks()))) <= 3.46 + addition;
+            double xDist = entity.posX - mc.player.posX;
+            double zDist = entity.posZ - mc.player.posZ;
+            return Math.hypot(xDist, zDist) <= 3.42 + addition;
         }
     }
 
