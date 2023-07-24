@@ -154,9 +154,7 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer> {
     }
 
     public void renderRightArm(AbstractClientPlayer clientPlayer) {
-        float f = 1.0F;
         GlStateManager.color(1.0F, 1.0F, 1.0F);
-        float f1 = 0.0625F;
         ModelPlayer modelplayer = this.getMainModel();
         this.setModelVisibilities(clientPlayer);
         GlStateManager.enableBlend();

@@ -94,7 +94,7 @@ public class NetworkPlayerInfo
     public ResourceLocation getLocationSkin()
     {
         this.loadPlayerTextures();
-        return (ResourceLocation)MoreObjects.firstNonNull(this.playerTextures.get(Type.SKIN), DefaultPlayerSkin.getDefaultSkin(this.gameProfile.getId()));
+        return MoreObjects.firstNonNull(this.playerTextures.get(Type.SKIN), DefaultPlayerSkin.getDefaultSkin(this.gameProfile.getId()));
     }
 
     @Nullable
@@ -128,30 +128,26 @@ public class NetworkPlayerInfo
             if (!this.playerTexturesLoaded)
             {
                 this.playerTexturesLoaded = true;
-                Minecraft.getMinecraft().getSkinManager().loadProfileTextures(this.gameProfile, new SkinManager.SkinAvailableCallback()
-                {
-                    public void skinAvailable(Type typeIn, ResourceLocation location, MinecraftProfileTexture profileTexture)
+                Minecraft.getMinecraft().getSkinManager().loadProfileTextures(this.gameProfile, (typeIn, location, profileTexture) -> {
+                    switch (typeIn)
                     {
-                        switch (typeIn)
-                        {
-                            case SKIN:
-                                NetworkPlayerInfo.this.playerTextures.put(Type.SKIN, location);
-                                NetworkPlayerInfo.this.skinType = profileTexture.getMetadata("model");
+                        case SKIN:
+                            NetworkPlayerInfo.this.playerTextures.put(Type.SKIN, location);
+                            NetworkPlayerInfo.this.skinType = profileTexture.getMetadata("model");
 
-                                if (NetworkPlayerInfo.this.skinType == null)
-                                {
-                                    NetworkPlayerInfo.this.skinType = "default";
-                                }
+                            if (NetworkPlayerInfo.this.skinType == null)
+                            {
+                                NetworkPlayerInfo.this.skinType = "default";
+                            }
 
-                                break;
+                            break;
 
-                            case CAPE:
-                                NetworkPlayerInfo.this.playerTextures.put(Type.CAPE, location);
-                                break;
+                        case CAPE:
+                            NetworkPlayerInfo.this.playerTextures.put(Type.CAPE, location);
+                            break;
 
-                            case ELYTRA:
-                                NetworkPlayerInfo.this.playerTextures.put(Type.ELYTRA, location);
-                        }
+                        case ELYTRA:
+                            NetworkPlayerInfo.this.playerTextures.put(Type.ELYTRA, location);
                     }
                 }, true);
             }

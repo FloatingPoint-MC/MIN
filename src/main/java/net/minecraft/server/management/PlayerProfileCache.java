@@ -95,7 +95,7 @@ public class PlayerProfileCache
 
         if (!isOnlineMode() && agameprofile[0] == null)
         {
-            UUID uuid = EntityPlayer.getUUID(new GameProfile((UUID)null, name));
+            UUID uuid = EntityPlayer.getUUID(new GameProfile(null, name));
             GameProfile gameprofile = new GameProfile(uuid, name);
             profilelookupcallback.onProfileLookupSucceeded(gameprofile);
         }
