@@ -38,17 +38,22 @@ jobs:
         run: |
           echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       # 上传文件并发布 Release- name: Release Upload
-      - name: Publish to GitHub Releases
-        # You may pin to the exact commit or the version.
-        # uses: d1ceward/draft-assets-release-action@f2997b18bb04e00260f1d67c796b04a56ca6ea2e
-        uses: d1ceward/draft-assets-release-action@v2.0.0
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # The GitHub access token which will be used to upload release artifacts.
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          # A list of files to publish, relative to the repository root.
-          files: |
-            staging/*.jar
-            staging/*.sha1
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: Release ${{ env.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
+      - name: Upload release binaries
+        uses: alexellis/upload-assets@0.4.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: '["./staging/*"]'
       - name: Branch Creator
         uses: Vent-Finance/branch_creator@v1.0.0
         with:
