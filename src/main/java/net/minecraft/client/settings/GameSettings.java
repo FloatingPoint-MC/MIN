@@ -207,7 +207,7 @@ public class GameSettings {
     /**
      * GUI scale
      */
-    public int guiScale;
+    public int guiScale = 2;
 
     /**
      * Determines amount of particles. 0 = All, 1 = Decreased, 2 = Minimal
@@ -2618,7 +2618,7 @@ public class GameSettings {
         this.clouds = 2;
         this.fovSetting = 70.0F;
         this.gammaSetting = 0.0F;
-        this.guiScale = 0;
+        this.guiScale = 2;
         this.particleSetting = 0;
         this.heldItemTooltips = true;
         this.useVbo = false;
