@@ -72,6 +72,8 @@
   "module.implement.WorldTimeChanger.Time.description": "Time to be applied to current world.",
   "module.implement.Animation": "Animation",
   "module.implement.Animation.description": "Modify some animations in game.",
+  "module.implement.Animation.OldArmorAnimation": "Old Armor Animation",
+  "module.implement.Animation.OldArmorAnimation.description": "Bring armor animation back to 1.7 version.",
   "module.implement.Animation.OldRodAnimation": "Old Rod Animation",
   "module.implement.Animation.OldRodAnimation.description": "Bring rod animation back to 1.7 version.",
   "module.implement.Animation.OldSwingAnimation": "Old Swing Animation",

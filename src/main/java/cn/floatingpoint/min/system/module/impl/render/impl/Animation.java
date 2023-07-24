@@ -11,6 +11,7 @@ import cn.floatingpoint.min.utils.client.Pair;
  * @date: 2023-07-19 17:38:38
  */
 public class Animation extends RenderModule {
+    public static OptionValue oldArmorAnimation = new OptionValue(false);
     public static OptionValue oldRodAnimation = new OptionValue(false);
     public static OptionValue oldSwingAnimation = new OptionValue(false);
     public static ModeValue foodSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
@@ -19,6 +20,7 @@ public class Animation extends RenderModule {
 
     public Animation() {
         addValues(
+                new Pair<>("OldArmorAnimation", oldArmorAnimation),
                 new Pair<>("OldRodAnimation", oldRodAnimation),
                 new Pair<>("OldSwingAnimation", oldSwingAnimation),
                 new Pair<>("BlockSwingMode", blockSwingMode),

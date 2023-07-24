@@ -5,7 +5,6 @@ import org.lwjgl.opengl.ARBShaderObjects;
 public class ShaderUniform4f extends ShaderUniformBase
 {
     private float[][] programValues;
-    private static final float VALUE_UNKNOWN = -3.4028235E38F;
 
     public ShaderUniform4f(String name)
     {
@@ -37,8 +36,7 @@ public class ShaderUniform4f extends ShaderUniformBase
     public float[] getValue()
     {
         int i = this.getProgram();
-        float[] afloat = this.programValues[i];
-        return afloat;
+        return this.programValues[i];
     }
 
     protected void onProgramSet(int program)

@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import cn.floatingpoint.min.management.Managers;
-import cn.floatingpoint.min.utils.client.CheatDetection;
+import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import com.google.common.collect.Lists;
 
 import java.nio.FloatBuffer;
@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSpider;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -73,11 +72,10 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
      * Example: par1 = 30, par2 = 50, par3 = 0.5, then return = 40
      */
     protected float interpolateRotation(float prevYawOffset, float yawOffset, float partialTicks) {
-        float f;
-
-        for (f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F) {
+        float f = yawOffset - prevYawOffset;
+        while (f < -180.0F) {
+            f += 360.0F;
         }
-
         while (f >= 180.0F) {
             f -= 360.0F;
         }
@@ -221,14 +219,22 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                         EmissiveTextures.endRender();
                     }
 
-                    if (flag) {
-                        this.unsetBrightness();
+                    if (!Animation.oldArmorAnimation.getValue()) {
+                        if (flag) {
+                            this.unsetBrightness();
+                        }
                     }
 
                     GlStateManager.depthMask(true);
 
                     if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) {
                         this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
+                    }
+
+                    if (Animation.oldArmorAnimation.getValue()) {
+                        if (flag) {
+                            this.unsetBrightness();
+                        }
                     }
                 }
 

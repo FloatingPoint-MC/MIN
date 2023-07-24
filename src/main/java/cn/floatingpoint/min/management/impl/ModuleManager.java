@@ -48,6 +48,7 @@ public class ModuleManager implements Manager {
         miscModules.put("WorldTimeChanger", new WorldTimeChange());
         // Render
         renderModules.put("Animation", new Animation());
+        renderModules.put("ArmorDisplay", new ArmorDisplay());
         renderModules.put("BlockOverlay", new BlockOverlay());
         renderModules.put("BoundingBox", new BoundingBox());
         renderModules.put("CleanView", new CleanView());
