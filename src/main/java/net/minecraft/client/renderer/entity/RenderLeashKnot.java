@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderLeashKnot extends Render<EntityLeashKnot>
 {
     private static final ResourceLocation LEASH_KNOT_TEXTURES = new ResourceLocation("textures/entity/lead_knot.png");
-    private final ModelLeashKnot leashKnotModel = new ModelLeashKnot();
+    public ModelLeashKnot leashKnotModel = new ModelLeashKnot();
 
     public RenderLeashKnot(RenderManager renderManagerIn)
     {

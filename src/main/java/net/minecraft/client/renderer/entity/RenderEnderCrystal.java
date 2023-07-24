@@ -12,8 +12,8 @@ import net.minecraft.util.math.MathHelper;
 public class RenderEnderCrystal extends Render<EntityEnderCrystal>
 {
     private static final ResourceLocation ENDER_CRYSTAL_TEXTURES = new ResourceLocation("textures/entity/endercrystal/endercrystal.png");
-    private final ModelBase modelEnderCrystal = new ModelEnderCrystal(0.0F, true);
-    private final ModelBase modelEnderCrystalNoBase = new ModelEnderCrystal(0.0F, false);
+    public ModelBase modelEnderCrystal = new ModelEnderCrystal(true);
+    public ModelBase modelEnderCrystalNoBase = new ModelEnderCrystal(false);
 
     public RenderEnderCrystal(RenderManager renderManagerIn)
     {

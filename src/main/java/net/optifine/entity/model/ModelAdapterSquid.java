@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSquid;
 import net.minecraft.entity.passive.EntitySquid;
 import net.optifine.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterSquid extends ModelAdapter
 {
@@ -34,7 +33,7 @@ public class ModelAdapterSquid extends ModelAdapter
 
             if (modelPart.equals("body"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelsquid, Reflector.ModelSquid_body);
+                return modelsquid.squidBody;
             }
             else
             {
@@ -42,7 +41,7 @@ public class ModelAdapterSquid extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[])Reflector.getFieldValue(modelsquid, Reflector.ModelSquid_tentacles);
+                    ModelRenderer[] amodelrenderer = modelsquid.squidTentacles;
 
                     if (amodelrenderer == null)
                     {

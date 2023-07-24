@@ -111,7 +111,6 @@ import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -119,7 +118,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.optifine.entity.model.CustomEntityModels;
 import net.optifine.player.PlayerItemsLayer;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 
 public class RenderManager {
@@ -253,10 +251,6 @@ public class RenderManager {
         this.skinMap.put("default", this.playerRenderer);
         this.skinMap.put("slim", new RenderPlayer(this, true));
         PlayerItemsLayer.register(this.skinMap);
-
-        if (Reflector.RenderingRegistry_loadEntityRenderers.exists()) {
-            Reflector.call(Reflector.RenderingRegistry_loadEntityRenderers, this, this.entityRenderMap);
-        }
     }
 
     public void setRenderPosition(double renderPosXIn, double renderPosYIn, double renderPosZIn) {
@@ -298,12 +292,7 @@ public class RenderManager {
             IBlockState iblockstate = worldIn.getBlockState(new BlockPos(livingPlayerIn));
             Block block = iblockstate.getBlock();
 
-            if (Reflector.callBoolean(block, Reflector.ForgeBlock_isBed, iblockstate, worldIn, new BlockPos(livingPlayerIn), livingPlayerIn)) {
-                EnumFacing enumfacing = (EnumFacing) Reflector.call(block, Reflector.ForgeBlock_getBedDirection, iblockstate, worldIn, new BlockPos(livingPlayerIn));
-                int i = enumfacing.getHorizontalIndex();
-                this.playerViewY = (float) (i * 90 + 180);
-                this.playerViewX = 0.0F;
-            } else if (block == Blocks.BED) {
+            if (block == Blocks.BED) {
                 int j = iblockstate.getValue(BlockBed.FACING).getHorizontalIndex();
                 this.playerViewY = (float) (j * 90 + 180);
                 this.playerViewX = 0.0F;

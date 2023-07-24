@@ -15,7 +15,6 @@ import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import net.optifine.reflect.ReflectorForge;
 
 public class DefaultResourcePack implements IResourcePack
 {
@@ -62,23 +61,11 @@ public class DefaultResourcePack implements IResourcePack
     public InputStream getResourceStream(ResourceLocation location)
     {
         String s = "/assets/" + location.getNamespace() + "/" + location.getPath();
-        InputStream inputstream = ReflectorForge.getOptiFineResourceStream(s);
-
-        if (inputstream != null)
-        {
-            return inputstream;
-        }
-        else
-        {
-            try
-            {
-                URL url = DefaultResourcePack.class.getResource(s);
-                return url != null && this.validatePath(new File(url.getFile()), s) ? DefaultResourcePack.class.getResourceAsStream(s) : null;
-            }
-            catch (IOException var5)
-            {
-                return DefaultResourcePack.class.getResourceAsStream(s);
-            }
+        try {
+            URL url = DefaultResourcePack.class.getResource(s);
+            return url != null && this.validatePath(new File(url.getFile()), s) ? DefaultResourcePack.class.getResourceAsStream(s) : null;
+        } catch (IOException var5) {
+            return DefaultResourcePack.class.getResourceAsStream(s);
         }
     }
 

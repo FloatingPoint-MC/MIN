@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.RenderMagmaCube;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.optifine.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterMagmaCube extends ModelAdapter
 {
@@ -34,7 +33,7 @@ public class ModelAdapterMagmaCube extends ModelAdapter
 
             if (modelPart.equals("core"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelmagmacube, Reflector.ModelMagmaCube_core);
+                return modelmagmacube.core;
             }
             else
             {
@@ -42,7 +41,7 @@ public class ModelAdapterMagmaCube extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[])Reflector.getFieldValue(modelmagmacube, Reflector.ModelMagmaCube_segments);
+                    ModelRenderer[] amodelrenderer = modelmagmacube.segments;
 
                     if (amodelrenderer == null)
                     {

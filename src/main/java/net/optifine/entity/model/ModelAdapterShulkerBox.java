@@ -6,79 +6,50 @@ import net.minecraft.client.model.ModelShulker;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntityShulkerBoxRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.optifine.Config;
 import net.minecraft.tileentity.TileEntityShulkerBox;
-import net.optifine.reflect.Reflector;
 
-public class ModelAdapterShulkerBox extends ModelAdapter
-{
-    public ModelAdapterShulkerBox()
-    {
+public class ModelAdapterShulkerBox extends ModelAdapter {
+    public ModelAdapterShulkerBox() {
         super(TileEntityShulkerBox.class, "shulker_box", 0.0F);
     }
 
-    public ModelBase makeModel()
-    {
+    public ModelBase makeModel() {
         return new ModelShulker();
     }
 
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelShulker))
-        {
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelShulker)) {
             return null;
-        }
-        else
-        {
-            ModelShulker modelshulker = (ModelShulker)model;
+        } else {
+            ModelShulker modelshulker = (ModelShulker) model;
 
-            if (modelPart.equals("head"))
-            {
+            if (modelPart.equals("head")) {
                 return modelshulker.head;
-            }
-            else if (modelPart.equals("base"))
-            {
+            } else if (modelPart.equals("base")) {
                 return modelshulker.base;
-            }
-            else
-            {
+            } else {
                 return modelPart.equals("lid") ? modelshulker.lid : null;
             }
         }
     }
 
-    public String[] getModelRendererNames()
-    {
-        return new String[] {"base", "lid", "head"};
+    public String[] getModelRendererNames() {
+        return new String[]{"base", "lid", "head"};
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         TileEntityRendererDispatcher tileentityrendererdispatcher = TileEntityRendererDispatcher.instance;
         TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getRenderer(TileEntityShulkerBox.class);
 
-        if (!(tileentityspecialrenderer instanceof TileEntityShulkerBoxRenderer))
-        {
+        if (!(tileentityspecialrenderer instanceof TileEntityShulkerBoxRenderer)) {
             return null;
-        }
-        else
-        {
-            if (tileentityspecialrenderer.getEntityClass() == null)
-            {
-                tileentityspecialrenderer = new TileEntityShulkerBoxRenderer((ModelShulker)modelBase);
+        } else {
+            if (tileentityspecialrenderer.getEntityClass() == null) {
+                tileentityspecialrenderer = new TileEntityShulkerBoxRenderer((ModelShulker) modelBase);
                 tileentityspecialrenderer.setRendererDispatcher(tileentityrendererdispatcher);
             }
-
-            if (!Reflector.TileEntityShulkerBoxRenderer_model.exists())
-            {
-                Config.warn("Field not found: TileEntityShulkerBoxRenderer.model");
-                return null;
-            }
-            else
-            {
-                Reflector.setFieldValue(tileentityspecialrenderer, Reflector.TileEntityShulkerBoxRenderer_model, modelBase);
-                return tileentityspecialrenderer;
-            }
+            ((TileEntityShulkerBoxRenderer) tileentityspecialrenderer).model = (ModelShulker) modelBase;
+            return tileentityspecialrenderer;
         }
     }
 }

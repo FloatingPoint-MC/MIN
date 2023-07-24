@@ -69,4 +69,8 @@ public class ItemOverride {
             return map;
         }
     }
+
+    public Map<ResourceLocation, Float> getMapResourceValues() {
+        return mapResourceValues;
+    }
 }

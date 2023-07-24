@@ -383,7 +383,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     private IReloadableResourceManager resourceManager;
     private final MetadataSerializer metadataSerializer = new MetadataSerializer();
     private final List<IResourcePack> defaultResourcePacks = Lists.newArrayList();
-    private final DefaultResourcePack defaultResourcePack;
+    public final DefaultResourcePack defaultResourcePack;
     private ResourcePackRepository resourcePackRepository;
     private LanguageManager languageManager;
     private BlockColors blockColors;
@@ -423,7 +423,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      * holds the current fps
      */
     private int fpsCounter;
-    private boolean actionKeyF3;
+    public boolean actionKeyF3;
     private final Tutorial tutorial;
     long prevFrameTime = -1L;
 
@@ -431,6 +431,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      * Profiler currently displayed in the debug screen pie chart
      */
     private String debugProfilerName = "root";
+
+    public static final boolean DEBUG_MODE = false;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
@@ -2754,6 +2756,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         return this.resourceManager;
     }
 
+    @Nullable
     public ResourcePackRepository getResourcePackRepository() {
         return this.resourcePackRepository;
     }

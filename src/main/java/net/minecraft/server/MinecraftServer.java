@@ -972,7 +972,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         this.serverKeyPair = keyPair;
     }
 
-    public void setDifficultyForAllWorlds(EnumDifficulty difficulty) {
+    public void setDifficultyForAllWorlds(@Nullable EnumDifficulty difficulty) {
         for (WorldServer worldserver1 : this.worlds) {
             if (worldserver1 != null) {
                 if (worldserver1.getWorldInfo().isHardcoreModeEnabled()) {

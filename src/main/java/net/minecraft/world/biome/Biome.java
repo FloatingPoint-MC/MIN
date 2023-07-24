@@ -50,7 +50,6 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class Biome
 {
-    private static final Logger LOGGER = LogManager.getLogger();
     protected static final IBlockState STONE = Blocks.STONE.getDefaultState();
     protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
     protected static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
@@ -59,7 +58,7 @@ public abstract class Biome
     protected static final IBlockState SANDSTONE = Blocks.SANDSTONE.getDefaultState();
     protected static final IBlockState ICE = Blocks.ICE.getDefaultState();
     protected static final IBlockState WATER = Blocks.WATER.getDefaultState();
-    public static final ObjectIntIdentityMap<Biome> MUTATION_TO_BASE_ID_MAP = new ObjectIntIdentityMap<Biome>();
+    public static final ObjectIntIdentityMap<Biome> MUTATION_TO_BASE_ID_MAP = new ObjectIntIdentityMap<>();
     protected static final NoiseGeneratorPerlin TEMPERATURE_NOISE = new NoiseGeneratorPerlin(new Random(1234L), 1);
     protected static final NoiseGeneratorPerlin GRASS_COLOR_NOISE = new NoiseGeneratorPerlin(new Random(2345L), 1);
     protected static final WorldGenDoublePlant DOUBLE_PLANT_GENERATOR = new WorldGenDoublePlant();

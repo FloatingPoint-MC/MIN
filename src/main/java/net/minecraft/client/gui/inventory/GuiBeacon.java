@@ -334,4 +334,8 @@ public class GuiBeacon extends GuiContainer
             GuiBeacon.this.drawHoveringText(s, mouseX, mouseY);
         }
     }
+
+    public IInventory getTileBeacon() {
+        return tileBeacon;
+    }
 }

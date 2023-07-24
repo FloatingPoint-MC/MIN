@@ -7,17 +7,17 @@ import net.minecraft.util.math.MathHelper;
 
 public class ModelParrot extends ModelBase
 {
-    ModelRenderer body;
-    ModelRenderer tail;
-    ModelRenderer wingLeft;
-    ModelRenderer wingRight;
-    ModelRenderer head;
+    public ModelRenderer body;
+    public ModelRenderer tail;
+    public ModelRenderer wingLeft;
+    public ModelRenderer wingRight;
+    public ModelRenderer head;
     ModelRenderer head2;
     ModelRenderer beak1;
     ModelRenderer beak2;
     ModelRenderer feather;
-    ModelRenderer legLeft;
-    ModelRenderer legRight;
+    public ModelRenderer legLeft;
+    public ModelRenderer legRight;
     private ModelParrot.State state = ModelParrot.State.STANDING;
 
     public ModelParrot()

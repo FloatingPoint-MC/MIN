@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import net.optifine.Config;
-import net.minecraft.util.ResourceLocation;
 import net.optifine.config.ConnectedParser;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.config.MacroProcessor;
 import net.optifine.util.PropertiesOrdered;
 import net.optifine.util.StrUtils;
@@ -52,49 +49,18 @@ public class ItemAliases
 
         if (shaderPack != null)
         {
-            if (Reflector.Loader_getActiveModList.exists() && Config.getResourceManager() == null)
+            List<Integer> list = new ArrayList<Integer>();
+            String s = "/shaders/item.properties";
+            InputStream inputstream = shaderPack.getResourceAsStream(s);
+
+            if (inputstream != null)
             {
-                Config.dbg("[Shaders] Delayed loading of item mappings after resources are loaded");
-                updateOnResourcesReloaded = true;
+                loadItemAliases(inputstream, s, list);
             }
-            else
+
+            if (list.size() > 0)
             {
-                List<Integer> list = new ArrayList<Integer>();
-                String s = "/shaders/item.properties";
-                InputStream inputstream = shaderPack.getResourceAsStream(s);
-
-                if (inputstream != null)
-                {
-                    loadItemAliases(inputstream, s, list);
-                }
-
-                loadModItemAliases(list);
-
-                if (list.size() > 0)
-                {
-                    itemAliases = toArray(list);
-                }
-            }
-        }
-    }
-
-    private static void loadModItemAliases(List<Integer> listItemAliases)
-    {
-        String[] astring = ReflectorForge.getForgeModIds();
-
-        for (int i = 0; i < astring.length; ++i)
-        {
-            String s = astring[i];
-
-            try
-            {
-                ResourceLocation resourcelocation = new ResourceLocation(s, "shaders/item.properties");
-                InputStream inputstream = Config.getResourceStream(resourcelocation);
-                loadItemAliases(inputstream, resourcelocation.toString(), listItemAliases);
-            }
-            catch (IOException var6)
-            {
-                ;
+                itemAliases = toArray(list);
             }
         }
     }

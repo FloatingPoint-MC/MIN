@@ -25,7 +25,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.optifine.EmissiveTextures;
 import net.optifine.entity.model.CustomEntityModels;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -90,174 +89,163 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
      * Renders the desired {@code T} type Entity.
      */
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        if (!Reflector.RenderLivingEvent_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Pre_Constructor, entity, this, partialTicks, x, y, z)) {
-            if (animateModelLiving) {
-                entity.limbSwingAmount = 1.0F;
-            }
-
-            GlStateManager.pushMatrix();
-            GlStateManager.disableCull();
-            this.mainModel.swingProgress = this.getSwingProgress(entity, partialTicks);
-            this.mainModel.isRiding = entity.isRiding();
-
-            if (Reflector.ForgeEntity_shouldRiderSit.exists()) {
-                this.mainModel.isRiding = entity.isRiding() && entity.getRidingEntity() != null && Reflector.callBoolean(entity.getRidingEntity(), Reflector.ForgeEntity_shouldRiderSit);
-            }
-
-            this.mainModel.isChild = entity.isChild();
-
-            try {
-                float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-                float f1 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
-                float f2 = f1 - f;
-
-                if (this.mainModel.isRiding && entity.getRidingEntity() instanceof EntityLivingBase) {
-                    EntityLivingBase entitylivingbase = (EntityLivingBase) entity.getRidingEntity();
-                    f = this.interpolateRotation(entitylivingbase.prevRenderYawOffset, entitylivingbase.renderYawOffset, partialTicks);
-                    f2 = f1 - f;
-                    float f3 = MathHelper.wrapDegrees(f2);
-
-                    if (f3 < -85.0F) {
-                        f3 = -85.0F;
-                    }
-
-                    if (f3 >= 85.0F) {
-                        f3 = 85.0F;
-                    }
-
-                    f = f1 - f3;
-
-                    if (f3 * f3 > 2500.0F) {
-                        f += f3 * 0.2F;
-                    }
-
-                    f2 = f1 - f;
-                }
-
-                float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-                this.renderLivingAt(entity, x, y, z);
-                float f8 = this.handleRotationFloat(entity, partialTicks);
-                this.applyRotations(entity, f8, f, partialTicks);
-                float f4 = this.prepareScale(entity, partialTicks);
-                float f5 = 0.0F;
-                float f6 = 0.0F;
-
-                if (!entity.isRiding()) {
-                    f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
-                    f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
-
-                    if (entity.isChild()) {
-                        f6 *= 3.0F;
-                    }
-
-                    if (f5 > 1.0F) {
-                        f5 = 1.0F;
-                    }
-                }
-
-                GlStateManager.enableAlpha();
-                this.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
-                this.mainModel.setRotationAngles(f6, f5, f8, f2, f7, f4, entity);
-
-                if (CustomEntityModels.isActive()) {
-                    this.renderEntity = entity;
-                    this.renderLimbSwing = f6;
-                    this.renderLimbSwingAmount = f5;
-                    this.renderAgeInTicks = f8;
-                    this.renderHeadYaw = f2;
-                    this.renderHeadPitch = f7;
-                    this.renderScaleFactor = f4;
-                    this.renderPartialTicks = partialTicks;
-                }
-
-                if (this.renderOutlines) {
-                    boolean flag1 = this.setScoreTeamColor();
-                    GlStateManager.enableColorMaterial();
-                    GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-
-                    if (!this.renderMarker) {
-                        this.renderModel(entity, f6, f5, f8, f2, f7, f4);
-                    }
-
-                    if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) {
-                        this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
-                    }
-
-                    GlStateManager.disableOutlineMode();
-                    GlStateManager.disableColorMaterial();
-
-                    if (flag1) {
-                        this.unsetScoreTeamColor();
-                    }
-                } else {
-                    boolean flag = this.setDoRenderBrightness(entity, partialTicks);
-
-                    if (EmissiveTextures.isActive()) {
-                        EmissiveTextures.beginRender();
-                    }
-
-                    if (this.renderModelPushMatrix) {
-                        GlStateManager.pushMatrix();
-                    }
-
-                    this.renderModel(entity, f6, f5, f8, f2, f7, f4);
-
-                    if (this.renderModelPushMatrix) {
-                        GlStateManager.popMatrix();
-                    }
-
-                    if (EmissiveTextures.isActive()) {
-                        if (EmissiveTextures.hasEmissive()) {
-                            this.renderModelPushMatrix = true;
-                            EmissiveTextures.beginRenderEmissive();
-                            GlStateManager.pushMatrix();
-                            this.renderModel(entity, f6, f5, f8, f2, f7, f4);
-                            GlStateManager.popMatrix();
-                            EmissiveTextures.endRenderEmissive();
-                        }
-
-                        EmissiveTextures.endRender();
-                    }
-
-                    if (!Animation.oldArmorAnimation.getValue()) {
-                        if (flag) {
-                            this.unsetBrightness();
-                        }
-                    }
-
-                    GlStateManager.depthMask(true);
-
-                    if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) {
-                        this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
-                    }
-
-                    if (Animation.oldArmorAnimation.getValue()) {
-                        if (flag) {
-                            this.unsetBrightness();
-                        }
-                    }
-                }
-
-                if (CustomEntityModels.isActive()) {
-                    this.renderEntity = null;
-                }
-
-                GlStateManager.disableRescaleNormal();
-            } catch (Exception exception1) {
-                LOGGER.error("Couldn't render entity", exception1);
-            }
-
-            GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GlStateManager.enableTexture2D();
-            GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-            GlStateManager.enableCull();
-            GlStateManager.popMatrix();
-            super.doRender(entity, x, y, z, entityYaw, partialTicks);
-
-            if (Reflector.RenderLivingEvent_Post_Constructor.exists()) {
-                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Post_Constructor, entity, this, partialTicks, x, y, z);
-            }
+        if (animateModelLiving) {
+            entity.limbSwingAmount = 1.0F;
         }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
+        this.mainModel.swingProgress = this.getSwingProgress(entity, partialTicks);
+        this.mainModel.isRiding = entity.isRiding();
+        this.mainModel.isChild = entity.isChild();
+
+        try {
+            float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
+            float f1 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+            float f2 = f1 - f;
+
+            if (this.mainModel.isRiding && entity.getRidingEntity() instanceof EntityLivingBase) {
+                EntityLivingBase entitylivingbase = (EntityLivingBase) entity.getRidingEntity();
+                f = this.interpolateRotation(entitylivingbase.prevRenderYawOffset, entitylivingbase.renderYawOffset, partialTicks);
+                f2 = f1 - f;
+                float f3 = MathHelper.wrapDegrees(f2);
+
+                if (f3 < -85.0F) {
+                    f3 = -85.0F;
+                }
+
+                if (f3 >= 85.0F) {
+                    f3 = 85.0F;
+                }
+
+                f = f1 - f3;
+
+                if (f3 * f3 > 2500.0F) {
+                    f += f3 * 0.2F;
+                }
+
+                f2 = f1 - f;
+            }
+
+            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            this.renderLivingAt(entity, x, y, z);
+            float f8 = this.handleRotationFloat(entity, partialTicks);
+            this.applyRotations(entity, f8, f, partialTicks);
+            float f4 = this.prepareScale(entity, partialTicks);
+            float f5 = 0.0F;
+            float f6 = 0.0F;
+
+            if (!entity.isRiding()) {
+                f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
+                f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
+
+                if (entity.isChild()) {
+                    f6 *= 3.0F;
+                }
+
+                if (f5 > 1.0F) {
+                    f5 = 1.0F;
+                }
+            }
+
+            GlStateManager.enableAlpha();
+            this.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
+            this.mainModel.setRotationAngles(f6, f5, f8, f2, f7, f4, entity);
+
+            if (CustomEntityModels.isActive()) {
+                this.renderEntity = entity;
+                this.renderLimbSwing = f6;
+                this.renderLimbSwingAmount = f5;
+                this.renderAgeInTicks = f8;
+                this.renderHeadYaw = f2;
+                this.renderHeadPitch = f7;
+                this.renderScaleFactor = f4;
+                this.renderPartialTicks = partialTicks;
+            }
+
+            if (this.renderOutlines) {
+                boolean flag1 = this.setScoreTeamColor();
+                GlStateManager.enableColorMaterial();
+                GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+
+                if (!this.renderMarker) {
+                    this.renderModel(entity, f6, f5, f8, f2, f7, f4);
+                }
+
+                if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) {
+                    this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
+                }
+
+                GlStateManager.disableOutlineMode();
+                GlStateManager.disableColorMaterial();
+
+                if (flag1) {
+                    this.unsetScoreTeamColor();
+                }
+            } else {
+                boolean flag = this.setDoRenderBrightness(entity, partialTicks);
+
+                if (EmissiveTextures.isActive()) {
+                    EmissiveTextures.beginRender();
+                }
+
+                if (this.renderModelPushMatrix) {
+                    GlStateManager.pushMatrix();
+                }
+
+                this.renderModel(entity, f6, f5, f8, f2, f7, f4);
+
+                if (this.renderModelPushMatrix) {
+                    GlStateManager.popMatrix();
+                }
+
+                if (EmissiveTextures.isActive()) {
+                    if (EmissiveTextures.hasEmissive()) {
+                        this.renderModelPushMatrix = true;
+                        EmissiveTextures.beginRenderEmissive();
+                        GlStateManager.pushMatrix();
+                        this.renderModel(entity, f6, f5, f8, f2, f7, f4);
+                        GlStateManager.popMatrix();
+                        EmissiveTextures.endRenderEmissive();
+                    }
+
+                    EmissiveTextures.endRender();
+                }
+
+                if (!Animation.oldArmorAnimation.getValue()) {
+                    if (flag) {
+                        this.unsetBrightness();
+                    }
+                }
+
+                GlStateManager.depthMask(true);
+
+                if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) {
+                    this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
+                }
+
+                if (Animation.oldArmorAnimation.getValue()) {
+                    if (flag) {
+                        this.unsetBrightness();
+                    }
+                }
+            }
+
+            if (CustomEntityModels.isActive()) {
+                this.renderEntity = null;
+            }
+
+            GlStateManager.disableRescaleNormal();
+        } catch (Exception exception1) {
+            LOGGER.error("Couldn't render entity", exception1);
+        }
+
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.enableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.enableCull();
+        GlStateManager.popMatrix();
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
     public float prepareScale(T entitylivingbaseIn, float partialTicks) {
@@ -537,20 +525,14 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
     }
 
     public void renderName(T entity, double x, double y, double z) {
-        if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, entity, this, x, y, z)) {
-            if (this.canRenderName(entity)) {
-                double d0 = entity.getDistanceSq(this.renderManager.renderViewEntity);
-                float f = entity.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
+        if (this.canRenderName(entity)) {
+            double d0 = entity.getDistanceSq(this.renderManager.renderViewEntity);
+            float f = entity.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
-                if (d0 < (double) (f * f)) {
-                    String s = entity.getDisplayName().getFormattedText();
-                    GlStateManager.alphaFunc(516, 0.1F);
-                    this.renderEntityName(entity, x, y, z, s, d0);
-                }
-            }
-
-            if (Reflector.RenderLivingEvent_Specials_Post_Constructor.exists()) {
-                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, entity, this, x, y, z);
+            if (d0 < (double) (f * f)) {
+                String s = entity.getDisplayName().getFormattedText();
+                GlStateManager.alphaFunc(516, 0.1F);
+                this.renderEntityName(entity, x, y, z, s, d0);
             }
         }
     }

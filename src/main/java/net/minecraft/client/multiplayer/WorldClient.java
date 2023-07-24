@@ -52,7 +52,6 @@ import net.minecraft.world.storage.WorldInfo;
 import net.optifine.CustomGuis;
 import net.optifine.DynamicLights;
 import net.optifine.override.PlayerControllerOF;
-import net.optifine.reflect.Reflector;
 
 public class WorldClient extends World {
     /**
@@ -86,8 +85,6 @@ public class WorldClient extends World {
         this.mapStorage = new SaveDataMemoryStorage();
         this.calculateInitialSkylight();
         this.calculateInitialWeather();
-        Reflector.call(this, Reflector.ForgeWorld_initCapabilities);
-        Reflector.postForgeBusEvent(Reflector.WorldEvent_Load_Constructor, this);
 
         if (this.mc.playerController != null && this.mc.playerController.getClass() == PlayerControllerMP.class) {
             this.mc.playerController = new PlayerControllerOF(this.mc, netHandler);
@@ -105,7 +102,7 @@ public class WorldClient extends World {
     }
 
     public static WorldProvider makeWorldProvider(int p_makeWorldProvider_0_) {
-        return Reflector.DimensionManager_createProviderFor.exists() ? (WorldProvider) Reflector.call(Reflector.DimensionManager_createProviderFor, p_makeWorldProvider_0_) : DimensionType.getById(p_makeWorldProvider_0_).createDimension();
+        return DimensionType.getById(p_makeWorldProvider_0_).createDimension();
     }
 
     /**

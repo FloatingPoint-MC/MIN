@@ -32,8 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.MapData;
 import net.optifine.DynamicLights;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.Shaders;
 
 import java.util.Objects;
@@ -217,7 +215,7 @@ public class ItemRenderer {
         bufferbuilder.pos(135.0D, -7.0D, 0.0D).tex(1.0D, 0.0D).endVertex();
         bufferbuilder.pos(-7.0D, -7.0D, 0.0D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
-        MapData mapdata = ReflectorForge.getMapData(Items.FILLED_MAP, stack, this.mc.world);
+        MapData mapdata = Items.FILLED_MAP.getMapData(stack, this.mc.world);
 
         if (mapdata != null) {
             this.mc.entityRenderer.getMapItemRenderer().renderMap(mapdata, false);
@@ -334,19 +332,14 @@ public class ItemRenderer {
         if (flag) {
             float f3 = enumhand == EnumHand.MAIN_HAND ? f : 0.0F;
             float f5 = 1.0F - (this.prevEquippedProgressMainHand + (this.equippedProgressMainHand - this.prevEquippedProgressMainHand) * partialTicks);
-
-            if (!Reflector.ForgeHooksClient_renderSpecificFirstPersonHand.exists() || !Reflector.callBoolean(Reflector.ForgeHooksClient_renderSpecificFirstPersonHand, EnumHand.MAIN_HAND, partialTicks, f1, f3, f5, this.itemStackMainHand)) {
-                this.renderItemInFirstPerson(abstractclientplayer, partialTicks, f1, EnumHand.MAIN_HAND, f3, this.itemStackMainHand, f5);
-            }
+            this.renderItemInFirstPerson(abstractclientplayer, partialTicks, f1, EnumHand.MAIN_HAND, f3, this.itemStackMainHand, f5);
         }
 
         if (flag1) {
             float f4 = enumhand == EnumHand.OFF_HAND ? f : 0.0F;
             float f6 = 1.0F - (this.prevEquippedProgressOffHand + (this.equippedProgressOffHand - this.prevEquippedProgressOffHand) * partialTicks);
+            this.renderItemInFirstPerson(abstractclientplayer, partialTicks, f1, EnumHand.OFF_HAND, f4, this.itemStackOffHand, f6);
 
-            if (!Reflector.ForgeHooksClient_renderSpecificFirstPersonHand.exists() || !Reflector.callBoolean(Reflector.ForgeHooksClient_renderSpecificFirstPersonHand, EnumHand.OFF_HAND, partialTicks, f1, f4, f6, this.itemStackOffHand)) {
-                this.renderItemInFirstPerson(abstractclientplayer, partialTicks, f1, EnumHand.OFF_HAND, f4, this.itemStackOffHand, f6);
-            }
         }
 
         GlStateManager.disableRescaleNormal();
@@ -479,37 +472,31 @@ public class ItemRenderer {
 
         if (this.mc.player.isEntityInsideOpaqueBlock()) {
             IBlockState iblockstate = this.mc.world.getBlockState(new BlockPos(this.mc.player));
-            BlockPos blockpos = new BlockPos(this.mc.player);
             EntityPlayer entityplayer = this.mc.player;
 
             for (int i = 0; i < 8; ++i) {
                 double d0 = entityplayer.posX + (double) (((float) (i % 2) - 0.5F) * entityplayer.width * 0.8F);
                 double d1 = entityplayer.posY + (double) (((float) ((i >> 1) % 2) - 0.5F) * 0.1F);
                 double d2 = entityplayer.posZ + (double) (((float) ((i >> 2) % 2) - 0.5F) * entityplayer.width * 0.8F);
-                BlockPos blockpos1 = new BlockPos(d0, d1 + (double) entityplayer.getEyeHeight(), d2);
-                IBlockState iblockstate1 = this.mc.world.getBlockState(blockpos1);
+                BlockPos blockPos = new BlockPos(d0, d1 + (double) entityplayer.getEyeHeight(), d2);
+                IBlockState state = this.mc.world.getBlockState(blockPos);
 
-                if (iblockstate1.causesSuffocation()) {
-                    iblockstate = iblockstate1;
-                    blockpos = blockpos1;
+                if (state.causesSuffocation()) {
+                    iblockstate = state;
                 }
             }
 
             if (iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
-                Object object = Reflector.getFieldValue(Reflector.RenderBlockOverlayEvent_OverlayType_BLOCK);
-
-                if (!Reflector.callBoolean(Reflector.ForgeEventFactory_renderBlockOverlay, this.mc.player, partialTicks, object, iblockstate, blockpos)) {
-                    this.renderSuffocationOverlay(this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(iblockstate));
-                }
+                this.renderSuffocationOverlay(this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(iblockstate));
             }
         }
 
         if (!this.mc.player.isSpectator()) {
-            if (this.mc.player.isInsideOfMaterial(Material.WATER) && !Reflector.callBoolean(Reflector.ForgeEventFactory_renderWaterOverlay, this.mc.player, partialTicks)) {
+            if (this.mc.player.isInsideOfMaterial(Material.WATER)) {
                 this.renderWaterOverlayTexture();
             }
 
-            if (this.mc.player.isBurning() && !Reflector.callBoolean(Reflector.ForgeEventFactory_renderFireOverlay, this.mc.player, partialTicks)) {
+            if (this.mc.player.isBurning()) {
                 this.renderFireInFirstPerson();
             }
         }

@@ -30,7 +30,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.optifine.ConnectedProperties;
-import net.optifine.reflect.Reflector;
 
 public class ConnectedParser
 {
@@ -1363,11 +1362,11 @@ public class ConnectedParser
 
     private Class getEntityClass(ResourceLocation loc)
     {
-        return Reflector.ForgeEntityList_getClass.exists() ? (Class)Reflector.call(Reflector.ForgeEntityList_getClass, loc) : (Class)EntityList.REGISTRY.getObject(loc);
+        return EntityList.REGISTRY.getObject(loc);
     }
 
     private int getEntityTypeId(Class type)
     {
-        return Reflector.ForgeEntityList_getID.exists() ? Reflector.callInt(Reflector.ForgeEntityList_getID, type) : EntityList.REGISTRY.getIDForObject(type);
+        return EntityList.REGISTRY.getIDForObject(type);
     }
 }

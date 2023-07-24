@@ -53,8 +53,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.optifine.config.GlVersion;
 import net.optifine.gui.GuiMessage;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.Shaders;
 import net.optifine.util.DisplayModeComparator;
 import net.optifine.util.PropertiesOrdered;
@@ -136,7 +134,6 @@ public class Config {
             gameSettings = p_initGameSettings_0_;
             desktopDisplayMode = Display.getDesktopDisplayMode();
             updateAvailableProcessors();
-            ReflectorForge.putLaunchBlackboard("optifine.ForgeSplashCompatible", Boolean.TRUE);
         }
     }
 
@@ -870,7 +867,7 @@ public class Config {
     public static DefaultResourcePack getDefaultResourcePack() {
         if (defaultResourcePackLazy == null) {
             Minecraft minecraft = Minecraft.getMinecraft();
-            defaultResourcePackLazy = (DefaultResourcePack) Reflector.getFieldValue(minecraft, Reflector.Minecraft_defaultResourcePack);
+            defaultResourcePackLazy = minecraft.defaultResourcePack;
 
             if (defaultResourcePackLazy == null) {
                 ResourcePackRepository resourcepackrepository = minecraft.getResourcePackRepository();

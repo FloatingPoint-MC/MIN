@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.MathHelper;
-import net.optifine.reflect.Reflector;
 
 import java.awt.*;
 import java.util.Collection;
@@ -113,23 +112,13 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
                     PotionEffect potioneffect;
                     Potion potion;
                     boolean flag;
-                    while (true) {
-                        if (!iterator.hasNext()) {
-                            GlStateManager.popMatrix();
-                            return false;
-                        }
-                        potioneffect = iterator.next();
-                        potion = potioneffect.getPotion();
-                        flag = potion.hasStatusIcon();
-                        if (!Reflector.ForgePotion_shouldRenderHUD.exists()) {
-                            break;
-                        }
-                        if (Reflector.callBoolean(potion, Reflector.ForgePotion_shouldRenderHUD, potioneffect)) {
-                            this.mc.getTextureManager().bindTexture(GuiContainer.INVENTORY_BACKGROUND);
-                            flag = true;
-                            break;
-                        }
+                    if (!iterator.hasNext()) {
+                        GlStateManager.popMatrix();
+                        return false;
                     }
+                    potioneffect = iterator.next();
+                    potion = potioneffect.getPotion();
+                    flag = potion.hasStatusIcon();
                     if (flag && potioneffect.doesShowParticles()) {
                         int k = x;
                         int l = y;
@@ -157,16 +146,7 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
                         }
 
                         GlStateManager.color(1.0F, 1.0F, 1.0F, f);
-
-                        if (Reflector.ForgePotion_renderHUDEffect.exists()) {
-                            if (potion.hasStatusIcon()) {
-                                guiIngame.drawTexturedModalRect(k + 3, l + 3, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
-                            }
-
-                            Reflector.call(potion, Reflector.ForgePotion_renderHUDEffect, potioneffect, this, k, l, guiIngame.zLevel, f);
-                        } else {
-                            guiIngame.drawTexturedModalRect(k + 3, l + 3, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
-                        }
+                        guiIngame.drawTexturedModalRect(k + 3, l + 3, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
                     }
                 }
             }

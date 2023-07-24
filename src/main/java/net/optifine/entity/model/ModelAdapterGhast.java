@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.RenderGhast;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityGhast;
 import net.optifine.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterGhast extends ModelAdapter
 {
@@ -34,7 +33,7 @@ public class ModelAdapterGhast extends ModelAdapter
 
             if (modelPart.equals("body"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelghast, Reflector.ModelGhast_body);
+                return modelghast.body;
             }
             else
             {
@@ -42,7 +41,7 @@ public class ModelAdapterGhast extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[])Reflector.getFieldValue(modelghast, Reflector.ModelGhast_tentacles);
+                    ModelRenderer[] amodelrenderer = modelghast.tentacles;
 
                     if (amodelrenderer == null)
                     {

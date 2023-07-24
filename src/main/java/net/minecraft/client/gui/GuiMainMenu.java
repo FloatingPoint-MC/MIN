@@ -1,15 +1,14 @@
 package net.minecraft.client.gui;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
+import cn.floatingpoint.min.system.ui.clickgui.ClickUI;
 import com.google.common.util.concurrent.Runnables;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -25,7 +24,6 @@ import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
 import net.optifine.CustomPanorama;
 import net.optifine.CustomPanoramaProperties;
-import net.optifine.reflect.Reflector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Mouse;
@@ -49,12 +47,7 @@ public class GuiMainMenu extends GuiScreen {
     private float panoramaTimer;
 
     /**
-     * Texture allocated for the current viewport of the main menu's panorama background.
-     */
-    private DynamicTexture viewportTexture;
-
-    /**
-     * The Object object utilized as a thread lock when performing non thread-safe operations
+     * The Object utilized as a thread lock when performing non thread-safe operations
      */
     private final Object threadLock = new Object();
     public static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
@@ -63,11 +56,6 @@ public class GuiMainMenu extends GuiScreen {
      * Width of openGLWarning2
      */
     private int openGLWarning2Width;
-
-    /**
-     * Width of openGLWarning1
-     */
-    private int openGLWarning1Width;
 
     /**
      * Left x coordinate of the OpenGL warning
@@ -114,8 +102,6 @@ public class GuiMainMenu extends GuiScreen {
 
     private int widthCopyright;
     private int widthCopyrightRest;
-    private GuiButton modButton;
-    private GuiScreen modUpdateNotification;
     private boolean init;
     private int animation;
 
@@ -154,40 +140,34 @@ public class GuiMainMenu extends GuiScreen {
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
-        this.viewportTexture = new DynamicTexture(256, 256);
-        this.backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background", this.viewportTexture);
+        DynamicTexture viewportTexture = new DynamicTexture(256, 256);
+        this.backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background", viewportTexture);
         this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Addons by FloatingPoint-MC!");
         this.widthCopyrightRest = this.width - this.widthCopyright - 2;
         int j = this.height / 4 + 48;
-        this.addSingleplayerMultiplayerButtons(j, 24);
+        this.addSingleplayerMultiplayerButtons(j);
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, j + 72 + 12, 98, 20, I18n.format("menu.options")));
         this.buttonList.add(new GuiButton(4, this.width / 2 + 2, j + 72 + 12, 98, 20, I18n.format("menu.quit")));
 
         synchronized (this.threadLock) {
-            this.openGLWarning1Width = this.fontRenderer.getStringWidth(this.openGLWarning1);
+            int openGLWarning1Width = this.fontRenderer.getStringWidth(this.openGLWarning1);
             this.openGLWarning2Width = this.fontRenderer.getStringWidth(this.openGLWarning2);
-            int k = Math.max(this.openGLWarning1Width, this.openGLWarning2Width);
+            int k = Math.max(openGLWarning1Width, this.openGLWarning2Width);
             this.openGLWarningX1 = (this.width - k) / 2;
             this.openGLWarningY1 = (this.buttonList.get(0)).y - 24;
             this.openGLWarningX2 = this.openGLWarningX1 + k;
             this.openGLWarningY2 = this.openGLWarningY1 + 24;
-        }
-
-        if (Reflector.NotificationModUpdateScreen_init.exists()) {
-            this.modUpdateNotification = (GuiScreen) Reflector.call(Reflector.NotificationModUpdateScreen_init, this, this.modButton);
         }
     }
 
     /**
      * Adds Singleplayer and Multiplayer buttons on Main Menu for players who have bought the game.
      */
-    private void addSingleplayerMultiplayerButtons(int p_73969_1_, int p_73969_2_) {
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer")));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_, I18n.format("menu.multiplayer")));
-
-        if (Reflector.GuiModList_Constructor.exists()) {
-            this.buttonList.add(this.modButton = new GuiButton(6, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("fml.menu.mods")));
+    private void addSingleplayerMultiplayerButtons(int y) {
+        if (Minecraft.DEBUG_MODE) {
+            this.buttonList.add(new GuiButton(1, this.width / 2 - 100, y, I18n.format("menu.singleplayer")));
         }
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, y + 24, I18n.format("menu.multiplayer")));
     }
 
     /**
@@ -200,7 +180,11 @@ public class GuiMainMenu extends GuiScreen {
         }
 
         if (button.id == 1) {
-            this.mc.displayGuiScreen(new GuiWorldSelection(this));
+            if (Minecraft.DEBUG_MODE) {
+                this.mc.displayGuiScreen(new GuiWorldSelection(this));
+            } else {
+                this.mc.displayGuiScreen(new ClickUI());
+            }
             init = false;
         }
 
@@ -211,10 +195,6 @@ public class GuiMainMenu extends GuiScreen {
 
         if (button.id == 4) {
             this.mc.shutdown();
-        }
-
-        if (button.id == 6 && Reflector.GuiModList_Constructor.exists()) {
-            this.mc.displayGuiScreen((GuiScreen) Reflector.newInstance(Reflector.GuiModList_Constructor, this));
         }
 
         if (button.id == 12) {
@@ -253,7 +233,7 @@ public class GuiMainMenu extends GuiScreen {
     /**
      * Draws the main menu panorama
      */
-    private void drawPanorama(int mouseX, int mouseY, float partialTicks) {
+    private void drawPanorama() {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.matrixMode(5889);
@@ -271,7 +251,6 @@ public class GuiMainMenu extends GuiScreen {
         GlStateManager.disableCull();
         GlStateManager.depthMask(false);
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        int i = 8;
         int j = 64;
         CustomPanoramaProperties custompanoramaproperties = CustomPanorama.getCustomPanoramaProperties();
 
@@ -283,7 +262,6 @@ public class GuiMainMenu extends GuiScreen {
             GlStateManager.pushMatrix();
             float f = ((float) (k % 8) / 8.0F - 0.5F) / 64.0F;
             float f1 = ((float) (k / 8) / 8.0F - 0.5F) / 64.0F;
-            float f2 = 0.0F;
             GlStateManager.translate(f, f1, 0.0F);
             GlStateManager.rotate(MathHelper.sin(this.panoramaTimer / 400.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(-this.panoramaTimer * 0.1F, 0.0F, 1.0F, 0.0F);
@@ -320,7 +298,6 @@ public class GuiMainMenu extends GuiScreen {
                 this.mc.getTextureManager().bindTexture(aresourcelocation[l]);
                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
                 int i1 = 255 / (k + 1);
-                float f3 = 0.0F;
                 bufferbuilder.pos(-1.0D, -1.0D, 1.0D).tex(0.0D, 0.0D).color(255, 255, 255, i1).endVertex();
                 bufferbuilder.pos(1.0D, -1.0D, 1.0D).tex(1.0D, 0.0D).color(255, 255, 255, i1).endVertex();
                 bufferbuilder.pos(1.0D, 1.0D, 1.0D).tex(1.0D, 1.0D).color(255, 255, 255, i1).endVertex();
@@ -359,7 +336,6 @@ public class GuiMainMenu extends GuiScreen {
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         GlStateManager.disableAlpha();
-        int i = 3;
         int j = 3;
         CustomPanoramaProperties custompanoramaproperties = CustomPanorama.getCustomPanoramaProperties();
 
@@ -386,10 +362,10 @@ public class GuiMainMenu extends GuiScreen {
     /**
      * Renders the skybox in the main menu
      */
-    private void renderSkybox(int mouseX, int mouseY, float partialTicks) {
+    private void renderSkybox() {
         this.mc.getFramebuffer().unbindFramebuffer();
         GlStateManager.viewport(0, 0, 256, 256);
-        this.drawPanorama(mouseX, mouseY, partialTicks);
+        this.drawPanorama();
         this.rotateAndBlurSkybox();
         int i = 3;
         CustomPanoramaProperties custompanoramaproperties = CustomPanorama.getCustomPanoramaProperties();
@@ -405,7 +381,7 @@ public class GuiMainMenu extends GuiScreen {
 
         this.mc.getFramebuffer().bindFramebuffer(true);
         GlStateManager.viewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
-        float f2 = 120.0F / (float) (this.width > this.height ? this.width : this.height);
+        float f2 = 120.0F / (float) (Math.max(this.width, this.height));
         float f = (float) this.height * f2 / 256.0F;
         float f1 = (float) this.width * f2 / 256.0F;
         int k = this.width;
@@ -426,7 +402,7 @@ public class GuiMainMenu extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.panoramaTimer += partialTicks;
         GlStateManager.disableAlpha();
-        this.renderSkybox(mouseX, mouseY, partialTicks);
+        this.renderSkybox();
         GlStateManager.enableAlpha();
         int j = this.width / 2 - 137;
         int l = -2130706433;
@@ -469,21 +445,8 @@ public class GuiMainMenu extends GuiScreen {
         String s = "MIN Client(Minecraft 1.12.2)";
         s = s + ("release".equalsIgnoreCase(this.mc.getVersionType()) ? "" : "/" + this.mc.getVersionType());
 
-        if (Reflector.FMLCommonHandler_getBrandings.exists()) {
-            Object object = Reflector.call(Reflector.FMLCommonHandler_instance);
-            List<String> list = Lists.<String>reverse((List) Reflector.call(object, Reflector.FMLCommonHandler_getBrandings, true));
-
-            for (int l1 = 0; l1 < list.size(); ++l1) {
-                String s1 = list.get(l1);
-
-                if (!Strings.isNullOrEmpty(s1)) {
-                    this.drawString(this.fontRenderer, s1, 2, this.height - (10 + l1 * (this.fontRenderer.FONT_HEIGHT + 1)), 16777215);
-                }
-            }
-        } else {
-            this.drawString(this.fontRenderer, s, 2, this.height - 10, -1);
-        }
-
+        this.drawString(this.fontRenderer, "Released on 2023/7/25", 2, 2, -1);
+        this.drawString(this.fontRenderer, s, 2, this.height - 10, -1);
         this.drawString(this.fontRenderer, "Copyright Mojang AB. Addons by FloatingPoint-MC!", this.widthCopyrightRest, this.height - 10, -1);
 
         if (mouseX > this.widthCopyrightRest && mouseX < this.widthCopyrightRest + this.widthCopyright && mouseY > this.height - 10 && mouseY < this.height && Mouse.isInsideWindow()) {
@@ -498,9 +461,6 @@ public class GuiMainMenu extends GuiScreen {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if (this.modUpdateNotification != null) {
-            this.modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
-        }
         if (init) {
             Gui.drawRect(0, 0, width, height, new Color(0, 0, 0, animation).getRGB());
             this.animation -= 3;
@@ -513,6 +473,7 @@ public class GuiMainMenu extends GuiScreen {
     /**
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
      */
+    @SuppressWarnings("all")
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 

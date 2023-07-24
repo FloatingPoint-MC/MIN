@@ -5,8 +5,8 @@ import net.minecraft.entity.Entity;
 
 public class ModelDragonHead extends ModelBase
 {
-    private final ModelRenderer head;
-    private final ModelRenderer jaw;
+    public final ModelRenderer head;
+    public final ModelRenderer jaw;
 
     public ModelDragonHead(float p_i46588_1_)
     {

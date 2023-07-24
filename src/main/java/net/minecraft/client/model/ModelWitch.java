@@ -6,8 +6,8 @@ import net.minecraft.util.math.MathHelper;
 public class ModelWitch extends ModelVillager
 {
     public boolean holdingItem;
-    private final ModelRenderer mole = (new ModelRenderer(this)).setTextureSize(64, 128);
-    private final ModelRenderer witchHat;
+    public final ModelRenderer mole = (new ModelRenderer(this)).setTextureSize(64, 128);
+    public final ModelRenderer witchHat;
 
     public ModelWitch(float scale)
     {

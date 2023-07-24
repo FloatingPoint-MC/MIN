@@ -20,8 +20,6 @@ import net.optifine.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.MapData;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.Shaders;
 
 public class RenderItemFrame extends Render<EntityItemFrame>
@@ -127,32 +125,24 @@ public class RenderItemFrame extends Render<EntityItemFrame>
             int i = flag ? itemFrame.getRotation() % 4 * 2 : itemFrame.getRotation();
             GlStateManager.rotate((float)i * 360.0F / 8.0F, 0.0F, 0.0F, 1.0F);
 
-            if (!Reflector.postForgeBusEvent(Reflector.RenderItemInFrameEvent_Constructor, itemFrame, this))
-            {
-                if (flag)
-                {
-                    this.renderManager.renderEngine.bindTexture(MAP_BACKGROUND_TEXTURES);
-                    GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-                    float f = 0.0078125F;
-                    GlStateManager.scale(0.0078125F, 0.0078125F, 0.0078125F);
-                    GlStateManager.translate(-64.0F, -64.0F, 0.0F);
-                    MapData mapdata = ReflectorForge.getMapData(Items.FILLED_MAP, itemstack, itemFrame.world);
-                    GlStateManager.translate(0.0F, 0.0F, -1.0F);
+            if (flag) {
+                this.renderManager.renderEngine.bindTexture(MAP_BACKGROUND_TEXTURES);
+                GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+                GlStateManager.scale(0.0078125F, 0.0078125F, 0.0078125F);
+                GlStateManager.translate(-64.0F, -64.0F, 0.0F);
+                MapData mapdata = Items.FILLED_MAP.getMapData(itemstack, itemFrame.world);
+                GlStateManager.translate(0.0F, 0.0F, -1.0F);
 
-                    if (mapdata != null)
-                    {
-                        this.mc.entityRenderer.getMapItemRenderer().renderMap(mapdata, true);
-                    }
+                if (mapdata != null) {
+                    this.mc.entityRenderer.getMapItemRenderer().renderMap(mapdata, true);
                 }
-                else
-                {
-                    GlStateManager.scale(0.5F, 0.5F, 0.5F);
-                    GlStateManager.pushAttrib();
-                    RenderHelper.enableStandardItemLighting();
-                    this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
-                    RenderHelper.disableStandardItemLighting();
-                    GlStateManager.popAttrib();
-                }
+            } else {
+                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+                GlStateManager.pushAttrib();
+                RenderHelper.enableStandardItemLighting();
+                this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.popAttrib();
             }
 
             GlStateManager.enableLighting();

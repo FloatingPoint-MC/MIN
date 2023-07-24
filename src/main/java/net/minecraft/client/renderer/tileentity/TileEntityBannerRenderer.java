@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class TileEntityBannerRenderer extends TileEntitySpecialRenderer<TileEntityBanner>
 {
-    private final ModelBanner bannerModel = new ModelBanner();
+    public ModelBanner bannerModel = new ModelBanner();
 
     public void render(TileEntityBanner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {

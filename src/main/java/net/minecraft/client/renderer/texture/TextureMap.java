@@ -35,8 +35,6 @@ import net.optifine.CustomItems;
 import net.optifine.EmissiveTextures;
 import net.optifine.SmartAnimations;
 import net.optifine.SpriteDependencies;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.ShadersTex;
 import net.optifine.util.CounterInt;
 import net.optifine.util.TextureUtils;
@@ -61,18 +59,18 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
     private int iconGridCountY;
     private double iconGridSizeU;
     private double iconGridSizeV;
-    private CounterInt counterIndexInMap;
+    private final CounterInt counterIndexInMap;
     public int atlasWidth;
     public int atlasHeight;
     private int countAnimationsActive;
     private int frameCountAnimations;
 
     public TextureMap(String basePathIn) {
-        this(basePathIn, (ITextureMapPopulator) null);
+        this(basePathIn, null);
     }
 
     public TextureMap(String p_i3_1_, boolean p_i3_2_) {
-        this(p_i3_1_, (ITextureMapPopulator) null, p_i3_2_);
+        this(p_i3_1_, null, p_i3_2_);
     }
 
     public TextureMap(String basePathIn, @Nullable ITextureMapPopulator iconCreatorIn) {
@@ -89,9 +87,9 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         this.counterIndexInMap = new CounterInt(0);
         this.atlasWidth = 0;
         this.atlasHeight = 0;
-        this.listAnimatedSprites = Lists.<TextureAtlasSprite>newArrayList();
-        this.mapRegisteredSprites = Maps.<String, TextureAtlasSprite>newHashMap();
-        this.mapUploadedSprites = Maps.<String, TextureAtlasSprite>newHashMap();
+        this.listAnimatedSprites = Lists.newArrayList();
+        this.mapRegisteredSprites = Maps.newHashMap();
+        this.mapUploadedSprites = Maps.newHashMap();
         this.missingImage = new TextureAtlasSprite("missingno");
         this.basePath = p_i4_1_;
         this.iconCreator = p_i4_2_;
@@ -117,7 +115,6 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
     public void loadSprites(IResourceManager resourceManager, ITextureMapPopulator iconCreatorIn) {
         this.mapRegisteredSprites.clear();
         this.counterIndexInMap.reset();
-        Reflector.callVoid(Reflector.ForgeHooksClient_onTextureStitchedPre, this);
         iconCreatorIn.registerSprites(this);
 
         if (this.mipmapLevels >= 4) {
@@ -180,14 +177,12 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                     textureatlassprite1.loadSprite(pngsizeinfo, flag);
                 } catch (RuntimeException runtimeexception) {
                     LOGGER.error("Unable to parse metadata from {}", resourcelocation, runtimeexception);
-                    ReflectorForge.FMLClientHandler_trackBrokenTexture(resourcelocation, runtimeexception.getMessage());
                     continue;
                 } catch (IOException ioexception) {
                     LOGGER.error("Using missing texture, unable to load " + resourcelocation + ", " + ioexception.getClass().getName());
-                    ReflectorForge.FMLClientHandler_trackMissingTexture(resourcelocation);
                     continue;
                 } finally {
-                    IOUtils.closeQuietly((Closeable) iresource);
+                    IOUtils.closeQuietly(iresource);
                 }
             }
 
@@ -268,7 +263,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
             TextureUtil.allocateTextureImpl(this.getGlTextureId(), this.mipmapLevels, stitcher.getCurrentWidth(), stitcher.getCurrentHeight());
         }
 
-        Map<String, TextureAtlasSprite> map = Maps.<String, TextureAtlasSprite>newHashMap(this.mapRegisteredSprites);
+        Map<String, TextureAtlasSprite> map = Maps.newHashMap(this.mapRegisteredSprites);
 
         for (TextureAtlasSprite textureatlassprite2 : stitcher.getStichSlots()) {
             String s = textureatlassprite2.getIconName();
@@ -342,7 +337,6 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
             Config.getMinecraft().getTextureManager().bindTexture(LOCATION_BLOCKS_TEXTURE);
         }
 
-        Reflector.callVoid(Reflector.ForgeHooksClient_onTextureStitchedPost, this);
         this.updateIconGrid(stitcher.getCurrentWidth(), stitcher.getCurrentHeight());
 
         if (Config.equals(System.getProperty("saveTextureMap"), "true")) {
@@ -372,10 +366,9 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                 } catch (IOException ioexception1) {
                     LOGGER.error("Using missing texture, unable to load {}", resourcelocation1, ioexception1);
                     flag4 = false;
-                    boolean crashreportcategory = flag4;
-                    return crashreportcategory;
+                    return flag4;
                 } finally {
-                    IOUtils.closeQuietly((Closeable) iresource1);
+                    IOUtils.closeQuietly(iresource1);
                 }
 
                 return flag4;
@@ -388,22 +381,10 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         } catch (Throwable throwable1) {
             CrashReport crashreport1 = CrashReport.makeCrashReport(throwable1, "Applying mipmap");
             CrashReportCategory crashreportcategory1 = crashreport1.makeCategory("Sprite being mipmapped");
-            crashreportcategory1.addDetail("Sprite name", new ICrashReportDetail<String>() {
-                public String call() throws Exception {
-                    return texture.getIconName();
-                }
-            });
-            crashreportcategory1.addDetail("Sprite size", new ICrashReportDetail<String>() {
-                public String call() throws Exception {
-                    return texture.getIconWidth() + " x " + texture.getIconHeight();
-                }
-            });
-            crashreportcategory1.addDetail("Sprite frames", new ICrashReportDetail<String>() {
-                public String call() throws Exception {
-                    return texture.getFrameCount() + " frames";
-                }
-            });
-            crashreportcategory1.addCrashSection("Mipmap levels", Integer.valueOf(this.mipmapLevels));
+            crashreportcategory1.addDetail("Sprite name", texture::getIconName);
+            crashreportcategory1.addDetail("Sprite size", () -> texture.getIconWidth() + " x " + texture.getIconHeight());
+            crashreportcategory1.addDetail("Sprite frames", () -> texture.getFrameCount() + " frames");
+            crashreportcategory1.addCrashSection("Mipmap levels", this.mipmapLevels);
             throw new ReportedException(crashreport1);
         }
     }
@@ -600,6 +581,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         return this.mapRegisteredSprites.get(resourcelocation1.toString());
     }
 
+    @Nullable
     public TextureAtlasSprite getRegisteredSprite(ResourceLocation p_getRegisteredSprite_1_) {
         return this.mapRegisteredSprites.get(p_getRegisteredSprite_1_.toString());
     }
@@ -611,7 +593,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                     if (p_isTerrainAnimationActive_1_ == TextureUtils.iconPortal) {
                         return Config.isAnimatedPortal();
                     } else {
-                        return p_isTerrainAnimationActive_1_ != TextureUtils.iconClock && p_isTerrainAnimationActive_1_ != TextureUtils.iconCompass ? Config.isAnimatedTerrain() : true;
+                        return p_isTerrainAnimationActive_1_ == TextureUtils.iconClock || p_isTerrainAnimationActive_1_ == TextureUtils.iconCompass || Config.isAnimatedTerrain();
                     }
                 } else {
                     return Config.isAnimatedFire();
@@ -682,8 +664,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                             }
                         }
                     }
-                } catch (Exception var17) {
-                    ;
+                } catch (Exception ignored) {
                 }
             }
         }

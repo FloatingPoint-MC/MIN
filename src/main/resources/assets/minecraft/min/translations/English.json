@@ -213,5 +213,6 @@
   "start.continue": "Start travel with Min!",
   "start.skip": "Skip",
   "start.clickUiSetting": "You can click here to edit some client settings.",
-  "start.press": "Press any key to continue..."
+  "start.press": "Press any key to continue...",
+  "menu.setting": "Open Config Settings"
 }

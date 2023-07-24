@@ -42,7 +42,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
-import net.minecraftforge.client.resource.IResourceType;
 import net.optifine.ClearWater;
 import net.optifine.CustomColors;
 import net.optifine.CustomGuis;
@@ -51,7 +50,6 @@ import net.optifine.DynamicLights;
 import net.optifine.Lang;
 import net.optifine.NaturalTextures;
 import net.optifine.RandomEntities;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import net.optifine.util.KeyUtils;
 import org.apache.commons.io.IOUtils;
@@ -301,7 +299,6 @@ public class GameSettings {
     private boolean needsResourceRefresh = false;
 
     public GameSettings(Minecraft mcIn, File mcDataDir) {
-        this.setForgeKeybindProperties();
         this.keyBindings = ArrayUtils.addAll(new KeyBinding[]{this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindSprint, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand, this.keyBindScreenshot, this.keyBindTogglePerspective, this.keyBindSmoothCamera, this.keyBindFullscreen, this.keyBindSpectatorOutlines, this.keyBindSwapHands, this.keyBindSaveToolbar, this.keyBindLoadToolbar, this.keyBindAdvancements, this.keyBindFreeLook}, this.keyBindsHotbar);
         this.difficulty = EnumDifficulty.NORMAL;
         this.lastServer = "";
@@ -337,7 +334,6 @@ public class GameSettings {
     }
 
     public GameSettings() {
-        this.setForgeKeybindProperties();
         this.keyBindings = ArrayUtils.addAll(new KeyBinding[]{this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindSprint, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindCommand, this.keyBindScreenshot, this.keyBindTogglePerspective, this.keyBindSmoothCamera, this.keyBindFullscreen, this.keyBindSpectatorOutlines, this.keyBindSwapHands, this.keyBindSaveToolbar, this.keyBindLoadToolbar, this.keyBindAdvancements, this.keyBindFreeLook}, this.keyBindsHotbar);
         this.difficulty = EnumDifficulty.NORMAL;
         this.lastServer = "";
@@ -534,12 +530,6 @@ public class GameSettings {
 
             this.anaglyph = !this.anaglyph;
             this.mc.refreshResources();
-
-            if (Reflector.FMLClientHandler_refreshResources.exists()) {
-                Object object = Reflector.call(Reflector.FMLClientHandler_instance);
-                IResourceType iresourcetype = (IResourceType) Reflector.VanillaResourceType_TEXTURES.getValue();
-                Reflector.call(object, Reflector.FMLClientHandler_refreshResources, iresourcetype);
-            }
         }
 
         if (settingsOption == GameSettings.Options.GRAPHICS) {
@@ -1098,18 +1088,7 @@ public class GameSettings {
 
                             for (KeyBinding keybinding : this.keyBindings) {
                                 if (s1.equals("key_" + keybinding.getKeyDescription())) {
-                                    if (Reflector.KeyModifier_valueFromString.exists()) {
-                                        if (s2.indexOf(58) != -1) {
-                                            String[] astring = s2.split(":");
-                                            Object object = Reflector.call(Reflector.KeyModifier_valueFromString, astring[1]);
-                                            Reflector.call(keybinding, Reflector.ForgeKeyBinding_setKeyModifierAndCode, object, Integer.parseInt(astring[0]));
-                                        } else {
-                                            Object object1 = Reflector.getFieldValue(Reflector.KeyModifier_NONE);
-                                            Reflector.call(keybinding, Reflector.ForgeKeyBinding_setKeyModifierAndCode, object1, Integer.parseInt(s2));
-                                        }
-                                    } else {
-                                        keybinding.setKeyCode(Integer.parseInt(s2));
-                                    }
+                                    keybinding.setKeyCode(Integer.parseInt(s2));
                                 }
                             }
 
@@ -1171,14 +1150,6 @@ public class GameSettings {
      * Saves the options to the options file.
      */
     public void saveOptions() {
-        if (Reflector.FMLClientHandler.exists()) {
-            Object object = Reflector.call(Reflector.FMLClientHandler_instance);
-
-            if (object != null && Reflector.callBoolean(object, Reflector.FMLClientHandler_isLoading)) {
-                return;
-            }
-        }
-
         PrintWriter printwriter = null;
 
         try {
@@ -1250,14 +1221,7 @@ public class GameSettings {
             printwriter.println("tutorialStep:" + this.tutorialStep.getName());
 
             for (KeyBinding keybinding : this.keyBindings) {
-                if (Reflector.ForgeKeyBinding_getKeyModifier.exists()) {
-                    String s = "key_" + keybinding.getKeyDescription() + ":" + keybinding.getKeyCode();
-                    Object object1 = Reflector.call(keybinding, Reflector.ForgeKeyBinding_getKeyModifier);
-                    Object object2 = Reflector.getFieldValue(Reflector.KeyModifier_NONE);
-                    printwriter.println(object1 != object2 ? s + ":" + object1 : s);
-                } else {
-                    printwriter.println("key_" + keybinding.getKeyDescription() + ":" + keybinding.getKeyCode());
-                }
+                printwriter.println("key_" + keybinding.getKeyDescription() + ":" + keybinding.getKeyCode());
             }
 
             for (SoundCategory soundcategory : SoundCategory.values()) {
@@ -2802,28 +2766,6 @@ public class GameSettings {
         }
 
         return -1;
-    }
-
-    private void setForgeKeybindProperties() {
-        if (Reflector.KeyConflictContext_IN_GAME.exists()) {
-            if (Reflector.ForgeKeyBinding_setKeyConflictContext.exists()) {
-                Object object = Reflector.getFieldValue(Reflector.KeyConflictContext_IN_GAME);
-                Reflector.call(this.keyBindForward, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindLeft, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindBack, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindRight, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindJump, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindSneak, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindSprint, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindAttack, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindChat, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindPlayerList, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindCommand, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindTogglePerspective, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindSmoothCamera, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-                Reflector.call(this.keyBindSwapHands, Reflector.ForgeKeyBinding_setKeyConflictContext, object);
-            }
-        }
     }
 
     public void onGuiClosed() {

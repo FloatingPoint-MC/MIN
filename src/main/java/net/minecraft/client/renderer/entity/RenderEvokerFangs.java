@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderEvokerFangs extends Render<EntityEvokerFangs>
 {
     private static final ResourceLocation EVOKER_ILLAGER_FANGS = new ResourceLocation("textures/entity/illager/fangs.png");
-    private final ModelEvokerFangs model = new ModelEvokerFangs();
+    public ModelEvokerFangs model = new ModelEvokerFangs();
 
     public RenderEvokerFangs(RenderManager p_i47208_1_)
     {

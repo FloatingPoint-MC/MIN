@@ -25,37 +25,17 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.optifine.config.ConnectedParser;
-import net.optifine.config.EntityClassLocator;
-import net.optifine.config.IObjectLocator;
-import net.optifine.config.ItemLocator;
-import net.optifine.reflect.ReflectorForge;
-import net.optifine.util.PropertiesOrdered;
 
 public class DynamicLights
 {
-    private static DynamicLightsMap mapDynamicLights = new DynamicLightsMap();
-    private static Map<Class, Integer> mapEntityLightLevels = new HashMap<Class, Integer>();
-    private static Map<Item, Integer> mapItemLightLevels = new HashMap<Item, Integer>();
+    private static final DynamicLightsMap mapDynamicLights = new DynamicLightsMap();
+    private static final Map<Class, Integer> mapEntityLightLevels = new HashMap<Class, Integer>();
+    private static final Map<Item, Integer> mapItemLightLevels = new HashMap<Item, Integer>();
     private static long timeUpdateMs = 0L;
-    private static final double MAX_DIST = 7.5D;
-    private static final double MAX_DIST_SQ = 56.25D;
-    private static final int LIGHT_LEVEL_MAX = 15;
-    private static final int LIGHT_LEVEL_FIRE = 15;
-    private static final int LIGHT_LEVEL_BLAZE = 10;
-    private static final int LIGHT_LEVEL_MAGMA_CUBE = 8;
-    private static final int LIGHT_LEVEL_MAGMA_CUBE_CORE = 13;
-    private static final int LIGHT_LEVEL_GLOWSTONE_DUST = 8;
-    private static final int LIGHT_LEVEL_PRISMARINE_CRYSTALS = 8;
-    private static final DataParameter<ItemStack> PARAMETER_ITEM_STACK = new DataParameter<ItemStack>(6, DataSerializers.ITEM_STACK);
+    private static final DataParameter<ItemStack> PARAMETER_ITEM_STACK = new DataParameter<>(6, DataSerializers.ITEM_STACK);
     private static boolean initialized;
-
-    public static void entityAdded(Entity entityIn, RenderGlobal renderGlobal)
-    {
-    }
 
     public static void entityRemoved(Entity entityIn, RenderGlobal renderGlobal)
     {
@@ -106,24 +86,6 @@ public class DynamicLights
         initialized = true;
         mapEntityLightLevels.clear();
         mapItemLightLevels.clear();
-        String[] astring = ReflectorForge.getForgeModIds();
-
-        for (int i = 0; i < astring.length; ++i)
-        {
-            String s = astring[i];
-
-            try
-            {
-                ResourceLocation resourcelocation = new ResourceLocation(s, "optifine/dynamic_lights.properties");
-                InputStream inputstream = Config.getResourceStream(resourcelocation);
-                loadModConfiguration(inputstream, resourcelocation.toString(), s);
-            }
-            catch (IOException var5)
-            {
-                ;
-            }
-        }
-
         if (mapEntityLightLevels.size() > 0)
         {
             Config.dbg("DynamicLights entities: " + mapEntityLightLevels.size());
@@ -135,71 +97,6 @@ public class DynamicLights
         }
     }
 
-    private static void loadModConfiguration(InputStream in, String path, String modId)
-    {
-        if (in != null)
-        {
-            try
-            {
-                Properties properties = new PropertiesOrdered();
-                properties.load(in);
-                in.close();
-                Config.dbg("DynamicLights: Parsing " + path);
-                ConnectedParser connectedparser = new ConnectedParser("DynamicLights");
-                loadModLightLevels(properties.getProperty("entities"), mapEntityLightLevels, new EntityClassLocator(), connectedparser, path, modId);
-                loadModLightLevels(properties.getProperty("items"), mapItemLightLevels, new ItemLocator(), connectedparser, path, modId);
-            }
-            catch (IOException var5)
-            {
-                Config.warn("DynamicLights: Error reading " + path);
-            }
-        }
-    }
-
-    private static void loadModLightLevels(String prop, Map mapLightLevels, IObjectLocator ol, ConnectedParser cp, String path, String modId)
-    {
-        if (prop != null)
-        {
-            String[] astring = Config.tokenize(prop, " ");
-
-            for (int i = 0; i < astring.length; ++i)
-            {
-                String s = astring[i];
-                String[] astring1 = Config.tokenize(s, ":");
-
-                if (astring1.length != 2)
-                {
-                    cp.warn("Invalid entry: " + s + ", in:" + path);
-                }
-                else
-                {
-                    String s1 = astring1[0];
-                    String s2 = astring1[1];
-                    String s3 = modId + ":" + s1;
-                    ResourceLocation resourcelocation = new ResourceLocation(s3);
-                    Object object = ol.getObject(resourcelocation);
-
-                    if (object == null)
-                    {
-                        cp.warn("Object not found: " + s3);
-                    }
-                    else
-                    {
-                        int j = cp.parseInt(s2, -1);
-
-                        if (j >= 0 && j <= 15)
-                        {
-                            mapLightLevels.put(object, new Integer(j));
-                        }
-                        else
-                        {
-                            cp.warn("Invalid light level: " + s);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private static void updateMapDynamicLights(RenderGlobal renderGlobal)
     {
@@ -245,7 +142,7 @@ public class DynamicLights
 
     public static int getCombinedLight(Entity entity, int combinedLight)
     {
-        double d0 = (double)getLightLevel(entity);
+        double d0 = getLightLevel(entity);
         combinedLight = getCombinedLight(d0, combinedLight);
         return combinedLight;
     }
@@ -506,7 +403,7 @@ public class DynamicLights
 
     public static ItemStack getItemStack(EntityItem entityItem)
     {
-        ItemStack itemstack = (ItemStack)entityItem.getDataManager().get(PARAMETER_ITEM_STACK);
+        ItemStack itemstack = entityItem.getDataManager().get(PARAMETER_ITEM_STACK);
         return itemstack;
     }
 }

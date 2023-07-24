@@ -67,7 +67,6 @@ import net.optifine.GlErrors;
 import net.optifine.Lang;
 import net.optifine.config.ConnectedParser;
 import net.optifine.expr.IExpressionBool;
-import net.optifine.reflect.Reflector;
 import net.optifine.render.GlAlphaState;
 import net.optifine.render.GlBlendState;
 import net.optifine.shaders.config.EnumShaderOption;
@@ -872,12 +871,6 @@ public class Shaders
         if (flag3 || flag4)
         {
             DefaultVertexFormats.updateVertexFormats();
-
-            if (Reflector.LightUtil.exists())
-            {
-                Reflector.LightUtil_itemConsumer.setValue((Object)null);
-                Reflector.LightUtil_tessellator.setValue((Object)null);
-            }
 
             updateBlockLightLevel();
         }

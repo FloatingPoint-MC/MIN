@@ -16,7 +16,6 @@ import java.util.List;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.gen.layer.IntCache;
 import net.optifine.CrashReporter;
-import net.optifine.reflect.Reflector;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -57,86 +56,42 @@ public class CrashReport
      */
     private void populateEnvironment()
     {
-        this.systemDetailsCategory.addDetail("Minecraft Version", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return "1.12.2";
-            }
+        this.systemDetailsCategory.addDetail("Minecraft Version", () -> "1.12.2");
+        this.systemDetailsCategory.addDetail("Operating System", () -> System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version"));
+        this.systemDetailsCategory.addDetail("Java Version", () -> System.getProperty("java.version") + ", " + System.getProperty("java.vendor"));
+        this.systemDetailsCategory.addDetail("Java VM Version", () -> System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor"));
+        this.systemDetailsCategory.addDetail("Memory", () -> {
+            Runtime runtime = Runtime.getRuntime();
+            long i = runtime.maxMemory();
+            long j = runtime.totalMemory();
+            long k = runtime.freeMemory();
+            long l = i / 1024L / 1024L;
+            long i1 = j / 1024L / 1024L;
+            long j1 = k / 1024L / 1024L;
+            return k + " bytes (" + j1 + " MB) / " + j + " bytes (" + i1 + " MB) up to " + i + " bytes (" + l + " MB)";
         });
-        this.systemDetailsCategory.addDetail("Operating System", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
-            }
-        });
-        this.systemDetailsCategory.addDetail("Java Version", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return System.getProperty("java.version") + ", " + System.getProperty("java.vendor");
-            }
-        });
-        this.systemDetailsCategory.addDetail("Java VM Version", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor");
-            }
-        });
-        this.systemDetailsCategory.addDetail("Memory", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                Runtime runtime = Runtime.getRuntime();
-                long i = runtime.maxMemory();
-                long j = runtime.totalMemory();
-                long k = runtime.freeMemory();
-                long l = i / 1024L / 1024L;
-                long i1 = j / 1024L / 1024L;
-                long j1 = k / 1024L / 1024L;
-                return k + " bytes (" + j1 + " MB) / " + j + " bytes (" + i1 + " MB) up to " + i + " bytes (" + l + " MB)";
-            }
-        });
-        this.systemDetailsCategory.addDetail("JVM Flags", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                RuntimeMXBean runtimemxbean = ManagementFactory.getRuntimeMXBean();
-                List<String> list = runtimemxbean.getInputArguments();
-                int i = 0;
-                StringBuilder stringbuilder = new StringBuilder();
+        this.systemDetailsCategory.addDetail("JVM Flags", () -> {
+            RuntimeMXBean runtimemxbean = ManagementFactory.getRuntimeMXBean();
+            List<String> list = runtimemxbean.getInputArguments();
+            int i = 0;
+            StringBuilder stringbuilder = new StringBuilder();
 
-                for (String s : list)
+            for (String s : list)
+            {
+                if (s.startsWith("-X"))
                 {
-                    if (s.startsWith("-X"))
+                    if (i++ > 0)
                     {
-                        if (i++ > 0)
-                        {
-                            stringbuilder.append(" ");
-                        }
-
-                        stringbuilder.append(s);
+                        stringbuilder.append(" ");
                     }
+
+                    stringbuilder.append(s);
                 }
-
-                return String.format("%d total; %s", i, stringbuilder.toString());
             }
-        });
-        this.systemDetailsCategory.addDetail("IntCache", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return IntCache.getCacheSizes();
-            }
-        });
 
-        if (Reflector.FMLCommonHandler_enhanceCrashReport.exists())
-        {
-            Object object = Reflector.call(Reflector.FMLCommonHandler_instance);
-            Reflector.callString(object, Reflector.FMLCommonHandler_enhanceCrashReport, this, this.systemDetailsCategory);
-        }
+            return String.format("%d total; %s", i, stringbuilder);
+        });
+        this.systemDetailsCategory.addDetail("IntCache", IntCache::getCacheSizes);
     }
 
     /**
@@ -247,7 +202,6 @@ public class CrashReport
 
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append("---- Minecraft Crash Report ----\n");
-        Reflector.call(Reflector.CoreModManager_onCrash, stringbuilder);
         stringbuilder.append("// ");
         stringbuilder.append(getWittyComment());
         stringbuilder.append("\n\n");
@@ -302,9 +256,7 @@ public class CrashReport
                 writer = new OutputStreamWriter(new FileOutputStream(toFile), StandardCharsets.UTF_8);
                 writer.write(this.getCompleteReport());
                 this.crashReportFile = toFile;
-                boolean flag1 = true;
-                boolean flag2 = flag1;
-                return flag2;
+                return true;
             }
             catch (Throwable throwable1)
             {

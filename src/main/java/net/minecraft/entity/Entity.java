@@ -86,7 +86,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public abstract class Entity implements ICommandSender {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
     private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     private static double renderDistanceWeight = 1.0D;

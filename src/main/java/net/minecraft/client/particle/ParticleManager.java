@@ -29,9 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.optifine.reflect.Reflector;
 
 public class ParticleManager
 {
@@ -446,22 +444,11 @@ public class ParticleManager
 
     public void addBlockDestroyEffects(BlockPos pos, IBlockState state)
     {
-        boolean flag;
-
-        if (Reflector.ForgeBlock_addDestroyEffects.exists() && Reflector.ForgeBlock_isAir.exists())
-        {
-            Block block = state.getBlock();
-            flag = !Reflector.callBoolean(block, Reflector.ForgeBlock_isAir, state, this.world, pos) && !Reflector.callBoolean(block, Reflector.ForgeBlock_addDestroyEffects, this.world, pos, this);
-        }
-        else
-        {
-            flag = state.getMaterial() != Material.AIR;
-        }
+        boolean flag = state.getMaterial() != Material.AIR;
 
         if (flag)
         {
             state = state.getActualState(this.world, pos);
-            int l = 4;
 
             for (int i = 0; i < 4; ++i)
             {
@@ -543,7 +530,7 @@ public class ParticleManager
             }
         }
 
-        return "" + i;
+        return String.valueOf(i);
     }
 
     private boolean reuseBarrierParticle(Particle p_reuseBarrierParticle_1_, ArrayDeque<Particle> p_reuseBarrierParticle_2_)
@@ -558,20 +545,5 @@ public class ParticleManager
         }
 
         return false;
-    }
-
-    public void addBlockHitEffects(BlockPos p_addBlockHitEffects_1_, RayTraceResult p_addBlockHitEffects_2_)
-    {
-        IBlockState iblockstate = this.world.getBlockState(p_addBlockHitEffects_1_);
-
-        if (iblockstate != null)
-        {
-            boolean flag = Reflector.callBoolean(iblockstate.getBlock(), Reflector.ForgeBlock_addHitEffects, iblockstate, this.world, p_addBlockHitEffects_2_, this);
-
-            if (iblockstate != null && !flag)
-            {
-                this.addBlockHitEffects(p_addBlockHitEffects_1_, p_addBlockHitEffects_2_.sideHit);
-            }
-        }
     }
 }

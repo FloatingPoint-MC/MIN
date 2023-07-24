@@ -17,7 +17,6 @@ import net.optifine.config.RangeInt;
 import net.optifine.config.RangeListInt;
 import net.optifine.config.VillagerProfession;
 import net.optifine.config.Weather;
-import net.optifine.reflect.Reflector;
 import net.optifine.util.ArrayUtils;
 import net.optifine.util.MathUtils;
 
@@ -306,7 +305,7 @@ public class RandomEntityRule
                 {
                     EntityVillager entityvillager = (EntityVillager)entity;
                     int j = entityvillager.getProfession();
-                    int k = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerId, -1);
+                    int k = entityvillager.getCareerId();
 
                     if (j < 0 || k < 0)
                     {
@@ -315,12 +314,8 @@ public class RandomEntityRule
 
                     boolean flag = false;
 
-                    for (int l = 0; l < this.professions.length; ++l)
-                    {
-                        VillagerProfession villagerprofession = this.professions[l];
-
-                        if (villagerprofession.matches(j, k))
-                        {
+                    for (VillagerProfession villagerprofession : this.professions) {
+                        if (villagerprofession.matches(j, k)) {
                             flag = true;
                             break;
                         }

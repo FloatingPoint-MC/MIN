@@ -1,7 +1,5 @@
 package net.optifine.entity.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelOcelot;
@@ -9,73 +7,50 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderOcelot;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.optifine.reflect.Reflector;
 
-public class ModelAdapterOcelot extends ModelAdapter
-{
-    private static Map<String, Integer> mapPartFields = null;
+public class ModelAdapterOcelot extends ModelAdapter {
 
-    public ModelAdapterOcelot()
-    {
+    public ModelAdapterOcelot() {
         super(EntityOcelot.class, "ocelot", 0.4F);
     }
 
-    public ModelBase makeModel()
-    {
+    public ModelBase makeModel() {
         return new ModelOcelot();
     }
 
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelOcelot))
-        {
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelOcelot)) {
             return null;
-        }
-        else
-        {
-            ModelOcelot modelocelot = (ModelOcelot)model;
-            Map<String, Integer> map = getMapPartFields();
-
-            if (map.containsKey(modelPart))
-            {
-                int i = ((Integer)map.get(modelPart)).intValue();
-                return (ModelRenderer)Reflector.getFieldValue(modelocelot, Reflector.ModelOcelot_ModelRenderers, i);
+        } else {
+            ModelOcelot modelocelot = (ModelOcelot) model;
+            switch (modelPart) {
+                case "back_left_leg":
+                    return modelocelot.ocelotBackLeftLeg;
+                case "back_right_leg":
+                    return modelocelot.ocelotBackRightLeg;
+                case "front_left_leg":
+                    return modelocelot.ocelotFrontLeftLeg;
+                case "front_right_leg":
+                    return modelocelot.ocelotFrontRightLeg;
+                case "tail":
+                    return modelocelot.ocelotTail;
+                case "tail2":
+                    return modelocelot.ocelotTail2;
+                case "head":
+                    return modelocelot.ocelotHead;
+                case "body":
+                    return modelocelot.ocelotBody;
+                default:
+                    return null;
             }
-            else
-            {
-                return null;
-            }
         }
     }
 
-    public String[] getModelRendererNames()
-    {
-        return new String[] {"back_left_leg", "back_right_leg", "front_left_leg", "front_right_leg", "tail", "tail2", "head", "body"};
+    public String[] getModelRendererNames() {
+        return new String[]{"back_left_leg", "back_right_leg", "front_left_leg", "front_right_leg", "tail", "tail2", "head", "body"};
     }
 
-    private static Map<String, Integer> getMapPartFields()
-    {
-        if (mapPartFields != null)
-        {
-            return mapPartFields;
-        }
-        else
-        {
-            mapPartFields = new HashMap<String, Integer>();
-            mapPartFields.put("back_left_leg", Integer.valueOf(0));
-            mapPartFields.put("back_right_leg", Integer.valueOf(1));
-            mapPartFields.put("front_left_leg", Integer.valueOf(2));
-            mapPartFields.put("front_right_leg", Integer.valueOf(3));
-            mapPartFields.put("tail", Integer.valueOf(4));
-            mapPartFields.put("tail2", Integer.valueOf(5));
-            mapPartFields.put("head", Integer.valueOf(6));
-            mapPartFields.put("body", Integer.valueOf(7));
-            return mapPartFields;
-        }
-    }
-
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderOcelot renderocelot = new RenderOcelot(rendermanager);
         renderocelot.mainModel = modelBase;

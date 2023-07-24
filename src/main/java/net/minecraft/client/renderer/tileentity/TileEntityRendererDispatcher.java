@@ -6,10 +6,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelShulker;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -37,7 +34,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.optifine.EmissiveTextures;
-import net.optifine.reflect.Reflector;
 
 public class TileEntityRendererDispatcher
 {
@@ -130,23 +126,12 @@ public class TileEntityRendererDispatcher
     {
         if (tileentityIn.getDistanceSq(this.entityX, this.entityY, this.entityZ) < tileentityIn.getMaxRenderDistanceSquared())
         {
-            boolean flag = true;
-
-            if (Reflector.ForgeTileEntity_hasFastRenderer.exists())
-            {
-                flag = !this.drawingBatch || !Reflector.callBoolean(tileentityIn, Reflector.ForgeTileEntity_hasFastRenderer);
-            }
-
-            if (flag)
-            {
-                RenderHelper.enableStandardItemLighting();
-                int i = this.world.getCombinedLight(tileentityIn.getPos(), 0);
-                int j = i % 65536;
-                int k = i / 65536;
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            }
-
+            RenderHelper.enableStandardItemLighting();
+            int i = this.world.getCombinedLight(tileentityIn.getPos(), 0);
+            int j = i % 65536;
+            int k = i / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             BlockPos blockpos = tileentityIn.getPos();
 
             if (!this.world.isBlockLoaded(blockpos, false))
@@ -197,16 +182,7 @@ public class TileEntityRendererDispatcher
             try
             {
                 this.tileEntityRendered = tileEntityIn;
-
-                if (this.drawingBatch && Reflector.callBoolean(tileEntityIn, Reflector.ForgeTileEntity_hasFastRenderer))
-                {
-                    tileentityspecialrenderer.renderTileEntityFast(tileEntityIn, x, y, z, partialTicks, destroyStage, p_192854_10_, this.batchBuffer.getBuffer());
-                }
-                else
-                {
-                    tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, p_192854_10_);
-                }
-
+                tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, p_192854_10_);
                 this.tileEntityRendered = null;
             }
             catch (Throwable throwable)
@@ -259,16 +235,8 @@ public class TileEntityRendererDispatcher
 
         if (p_drawBatch_1_ > 0)
         {
-            Vec3d vec3d = (Vec3d)Reflector.call(Reflector.ActiveRenderInfo_getCameraPosition);
-
-            if (vec3d != null)
-            {
-                this.batchBuffer.getBuffer().sortVertexData((float)vec3d.x, (float)vec3d.y, (float)vec3d.z);
-            }
-            else
-            {
-                this.batchBuffer.getBuffer().sortVertexData(0.0F, 0.0F, 0.0F);
-            }
+            Vec3d vec3d = ActiveRenderInfo.getCameraPosition();
+            this.batchBuffer.getBuffer().sortVertexData((float) vec3d.x, (float) vec3d.y, (float) vec3d.z);
         }
 
         this.batchBuffer.draw();

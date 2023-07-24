@@ -24,8 +24,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorRaw;
 import net.optifine.util.IntegratedServerUtils;
 import net.optifine.util.PropertiesOrdered;
 import net.optifine.util.ResUtils;
@@ -33,24 +31,16 @@ import net.optifine.util.StrUtils;
 
 public class RandomEntities
 {
-    private static Map<String, RandomEntityProperties> mapProperties = new HashMap<String, RandomEntityProperties>();
+    private static final Map<String, RandomEntityProperties> mapProperties = new HashMap<String, RandomEntityProperties>();
     private static boolean active = false;
     private static RenderGlobal renderGlobal;
-    private static RandomEntity randomEntity = new RandomEntity();
+    private static final RandomEntity randomEntity = new RandomEntity();
     private static TileEntityRendererDispatcher tileEntityRendererDispatcher;
-    private static RandomTileEntity randomTileEntity = new RandomTileEntity();
+    private static final RandomTileEntity randomTileEntity = new RandomTileEntity();
     private static boolean working = false;
-    public static final String SUFFIX_PNG = ".png";
-    public static final String SUFFIX_PROPERTIES = ".properties";
-    public static final String PREFIX_TEXTURES_ENTITY = "textures/entity/";
-    public static final String PREFIX_TEXTURES_PAINTING = "textures/painting/";
-    public static final String PREFIX_TEXTURES = "textures/";
-    public static final String PREFIX_OPTIFINE_RANDOM = "optifine/random/";
-    public static final String PREFIX_MCPATCHER_MOB = "mcpatcher/mob/";
     private static final String[] DEPENDANT_SUFFIXES = new String[] {"_armor", "_eyes", "_exploding", "_shooting", "_fur", "_eyes", "_invulnerable", "_angry", "_tame", "_collar"};
-    private static final String PREFIX_DYNAMIC_TEXTURE_HORSE = "horse/";
-    private static final String[] HORSE_TEXTURES = (String[])ReflectorRaw.getFieldValue((Object)null, EntityHorse.class, String[].class, 0);
-    private static final String[] HORSE_TEXTURES_ABBR = (String[])ReflectorRaw.getFieldValue((Object)null, EntityHorse.class, String[].class, 1);
+    private static final String[] HORSE_TEXTURES = EntityHorse.HORSE_TEXTURES;
+    private static final String[] HORSE_TEXTURES_ABBR = EntityHorse.HORSE_TEXTURES_ABBR;
 
     public static void entityLoaded(Entity entity, World world)
     {
@@ -144,30 +134,25 @@ public class RandomEntities
         if (entity instanceof EntityVillager)
         {
             EntityVillager entityvillager = (EntityVillager)entity;
-            int i = entityvillager.getProfession();
-            ev.setProfession(i);
-            int j = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerId, 0);
-            Reflector.setFieldValueInt(ev, Reflector.EntityVillager_careerId, j);
-            int k = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerLevel, 0);
-            Reflector.setFieldValueInt(ev, Reflector.EntityVillager_careerLevel, k);
+            ev.setProfession(entityvillager.getProfession());
+            ev.setCareerId(entityvillager.getCareerId());
+            ev.setCareerLevel(entityvillager.getCareerLevel());
         }
     }
 
-    public static void worldChanged(World oldWorld, World newWorld)
+    public static void worldChanged(World newWorld)
     {
         if (newWorld != null)
         {
-            List list = newWorld.getLoadedEntityList();
+            List<Entity> list = newWorld.getLoadedEntityList();
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity = (Entity)list.get(i);
+            for (Entity entity : list) {
                 entityLoaded(entity, newWorld);
             }
         }
 
-        randomEntity.setEntity((Entity)null);
-        randomTileEntity.setTileEntity((TileEntity)null);
+        randomEntity.setEntity(null);
+        randomTileEntity.setTileEntity(null);
     }
 
     public static ResourceLocation getTextureLocation(ResourceLocation loc)

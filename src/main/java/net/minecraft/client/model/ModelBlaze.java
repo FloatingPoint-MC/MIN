@@ -6,8 +6,8 @@ import net.minecraft.util.math.MathHelper;
 public class ModelBlaze extends ModelBase
 {
     /** The sticks that fly around the Blaze. */
-    private final ModelRenderer[] blazeSticks = new ModelRenderer[12];
-    private final ModelRenderer blazeHead;
+    public final ModelRenderer[] blazeSticks = new ModelRenderer[12];
+    public final ModelRenderer blazeHead;
 
     public ModelBlaze()
     {

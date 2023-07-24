@@ -5,7 +5,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraft.world.chunk.NibbleArray;
-import net.optifine.reflect.Reflector;
 
 public class ExtendedBlockStorage
 {
@@ -56,11 +55,6 @@ public class ExtendedBlockStorage
 
     public void set(int x, int y, int z, IBlockState state)
     {
-        if (Reflector.IExtendedBlockState.isInstance(state))
-        {
-            state = (IBlockState)Reflector.call(state, Reflector.IExtendedBlockState_getClean);
-        }
-
         IBlockState iblockstate = this.get(x, y, z);
         Block block = iblockstate.getBlock();
         Block block1 = state.getBlock();

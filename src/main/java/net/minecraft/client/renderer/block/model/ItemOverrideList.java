@@ -4,13 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import java.util.List;
 import javax.annotation.Nullable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.optifine.ItemOverrideCache;
-import net.optifine.reflect.Reflector;
 
 public class ItemOverrideList
 {
@@ -70,22 +68,6 @@ public class ItemOverrideList
         }
 
         return null;
-    }
-
-    public IBakedModel handleItemState(IBakedModel p_handleItemState_1_, ItemStack p_handleItemState_2_, @Nullable World p_handleItemState_3_, @Nullable EntityLivingBase p_handleItemState_4_)
-    {
-        if (!p_handleItemState_2_.isEmpty() && p_handleItemState_2_.getItem().hasCustomProperties())
-        {
-            ResourceLocation resourcelocation = this.applyOverride(p_handleItemState_2_, p_handleItemState_3_, p_handleItemState_4_);
-
-            if (resourcelocation != null && Reflector.ModelLoader_getInventoryVariant.exists())
-            {
-                ModelResourceLocation modelresourcelocation = (ModelResourceLocation)Reflector.call(Reflector.ModelLoader_getInventoryVariant, resourcelocation.toString());
-                return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(modelresourcelocation);
-            }
-        }
-
-        return p_handleItemState_1_;
     }
 
     public ImmutableList<ItemOverride> getOverrides()

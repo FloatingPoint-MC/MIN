@@ -213,5 +213,6 @@
   "start.continue": "开始旅程!",
   "start.skip": "跳过",
   "start.clickUiSetting": "点此可以更改客户端设置。",
-  "start.press": "按下任意按键继续..."
+  "start.press": "按下任意按键继续...",
+  "menu.setting": "打开配置设置"
 }

@@ -35,7 +35,6 @@ import net.minecraft.world.biome.Biome;
 import net.optifine.config.Matches;
 import net.optifine.model.BlockModelUtils;
 import net.optifine.model.ListQuadsOverlay;
-import net.optifine.reflect.Reflector;
 import net.optifine.render.RenderEnv;
 import net.optifine.util.PropertiesOrdered;
 import net.optifine.util.ResUtils;
@@ -1861,11 +1860,6 @@ public class ConnectedTextures
         }
         else
         {
-            if (Reflector.ForgeBlock_getExtendedState.exists())
-            {
-                neighbourState = (IBlockState)Reflector.call(neighbourState.getBlock(), Reflector.ForgeBlock_getExtendedState, neighbourState, iblockaccess, blockPos);
-            }
-
             EnumFacing enumfacing = getFacing(side);
             List list = ibakedmodel.getQuads(neighbourState, enumfacing, 0L);
 

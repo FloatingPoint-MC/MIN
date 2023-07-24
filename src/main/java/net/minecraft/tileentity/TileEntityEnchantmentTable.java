@@ -217,7 +217,7 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
      */
     public ITextComponent getDisplayName()
     {
-        return (ITextComponent)(this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
     }
 
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
@@ -228,5 +228,9 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
     public String getGuiID()
     {
         return "minecraft:enchanting_table";
+    }
+
+    public String getCustomName() {
+        return customName;
     }
 }

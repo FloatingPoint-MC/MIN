@@ -7,8 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class ModelVex extends ModelBiped
 {
-    protected ModelRenderer leftWing;
-    protected ModelRenderer rightWing;
+    public ModelRenderer leftWing;
+    public ModelRenderer rightWing;
 
     public ModelVex()
     {

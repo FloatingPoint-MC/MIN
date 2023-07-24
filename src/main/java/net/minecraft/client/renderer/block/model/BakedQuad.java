@@ -6,12 +6,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.optifine.Config;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-import net.minecraftforge.client.model.pipeline.IVertexProducer;
 import net.optifine.model.QuadBounds;
-import net.optifine.reflect.Reflector;
 
-public class BakedQuad implements IVertexProducer
+public class BakedQuad
 {
     /**
      * Joined 4 vertex records, each stores packed data according to the VertexFormat of the quad. Vanilla minecraft
@@ -22,7 +19,7 @@ public class BakedQuad implements IVertexProducer
     protected EnumFacing face;
     protected TextureAtlasSprite sprite;
     private int[] vertexDataSingle = null;
-    protected boolean applyDiffuseLighting = Reflector.ForgeHooksClient_fillNormal.exists();
+    protected boolean applyDiffuseLighting = false;
     protected VertexFormat format = DefaultVertexFormats.ITEM;
     private QuadBounds quadBounds;
     private boolean quadEmissiveChecked;
@@ -111,11 +108,6 @@ public class BakedQuad implements IVertexProducer
         }
 
         return aint;
-    }
-
-    public void pipe(IVertexConsumer p_pipe_1_)
-    {
-        Reflector.callVoid(Reflector.LightUtil_putBakedQuad, p_pipe_1_, this);
     }
 
     public VertexFormat getFormat()

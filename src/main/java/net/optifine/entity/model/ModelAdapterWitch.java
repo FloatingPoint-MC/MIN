@@ -7,7 +7,6 @@ import net.minecraft.client.model.ModelWitch;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWitch;
 import net.minecraft.entity.monster.EntityWitch;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterWitch extends ModelAdapter
 {
@@ -31,37 +30,23 @@ public class ModelAdapterWitch extends ModelAdapter
         {
             ModelWitch modelwitch = (ModelWitch)model;
 
-            if (modelPart.equals("mole"))
-            {
-                return (ModelRenderer)Reflector.getFieldValue(modelwitch, Reflector.ModelWitch_mole);
-            }
-            else if (modelPart.equals("hat"))
-            {
-                return (ModelRenderer)Reflector.getFieldValue(modelwitch, Reflector.ModelWitch_hat);
-            }
-            else if (modelPart.equals("head"))
-            {
-                return modelwitch.villagerHead;
-            }
-            else if (modelPart.equals("body"))
-            {
-                return modelwitch.villagerBody;
-            }
-            else if (modelPart.equals("arms"))
-            {
-                return modelwitch.villagerArms;
-            }
-            else if (modelPart.equals("left_leg"))
-            {
-                return modelwitch.leftVillagerLeg;
-            }
-            else if (modelPart.equals("right_leg"))
-            {
-                return modelwitch.rightVillagerLeg;
-            }
-            else
-            {
-                return modelPart.equals("nose") ? modelwitch.villagerNose : null;
+            switch (modelPart) {
+                case "mole":
+                    return modelwitch.mole;
+                case "hat":
+                    return modelwitch.witchHat;
+                case "head":
+                    return modelwitch.villagerHead;
+                case "body":
+                    return modelwitch.villagerBody;
+                case "arms":
+                    return modelwitch.villagerArms;
+                case "left_leg":
+                    return modelwitch.leftVillagerLeg;
+                case "right_leg":
+                    return modelwitch.rightVillagerLeg;
+                default:
+                    return modelPart.equals("nose") ? modelwitch.villagerNose : null;
             }
         }
     }

@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 public class RenderShulkerBullet extends Render<EntityShulkerBullet>
 {
     private static final ResourceLocation SHULKER_SPARK_TEXTURE = new ResourceLocation("textures/entity/shulker/spark.png");
-    private final ModelShulkerBullet model = new ModelShulkerBullet();
+    public ModelShulkerBullet model = new ModelShulkerBullet();
 
     public RenderShulkerBullet(RenderManager manager)
     {

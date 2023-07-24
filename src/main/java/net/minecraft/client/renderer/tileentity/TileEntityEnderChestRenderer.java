@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class TileEntityEnderChestRenderer extends TileEntitySpecialRenderer<TileEntityEnderChest>
 {
     private static final ResourceLocation ENDER_CHEST_TEXTURE = new ResourceLocation("textures/entity/chest/ender.png");
-    private final ModelChest modelChest = new ModelChest();
+    public ModelChest modelChest = new ModelChest();
 
     public void render(TileEntityEnderChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {

@@ -8,8 +8,6 @@ import net.minecraft.client.renderer.entity.RenderGuardian;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.optifine.Config;
-import net.optifine.reflect.Reflector;
-
 public class ModelAdapterGuardian extends ModelAdapter
 {
     public ModelAdapterGuardian()
@@ -34,11 +32,11 @@ public class ModelAdapterGuardian extends ModelAdapter
 
             if (modelPart.equals("body"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_body);
+                return modelguardian.guardianBody;
             }
             else if (modelPart.equals("eye"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_eye);
+                return modelguardian.guardianEye;
             }
             else
             {
@@ -46,7 +44,7 @@ public class ModelAdapterGuardian extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer1 = (ModelRenderer[])Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_spines);
+                    ModelRenderer[] amodelrenderer1 = modelguardian.guardianSpines;
 
                     if (amodelrenderer1 == null)
                     {
@@ -66,7 +64,7 @@ public class ModelAdapterGuardian extends ModelAdapter
 
                     if (modelPart.startsWith(s1))
                     {
-                        ModelRenderer[] amodelrenderer = (ModelRenderer[])Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_tail);
+                        ModelRenderer[] amodelrenderer = modelguardian.guardianTail;
 
                         if (amodelrenderer == null)
                         {

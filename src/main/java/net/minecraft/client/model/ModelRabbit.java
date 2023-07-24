@@ -9,40 +9,40 @@ import net.minecraft.util.math.MathHelper;
 public class ModelRabbit extends ModelBase
 {
     /** The Rabbit's Left Foot */
-    private final ModelRenderer rabbitLeftFoot;
+    public final ModelRenderer rabbitLeftFoot;
 
     /** The Rabbit's Right Foot */
-    private final ModelRenderer rabbitRightFoot;
+    public final ModelRenderer rabbitRightFoot;
 
     /** The Rabbit's Left Thigh */
-    private final ModelRenderer rabbitLeftThigh;
+    public final ModelRenderer rabbitLeftThigh;
 
     /** The Rabbit's Right Thigh */
-    private final ModelRenderer rabbitRightThigh;
+    public final ModelRenderer rabbitRightThigh;
 
     /** The Rabbit's Body */
-    private final ModelRenderer rabbitBody;
+    public final ModelRenderer rabbitBody;
 
     /** The Rabbit's Left Arm */
-    private final ModelRenderer rabbitLeftArm;
+    public final ModelRenderer rabbitLeftArm;
 
     /** The Rabbit's Right Arm */
-    private final ModelRenderer rabbitRightArm;
+    public final ModelRenderer rabbitRightArm;
 
     /** The Rabbit's Head */
-    private final ModelRenderer rabbitHead;
+    public final ModelRenderer rabbitHead;
 
     /** The Rabbit's Right Ear */
-    private final ModelRenderer rabbitRightEar;
+    public final ModelRenderer rabbitRightEar;
 
     /** The Rabbit's Left Ear */
-    private final ModelRenderer rabbitLeftEar;
+    public final ModelRenderer rabbitLeftEar;
 
     /** The Rabbit's Tail */
-    private final ModelRenderer rabbitTail;
+    public final ModelRenderer rabbitTail;
 
     /** The Rabbit's Nose */
-    private final ModelRenderer rabbitNose;
+    public final ModelRenderer rabbitNose;
     private float jumpRotation;
 
     public ModelRabbit()
@@ -113,7 +113,7 @@ public class ModelRabbit extends ModelBase
         this.setRotationOffset(this.rabbitNose, 0.0F, 0.0F, 0.0F);
     }
 
-    private void setRotationOffset(ModelRenderer renderer, float x, float y, float z)
+    public void setRotationOffset(ModelRenderer renderer, float x, float y, float z)
     {
         renderer.rotateAngleX = x;
         renderer.rotateAngleY = y;

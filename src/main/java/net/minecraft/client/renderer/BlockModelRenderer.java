@@ -27,8 +27,6 @@ import net.optifine.BetterSnow;
 import net.optifine.CustomColors;
 import net.optifine.model.BlockModelCustomizer;
 import net.optifine.model.ListQuadsOverlay;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.render.RenderEnv;
 import net.optifine.shaders.SVertexBuilder;
 import net.optifine.shaders.Shaders;
@@ -43,11 +41,6 @@ public class BlockModelRenderer
     public BlockModelRenderer(BlockColors blockColorsIn)
     {
         this.blockColors = blockColorsIn;
-
-        if (Reflector.ForgeModContainer_forgeLightPipelineEnabled.exists())
-        {
-            Reflector.setFieldValue(Reflector.ForgeModContainer_forgeLightPipelineEnabled, Boolean.valueOf(false));
-        }
     }
 
     public boolean renderModel(IBlockAccess blockAccessIn, IBakedModel modelIn, IBlockState blockStateIn, BlockPos blockPosIn, BufferBuilder buffer, boolean checkSides)
@@ -57,7 +50,7 @@ public class BlockModelRenderer
 
     public boolean renderModel(IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, BufferBuilder buffer, boolean checkSides, long rand)
     {
-        boolean flag = Minecraft.isAmbientOcclusionEnabled() && ReflectorForge.getLightValue(stateIn, worldIn, posIn) == 0 && ReflectorForge.isAmbientOcclusion(modelIn, stateIn);
+        boolean flag = Minecraft.isAmbientOcclusionEnabled() && stateIn.getLightValue() == 0 && modelIn.isAmbientOcclusion();
 
         try
         {

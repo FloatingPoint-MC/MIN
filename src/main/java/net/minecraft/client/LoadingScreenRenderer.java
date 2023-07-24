@@ -12,7 +12,6 @@ import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MinecraftError;
 import net.optifine.CustomLoadingScreen;
 import net.optifine.CustomLoadingScreens;
-import net.optifine.reflect.Reflector;
 
 public class LoadingScreenRenderer implements IProgressUpdate
 {
@@ -81,7 +80,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
             if (OpenGlHelper.isFramebufferEnabled())
             {
                 int i = this.scaledResolution.getScaleFactor();
-                GlStateManager.ortho(0.0D, (double)(this.scaledResolution.getScaledWidth() * i), (double)(this.scaledResolution.getScaledHeight() * i), 0.0D, 100.0D, 300.0D);
+                GlStateManager.ortho(0.0D, this.scaledResolution.getScaledWidth() * i, this.scaledResolution.getScaledHeight() * i, 0.0D, 100.0D, 300.0D);
             }
             else
             {
@@ -162,65 +161,47 @@ public class LoadingScreenRenderer implements IProgressUpdate
                     GlStateManager.clear(16640);
                 }
 
-                boolean flag = true;
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder bufferbuilder = tessellator.getBuffer();
+                CustomLoadingScreen customloadingscreen = CustomLoadingScreens.getCustomLoadingScreen();
 
-                if (Reflector.FMLClientHandler_handleLoadingScreen.exists())
+                if (customloadingscreen != null)
                 {
-                    Object object = Reflector.call(Reflector.FMLClientHandler_instance);
-
-                    if (object != null)
-                    {
-                        flag = !Reflector.callBoolean(object, Reflector.FMLClientHandler_handleLoadingScreen, scaledresolution);
-                    }
+                    customloadingscreen.drawBackground(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
+                }
+                else
+                {
+                    this.mc.getTextureManager().bindTexture(Gui.OPTIONS_BACKGROUND);
+                    bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    bufferbuilder.pos(0.0D, l, 0.0D).tex(0.0D, (float)l / 32.0F).color(64, 64, 64, 255).endVertex();
+                    bufferbuilder.pos(k, l, 0.0D).tex((float)k / 32.0F, (float)l / 32.0F).color(64, 64, 64, 255).endVertex();
+                    bufferbuilder.pos(k, 0.0D, 0.0D).tex((float)k / 32.0F, 0.0D).color(64, 64, 64, 255).endVertex();
+                    bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0.0D).color(64, 64, 64, 255).endVertex();
+                    tessellator.draw();
                 }
 
-                if (flag)
+                if (progress >= 0)
                 {
-                    Tessellator tessellator = Tessellator.getInstance();
-                    BufferBuilder bufferbuilder = tessellator.getBuffer();
-                    CustomLoadingScreen customloadingscreen = CustomLoadingScreens.getCustomLoadingScreen();
-
-                    if (customloadingscreen != null)
-                    {
-                        customloadingscreen.drawBackground(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
-                    }
-                    else
-                    {
-                        this.mc.getTextureManager().bindTexture(Gui.OPTIONS_BACKGROUND);
-                        float f = 32.0F;
-                        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                        bufferbuilder.pos(0.0D, (double)l, 0.0D).tex(0.0D, (double)((float)l / 32.0F)).color(64, 64, 64, 255).endVertex();
-                        bufferbuilder.pos((double)k, (double)l, 0.0D).tex((double)((float)k / 32.0F), (double)((float)l / 32.0F)).color(64, 64, 64, 255).endVertex();
-                        bufferbuilder.pos((double)k, 0.0D, 0.0D).tex((double)((float)k / 32.0F), 0.0D).color(64, 64, 64, 255).endVertex();
-                        bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0.0D).color(64, 64, 64, 255).endVertex();
-                        tessellator.draw();
-                    }
-
-                    if (progress >= 0)
-                    {
-                        int l1 = 100;
-                        int i1 = 2;
-                        int j1 = k / 2 - 50;
-                        int k1 = l / 2 + 16;
-                        GlStateManager.disableTexture2D();
-                        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                        bufferbuilder.pos((double)j1, (double)k1, 0.0D).color(128, 128, 128, 255).endVertex();
-                        bufferbuilder.pos((double)j1, (double)(k1 + 2), 0.0D).color(128, 128, 128, 255).endVertex();
-                        bufferbuilder.pos((double)(j1 + 100), (double)(k1 + 2), 0.0D).color(128, 128, 128, 255).endVertex();
-                        bufferbuilder.pos((double)(j1 + 100), (double)k1, 0.0D).color(128, 128, 128, 255).endVertex();
-                        bufferbuilder.pos((double)j1, (double)k1, 0.0D).color(128, 255, 128, 255).endVertex();
-                        bufferbuilder.pos((double)j1, (double)(k1 + 2), 0.0D).color(128, 255, 128, 255).endVertex();
-                        bufferbuilder.pos((double)(j1 + progress), (double)(k1 + 2), 0.0D).color(128, 255, 128, 255).endVertex();
-                        bufferbuilder.pos((double)(j1 + progress), (double)k1, 0.0D).color(128, 255, 128, 255).endVertex();
-                        tessellator.draw();
-                        GlStateManager.enableTexture2D();
-                    }
-
-                    GlStateManager.enableBlend();
-                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                    this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedText, (float)((k - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedText)) / 2), (float)(l / 2 - 4 - 16), 16777215);
-                    this.mc.fontRenderer.drawStringWithShadow(this.message, (float)((k - this.mc.fontRenderer.getStringWidth(this.message)) / 2), (float)(l / 2 - 4 + 8), 16777215);
+                    int j1 = k / 2 - 50;
+                    int k1 = l / 2 + 16;
+                    GlStateManager.disableTexture2D();
+                    bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    bufferbuilder.pos(j1, k1, 0.0D).color(128, 128, 128, 255).endVertex();
+                    bufferbuilder.pos(j1, k1 + 2, 0.0D).color(128, 128, 128, 255).endVertex();
+                    bufferbuilder.pos(j1 + 100, k1 + 2, 0.0D).color(128, 128, 128, 255).endVertex();
+                    bufferbuilder.pos(j1 + 100, k1, 0.0D).color(128, 128, 128, 255).endVertex();
+                    bufferbuilder.pos(j1, k1, 0.0D).color(128, 255, 128, 255).endVertex();
+                    bufferbuilder.pos(j1, k1 + 2, 0.0D).color(128, 255, 128, 255).endVertex();
+                    bufferbuilder.pos(j1 + progress, k1 + 2, 0.0D).color(128, 255, 128, 255).endVertex();
+                    bufferbuilder.pos(j1 + progress, k1, 0.0D).color(128, 255, 128, 255).endVertex();
+                    tessellator.draw();
+                    GlStateManager.enableTexture2D();
                 }
+
+                GlStateManager.enableBlend();
+                GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedText, (float)((k - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedText)) / 2), (float)(l / 2 - 4 - 16), 16777215);
+                this.mc.fontRenderer.drawStringWithShadow(this.message, (float)((k - this.mc.fontRenderer.getStringWidth(this.message)) / 2), (float)(l / 2 - 4 + 8), 16777215);
 
                 this.framebuffer.unbindFramebuffer();
 
@@ -235,9 +216,8 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 {
                     Thread.yield();
                 }
-                catch (Exception var16)
+                catch (Exception ignored)
                 {
-                    ;
                 }
             }
         }

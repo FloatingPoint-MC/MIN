@@ -7,7 +7,6 @@ import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.entity.passive.EntityWolf;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterWolf extends ModelAdapter
 {
@@ -31,37 +30,23 @@ public class ModelAdapterWolf extends ModelAdapter
         {
             ModelWolf modelwolf = (ModelWolf)model;
 
-            if (modelPart.equals("head"))
-            {
-                return modelwolf.wolfHeadMain;
-            }
-            else if (modelPart.equals("body"))
-            {
-                return modelwolf.wolfBody;
-            }
-            else if (modelPart.equals("leg1"))
-            {
-                return modelwolf.wolfLeg1;
-            }
-            else if (modelPart.equals("leg2"))
-            {
-                return modelwolf.wolfLeg2;
-            }
-            else if (modelPart.equals("leg3"))
-            {
-                return modelwolf.wolfLeg3;
-            }
-            else if (modelPart.equals("leg4"))
-            {
-                return modelwolf.wolfLeg4;
-            }
-            else if (modelPart.equals("tail"))
-            {
-                return (ModelRenderer)Reflector.getFieldValue(modelwolf, Reflector.ModelWolf_tail);
-            }
-            else
-            {
-                return modelPart.equals("mane") ? (ModelRenderer)Reflector.getFieldValue(modelwolf, Reflector.ModelWolf_mane) : null;
+            switch (modelPart) {
+                case "head":
+                    return modelwolf.wolfHeadMain;
+                case "body":
+                    return modelwolf.wolfBody;
+                case "leg1":
+                    return modelwolf.wolfLeg1;
+                case "leg2":
+                    return modelwolf.wolfLeg2;
+                case "leg3":
+                    return modelwolf.wolfLeg3;
+                case "leg4":
+                    return modelwolf.wolfLeg4;
+                case "tail":
+                    return modelwolf.wolfTail;
+                default:
+                    return modelPart.equals("mane") ? modelwolf.wolfMane : null;
             }
         }
     }

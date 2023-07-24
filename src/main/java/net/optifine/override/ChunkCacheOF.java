@@ -12,7 +12,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.optifine.DynamicLights;
-import net.optifine.reflect.Reflector;
 import net.optifine.util.ArrayCache;
 
 public class ChunkCacheOF implements IBlockAccess
@@ -193,10 +192,5 @@ public class ChunkCacheOF implements IBlockAccess
     public boolean isAirBlock(BlockPos pos)
     {
         return this.chunkCache.isAirBlock(pos);
-    }
-
-    public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default)
-    {
-        return Reflector.callBoolean(this.chunkCache, Reflector.ForgeChunkCache_isSideSolid, pos, side, _default);
     }
 }

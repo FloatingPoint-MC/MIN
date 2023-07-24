@@ -479,6 +479,7 @@ public class WorldInfo
     /**
      * Returns the player's NBTTagCompound to be loaded
      */
+    @Nullable
     public NBTTagCompound getPlayerNBTTagCompound()
     {
         return this.playerTag;
@@ -874,12 +875,13 @@ public class WorldInfo
         this.borderWarningTime = ticks;
     }
 
+    @Nullable
     public EnumDifficulty getDifficulty()
     {
         return this.difficulty;
     }
 
-    public void setDifficulty(EnumDifficulty newDifficulty)
+    public void setDifficulty(@Nullable EnumDifficulty newDifficulty)
     {
         this.difficulty = newDifficulty;
     }

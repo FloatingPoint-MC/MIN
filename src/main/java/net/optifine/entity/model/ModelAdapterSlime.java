@@ -7,7 +7,6 @@ import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSlime;
 import net.minecraft.entity.monster.EntitySlime;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterSlime extends ModelAdapter
 {
@@ -31,21 +30,15 @@ public class ModelAdapterSlime extends ModelAdapter
         {
             ModelSlime modelslime = (ModelSlime)model;
 
-            if (modelPart.equals("body"))
-            {
-                return (ModelRenderer)Reflector.getFieldValue(modelslime, Reflector.ModelSlime_ModelRenderers, 0);
-            }
-            else if (modelPart.equals("left_eye"))
-            {
-                return (ModelRenderer)Reflector.getFieldValue(modelslime, Reflector.ModelSlime_ModelRenderers, 1);
-            }
-            else if (modelPart.equals("right_eye"))
-            {
-                return (ModelRenderer)Reflector.getFieldValue(modelslime, Reflector.ModelSlime_ModelRenderers, 2);
-            }
-            else
-            {
-                return modelPart.equals("mouth") ? (ModelRenderer)Reflector.getFieldValue(modelslime, Reflector.ModelSlime_ModelRenderers, 3) : null;
+            switch (modelPart) {
+                case "body":
+                    return modelslime.slimeBodies;
+                case "left_eye":
+                    return modelslime.slimeLeftEye;
+                case "right_eye":
+                    return modelslime.slimeRightEye;
+                default:
+                    return modelPart.equals("mouth") ? modelslime.slimeMouth : null;
             }
         }
     }

@@ -94,7 +94,7 @@ public class Chunk
     /**
      * Whether this Chunk has any Entities and thus requires saving on every tick
      */
-    private boolean hasEntities;
+    public boolean hasEntities;
 
     /** The time according to World.worldTime when this chunk was last saved */
     private long lastSaveTime;

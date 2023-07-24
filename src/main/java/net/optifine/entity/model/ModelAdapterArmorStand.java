@@ -31,21 +31,15 @@ public class ModelAdapterArmorStand extends ModelAdapterBiped
         {
             ModelArmorStand modelarmorstand = (ModelArmorStand)model;
 
-            if (modelPart.equals("right"))
-            {
-                return modelarmorstand.standRightSide;
-            }
-            else if (modelPart.equals("left"))
-            {
-                return modelarmorstand.standLeftSide;
-            }
-            else if (modelPart.equals("waist"))
-            {
-                return modelarmorstand.standWaist;
-            }
-            else
-            {
-                return modelPart.equals("base") ? modelarmorstand.standBase : super.getModelRenderer(modelarmorstand, modelPart);
+            switch (modelPart) {
+                case "right":
+                    return modelarmorstand.standRightSide;
+                case "left":
+                    return modelarmorstand.standLeftSide;
+                case "waist":
+                    return modelarmorstand.standWaist;
+                default:
+                    return modelPart.equals("base") ? modelarmorstand.standBase : super.getModelRenderer(modelarmorstand, modelPart);
             }
         }
     }

@@ -20,7 +20,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
-import net.optifine.reflect.Reflector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
@@ -89,31 +88,10 @@ public class ScreenShotHelper {
             }
 
             file2 = file2.getCanonicalFile();
-            Object object = null;
-
-            if (Reflector.ForgeHooksClient_onScreenshot.exists()) {
-                object = Reflector.call(Reflector.ForgeHooksClient_onScreenshot, bufferedimage, file2);
-
-                if (Reflector.callBoolean(object, Reflector.Event_isCanceled)) {
-                    return (ITextComponent) Reflector.call(object, Reflector.ScreenshotEvent_getCancelMessage);
-                }
-
-                file2 = (File) Reflector.call(object, Reflector.ScreenshotEvent_getScreenshotFile);
-            }
-
-            assert file2 != null;
             ImageIO.write(bufferedimage, "png", file2);
             ITextComponent itextcomponent = new TextComponentString(file2.getName());
             itextcomponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file2.getAbsolutePath()));
             itextcomponent.getStyle().setUnderlined(Boolean.TRUE);
-
-            if (object != null) {
-                ITextComponent itextcomponent1 = (ITextComponent) Reflector.call(object, Reflector.ScreenshotEvent_getResultMessage);
-
-                if (itextcomponent1 != null) {
-                    return itextcomponent1;
-                }
-            }
 
             return new TextComponentTranslation("screenshot.success", itextcomponent);
         } catch (Exception exception1) {

@@ -59,6 +59,9 @@ public class ClickUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (mc.world == null) {
+            drawDefaultBackground();
+        }
         GlStateManager.enableBlend();
         int backgroundColor = new Color(40, 40, 40, 102).getRGB();
         int categoryColor = new Color(40, 40, 40, 56).getRGB();

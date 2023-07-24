@@ -13,7 +13,6 @@ import net.minecraft.client.resources.IResourceManager;
 import net.optifine.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.Mipmaps;
-import net.optifine.reflect.Reflector;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -157,18 +156,8 @@ public class TextureUtil
 
     public static void allocateTextureImpl(int glTextureId, int mipmapLevels, int width, int height)
     {
-        Object object = TextureUtil.class;
-
-        if (Reflector.SplashScreen.exists())
-        {
-            object = Reflector.SplashScreen.getTargetClass();
-        }
-
-        synchronized (object)
-        {
-            deleteTexture(glTextureId);
-            bindTexture(glTextureId);
-        }
+        deleteTexture(glTextureId);
+        bindTexture(glTextureId);
 
         if (mipmapLevels >= 0)
         {

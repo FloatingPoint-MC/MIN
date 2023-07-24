@@ -2,8 +2,6 @@ package net.minecraft.client.renderer.texture;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 import net.minecraft.client.resources.IResource;
@@ -12,7 +10,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.optifine.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.ShadersTex;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -55,7 +52,7 @@ public class LayeredColorMaskTexture extends AbstractTexture
 
                 bufferedimage = new BufferedImage(bufferedimage1.getWidth(), bufferedimage1.getHeight(), i);
                 Graphics graphics = bufferedimage.getGraphics();
-                graphics.drawImage(bufferedimage1, 0, 0, (ImageObserver)null);
+                graphics.drawImage(bufferedimage1, 0, 0, null);
                 int j = 0;
 
                 while (true)
@@ -70,12 +67,12 @@ public class LayeredColorMaskTexture extends AbstractTexture
                     try
                     {
                         String s = this.listTextures.get(j);
-                        int k = ((EnumDyeColor)this.listDyeColors.get(j)).getColorValue();
+                        int k = this.listDyeColors.get(j).getColorValue();
 
                         if (s != null)
                         {
                             iresource1 = resourceManager.getResource(new ResourceLocation(s));
-                            BufferedImage bufferedimage2 = Reflector.MinecraftForgeClient_getImageLayer.exists() ? (BufferedImage)Reflector.call(Reflector.MinecraftForgeClient_getImageLayer, new ResourceLocation(s), resourceManager) : TextureUtil.readBufferedImage(iresource1.getInputStream());
+                            BufferedImage bufferedimage2 = TextureUtil.readBufferedImage(iresource1.getInputStream());
 
                             if (bufferedimage2.getWidth() == bufferedimage.getWidth() && bufferedimage2.getHeight() == bufferedimage.getHeight() && bufferedimage2.getType() == 6)
                             {
@@ -95,13 +92,13 @@ public class LayeredColorMaskTexture extends AbstractTexture
                                     }
                                 }
 
-                                bufferedimage.getGraphics().drawImage(bufferedimage2, 0, 0, (ImageObserver)null);
+                                bufferedimage.getGraphics().drawImage(bufferedimage2, 0, 0, null);
                             }
                         }
                     }
                     finally
                     {
-                        IOUtils.closeQuietly((Closeable)iresource1);
+                        IOUtils.closeQuietly(iresource1);
                     }
 
                     ++j;
@@ -109,11 +106,11 @@ public class LayeredColorMaskTexture extends AbstractTexture
             }
             catch (IOException ioexception1)
             {
-                LOGGER.error("Couldn't load layered image", (Throwable)ioexception1);
+                LOGGER.error("Couldn't load layered image", ioexception1);
             }
             finally
             {
-                IOUtils.closeQuietly((Closeable)iresource);
+                IOUtils.closeQuietly(iresource);
             }
 
             return;

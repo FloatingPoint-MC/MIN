@@ -28,7 +28,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.optifine.SmartAnimations;
 import net.optifine.TextureAnimations;
-import net.optifine.reflect.Reflector;
 import net.optifine.util.MemoryMonitor;
 import net.optifine.util.NativeMemory;
 import org.lwjgl.opengl.Display;
@@ -283,26 +282,12 @@ public class GuiOverlayDebug extends Gui
         list.add(4, s);
         list.set(5, "GC: " + MemoryMonitor.getAllocationRateMb() + "MB/s");
 
-        if (Reflector.FMLCommonHandler_getBrandings.exists())
-        {
-            Object object = Reflector.call(Reflector.FMLCommonHandler_instance);
-            list.add("");
-            list.addAll((Collection)Reflector.call(object, Reflector.FMLCommonHandler_getBrandings, false));
-        }
-
-        if (this.mc.isReducedDebug())
-        {
-            return list;
-        }
-        else
-        {
-            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && this.mc.objectMouseOver.getBlockPos() != null)
-            {
+        if (!this.mc.isReducedDebug()) {
+            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && this.mc.objectMouseOver.getBlockPos() != null) {
                 BlockPos blockpos = this.mc.objectMouseOver.getBlockPos();
                 IBlockState iblockstate = this.mc.world.getBlockState(blockpos);
 
-                if (this.mc.world.getWorldType() != WorldType.DEBUG_ALL_BLOCK_STATES)
-                {
+                if (this.mc.world.getWorldType() != WorldType.DEBUG_ALL_BLOCK_STATES) {
                     iblockstate = iblockstate.getActualState(this.mc.world, blockpos);
                 }
 
@@ -311,26 +296,22 @@ public class GuiOverlayDebug extends Gui
                 IProperty<T> iproperty;
                 String s1;
 
-                for (UnmodifiableIterator unmodifiableiterator = iblockstate.getProperties().entrySet().iterator(); unmodifiableiterator.hasNext(); list.add(iproperty.getName() + ": " + s1))
-                {
-                    Entry < IProperty<?>, Comparable<? >> entry = (Entry)unmodifiableiterator.next();
-                    iproperty = (IProperty)entry.getKey();
+                for (UnmodifiableIterator unmodifiableiterator = iblockstate.getProperties().entrySet().iterator(); unmodifiableiterator.hasNext(); list.add(iproperty.getName() + ": " + s1)) {
+                    Entry<IProperty<?>, Comparable<?>> entry = (Entry) unmodifiableiterator.next();
+                    iproperty = (IProperty) entry.getKey();
                     T t = (T) entry.getValue();
                     s1 = iproperty.getName(t);
 
-                    if (Boolean.TRUE.equals(t))
-                    {
+                    if (Boolean.TRUE.equals(t)) {
                         s1 = TextFormatting.GREEN + s1;
-                    }
-                    else if (Boolean.FALSE.equals(t))
-                    {
+                    } else if (Boolean.FALSE.equals(t)) {
                         s1 = TextFormatting.RED + s1;
                     }
                 }
             }
 
-            return list;
         }
+        return list;
     }
 
     private void renderLagometer()

@@ -51,4 +51,8 @@ public class GuiShulkerBox extends GuiContainer
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
     }
+
+    public IInventory getInventory() {
+        return inventory;
+    }
 }

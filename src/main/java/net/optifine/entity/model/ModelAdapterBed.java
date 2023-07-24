@@ -6,9 +6,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityBedRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.optifine.Config;
 import net.minecraft.tileentity.TileEntityBed;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBed extends ModelAdapter
 {
@@ -80,17 +78,8 @@ public class ModelAdapterBed extends ModelAdapter
                 tileentityspecialrenderer = new TileEntityBedRenderer();
                 tileentityspecialrenderer.setRendererDispatcher(tileentityrendererdispatcher);
             }
-
-            if (!Reflector.TileEntityBedRenderer_model.exists())
-            {
-                Config.warn("Field not found: TileEntityBedRenderer.model");
-                return null;
-            }
-            else
-            {
-                Reflector.setFieldValue(tileentityspecialrenderer, Reflector.TileEntityBedRenderer_model, modelBase);
-                return tileentityspecialrenderer;
-            }
+            ((TileEntityBedRenderer) tileentityspecialrenderer).model = (ModelBed) modelBase;
+            return tileentityspecialrenderer;
         }
     }
 }

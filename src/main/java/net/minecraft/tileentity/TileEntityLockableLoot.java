@@ -218,4 +218,8 @@ public abstract class TileEntityLockableLoot extends TileEntityLockable implemen
     }
 
     protected abstract NonNullList<ItemStack> getItems();
+
+    public String getCustomName() {
+        return customName;
+    }
 }

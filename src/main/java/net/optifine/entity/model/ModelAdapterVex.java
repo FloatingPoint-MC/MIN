@@ -8,59 +8,43 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderVex;
 import net.minecraft.entity.monster.EntityVex;
 import net.optifine.Config;
-import net.optifine.reflect.Reflector;
 
-public class ModelAdapterVex extends ModelAdapterBiped
-{
-    public ModelAdapterVex()
-    {
+public class ModelAdapterVex extends ModelAdapterBiped {
+    public ModelAdapterVex() {
         super(EntityVex.class, "vex", 0.3F);
     }
 
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelVex))
-        {
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelVex)) {
             return null;
-        }
-        else
-        {
+        } else {
             ModelRenderer modelrenderer = super.getModelRenderer(model, modelPart);
 
-            if (modelrenderer != null)
-            {
+            if (modelrenderer != null) {
                 return modelrenderer;
-            }
-            else
-            {
-                ModelVex modelvex = (ModelVex)model;
+            } else {
+                ModelVex modelvex = (ModelVex) model;
 
-                if (modelPart.equals("left_wing"))
-                {
-                    return (ModelRenderer)Reflector.getFieldValue(modelvex, Reflector.ModelVex_leftWing);
-                }
-                else
-                {
-                    return modelPart.equals("right_wing") ? (ModelRenderer)Reflector.getFieldValue(modelvex, Reflector.ModelVex_rightWing) : null;
+                if (modelPart.equals("left_wing")) {
+                    return modelvex.leftWing;
+                } else {
+                    return modelPart.equals("right_wing") ? modelvex.rightWing : null;
                 }
             }
         }
     }
 
-    public String[] getModelRendererNames()
-    {
+    public String[] getModelRendererNames() {
         String[] astring = super.getModelRendererNames();
-        astring = (String[])Config.addObjectsToArray(astring, new String[] {"left_wing", "right_wing"});
+        astring = (String[]) Config.addObjectsToArray(astring, new String[]{"left_wing", "right_wing"});
         return astring;
     }
 
-    public ModelBase makeModel()
-    {
+    public ModelBase makeModel() {
         return new ModelVex();
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderVex rendervex = new RenderVex(rendermanager);
         rendervex.mainModel = modelBase;

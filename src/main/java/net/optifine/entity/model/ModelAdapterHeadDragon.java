@@ -6,9 +6,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.optifine.Config;
 import net.minecraft.tileentity.TileEntitySkull;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterHeadDragon extends ModelAdapter
 {
@@ -34,11 +32,11 @@ public class ModelAdapterHeadDragon extends ModelAdapter
 
             if (modelPart.equals("head"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modeldragonhead, Reflector.ModelDragonHead_head);
+                return modeldragonhead.head;
             }
             else
             {
-                return modelPart.equals("jaw") ? (ModelRenderer)Reflector.getFieldValue(modeldragonhead, Reflector.ModelDragonHead_jaw) : null;
+                return modelPart.equals("jaw") ? modeldragonhead.jaw : null;
             }
         }
     }
@@ -64,17 +62,8 @@ public class ModelAdapterHeadDragon extends ModelAdapter
                 tileentityspecialrenderer = new TileEntitySkullRenderer();
                 tileentityspecialrenderer.setRendererDispatcher(tileentityrendererdispatcher);
             }
-
-            if (!Reflector.TileEntitySkullRenderer_dragonHead.exists())
-            {
-                Config.warn("Field not found: TileEntitySkullRenderer.dragonHead");
-                return null;
-            }
-            else
-            {
-                Reflector.setFieldValue(tileentityspecialrenderer, Reflector.TileEntitySkullRenderer_dragonHead, modelBase);
-                return tileentityspecialrenderer;
-            }
+            ((TileEntitySkullRenderer) tileentityspecialrenderer).dragonHead = (ModelDragonHead) modelBase;
+            return tileentityspecialrenderer;
         }
     }
 }

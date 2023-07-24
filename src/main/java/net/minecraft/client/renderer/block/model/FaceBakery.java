@@ -3,14 +3,12 @@ package net.minecraft.client.renderer.block.model;
 import javax.annotation.Nullable;
 import net.minecraft.client.renderer.EnumFaceDirection;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.optifine.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.model.ITransformation;
 import net.optifine.model.BlockModelUtils;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -61,18 +59,10 @@ public class FaceBakery
 
         if (p_makeBakedQuad_8_)
         {
-            if (Reflector.ForgeHooksClient_applyUVLock.exists())
-            {
-                blockfaceuv = (BlockFaceUV)Reflector.call(Reflector.ForgeHooksClient_applyUVLock, p_makeBakedQuad_3_.blockFaceUV, p_makeBakedQuad_5_, p_makeBakedQuad_6_);
-            }
-            else
-            {
-                blockfaceuv = this.applyUVLock(p_makeBakedQuad_3_.blockFaceUV, p_makeBakedQuad_5_, (ModelRotation)p_makeBakedQuad_6_);
-            }
+            blockfaceuv = this.applyUVLock(p_makeBakedQuad_3_.blockFaceUV, p_makeBakedQuad_5_, (ModelRotation) p_makeBakedQuad_6_);
         }
 
-        boolean flag = p_makeBakedQuad_9_ && !Reflector.ForgeHooksClient_fillNormal.exists();
-        int[] aint = this.makeQuadVertexData(blockfaceuv, p_makeBakedQuad_4_, p_makeBakedQuad_5_, this.getPositionsDiv16(p_makeBakedQuad_1_, p_makeBakedQuad_2_), p_makeBakedQuad_6_, p_makeBakedQuad_7_, flag);
+        int[] aint = this.makeQuadVertexData(blockfaceuv, p_makeBakedQuad_4_, p_makeBakedQuad_5_, this.getPositionsDiv16(p_makeBakedQuad_1_, p_makeBakedQuad_2_), p_makeBakedQuad_6_, p_makeBakedQuad_7_, p_makeBakedQuad_9_);
         EnumFacing enumfacing = getFacingFromVertexData(aint);
 
         if (p_makeBakedQuad_7_ == null)
@@ -80,15 +70,7 @@ public class FaceBakery
             this.applyFacing(aint, enumfacing);
         }
 
-        if (Reflector.ForgeHooksClient_fillNormal.exists())
-        {
-            Reflector.call(Reflector.ForgeHooksClient_fillNormal, aint, enumfacing);
-            return new BakedQuad(aint, p_makeBakedQuad_3_.tintIndex, enumfacing, p_makeBakedQuad_4_, p_makeBakedQuad_9_, DefaultVertexFormats.ITEM);
-        }
-        else
-        {
-            return new BakedQuad(aint, p_makeBakedQuad_3_.tintIndex, enumfacing, p_makeBakedQuad_4_);
-        }
+        return new BakedQuad(aint, p_makeBakedQuad_3_.tintIndex, enumfacing, p_makeBakedQuad_4_);
     }
 
     private BlockFaceUV applyUVLock(BlockFaceUV p_188010_1_, EnumFacing p_188010_2_, ModelRotation p_188010_3_)
@@ -242,11 +224,6 @@ public class FaceBakery
         }
     }
 
-    public int rotateVertex(Vector3f p_188011_1_, EnumFacing p_188011_2_, int p_188011_3_, ModelRotation p_188011_4_)
-    {
-        return this.rotateVertex(p_188011_1_, p_188011_2_, p_188011_3_, p_188011_4_);
-    }
-
     public int rotateVertex(Vector3f p_rotateVertex_1_, EnumFacing p_rotateVertex_2_, int p_rotateVertex_3_, ITransformation p_rotateVertex_4_)
     {
         if (p_rotateVertex_4_ == ModelRotation.X0_Y0)
@@ -255,15 +232,7 @@ public class FaceBakery
         }
         else
         {
-            if (Reflector.ForgeHooksClient_transform.exists())
-            {
-                Reflector.call(Reflector.ForgeHooksClient_transform, p_rotateVertex_1_, p_rotateVertex_4_.getMatrix());
-            }
-            else
-            {
-                this.rotateScale(p_rotateVertex_1_, new Vector3f(0.5F, 0.5F, 0.5F), ((ModelRotation)p_rotateVertex_4_).matrix(), new Vector3f(1.0F, 1.0F, 1.0F));
-            }
-
+            this.rotateScale(p_rotateVertex_1_, new Vector3f(0.5F, 0.5F, 0.5F), ((ModelRotation) p_rotateVertex_4_).matrix(), new Vector3f(1.0F, 1.0F, 1.0F));
             return p_rotateVertex_4_.rotate(p_rotateVertex_2_, p_rotateVertex_3_);
         }
     }

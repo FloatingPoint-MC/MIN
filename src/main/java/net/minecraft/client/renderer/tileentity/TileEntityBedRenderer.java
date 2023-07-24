@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class TileEntityBedRenderer extends TileEntitySpecialRenderer<TileEntityBed>
 {
     private static final ResourceLocation[] TEXTURES;
-    private ModelBed model = new ModelBed();
+    public ModelBed model = new ModelBed();
     private int version;
 
     public TileEntityBedRenderer()

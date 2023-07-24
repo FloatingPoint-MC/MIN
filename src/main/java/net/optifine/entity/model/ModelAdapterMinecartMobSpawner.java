@@ -5,8 +5,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderMinecartMobSpawner;
 import net.minecraft.entity.item.EntityMinecartMobSpawner;
-import net.optifine.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterMinecartMobSpawner extends ModelAdapterMinecart
 {
@@ -19,17 +17,8 @@ public class ModelAdapterMinecartMobSpawner extends ModelAdapterMinecart
     {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderMinecartMobSpawner renderminecartmobspawner = new RenderMinecartMobSpawner(rendermanager);
-
-        if (!Reflector.RenderMinecart_modelMinecart.exists())
-        {
-            Config.warn("Field not found: RenderMinecart.modelMinecart");
-            return null;
-        }
-        else
-        {
-            Reflector.setFieldValue(renderminecartmobspawner, Reflector.RenderMinecart_modelMinecart, modelBase);
-            renderminecartmobspawner.shadowSize = shadowSize;
-            return renderminecartmobspawner;
-        }
+        renderminecartmobspawner.modelMinecart = modelBase;
+        renderminecartmobspawner.shadowSize = shadowSize;
+        return renderminecartmobspawner;
     }
 }

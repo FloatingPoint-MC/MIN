@@ -5,9 +5,9 @@ import net.minecraft.util.math.MathHelper;
 
 public class ModelEvokerFangs extends ModelBase
 {
-    private final ModelRenderer base = new ModelRenderer(this, 0, 0);
-    private final ModelRenderer upperJaw;
-    private final ModelRenderer lowerJaw;
+    public final ModelRenderer base = new ModelRenderer(this, 0, 0);
+    public final ModelRenderer upperJaw;
+    public final ModelRenderer lowerJaw;
 
     public ModelEvokerFangs()
     {

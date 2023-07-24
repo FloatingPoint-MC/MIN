@@ -60,7 +60,7 @@ public class LegacyV2Adapter implements IResourcePack
     @Nullable
     public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer metadataSerializer, String metadataSectionName) throws IOException
     {
-        return (T)this.pack.getPackMetadata(metadataSerializer, metadataSectionName);
+        return this.pack.getPackMetadata(metadataSerializer, metadataSectionName);
     }
 
     public BufferedImage getPackImage() throws IOException
@@ -71,5 +71,10 @@ public class LegacyV2Adapter implements IResourcePack
     public String getPackName()
     {
         return this.pack.getPackName();
+    }
+
+    @Nullable
+    public IResourcePack getPack() {
+        return pack;
     }
 }

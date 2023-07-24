@@ -7,8 +7,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class ModelWither extends ModelBase
 {
-    private final ModelRenderer[] upperBodyParts;
-    private final ModelRenderer[] heads;
+    public final ModelRenderer[] upperBodyParts;
+    public final ModelRenderer[] heads;
 
     public ModelWither(float p_i46302_1_)
     {

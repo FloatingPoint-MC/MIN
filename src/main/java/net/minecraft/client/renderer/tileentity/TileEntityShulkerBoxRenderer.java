@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing;
 
 public class TileEntityShulkerBoxRenderer extends TileEntitySpecialRenderer<TileEntityShulkerBox>
 {
-    private final ModelShulker model;
+    public ModelShulker model;
 
     public TileEntityShulkerBoxRenderer(ModelShulker modelIn)
     {

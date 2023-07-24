@@ -44,7 +44,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.optifine.config.ConnectedParser;
 import net.optifine.config.MatchBlock;
-import net.optifine.reflect.Reflector;
 import net.optifine.render.RenderEnv;
 import net.optifine.util.EntityUtils;
 import net.optifine.util.PropertiesOrdered;
@@ -160,7 +159,7 @@ public class CustomColors
             }
             else
             {
-                return Reflector.ForgeBiome_getWaterColorMultiplier.exists() ? Reflector.callInt(biome, Reflector.ForgeBiome_getWaterColorMultiplier) : biome.getWaterColor();
+                return biome.getWaterColor();
             }
         }
         public boolean isColorConstant()

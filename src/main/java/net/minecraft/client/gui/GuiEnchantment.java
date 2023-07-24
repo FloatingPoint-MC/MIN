@@ -340,9 +340,12 @@ public class GuiEnchantment extends GuiContainer
 
         this.open = MathHelper.clamp(this.open, 0.0F, 1.0F);
         float f1 = (this.flipT - this.flip) * 0.4F;
-        float f = 0.2F;
         f1 = MathHelper.clamp(f1, -0.2F, 0.2F);
         this.flipA += (f1 - this.flipA) * 0.9F;
         this.flip += this.flipA;
+    }
+
+    public IWorldNameable getNameable() {
+        return nameable;
     }
 }
