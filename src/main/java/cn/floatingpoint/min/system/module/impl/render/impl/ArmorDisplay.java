@@ -41,6 +41,7 @@ public class ArmorDisplay extends RenderModule implements DraggableGameView {
 
     @Override
     public boolean draw(int x, int y) {
+        if (!this.isEnabled()) return false;
         if (mode.isCurrentMode("V")) {
             int tempY = 0;
             ItemStack[] armorInventory = mc.player.inventory.armorInventory.toArray(new ItemStack[0]);

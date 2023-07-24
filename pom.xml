@@ -244,8 +244,15 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
                     <excludes>
-                        <exclude>Start.java</exclude>
+                        <exclude>Start.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -260,7 +267,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>${project.artifactId}-${project.version}.jar</outputFile>
+                            <outputFile>${project.build.directory}/libs/${project.artifactId}-${project.version}.jar</outputFile>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer
@@ -316,7 +323,7 @@
                 <configuration>
                     <fileSets>
                         <fileSet>
-                            <directory>${project.build.directory}</directory>
+                            <directory>${project.build.directory}/libs</directory>
                             <includes>
                                 <include>*.jar</include>
                             </includes>

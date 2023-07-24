@@ -14,6 +14,7 @@ import net.minecraft.client.model.ModelSpider;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.EntityLivingBase;
@@ -212,22 +213,14 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                     EmissiveTextures.endRender();
                 }
 
-                if (!Animation.oldArmorAnimation.getValue()) {
-                    if (flag) {
-                        this.unsetBrightness();
-                    }
+                if (flag) {
+                    this.unsetBrightness();
                 }
 
                 GlStateManager.depthMask(true);
 
                 if (!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).isSpectator()) {
                     this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
-                }
-
-                if (Animation.oldArmorAnimation.getValue()) {
-                    if (flag) {
-                        this.unsetBrightness();
-                    }
                 }
             }
 
@@ -472,6 +465,10 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
     protected void renderLayers(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleIn) {
         for (LayerRenderer<T> layerrenderer : this.layerRenderers) {
+            boolean flag1 = false;
+            if (Animation.oldArmorAnimation.getValue() && layerrenderer instanceof LayerBipedArmor) {
+                flag1 = this.setDoRenderBrightness(entitylivingbaseIn, partialTicks);
+            }
             boolean flag = this.setBrightness(entitylivingbaseIn, partialTicks, layerrenderer.shouldCombineTextures());
 
             if (EmissiveTextures.isActive()) {
@@ -502,6 +499,10 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
             }
 
             if (flag) {
+                this.unsetBrightness();
+            }
+
+            if (flag1) {
                 this.unsetBrightness();
             }
         }

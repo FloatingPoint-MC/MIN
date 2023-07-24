@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity.layers;
 
+import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +31,6 @@ public class LayerHeldItem implements LayerRenderer<EntityLivingBase>
 
             if (this.livingEntityRenderer.getMainModel().isChild)
             {
-                float f = 0.5F;
                 GlStateManager.translate(0.0F, 0.75F, 0.0F);
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
