@@ -6,6 +6,8 @@ import net.minecraft.client.util.JsonException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+
 public class ShaderLinkHelper
 {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -16,6 +18,7 @@ public class ShaderLinkHelper
         staticShaderLinkHelper = new ShaderLinkHelper();
     }
 
+    @Nullable
     public static ShaderLinkHelper getStaticShaderLinkHelper()
     {
         return staticShaderLinkHelper;
