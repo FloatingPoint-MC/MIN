@@ -3,7 +3,7 @@ name: Maven Publish
 # 检测到 src 文件内 .java 文件有变动执行编译
 on:
   push:
-    branches:
+    tags:
       - '*'
 
 jobs:
@@ -46,3 +46,7 @@ jobs:
           title: "Release ${{ env.RELEASE_VERSION }}"
           files: |
             staging/*.jar
+      - name: Branch Creator
+        uses: Vent-Finance/branch_creator@v1.0.0
+        with:
+          name: "${{ env.RELEASE_VERSION }}"
