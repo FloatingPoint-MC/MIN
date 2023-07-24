@@ -1,7 +1,10 @@
 package net.optifine;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -16,11 +19,6 @@ public class CrashReporter
         try
         {
             Throwable throwable = crashReport.getCrashCause();
-
-            if (throwable == null)
-            {
-                return;
-            }
 
             if (throwable.getClass().getName().contains(".fml.client.SplashProgress"))
             {
@@ -47,14 +45,10 @@ public class CrashReporter
 
             String s = "http://optifine.net/crashReport";
             String s1 = makeReport(crashReport);
-            byte[] abyte = s1.getBytes("ASCII");
-            IFileUploadListener ifileuploadlistener = new IFileUploadListener()
-            {
-                public void fileUploadFinished(String url, byte[] content, Throwable exception)
-                {
-                }
+            byte[] abyte = s1.getBytes(StandardCharsets.US_ASCII);
+            IFileUploadListener ifileuploadlistener = (url, content, exception) -> {
             };
-            Map map = new HashMap();
+            Map<String, String> map = new HashMap<>();
             map.put("OF-Version", Config.getVersion());
             map.put("OF-Summary", makeSummary(crashReport));
             FileUploadThread fileuploadthread = new FileUploadThread(s, map, abyte, ifileuploadlistener);
@@ -70,13 +64,12 @@ public class CrashReporter
 
     private static String makeReport(CrashReport crashReport)
     {
-        StringBuffer stringbuffer = new StringBuffer();
-        stringbuffer.append("OptiFineVersion: " + Config.getVersion() + "\n");
-        stringbuffer.append("Summary: " + makeSummary(crashReport) + "\n");
-        stringbuffer.append("\n");
-        stringbuffer.append(crashReport.getCompleteReport());
-        stringbuffer.append("\n");
-        return stringbuffer.toString();
+        String stringbuffer = "OptiFineVersion: " + Config.getVersion() + "\n" +
+                "Summary: " + makeSummary(crashReport) + "\n" +
+                "\n" +
+                crashReport.getCompleteReport() +
+                "\n";
+        return stringbuffer;
     }
 
     private static String makeSummary(CrashReport crashReport)
@@ -105,21 +98,20 @@ public class CrashReporter
     public static void extendCrashReport(CrashReportCategory cat)
     {
         cat.addCrashSection("OptiFine Version", Config.getVersion());
-        cat.addCrashSection("OptiFine Build", Config.getBuild());
 
         if (Config.getGameSettings() != null)
         {
-            cat.addCrashSection("Render Distance Chunks", "" + Config.getChunkViewDistance());
-            cat.addCrashSection("Mipmaps", "" + Config.getMipmapLevels());
-            cat.addCrashSection("Anisotropic Filtering", "" + Config.getAnisotropicFilterLevel());
-            cat.addCrashSection("Antialiasing", "" + Config.getAntialiasingLevel());
-            cat.addCrashSection("Multitexture", "" + Config.isMultiTexture());
+            cat.addCrashSection("Render Distance Chunks", String.valueOf(Config.getChunkViewDistance()));
+            cat.addCrashSection("Mipmaps", String.valueOf(Config.getMipmapLevels()));
+            cat.addCrashSection("Anisotropic Filtering", String.valueOf(Config.getAnisotropicFilterLevel()));
+            cat.addCrashSection("Antialiasing", String.valueOf(Config.getAntialiasingLevel()));
+            cat.addCrashSection("Multitexture", String.valueOf(Config.isMultiTexture()));
         }
 
-        cat.addCrashSection("Shaders", "" + Shaders.getShaderPackName());
-        cat.addCrashSection("OpenGlVersion", "" + Config.openGlVersion);
-        cat.addCrashSection("OpenGlRenderer", "" + Config.openGlRenderer);
-        cat.addCrashSection("OpenGlVendor", "" + Config.openGlVendor);
-        cat.addCrashSection("CpuCount", "" + Config.getAvailableProcessors());
+        cat.addCrashSection("Shaders", Objects.requireNonNull(Shaders.getShaderPackName()));
+        cat.addCrashSection("OpenGlVersion", Config.openGlVersion);
+        cat.addCrashSection("OpenGlRenderer", Config.openGlRenderer);
+        cat.addCrashSection("OpenGlVendor", Config.openGlVendor);
+        cat.addCrashSection("CpuCount", String.valueOf(Config.getAvailableProcessors()));
     }
 }

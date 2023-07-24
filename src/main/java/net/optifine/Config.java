@@ -72,7 +72,6 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.PixelFormat;
 
 public class Config {
-    private static String build = null;
     private static String newRelease = null;
     private static boolean notify64BitJava = false;
     public static String openGlVersion = null;
@@ -99,7 +98,6 @@ public class Config {
     private static boolean fullscreenModeChecked = false;
     private static boolean desktopModeChecked = false;
     private static DefaultResourcePack defaultResourcePackLazy = null;
-    public static final Float DEF_ALPHA_FUNC_LEVEL = 0.1F;
     private static final Logger LOGGER = LogManager.getLogger();
     public static final boolean logDetail = System.getProperty("log.detail", "false").equals("true");
     private static String mcDebugLast = null;
@@ -157,9 +155,8 @@ public class Config {
     }
 
     private static void checkOpenGlCaps() {
-        log("");
+        log("Start loading OptiFine");
         log(getVersion());
-        log("Build: " + getBuild());
         log("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version"));
         log("Java: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor"));
         log("VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor"));
@@ -188,25 +185,6 @@ public class Config {
 
         int i = TextureUtils.getGLMaximumTextureSize();
         dbg("Maximum texture size: " + i + "x" + i);
-    }
-
-    public static String getBuild() {
-        if (build == null) {
-            try {
-                InputStream inputstream = Config.class.getResourceAsStream("/buildof.txt");
-
-                if (inputstream == null) {
-                    return null;
-                }
-
-                build = readLines(inputstream)[0];
-            } catch (Exception exception) {
-                warn(exception.getClass().getName() + ": " + exception.getMessage());
-                build = "";
-            }
-        }
-
-        return build;
     }
 
     public static boolean isFancyFogUnavailable() {
@@ -368,7 +346,6 @@ public class Config {
 
     public static void updateThreadPriorities() {
         updateAvailableProcessors();
-        int i = 8;
 
         if (isSingleProcessor()) {
             if (isSmoothWorld()) {
@@ -571,27 +548,11 @@ public class Config {
         return gameSettings.ofTrees == 4;
     }
 
-    public static boolean isCullFacesLeaves() {
-        if (gameSettings.ofTrees == 0) {
-            return !gameSettings.fancyGraphics;
-        } else {
-            return gameSettings.ofTrees == 4;
-        }
-    }
-
-    public static boolean isDroppedItemsFancy() {
-        if (gameSettings.ofDroppedItems == 0) {
-            return gameSettings.fancyGraphics;
-        } else {
-            return gameSettings.ofDroppedItems == 2;
-        }
-    }
-
     public static int limit(int p_limit_0_, int p_limit_1_, int p_limit_2_) {
         if (p_limit_0_ < p_limit_1_) {
             return p_limit_1_;
         } else {
-            return p_limit_0_ > p_limit_2_ ? p_limit_2_ : p_limit_0_;
+            return Math.min(p_limit_0_, p_limit_2_);
         }
     }
 
@@ -599,7 +560,7 @@ public class Config {
         if (p_limit_0_ < p_limit_1_) {
             return p_limit_1_;
         } else {
-            return p_limit_0_ > p_limit_2_ ? p_limit_2_ : p_limit_0_;
+            return Math.min(p_limit_0_, p_limit_2_);
         }
     }
 
@@ -607,7 +568,7 @@ public class Config {
         if (p_limit_0_ < p_limit_2_) {
             return p_limit_2_;
         } else {
-            return p_limit_0_ > p_limit_4_ ? p_limit_4_ : p_limit_0_;
+            return Math.min(p_limit_0_, p_limit_4_);
         }
     }
 
@@ -615,16 +576,12 @@ public class Config {
         if (p_limitTo1_0_ < 0.0F) {
             return 0.0F;
         } else {
-            return p_limitTo1_0_ > 1.0F ? 1.0F : p_limitTo1_0_;
+            return Math.min(p_limitTo1_0_, 1.0F);
         }
     }
 
     public static boolean isAnimatedWater() {
         return gameSettings.ofAnimatedWater != 2;
-    }
-
-    public static boolean isGeneratedWater() {
-        return gameSettings.ofAnimatedWater == 1;
     }
 
     public static boolean isAnimatedPortal() {
@@ -635,10 +592,6 @@ public class Config {
         return gameSettings.ofAnimatedLava != 2;
     }
 
-    public static boolean isGeneratedLava() {
-        return gameSettings.ofAnimatedLava == 1;
-    }
-
     public static boolean isAnimatedFire() {
         return gameSettings.ofAnimatedFire;
     }
@@ -647,16 +600,16 @@ public class Config {
         return gameSettings.ofAnimatedRedstone;
     }
 
-    public static boolean isAnimatedExplosion() {
-        return gameSettings.ofAnimatedExplosion;
+    public static boolean isNotAnimatedExplosion() {
+        return !gameSettings.ofAnimatedExplosion;
     }
 
     public static boolean isAnimatedFlame() {
         return gameSettings.ofAnimatedFlame;
     }
 
-    public static boolean isAnimatedSmoke() {
-        return gameSettings.ofAnimatedSmoke;
+    public static boolean isNotAnimatedSmoke() {
+        return !gameSettings.ofAnimatedSmoke;
     }
 
     public static boolean isVoidParticles() {
@@ -675,8 +628,8 @@ public class Config {
         return gameSettings.ofPortalParticles;
     }
 
-    public static boolean isPotionParticles() {
-        return gameSettings.ofPotionParticles;
+    public static boolean isNotPotionParticles() {
+        return !gameSettings.ofPotionParticles;
     }
 
     public static boolean isFireworkParticles() {
@@ -687,15 +640,15 @@ public class Config {
         return isShaders() && Shaders.aoLevel >= 0.0F ? Shaders.aoLevel : gameSettings.ofAoLevel;
     }
 
-    public static String listToString(List p_listToString_0_) {
+    public static String listToString(List<String> p_listToString_0_) {
         return listToString(p_listToString_0_, ", ");
     }
 
-    public static String listToString(List p_listToString_0_, String p_listToString_1_) {
+    public static String listToString(List<String> p_listToString_0_, String p_listToString_1_) {
         if (p_listToString_0_ == null) {
             return "";
         } else {
-            StringBuffer stringbuffer = new StringBuffer(p_listToString_0_.size() * 5);
+            StringBuilder stringbuffer = new StringBuilder(p_listToString_0_.size() * 5);
 
             for (int i = 0; i < p_listToString_0_.size(); ++i) {
                 Object object = p_listToString_0_.get(i);
@@ -719,7 +672,7 @@ public class Config {
         if (p_arrayToString_0_ == null) {
             return "";
         } else {
-            StringBuffer stringbuffer = new StringBuffer(p_arrayToString_0_.length * 5);
+            StringBuilder stringbuffer = new StringBuilder(p_arrayToString_0_.length * 5);
 
             for (int i = 0; i < p_arrayToString_0_.length; ++i) {
                 Object object = p_arrayToString_0_[i];
@@ -767,7 +720,7 @@ public class Config {
         if (p_arrayToString_0_ == null) {
             return "";
         } else {
-            StringBuffer stringbuffer = new StringBuffer(p_arrayToString_0_.length * 5);
+            StringBuilder stringbuffer = new StringBuilder(p_arrayToString_0_.length * 5);
 
             for (int i = 0; i < p_arrayToString_0_.length; ++i) {
                 float f = p_arrayToString_0_[i];

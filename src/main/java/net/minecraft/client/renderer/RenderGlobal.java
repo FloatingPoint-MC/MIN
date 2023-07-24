@@ -96,7 +96,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -2461,29 +2460,29 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             double d4 = entity.posY - yCoord;
             double d5 = entity.posZ - zCoord;
 
-            if (particleID == EnumParticleTypes.EXPLOSION_HUGE.getParticleID() && !Config.isAnimatedExplosion()) {
+            if (particleID == EnumParticleTypes.EXPLOSION_HUGE.getParticleID() && Config.isNotAnimatedExplosion()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.EXPLOSION_LARGE.getParticleID() && !Config.isAnimatedExplosion()) {
+            } else if (particleID == EnumParticleTypes.EXPLOSION_LARGE.getParticleID() && Config.isNotAnimatedExplosion()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.EXPLOSION_NORMAL.getParticleID() && !Config.isAnimatedExplosion()) {
+            } else if (particleID == EnumParticleTypes.EXPLOSION_NORMAL.getParticleID() && Config.isNotAnimatedExplosion()) {
                 return null;
             } else if (particleID == EnumParticleTypes.SUSPENDED.getParticleID() && !Config.isWaterParticles()) {
                 return null;
             } else if (particleID == EnumParticleTypes.SUSPENDED_DEPTH.getParticleID() && !Config.isVoidParticles()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SMOKE_NORMAL.getParticleID() && !Config.isAnimatedSmoke()) {
+            } else if (particleID == EnumParticleTypes.SMOKE_NORMAL.getParticleID() && Config.isNotAnimatedSmoke()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SMOKE_LARGE.getParticleID() && !Config.isAnimatedSmoke()) {
+            } else if (particleID == EnumParticleTypes.SMOKE_LARGE.getParticleID() && Config.isNotAnimatedSmoke()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SPELL_MOB.getParticleID() && !Config.isPotionParticles()) {
+            } else if (particleID == EnumParticleTypes.SPELL_MOB.getParticleID() && Config.isNotPotionParticles()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID() && !Config.isPotionParticles()) {
+            } else if (particleID == EnumParticleTypes.SPELL_MOB_AMBIENT.getParticleID() && Config.isNotPotionParticles()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SPELL.getParticleID() && !Config.isPotionParticles()) {
+            } else if (particleID == EnumParticleTypes.SPELL.getParticleID() && Config.isNotPotionParticles()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SPELL_INSTANT.getParticleID() && !Config.isPotionParticles()) {
+            } else if (particleID == EnumParticleTypes.SPELL_INSTANT.getParticleID() && Config.isNotPotionParticles()) {
                 return null;
-            } else if (particleID == EnumParticleTypes.SPELL_WITCH.getParticleID() && !Config.isPotionParticles()) {
+            } else if (particleID == EnumParticleTypes.SPELL_WITCH.getParticleID() && Config.isNotPotionParticles()) {
                 return null;
             } else if (particleID == EnumParticleTypes.PORTAL.getParticleID() && !Config.isPortalParticles()) {
                 return null;
