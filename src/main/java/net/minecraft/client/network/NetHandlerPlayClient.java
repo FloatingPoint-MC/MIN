@@ -653,8 +653,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 }
             }
         }
-        if (Managers.moduleManager.miscModules.get("AutoText").isEnabled() && AutoText.whenToSend.isCurrentMode("End")) {
-            if (Pattern.compile("起床战争>> 恭喜 ！(.*?)之队队获得胜利!").matcher(text).matches()) {
+        if (Managers.moduleManager.miscModules.get("AutoText").isEnabled()) {
+            if (AutoText.whenToSend.isCurrentMode("End")) {
+                if (text.equals("花雨庭>> You lost the fight.")) {
+                    AutoText.timeToSendGG = true;
+                } else if (Pattern.compile("起床战争>> 恭喜 ！(.*?)之队队获得胜利!").matcher(text).matches()) {
+                    AutoText.timeToSendGG = true;
+                }
+            }
+            if (text.equals("花雨庭>> You won the fight!")) {
                 AutoText.timeToSendGG = true;
             }
         }
