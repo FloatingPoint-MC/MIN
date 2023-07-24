@@ -57,5 +57,6 @@ jobs:
       - name: Branch Creator
         uses: Vent-Finance/branch_creator@v1.0.0
         with:
-          name: "${{ env.RELEASE_VERSION }}"
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          name: ${{ env.RELEASE_VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
