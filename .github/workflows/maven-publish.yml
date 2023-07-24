@@ -46,7 +46,9 @@ jobs:
           title: "Release ${{ env.RELEASE_VERSION }}"
           files: |
             staging/*.jar
+            staging/*.sha1
       - name: Branch Creator
         uses: Vent-Finance/branch_creator@v1.0.0
         with:
           name: "${{ env.RELEASE_VERSION }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
