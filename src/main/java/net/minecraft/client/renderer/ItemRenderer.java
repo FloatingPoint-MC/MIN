@@ -290,16 +290,18 @@ public class ItemRenderer {
     }
 
     private void transformFirstPersonItem(float side, float equipProgress, float swingProgress) {
-        GlStateManager.translate(side * 0.56F, -0.52F - equipProgress, -0.71999997F);
+        GlStateManager.translate(side * 0.56F, -0.52F + equipProgress * -0.6F, -0.71999997F);
+        float f = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
+        float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
+        GlStateManager.rotate(side * (45.0F + f * -20.0F), 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(side * f1 * -20.0F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(f1 * -80.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(side * -45.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.scale(0.9F, 0.9F, 0.9F);
+        GlStateManager.translate(-0.2F, 0.126F, 0.2F);
         GlStateManager.rotate(-102.25F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(side * 20.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(side * 15.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(side * 80.0F, 0.0F, 0.0F, 1.0F);
-        double f = Math.sin(swingProgress * swingProgress * Math.PI);
-        double f1 = Math.sin(Math.sqrt(swingProgress) * Math.PI);
-        GlStateManager.rotate((float) (f * -20.0F), 0, 1, 0);
-        GlStateManager.rotate((float) (f1 * -80.0F), 0, 0, 1);
-        GlStateManager.rotate((float) (f1 * -50.0F), 1, 0, 0);
-        GlStateManager.scale(1.4f, 1.4f, 1.4f);
     }
 
     /**
