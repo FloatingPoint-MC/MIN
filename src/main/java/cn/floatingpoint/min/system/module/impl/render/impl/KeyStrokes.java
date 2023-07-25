@@ -84,7 +84,7 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
             leftCounter.removeIf(time -> System.currentTimeMillis() - time >= 1000L);
             rightCounter.removeIf(time -> System.currentTimeMillis() - time >= 1000L);
             drawButton("LMB", mc.gameSettings.keyBindAttack.getKeyCode(), x, height + y, 34, leftCounter.size() == 0 ? "LMB" : leftCounter.size() + "CPS");
-            drawButton("RMB", mc.gameSettings.keyBindUseItem.getKeyCode(), x + 36, height + y, 34, rightCounter.size() == 0 ? "LMB" : rightCounter.size() + "CPS");
+            drawButton("RMB", mc.gameSettings.keyBindUseItem.getKeyCode(), x + 36, height + y, 34, rightCounter.size() == 0 ? "RMB" : rightCounter.size() + "CPS");
             height += 22;
         } else {
             height -= 2;

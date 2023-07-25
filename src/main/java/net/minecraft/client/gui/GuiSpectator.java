@@ -44,7 +44,7 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
         return MathHelper.clamp((float)i / 2000.0F, 0.0F, 1.0F);
     }
 
-    public void renderTooltip(ScaledResolution p_175264_1_, float p_175264_2_)
+    public void renderTooltip(ScaledResolution p_175264_1_)
     {
         if (this.menu != null)
         {
@@ -106,7 +106,7 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
             GlStateManager.color(f, f, f, p_175266_4_);
             p_175266_5_.renderIcon(f, i);
             GlStateManager.popMatrix();
-            String s = String.valueOf((Object)GameSettings.getKeyDisplayString(this.mc.gameSettings.keyBindsHotbar[p_175266_1_].getKeyCode()));
+            String s = GameSettings.getKeyDisplayString(this.mc.gameSettings.keyBindsHotbar[p_175266_1_].getKeyCode());
 
             if (i > 3 && p_175266_5_.isEnabled())
             {
@@ -151,11 +151,9 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
 
     public void onMouseScroll(int p_175259_1_)
     {
-        int i;
-
-        for (i = this.menu.getSelectedSlot() + p_175259_1_; i >= 0 && i <= 8 && (this.menu.getItem(i) == SpectatorMenu.EMPTY_SLOT || !this.menu.getItem(i).isEnabled()); i += p_175259_1_)
-        {
-            ;
+        int i = this.menu.getSelectedSlot() + p_175259_1_;
+        while (i >= 0 && i <= 8 && (this.menu.getItem(i) == SpectatorMenu.EMPTY_SLOT || !this.menu.getItem(i).isEnabled())) {
+            i += p_175259_1_;
         }
 
         if (i >= 0 && i <= 8)

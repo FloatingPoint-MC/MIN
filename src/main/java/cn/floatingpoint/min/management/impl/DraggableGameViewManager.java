@@ -34,12 +34,12 @@ public class DraggableGameViewManager implements Manager {
                 draggableMap.put(draggableGameView, new Vec2i(positionMap.getInt("x"), positionMap.getInt("y")));
             }
         } catch (Exception ignore) {}
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("ArmorDisplay"), new Vec2i(440, 300));
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("KeyStrokes"), new Vec2i(-460, 24));
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("MemoryManager"), new Vec2i(-340, 50));
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("PotionDisplay"), new Vec2i(340, 200));
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Scoreboard"), new Vec2i(400, 50));
-        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Sprint"), new Vec2i(440, 4));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("ArmorDisplay"), new Vec2i(0, 0));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("KeyStrokes"), new Vec2i(0, 0));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("MemoryManager"), new Vec2i(0, 0));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("PotionDisplay"), new Vec2i(0, 0));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Scoreboard"), new Vec2i(0, 0));
+        draggableMap.putIfAbsent(DraggableGameView.getDraggable("Sprint"), new Vec2i(0, 0));
         draggableMap.putIfAbsent(DraggableGameView.getDraggable("StatusDisplay"), new Vec2i(-400, 200));
     }
 }

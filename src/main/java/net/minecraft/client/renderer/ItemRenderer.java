@@ -469,7 +469,7 @@ public class ItemRenderer {
     /**
      * Renders the overlays.
      */
-    public void renderOverlays(float partialTicks) {
+    public void renderOverlays() {
         GlStateManager.disableAlpha();
 
         if (this.mc.player.isEntityInsideOpaqueBlock()) {

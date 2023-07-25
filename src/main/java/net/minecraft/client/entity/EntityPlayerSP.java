@@ -415,13 +415,13 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
     private boolean reachCheck(Entity entity, double addition) {
         if (mc.player.posY > entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
-            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.42 + addition;
+            return entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()) <= 3.46 + addition;
         } else if (mc.player.posY + 1.8 < entity.getPositionEyes(mc.getRenderPartialTicks()).y) {
-            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.42 + addition;
+            return Math.min(entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector()), entity.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(0.0D, 1.8D, 0.0D))) <= 3.46 + addition;
         } else {
             double xDist = entity.posX - mc.player.posX;
             double zDist = entity.posZ - mc.player.posZ;
-            return Math.hypot(xDist, zDist) <= 3.42 + addition;
+            return Math.hypot(xDist, zDist) <= 3.46 + addition;
         }
     }
 

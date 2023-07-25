@@ -34,7 +34,6 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -857,7 +856,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         this.disableLightmap();
 
         if (this.mc.gameSettings.thirdPersonView == 0 && !flag) {
-            this.itemRenderer.renderOverlays(p_renderHand_1_);
+            this.itemRenderer.renderOverlays();
             this.hurtCameraEffect(p_renderHand_1_);
         }
 

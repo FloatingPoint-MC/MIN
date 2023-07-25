@@ -201,7 +201,7 @@ public class GuiIngame extends Gui {
         }
 
         if (this.mc.playerController.isSpectator()) {
-            this.spectatorGui.renderTooltip(scaledresolution, partialTicks);
+            this.spectatorGui.renderTooltip(scaledresolution);
         } else {
             this.renderHotbar(scaledresolution, partialTicks);
         }

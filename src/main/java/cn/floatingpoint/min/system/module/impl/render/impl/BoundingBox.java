@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.optifine.shaders.Shaders;
+import org.lwjgl.opengl.GL11;
 
 import java.util.stream.Collectors;
 
@@ -29,6 +30,10 @@ public class BoundingBox extends RenderModule {
     @Override
     public void onRender3D() {
         if (!Shaders.isShadowPass) {
+            boolean wasTexture2DEnabled = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+            boolean wasLightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
+            boolean wasCullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+            boolean wasBlendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
             GlStateManager.depthMask(false);
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
@@ -42,10 +47,18 @@ public class BoundingBox extends RenderModule {
                 AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
                 RenderGlobal.drawBoundingBox(boundingBox.minX - entity.posX + x, boundingBox.minY - entity.posY + y, boundingBox.minZ - entity.posZ + z, boundingBox.maxX - entity.posX + x, boundingBox.maxY - entity.posY + y, boundingBox.maxZ - entity.posZ + z, 1.0F, 1.0F, 1.0F, 1.0F);
             }
-            GlStateManager.enableBlend();
-            GlStateManager.enableCull();
-            GlStateManager.enableLighting();
-            GlStateManager.enableTexture2D();
+            if (wasBlendEnabled) {
+                GlStateManager.enableBlend();
+            }
+            if (wasCullEnabled) {
+                GlStateManager.enableCull();
+            }
+            if (wasLightingEnabled) {
+                GlStateManager.enableLighting();
+            }
+            if (wasTexture2DEnabled) {
+                GlStateManager.enableTexture2D();
+            }
             GlStateManager.depthMask(true);
         }
     }
