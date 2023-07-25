@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import org.lwjgl.input.Keyboard;
 
 public class FileManager implements Manager {
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
     public File dir;
     public boolean shouldSave = false;
 

@@ -28,9 +28,6 @@ public class RenderDragonFireball extends Render<EntityDragonFireball>
         GlStateManager.scale(2.0F, 2.0F, 2.0F);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        float f = 1.0F;
-        float f1 = 0.5F;
-        float f2 = 0.25F;
         GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate((float)(this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * -this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 

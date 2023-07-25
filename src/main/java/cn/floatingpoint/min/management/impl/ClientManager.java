@@ -50,8 +50,13 @@ public class ClientManager implements Manager {
             if (!jsonObject.has("Config-Version")) {
                 return;
             }
-            if (jsonObject.getInt("Config-Version") != FileManager.VERSION) {
-                return;
+            int version = jsonObject.getInt("Config-Version");
+            if (version != FileManager.VERSION) {
+                if (version == 1) {
+
+                } else {
+                    return;
+                }
             }
             Managers.i18NManager.setSelectedLanguage(jsonObject.getString("Language"));
             titleSize = jsonObject.getFloat("Title-Size");

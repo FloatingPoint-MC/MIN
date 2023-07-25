@@ -1,6 +1,6 @@
 {
   "language.identity": "English",
-  "language.version": "1",
+  "language.version": "2",
   "module.category.Boost": "Boost",
   "module.category.Misc": "Misc",
   "module.category.Render": "Render",
@@ -140,6 +140,8 @@
   "module.implement.FullBright.description": "Make your sight bright.",
   "module.implement.ItemPhysics": "Item Physics",
   "module.implement.ItemPhysics.description": "Make items drop like in reality.",
+  "module.implement.ItemPhysics.2D": "2D",
+  "module.implement.ItemPhysics.2D.description": "Make 2D animation.",
   "module.implement.KeyStrokes": "Key Strokes",
   "module.implement.KeyStrokes.description": "Display whether the key is pressed.",
   "module.implement.KeyStrokes.ShowMoveKeys": "Move Key",

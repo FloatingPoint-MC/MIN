@@ -12,7 +12,6 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.Session;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
@@ -32,7 +31,6 @@ public class Launcher {
             frame.setSize(854, 480);
             frame.setLocationRelativeTo(null);
             JTextField textField = new JTextField("请使用正规的Minecraft启动器启动本产品！\nPlease use a correct Minecraft Launcher to launch me!");
-            textField.setFont(Font.getFont("Alias"));
             frame.add(textField);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);

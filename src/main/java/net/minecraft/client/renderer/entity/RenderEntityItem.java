@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.ItemPhysics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -30,7 +30,7 @@ public class RenderEntityItem extends Render<EntityItem> {
         this.shadowOpaque = 0.75F;
     }
 
-    private int transformModelCount(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
+    private int transformModelCount(EntityItem itemIn, double x, double y, double z, float partialTicks, IBakedModel model) {
         ItemStack itemstack = itemIn.getItem();
         Item item = itemstack.getItem();
 
@@ -38,15 +38,19 @@ public class RenderEntityItem extends Render<EntityItem> {
         if (item == Item.getItemFromBlock(Blocks.AIR)) {
             return 0;
         } else {
-            boolean flag = p_177077_9_.isGui3d();
+            boolean flag = model.isGui3d();
             int i = this.getModelCount(itemstack);
-            float f1 = MathHelper.sin(((float) itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
-            float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
-            GlStateManager.translate((float) p_177077_2_, (float) p_177077_4_ + f1 + 0.25F * f2, (float) p_177077_6_);
+            float f1 = MathHelper.sin(((float) itemIn.getAge() + partialTicks) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
+            float f2 = model.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
+            GlStateManager.translate((float) x, (float) y + f1 + 0.25F * f2, (float) z);
 
-            if (flag || this.renderManager.options != null) {
-                float f3 = (((float) itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float) Math.PI);
-                GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+            if (Managers.moduleManager.renderModules.get("ItemPhysics").isEnabled()) {
+                GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0f, 1.0f, 0.0f);
+            } else {
+                if (flag || this.renderManager.options != null) {
+                    float f3 = (((float) itemIn.getAge() + partialTicks) / 20.0F + itemIn.hoverStart) * (180F / (float) Math.PI);
+                    GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+                }
             }
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -92,7 +96,7 @@ public class RenderEntityItem extends Render<EntityItem> {
         GlStateManager.pushMatrix();
         IBakedModel ibakedmodel = this.itemRenderer.getItemModelWithOverrides(itemstack, entity.world, null);
         int j;
-        if (Managers.moduleManager.renderModules.get("ItemPhysics").isEnabled()) {
+        if (Managers.moduleManager.renderModules.get("ItemPhysics").isEnabled() && !ItemPhysics.twoD.getValue()) {
             j = getModelCount(itemstack);
         } else {
             j = this.transformModelCount(entity, x, y, z, partialTicks, ibakedmodel);
@@ -102,7 +106,7 @@ public class RenderEntityItem extends Render<EntityItem> {
         float f2 = ibakedmodel.getItemCameraTransforms().ground.scale.z;
         boolean flag1 = ibakedmodel.isGui3d();
 
-        if (Managers.moduleManager.renderModules.get("ItemPhysics").isEnabled()) {
+        if (Managers.moduleManager.renderModules.get("ItemPhysics").isEnabled() && !ItemPhysics.twoD.getValue()) {
             GlStateManager.translate((float) x, (float) y, (float) z);
             GlStateManager.scale(f, f1, f2);
             GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
@@ -172,8 +176,8 @@ public class RenderEntityItem extends Render<EntityItem> {
         }
 
         for (int k = 0; k < j; ++k) {
+            GlStateManager.pushMatrix();
             if (flag1) {
-                GlStateManager.pushMatrix();
 
                 if (k > 0) {
                     float f7 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
@@ -186,7 +190,6 @@ public class RenderEntityItem extends Render<EntityItem> {
                 this.itemRenderer.renderItem(itemstack, ibakedmodel);
                 GlStateManager.popMatrix();
             } else {
-                GlStateManager.pushMatrix();
 
                 if (k > 0) {
                     float f8 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
@@ -212,7 +215,7 @@ public class RenderEntityItem extends Render<EntityItem> {
         this.bindEntityTexture(entity);
 
         if (flag) {
-            this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
+            this.renderManager.renderEngine.getTexture(Objects.requireNonNull(this.getEntityTexture(entity))).restoreLastBlurMipmap();
         }
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
