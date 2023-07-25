@@ -4,6 +4,7 @@ import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.value.impl.IntegerValue;
 import cn.floatingpoint.min.system.module.value.impl.OptionValue;
+import cn.floatingpoint.min.system.module.value.impl.TextValue;
 import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.CheatDetection;
 import cn.floatingpoint.min.utils.client.Pair;
@@ -25,6 +26,7 @@ public class CheaterDetector extends MiscModule {
     public static final OptionValue printVLToChat = new OptionValue(false);
     public static final OptionValue verbose = new OptionValue(false, printVLToChat::getValue);
     public static final OptionValue autoTaunt = new OptionValue(false);
+    public static final TextValue autoTauntPrefix = new TextValue("@");
     public static final OptionValue reachCheck = new OptionValue(true);
     public static final IntegerValue reachMaxVL = new IntegerValue(1, 30, 1, 15, reachCheck::getValue);
     private final OptionValue sprintCheck = new OptionValue(true);
@@ -37,6 +39,7 @@ public class CheaterDetector extends MiscModule {
                 new Pair<>("PrintVLToChat", printVLToChat),
                 new Pair<>("Verbose", verbose),
                 new Pair<>("AutoTaunt", autoTaunt),
+                new Pair<>("AutoTaunt", autoTauntPrefix),
                 new Pair<>("ReachCheck", reachCheck),
                 new Pair<>("ReachMaxVL", reachMaxVL),
                 new Pair<>("SprintCheck", sprintCheck),

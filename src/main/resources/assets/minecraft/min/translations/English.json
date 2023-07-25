@@ -36,6 +36,8 @@
   "module.implement.CheaterDetector.Verbose.description": "Print the violent levels verbosely.",
   "module.implement.CheaterDetector.AutoTaunt": "Auto Taunt",
   "module.implement.CheaterDetector.AutoTaunt.description": "Automatically send sarcastic messages when you beat a cheater.",
+  "module.implement.CheaterDetector.AutoTauntPrefix": "Auto Taunt Prefix",
+  "module.implement.CheaterDetector.AutoTauntPrefix.description": "The prefix of the message to be sent.",
   "module.implement.CheaterDetector.ReachCheck": "Reach Check",
   "module.implement.CheaterDetector.ReachCheck.description": "Detect cheaters using Reach hacking.",
   "module.implement.CheaterDetector.ReachMaxVL": "Reach Check Max VL",

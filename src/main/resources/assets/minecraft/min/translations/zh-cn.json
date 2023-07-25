@@ -36,6 +36,8 @@
   "module.implement.CheaterDetector.Verbose.description": "在聊天栏详细显示作弊判定百分数。",
   "module.implement.CheaterDetector.AutoTaunt": "自动嘲讽",
   "module.implement.CheaterDetector.AutoTaunt.description": "打赢作弊者之后自动发送嘲讽消息。",
+  "module.implement.CheaterDetector.AutoTauntPrefix": "自动嘲讽前缀",
+  "module.implement.CheaterDetector.AutoTauntPrefix.description": "自动嘲讽消息的前缀。",
   "module.implement.CheaterDetector.ReachCheck": "距离检测",
   "module.implement.CheaterDetector.ReachCheck.description": "检测使用距离作弊的作弊者。",
   "module.implement.CheaterDetector.ReachMaxVL": "距离检测最大VL",
