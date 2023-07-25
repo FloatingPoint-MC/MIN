@@ -445,7 +445,9 @@ public class GuiMainMenu extends GuiScreen {
         String s = "MIN Client(Minecraft 1.12.2)";
         s = s + ("release".equalsIgnoreCase(this.mc.getVersionType()) ? "" : "/" + this.mc.getVersionType());
 
-        this.drawString(this.fontRenderer, "Version: 1.0(Released on 2023/7/25)", 2, 2, -1);
+        if (!Minecraft.DEBUG_MODE) {
+            this.drawString(this.fontRenderer, "Version: 1.0(Released on 2023/7/25)", 2, 2, -1);
+        }
         this.drawString(this.fontRenderer, s, 2, this.height - 10, -1);
         this.drawString(this.fontRenderer, "Copyright Mojang AB. Addons by FloatingPoint-MC!", this.widthCopyrightRest, this.height - 10, -1);
 
