@@ -2,6 +2,7 @@ package net.minecraft.entity.item;
 
 import javax.annotation.Nullable;
 
+import cn.floatingpoint.min.system.module.impl.render.impl.TNTTimer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -24,6 +25,7 @@ public class EntityTNTPrimed extends Entity {
 
     public EntityTNTPrimed(World worldIn) {
         super(worldIn);
+        TNTTimer.tntSet.add(this);
         this.fuse = 80;
         this.preventEntitySpawning = true;
         this.isImmuneToFire = true;

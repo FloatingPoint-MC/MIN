@@ -27,14 +27,16 @@ import java.util.Iterator;
  * @date: 2023-07-20 16:06:25
  */
 public class PotionDisplay extends RenderModule implements DraggableGameView {
-    public static final ModeValue mode = new ModeValue(new String[]{"MC", "FPSMaster"}, "MC");
-    private final OptionValue background = new OptionValue(false);
+    private final ModeValue mode = new ModeValue(new String[]{"MC", "FPSMaster"}, "MC");
+    private final OptionValue shadow = new OptionValue(false, () -> mode.isCurrentMode("FPSMaster"));
+    private final OptionValue background = new OptionValue(false, () -> mode.isCurrentMode("FPSMaster"));
     public static GuiIngame guiIngame;
     private int width, height;
 
     public PotionDisplay() {
         addValues(
                 new Pair<>("Mode", mode),
+                new Pair<>("Shadow", shadow),
                 new Pair<>("Background", background)
         );
     }
@@ -81,9 +83,9 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
                         int index = potion.getStatusIconIndex();
                         Minecraft.getMinecraft().ingameGUI.drawTexturedModalRect(x + 5, y + 7, index % 8 * 18, 198 + index / 8 * 18, 18, 18);
                     }
-                    Managers.fontManager.sourceHansSansCN_Regular_18.drawStringWithShadow(InventoryEffectRenderer.getPotionDisplayString(potioneffect, potion), x + 27, y + 8, textColor);
+                    Managers.fontManager.sourceHansSansCN_Regular_18.drawString(InventoryEffectRenderer.getPotionDisplayString(potioneffect, potion), x + 27, y + 8, textColor, shadow.getValue());
                     String s = Potion.getPotionDurationString(potioneffect, 1.0F);
-                    Managers.fontManager.sourceHansSansCN_Regular_18.drawStringWithShadow(s, x + 27, y + 18, textColor);
+                    Managers.fontManager.sourceHansSansCN_Regular_18.drawString(s, x + 27, y + 18, textColor, shadow.getValue());
                     y += l;
                 }
                 height = y - oldY;

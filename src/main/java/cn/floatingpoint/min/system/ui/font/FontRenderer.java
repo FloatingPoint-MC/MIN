@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.io.InputStream;
+import java.util.Objects;
 
 @ParametersAreNonnullByDefault
 public class FontRenderer extends net.minecraft.client.gui.FontRenderer {
@@ -26,7 +27,7 @@ public class FontRenderer extends net.minecraft.client.gui.FontRenderer {
         super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().getTextureManager(), false);
         Font font;
         try {
-            InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream();
+            InputStream is = Objects.requireNonNull(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation)).getInputStream();
             font = Font.createFont(0, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {
@@ -121,7 +122,7 @@ public class FontRenderer extends net.minecraft.client.gui.FontRenderer {
     }
 
     public void drawCenteredStringWithShadow(String text, int x, int y, int color) {
-        getStringCache().renderString(text, x - getStringCache().getStringWidth(text) / 2f, y, color, true);
+        this.drawString(text, x - getStringCache().getStringWidth(text) / 2, y, color, true);
     }
 
     public float getHeight() {

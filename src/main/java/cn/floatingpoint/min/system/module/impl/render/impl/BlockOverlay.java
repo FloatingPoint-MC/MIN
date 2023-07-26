@@ -60,6 +60,7 @@ public class BlockOverlay extends RenderModule {
     public void onRender3D() {
         if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
             BlockPos pos = mc.objectMouseOver.getBlockPos();
+            assert pos != null;
             IBlockState state = mc.world.getBlockState(pos);
             Block block = state.getBlock();
             double x = pos.getX() - mc.getRenderManager().getRenderPosX();

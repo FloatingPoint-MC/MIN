@@ -19,6 +19,7 @@ import java.util.HashSet;
  * @date: 2023-07-22 16:56:25
  */
 public class KeyStrokes extends RenderModule implements DraggableGameView {
+    private final OptionValue shadow = new OptionValue(false);
     private final OptionValue showMoveKeys = new OptionValue(true);
     private final OptionValue showJumpKey = new OptionValue(true);
     private final OptionValue showSneakKey = new OptionValue(true);
@@ -37,6 +38,7 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
 
     public KeyStrokes() {
         addValues(
+                new Pair<>("Shadow", shadow),
                 new Pair<>("ShowMoveKeys", showMoveKeys),
                 new Pair<>("ShowJumpKey", showJumpKey),
                 new Pair<>("ShowSneakKey", showSneakKey),
@@ -103,7 +105,11 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
             }
         }
         Gui.drawRect(x, y, x + width, y + 22, new Color(40 + current * 2, 40 + current * 2, 40 + current * 2, 102 + current).getRGB());
-        Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x + width / 2, y + 6, new Color(216, 216, 216, 216 + current).getRGB());
+        if (shadow.getValue()) {
+            Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredStringWithShadow(text, x + width / 2, y + 6, new Color(216, 216, 216, 216 + current).getRGB());
+        } else {
+            Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x + width / 2, y + 6, new Color(216, 216, 216, 216 + current).getRGB());
+        }
     }
 
     private boolean pressed(int keyCode) {

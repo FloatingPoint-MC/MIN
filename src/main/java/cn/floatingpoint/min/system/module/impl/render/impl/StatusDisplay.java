@@ -2,6 +2,7 @@ package cn.floatingpoint.min.system.module.impl.render.impl;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
+import cn.floatingpoint.min.system.module.value.impl.ModeValue;
 import cn.floatingpoint.min.system.module.value.impl.OptionValue;
 import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import cn.floatingpoint.min.utils.client.Pair;
@@ -19,13 +20,20 @@ import java.awt.*;
 public class StatusDisplay extends RenderModule implements DraggableGameView {
     private final OptionValue fps = new OptionValue(true);
     private final OptionValue ping = new OptionValue(true);
+    private final ModeValue alignment = new ModeValue(new String[]{"L", "C", "R"}, "C");
+    private final OptionValue shadow = new OptionValue(false);
+    private final OptionValue background = new OptionValue(true);
     private int height;
 
     public StatusDisplay() {
         addValues(
                 new Pair<>("FPS", fps),
-                new Pair<>("Ping", ping)
+                new Pair<>("Ping", ping),
+                new Pair<>("Alignment", alignment),
+                new Pair<>("Shadow", shadow),
+                new Pair<>("Background", background)
         );
+
     }
 
     @Override
@@ -51,7 +59,10 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
         }
         if (fps.getValue()) {
             drawButton(x, y, "FPS:" + Minecraft.getDebugFPS());
-            height += 24;
+            height += 12;
+            if (background.getValue()) {
+                height += 14;
+            }
         }
         if (ping.getValue()) {
             if (mc.player.connection != null) {
@@ -64,13 +75,37 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
             }
         } else {
             height -= 2;
+            if (!background.getValue()) {
+                height += 12;
+            }
         }
         return true;
     }
 
     private void drawButton(int x, int y, String text) {
-        Gui.drawRect(x, y, x + 70, y + 22, new Color(40, 40, 40, 102).getRGB());
-        Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x + 35, y + 6, new Color(216, 216, 216, 216).getRGB());
+        if (background.getValue()) {
+            Gui.drawRect(x, y, x + 70, y + 22, new Color(40, 40, 40, 102).getRGB());
+        }
+        if (alignment.isCurrentMode("C")) {
+            if (shadow.getValue()) {
+                Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredStringWithShadow(text, x + 35, y + 6, new Color(216, 216, 216, 216).getRGB());
+            } else {
+                Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x + 35, y + 6, new Color(216, 216, 216, 216).getRGB());
+            }
+        } else if (alignment.isCurrentMode("L")) {
+            if (shadow.getValue()) {
+                Managers.fontManager.sourceHansSansCN_Regular_18.drawStringWithShadow(text, x + 2, y + 6, new Color(216, 216, 216, 216).getRGB());
+            } else {
+                Managers.fontManager.sourceHansSansCN_Regular_18.drawString(text, x + 2, y + 6, new Color(216, 216, 216, 216).getRGB());
+            }
+        } else if (alignment.isCurrentMode("R")) {
+            int textWidth = Managers.fontManager.sourceHansSansCN_Regular_18.getStringWidth(text);
+            if (shadow.getValue()) {
+                Managers.fontManager.sourceHansSansCN_Regular_18.drawStringWithShadow(text, x + 68 - textWidth, y + 6, new Color(216, 216, 216, 216).getRGB());
+            } else {
+                Managers.fontManager.sourceHansSansCN_Regular_18.drawString(text, x + 58 - textWidth, y + 6, new Color(216, 216, 216, 216).getRGB());
+            }
+        }
     }
 
     @Override
