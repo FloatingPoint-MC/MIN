@@ -28,9 +28,9 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 {
     private static final Logger LOGGER = LogManager.getLogger();
     public static final ResourceLocation RESOURCE_LOCATION_EMPTY = new ResourceLocation("");
-    private final Map<ResourceLocation, ITextureObject> mapTextureObjects = Maps.<ResourceLocation, ITextureObject>newHashMap();
-    private final List<ITickable> listTickables = Lists.<ITickable>newArrayList();
-    private final Map<String, Integer> mapTextureCounters = Maps.<String, Integer>newHashMap();
+    private final Map<ResourceLocation, ITextureObject> mapTextureObjects = Maps.newHashMap();
+    private final List<ITickable> listTickables = Lists.newArrayList();
+    private final Map<String, Integer> mapTextureCounters = Maps.newHashMap();
     private final IResourceManager resourceManager;
     private ITextureObject boundTexture;
     private ResourceLocation boundTextureLocation;
@@ -116,13 +116,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Registering texture");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Resource location being registered");
             crashreportcategory.addCrashSection("Resource location", textureLocation);
-            crashreportcategory.addDetail("Texture object class", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    return textureObjf.getClass().getName();
-                }
-            });
+            crashreportcategory.addDetail("Texture object class", () -> textureObjf.getClass().getName());
             throw new ReportedException(crashreport);
         }
 
@@ -209,7 +203,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 
         while (iterator1.hasNext())
         {
-            Entry<ResourceLocation, ITextureObject> entry = (Entry)iterator1.next();
+            Entry<ResourceLocation, ITextureObject> entry = iterator1.next();
             ITextureObject itextureobject1 = entry.getValue();
 
             if (itextureobject1 == TextureUtil.MISSING_TEXTURE)

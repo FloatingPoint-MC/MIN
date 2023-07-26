@@ -130,8 +130,8 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
             }
 
             float f7;
-            if (entity instanceof EntityPlayer && Spinning.other()) {
-                f7 = entity.prevRotationPitchHead + (entity.rotationPitchHead - entity.prevRotationPitchHead) * partialTicks;
+            if (entity instanceof EntityPlayer && Spinning.other((EntityPlayer) entity)) {
+                f7 = 90.0F * partialTicks;
             } else {
                 f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
             }
