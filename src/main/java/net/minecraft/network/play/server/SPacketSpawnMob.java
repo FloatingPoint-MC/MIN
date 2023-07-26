@@ -43,7 +43,6 @@ public class SPacketSpawnMob implements Packet<INetHandlerPlayClient>
         this.yaw = (byte)((int)(entityIn.rotationYaw * 256.0F / 360.0F));
         this.pitch = (byte)((int)(entityIn.rotationPitch * 256.0F / 360.0F));
         this.headPitch = (byte)((int)(entityIn.rotationYawHead * 256.0F / 360.0F));
-        double d0 = 3.9D;
         double d1 = entityIn.motionX;
         double d2 = entityIn.motionY;
         double d3 = entityIn.motionZ;

@@ -2,6 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
+import cn.floatingpoint.min.system.module.value.impl.Spinning;
 import com.google.common.collect.Lists;
 
 import java.nio.FloatBuffer;
@@ -128,7 +129,12 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                 f2 = f1 - f;
             }
 
-            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            float f7;
+            if (entity instanceof EntityPlayer && Spinning.other()) {
+                f7 = entity.prevRotationPitchHead + (entity.rotationPitchHead - entity.prevRotationPitchHead) * partialTicks;
+            } else {
+                f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            }
             this.renderLivingAt(entity, x, y, z);
             float f8 = this.handleRotationFloat(entity, partialTicks);
             this.applyRotations(entity, f8, f, partialTicks);

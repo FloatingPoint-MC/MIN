@@ -1,5 +1,7 @@
 package net.minecraft.entity.player;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.value.impl.Spinning;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
@@ -521,7 +523,8 @@ public abstract class EntityPlayer extends EntityLivingBase {
     protected void updateEntityActionState() {
         super.updateEntityActionState();
         this.updateArmSwingProgress();
-        this.rotationYawHead = this.rotationYaw;
+        this.rotationYawHead = this.rotationYaw + Spinning.getCurrent();
+        this.rotationPitchHead =  + Spinning.getCurrentPitch(this.rotationPitch);
     }
 
     /**
@@ -718,8 +721,8 @@ public abstract class EntityPlayer extends EntityLivingBase {
      * item entity will have the thrower set as the player.
      *
      * @param dropAround Whether the item is dropped around the player, otherwise dropped in front of the player in the
-     * direction the player is pointing at
-     * @param traceItem Whether to trace the item to this player as the thrower
+     *                   direction the player is pointing at
+     * @param traceItem  Whether to trace the item to this player as the thrower
      */
     @Nullable
     public EntityItem dropItem(ItemStack droppedItem, boolean dropAround, boolean traceItem) {

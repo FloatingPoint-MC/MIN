@@ -1,0 +1,61 @@
+package cn.floatingpoint.min.system.module.value.impl;
+
+import cn.floatingpoint.min.system.module.impl.render.RenderModule;
+import cn.floatingpoint.min.utils.client.Pair;
+import net.minecraft.entity.player.EntityPlayer;
+
+/**
+ * @projectName: MIN
+ * @author: vlouboos
+ * @date: 2023-07-26 18:42:15
+ */
+public class Spinning extends RenderModule {
+    private static final OptionValue everyone = new OptionValue(false);
+    private final IntegerValue speed = new IntegerValue(1, 180, 1, 10);
+    private final ModeValue direction = new ModeValue(new String[]{"P", "N"}, "P");
+    public static float current = 0.0f;
+    private static Spinning instance;
+
+    public Spinning() {
+        instance = this;
+        addValues(
+                new Pair<>("Everyone", everyone),
+                new Pair<>("Speed", speed),
+                new Pair<>("Direction", direction)
+        );
+    }
+
+    public static float getCurrentPitch(float pitch) {
+        return instance.isEnabled() ? 90.0F : pitch;
+    }
+
+    @Override
+    public void onRender3D() {
+        current += speed.getValue() * (this.direction.isCurrentMode("P") ? 1 : -1);
+        if (everyone.getValue()) {
+            for (EntityPlayer player : mc.world.playerEntities) {
+                player.renderYawOffset = player.rotationYaw + current;
+            }
+        } else {
+            mc.player.renderYawOffset = mc.player.rotationYaw + current;
+        }
+    }
+
+    public static float getCurrent() {
+        return instance.isEnabled() ? current : 0;
+    }
+
+    public static boolean other() {
+        return instance.isEnabled() && everyone.getValue();
+    }
+
+    @Override
+    public void onEnable() {
+
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
+}

@@ -798,8 +798,11 @@ public abstract class World implements IBlockAccess {
                 Block block = iblockstate.getBlock();
 
                 if ((!ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(this, blockpos) != Block.NULL_AABB) && block.canCollideCheck(iblockstate, stopOnLiquid)) {
+                    RayTraceResult raytraceresult = iblockstate.collisionRayTrace(this, blockpos, vec31, vec32);
 
-                    return iblockstate.collisionRayTrace(this, blockpos, vec31, vec32);
+                    if (raytraceresult != null) {
+                        return raytraceresult;
+                    }
                 }
 
                 RayTraceResult raytraceresult2 = null;

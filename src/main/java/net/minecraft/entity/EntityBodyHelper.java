@@ -47,7 +47,6 @@ public class EntityBodyHelper
                 else
                 {
                     ++this.rotationTickCounter;
-                    int i = 10;
 
                     if (this.rotationTickCounter > 10)
                     {

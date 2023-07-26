@@ -66,6 +66,7 @@ public class ModuleManager implements Manager {
         renderModules.put("PotionDisplay", new PotionDisplay());
         renderModules.put("Scoreboard", new Scoreboard());
         renderModules.put("SmoothZoom", new SmoothZoom());
+        renderModules.put("Spinning", new Spinning());
         renderModules.put("StatusDisplay", new StatusDisplay());
         renderModules.put("TNTTimer", new TNTTimer());
 
