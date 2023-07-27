@@ -47,39 +47,39 @@ public class RegistryNamespacedDefaultedByKey<K, V> extends RegistryNamespaced<K
         return i == -1 ? super.getIDForObject(this.defaultValue) : i;
     }
 
-    @Nonnull
 
     /**
      * Gets the name we use to identify the given object.
      */
+    @Nonnull
     public K getNameForObject(V value)
     {
-        K k = (K)super.getNameForObject(value);
-        return (K)(k == null ? this.defaultValueKey : k);
+        K k = super.getNameForObject(value);
+        return k == null ? this.defaultValueKey : k;
     }
 
     @Nonnull
     public V getObject(@Nullable K name)
     {
-        V v = (V)super.getObject(name);
-        return (V)(v == null ? this.defaultValue : v);
+        V v = super.getObject(name);
+        return v == null ? this.defaultValue : v;
     }
 
-    @Nonnull
 
     /**
      * Gets the object identified by the given ID.
      */
+    @Nonnull
     public V getObjectById(int id)
     {
-        V v = (V)super.getObjectById(id);
-        return (V)(v == null ? this.defaultValue : v);
+        V v = super.getObjectById(id);
+        return v == null ? this.defaultValue : v;
     }
 
     @Nonnull
     public V getRandomObject(Random random)
     {
-        V v = (V)super.getRandomObject(random);
-        return (V)(v == null ? this.defaultValue : v);
+        V v = super.getRandomObject(random);
+        return v == null ? this.defaultValue : v;
     }
 }

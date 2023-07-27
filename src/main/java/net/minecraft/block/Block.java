@@ -5,6 +5,7 @@ import com.google.common.collect.UnmodifiableIterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
@@ -120,6 +121,7 @@ public class Block
         return getIdFromBlock(block) + (block.getMetaFromState(state) << 12);
     }
 
+    @Nullable
     public static Block getBlockById(int id)
     {
         return REGISTRY.getObjectById(id);

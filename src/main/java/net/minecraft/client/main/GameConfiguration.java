@@ -58,7 +58,7 @@ public class GameConfiguration
 
         public ResourceIndex getAssetsIndex()
         {
-            return (ResourceIndex)(this.assetIndex == null ? new ResourceIndexFolder(this.assetsDir) : new ResourceIndex(this.assetsDir, this.assetIndex));
+            return this.assetIndex == null ? new ResourceIndexFolder(this.assetsDir) : new ResourceIndex(this.assetsDir, this.assetIndex);
         }
     }
 

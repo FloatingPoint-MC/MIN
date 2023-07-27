@@ -1371,6 +1371,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
+                assert blockpos != null;
                 if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR && this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit)) {
                     this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
                     this.player.swingArm(EnumHand.MAIN_HAND);
@@ -1399,6 +1400,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     case BLOCK:
                         BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
+                        assert blockpos != null;
                         if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
                             this.playerController.clickBlock(blockpos, this.objectMouseOver.sideHit);
                             break;
@@ -1447,6 +1449,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             case BLOCK:
                                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
+                                assert blockpos != null;
                                 if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
                                     int i = itemstack.getCount();
                                     EnumActionResult enumactionresult = this.playerController.processRightClickBlock(this.player, this.world, blockpos, this.objectMouseOver.sideHit, this.objectMouseOver.hitVec, enumhand);
@@ -1488,25 +1491,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                 this.displayWidth = Display.getDisplayMode().getWidth();
                 this.displayHeight = Display.getDisplayMode().getHeight();
 
-                if (this.displayWidth <= 0) {
-                    this.displayWidth = 1;
-                }
-
-                if (this.displayHeight <= 0) {
-                    this.displayHeight = 1;
-                }
             } else {
                 Display.setDisplayMode(new DisplayMode(this.tempDisplayWidth, this.tempDisplayHeight));
                 this.displayWidth = this.tempDisplayWidth;
                 this.displayHeight = this.tempDisplayHeight;
 
-                if (this.displayWidth <= 0) {
-                    this.displayWidth = 1;
-                }
-
-                if (this.displayHeight <= 0) {
-                    this.displayHeight = 1;
-                }
+            }
+            if (this.displayWidth <= 0) {
+                this.displayWidth = 1;
+            }
+            if (this.displayHeight <= 0) {
+                this.displayHeight = 1;
             }
 
             if (this.currentScreen != null) {
@@ -2297,6 +2292,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
             if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
+                assert blockpos != null;
                 IBlockState iblockstate = this.world.getBlockState(blockpos);
                 Block block = iblockstate.getBlock();
 
@@ -2383,7 +2379,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                 String s = "";
 
                 if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
-                    s = Block.REGISTRY.getNameForObject(this.world.getBlockState(this.objectMouseOver.getBlockPos()).getBlock()).toString();
+                    BlockPos blockPos = this.objectMouseOver.getBlockPos();
+                    assert blockPos != null;
+                    s = Block.REGISTRY.getNameForObject(this.world.getBlockState(blockPos).getBlock()).toString();
                 } else if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY) {
                     s = Objects.requireNonNull(EntityList.getKey(this.objectMouseOver.entityHit)).toString();
                 }
