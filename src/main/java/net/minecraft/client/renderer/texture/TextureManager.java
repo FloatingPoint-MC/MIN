@@ -24,6 +24,8 @@ import net.optifine.shaders.ShadersTex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+
 public class TextureManager implements ITickable, IResourceManagerReloadListener
 {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -124,6 +126,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
         return flag;
     }
 
+    @Nullable
     public ITextureObject getTexture(ResourceLocation textureLocation)
     {
         return this.mapTextureObjects.get(textureLocation);

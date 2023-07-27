@@ -28,7 +28,7 @@ public class NetworkPlayerInfo
     /** Player response time to server in milliseconds */
     private int responseTime;
     private boolean playerTexturesLoaded;
-    private String skinType;
+    public String skinType;
 
     /**
      * When this is non-null, it is displayed instead of the player's real name
@@ -94,7 +94,7 @@ public class NetworkPlayerInfo
     public ResourceLocation getLocationSkin()
     {
         this.loadPlayerTextures();
-        return MoreObjects.firstNonNull(this.playerTextures.get(Type.SKIN), DefaultPlayerSkin.getDefaultSkin(this.gameProfile.getId()));
+        return this.playerTextures.getOrDefault(Type.SKIN, DefaultPlayerSkin.getDefaultSkin(this.gameProfile.getId()));
     }
 
     @Nullable
@@ -213,5 +213,17 @@ public class NetworkPlayerInfo
     public void setRenderVisibilityId(long p_178843_1_)
     {
         this.renderVisibilityId = p_178843_1_;
+    }
+
+    public Map<Type, ResourceLocation> getPlayerTextures() {
+        return playerTextures;
+    }
+
+    public boolean isPlayerTexturesLoaded() {
+        return playerTexturesLoaded;
+    }
+
+    public void setPlayerTexturesLoaded(boolean playerTexturesLoaded) {
+        this.playerTexturesLoaded = playerTexturesLoaded;
     }
 }

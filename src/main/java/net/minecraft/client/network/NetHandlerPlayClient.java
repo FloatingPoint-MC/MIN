@@ -648,8 +648,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 EntityPlayer player = this.client.world.getPlayerEntityByUUID(entry.getKey());
                 if (player == null) continue;
                 if (Pattern.compile("起床战争>> " + this.client.player.getName() + "\\[(.*?)] \\((.*?)之队\\)杀死了 " + player.getName() + " \\((.*?)之队\\)!").matcher(text).matches()) {
-                    ArrayList<String> messages = Managers.clientManager.sarcasticMessages;
-                    this.client.player.sendChatMessage(messages.get(new Random().nextInt(messages.size())).replace("{0}", player.getName()));
+                    CheaterDetector.taunt(player);
                 }
             }
         }

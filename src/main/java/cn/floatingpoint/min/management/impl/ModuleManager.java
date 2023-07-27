@@ -15,6 +15,7 @@ import cn.floatingpoint.min.system.module.impl.render.impl.*;
 import cn.floatingpoint.min.system.module.value.Value;
 import cn.floatingpoint.min.system.module.value.impl.*;
 import cn.floatingpoint.min.utils.math.TimeHelper;
+import net.minecraft.client.Minecraft;
 import org.json.JSONObject;
 import org.lwjgl.input.Keyboard;
 
@@ -43,6 +44,7 @@ public class ModuleManager implements Manager {
         // Misc
         miscModules.put("AutoText", new AutoText());
         miscModules.put("CheaterDetector", new CheaterDetector());
+        miscModules.put("CustomSkin", new CustomSkin());
         miscModules.put("RankDisplay", new RankDisplay());
         miscModules.put("TerminateBreakingBlock", new TerminateBreakingBlock());
         miscModules.put("WorldTimeChanger", new WorldTimeChange());
@@ -82,7 +84,10 @@ public class ModuleManager implements Manager {
                 modules.get(key).setEnableOnStartUp(moduleData.getBoolean("Enabled"));
                 modules.get(key).setKey(Keyboard.getKeyIndex(moduleData.getString("KeyBind").toUpperCase()));
             }
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            if (Minecraft.DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
         context = Managers.fileManager.readAsString("module/value.json");
         try {
@@ -109,7 +114,10 @@ public class ModuleManager implements Manager {
                     }
                 }
             }
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            if (Minecraft.DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
     }
 

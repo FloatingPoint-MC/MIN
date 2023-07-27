@@ -340,7 +340,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      */
     public void sendChatMessage(String message) {
         if (message.toLowerCase().startsWith("/min")) {
-            if (!CommandMin.execute(message.substring(5).split(" "))) {
+            if (CommandMin.execute(message.substring(5).split(" "))) {
                 return;
             }
         }

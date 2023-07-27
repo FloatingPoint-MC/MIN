@@ -14,7 +14,7 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 public class SPacketEntityProperties implements Packet<INetHandlerPlayClient>
 {
     private int entityId;
-    private final List<SPacketEntityProperties.Snapshot> snapshots = Lists.<SPacketEntityProperties.Snapshot>newArrayList();
+    private final List<SPacketEntityProperties.Snapshot> snapshots = Lists.newArrayList();
 
     public SPacketEntityProperties()
     {
@@ -42,7 +42,7 @@ public class SPacketEntityProperties implements Packet<INetHandlerPlayClient>
         {
             String s = buf.readString(64);
             double d0 = buf.readDouble();
-            List<AttributeModifier> list = Lists.<AttributeModifier>newArrayList();
+            List<AttributeModifier> list = Lists.newArrayList();
             int k = buf.readVarInt();
 
             for (int l = 0; l < k; ++l)

@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @projectName: MIN
@@ -26,20 +26,23 @@ public class CheaterDetector extends MiscModule {
     public static final OptionValue printVLToChat = new OptionValue(false);
     public static final OptionValue verbose = new OptionValue(false, printVLToChat::getValue);
     public static final OptionValue autoTaunt = new OptionValue(false);
-    public static final TextValue autoTauntPrefix = new TextValue("@");
+    public static final TextValue autoTauntPrefix = new TextValue("@", autoTaunt::getValue);
+    private final IntegerValue delay = new IntegerValue(0, 5000, 1000, 1000, autoTaunt::getValue);
     public static final OptionValue reachCheck = new OptionValue(true);
     public static final IntegerValue reachMaxVL = new IntegerValue(1, 30, 1, 15, reachCheck::getValue);
     private final OptionValue sprintCheck = new OptionValue(true);
     private final IntegerValue sprintMaxVL = new IntegerValue(1, 30, 1, 1, sprintCheck::getValue);
     private final OptionValue noSlowCheck = new OptionValue(true);
     private final IntegerValue noSlowMaxVL = new IntegerValue(1, 30, 1, 10, noSlowCheck::getValue);
+    private static final HashMap<String, Long> tauntMap = new HashMap<>();
 
     public CheaterDetector() {
         addValues(
                 new Pair<>("PrintVLToChat", printVLToChat),
                 new Pair<>("Verbose", verbose),
                 new Pair<>("AutoTaunt", autoTaunt),
-                new Pair<>("AutoTaunt", autoTauntPrefix),
+                new Pair<>("AutoTauntPrefix", autoTauntPrefix),
+                new Pair<>("Delay", delay),
                 new Pair<>("ReachCheck", reachCheck),
                 new Pair<>("ReachMaxVL", reachMaxVL),
                 new Pair<>("SprintCheck", sprintCheck),
@@ -47,6 +50,10 @@ public class CheaterDetector extends MiscModule {
                 new Pair<>("NoSlowCheck", noSlowCheck),
                 new Pair<>("NoSlowMaxVL", noSlowMaxVL)
         );
+    }
+
+    public static void taunt(EntityPlayer player) {
+        tauntMap.put(player.getName(), System.currentTimeMillis());
     }
 
     @Override
@@ -107,13 +114,22 @@ public class CheaterDetector extends MiscModule {
                         } else if (verbose.getValue()) {
                             ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("module.implement.CheaterDetector.verboseNotice")
                                     .replace("{0}", player.getName())
-                                    .replace("{1}", Managers.i18NManager.getTranslation("module.implement.CheaterDetector.SprintCheck"))
+                                    .replace("{1}", Managers.i18NManager.getTranslation("module.implement.CheaterDetector.NoSlowCheck"))
                                     .replace("{2}", String.valueOf(detection.noSlowPercentage)));
                         }
                     }
                 }
             }
         }
+        HashSet<String> sent = new HashSet<>();
+        tauntMap.forEach((s, aLong) -> {
+            if (System.currentTimeMillis() - aLong >= delay.getValue()) {
+                ArrayList<String> messages = Managers.clientManager.sarcasticMessages;
+                mc.player.sendChatMessage(messages.get(new Random().nextInt(messages.size())).replace("{0}", s));
+                sent.add(s);
+            }
+        });
+        sent.forEach(tauntMap::remove);
     }
 
     public static void markCheating(EntityPlayer player, CheatDetection detection) {

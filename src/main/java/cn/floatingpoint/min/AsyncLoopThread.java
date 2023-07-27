@@ -8,7 +8,7 @@ import java.util.HashSet;
  * @date: 2023-07-22 15:18:57
  */
 public class AsyncLoopThread extends Thread {
-    public HashSet<Runnable> runnableSet = new HashSet<>();
+    public final static HashSet<Runnable> runnableSet = new HashSet<>();
 
     @Override
     public void run() {

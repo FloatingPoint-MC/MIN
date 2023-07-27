@@ -28,7 +28,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 
 public class SkinManager {
-    private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue());
+    private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
     private final TextureManager textureManager;
     private final File skinCacheDir;
     private final MinecraftSessionService sessionService;
@@ -39,7 +39,7 @@ public class SkinManager {
         this.skinCacheDir = skinCacheDirectory;
         this.sessionService = sessionService;
         this.skinCacheLoader = CacheBuilder.newBuilder().expireAfterAccess(15L, TimeUnit.SECONDS).build(new CacheLoader<GameProfile, Map<Type, MinecraftProfileTexture>>() {
-            public Map<Type, MinecraftProfileTexture> load(GameProfile p_load_1_) throws Exception {
+            public Map<Type, MinecraftProfileTexture> load(GameProfile p_load_1_) {
                 try {
                     return Minecraft.getMinecraft().getSessionService().getTextures(p_load_1_, false);
                 } catch (Throwable var3) {
@@ -52,6 +52,7 @@ public class SkinManager {
     /**
      * Used in the Skull renderer to fetch a skin. May download the skin if it's not in the cache
      */
+    @Nullable
     public ResourceLocation loadSkin(MinecraftProfileTexture profileTexture, Type textureType) {
         return this.loadSkin(profileTexture, textureType, null);
     }
@@ -59,6 +60,7 @@ public class SkinManager {
     /**
      * May download the skin if its not in the cache, can be passed a SkinManager#SkinAvailableCallback for handling
      */
+    @Nullable
     public ResourceLocation loadSkin(final MinecraftProfileTexture profileTexture, final Type textureType, @Nullable final SkinManager.SkinAvailableCallback skinAvailableCallback) {
         final ResourceLocation resourcelocation = new ResourceLocation("skins/" + profileTexture.getHash());
         ITextureObject itextureobject = this.textureManager.getTexture(resourcelocation);
@@ -72,7 +74,8 @@ public class SkinManager {
             File file2 = new File(file1, profileTexture.getHash());
             final IImageBuffer iimagebuffer = textureType == Type.SKIN ? new ImageBufferDownload() : null;
             ThreadDownloadImageData threaddownloadimagedata = new ThreadDownloadImageData(file2, profileTexture.getUrl(), DefaultPlayerSkin.getDefaultSkinLegacy(), new IImageBuffer() {
-                public BufferedImage parseUserSkin(BufferedImage image) {
+                @Nullable
+                public BufferedImage parseUserSkin(@Nullable BufferedImage image) {
                     if (iimagebuffer != null) {
                         image = iimagebuffer.parseUserSkin(image);
                     }

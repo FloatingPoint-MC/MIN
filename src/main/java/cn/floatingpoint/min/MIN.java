@@ -15,6 +15,6 @@ public class MIN {
     }
 
     public static void runAsync(Runnable runnable) {
-        asyncLoopThread.runnableSet.add(runnable);
+        AsyncLoopThread.runnableSet.add(runnable);
     }
 }
