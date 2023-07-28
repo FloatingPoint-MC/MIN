@@ -10,12 +10,11 @@ import net.minecraft.init.Blocks;
 public class ItemAxe extends ItemTool
 {
     private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
-    private static final float[] ATTACK_DAMAGES = new float[] {6.0F, 8.0F, 8.0F, 8.0F, 6.0F};
 
     protected ItemAxe(Item.ToolMaterial material)
     {
         super(material, EFFECTIVE_ON);
-        this.attackDamage = ATTACK_DAMAGES[material.ordinal()];
+        this.attackDamage = 3.0F;
     }
 
     public float getDestroySpeed(ItemStack stack, IBlockState state)
