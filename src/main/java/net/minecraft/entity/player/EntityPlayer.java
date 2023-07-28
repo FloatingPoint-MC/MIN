@@ -523,7 +523,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
     protected void updateEntityActionState() {
         super.updateEntityActionState();
         this.updateArmSwingProgress();
-        this.rotationYawHead = this.rotationYaw + Spinning.getCurrent();
+        this.rotationYawHead = this.rotationYaw + Spinning.getCurrent(this);
         this.rotationPitchHead = Spinning.getCurrentPitch(this.rotationPitch);
     }
 

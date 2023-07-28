@@ -3,6 +3,7 @@ package cn.floatingpoint.min.system.module.value.impl;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import cn.floatingpoint.min.utils.client.Pair;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -42,8 +43,8 @@ public class Spinning extends RenderModule {
         }
     }
 
-    public static float getCurrent() {
-        return instance.isEnabled() ? current : 0;
+    public static float getCurrent(EntityLivingBase player) {
+        return instance.isEnabled() && player instanceof EntityPlayer && (player instanceof EntityPlayerSP || everyone.getValue()) ? current : 0;
     }
 
     public static boolean other(EntityPlayer entityPlayer) {

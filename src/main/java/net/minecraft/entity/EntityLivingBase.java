@@ -2021,29 +2021,29 @@ public abstract class EntityLivingBase extends Entity {
         }
 
         this.onLivingUpdate();
-        double d0 = this.posX - this.prevPosX;
-        double d1 = this.posZ - this.prevPosZ;
-        float f3 = (float) (d0 * d0 + d1 * d1);
-        float f4 = this.renderYawOffset;
-        float f5 = 0.0F;
+        double xDist = this.posX - this.prevPosX;
+        double zDist = this.posZ - this.prevPosZ;
+        float squareDist = (float) (xDist * xDist + zDist * zDist);
+        float oldYawOffset = this.renderYawOffset;
+        float dist = 0.0F;
         this.prevOnGroundSpeedFactor = this.onGroundSpeedFactor;
         float f = 0.0F;
 
-        if (f3 > 0.0025000002F) {
+        if (squareDist > 0.0025000002F) {
             f = 1.0F;
-            f5 = (float) Math.sqrt(f3) * 3.0F;
-            float f1 = (float) MathHelper.atan2(d1, d0) * (180F / (float) Math.PI) - 90.0F;
-            float f2 = MathHelper.abs(MathHelper.wrapDegrees(this.rotationYaw + Spinning.getCurrent()) - f1);
+            dist = (float) Math.sqrt(squareDist) * 3.0F;
+            float f1 = (float) MathHelper.atan2(zDist, xDist) * (180F / (float) Math.PI) - 90.0F;
+            float f2 = MathHelper.abs(MathHelper.wrapDegrees(this.rotationYaw + Spinning.getCurrent(this)) - f1);
 
             if (95.0F < f2 && f2 < 265.0F) {
-                f4 = f1 - 180.0F;
+                oldYawOffset = f1 - 180.0F;
             } else {
-                f4 = f1;
+                oldYawOffset = f1;
             }
         }
 
         if (this.swingProgress > 0.0F) {
-            f4 = this.rotationYaw + Spinning.getCurrent();
+            oldYawOffset = this.rotationYaw + Spinning.getCurrent(this);
         }
 
         if (!this.onGround) {
@@ -2052,7 +2052,7 @@ public abstract class EntityLivingBase extends Entity {
 
         this.onGroundSpeedFactor += (f - this.onGroundSpeedFactor) * 0.3F;
         this.world.profiler.startSection("headTurn");
-        f5 = this.updateDistance(f4, f5);
+        dist = this.updateDistance(oldYawOffset, dist);
         this.world.profiler.endSection();
         this.world.profiler.startSection("rangeChecks");
 
@@ -2097,7 +2097,7 @@ public abstract class EntityLivingBase extends Entity {
         }
 
         this.world.profiler.endSection();
-        this.movedDistance += f5;
+        this.movedDistance += dist;
 
         if (this.isElytraFlying()) {
             ++this.ticksElytraFlying;
@@ -2106,8 +2106,8 @@ public abstract class EntityLivingBase extends Entity {
         }
     }
 
-    protected float updateDistance(float p_110146_1_, float p_110146_2_) {
-        float f = MathHelper.wrapDegrees(p_110146_1_ - this.renderYawOffset);
+    protected float updateDistance(float yawOffset, float dist) {
+        float f = MathHelper.wrapDegrees(yawOffset - this.renderYawOffset);
         this.renderYawOffset += f * 0.3F;
         float f1 = MathHelper.wrapDegrees(this.rotationYaw - this.renderYawOffset);
         boolean flag = f1 < -90.0F || f1 >= 90.0F;
@@ -2126,10 +2126,10 @@ public abstract class EntityLivingBase extends Entity {
         }
 
         if (flag) {
-            p_110146_2_ *= -1.0F;
+            dist *= -1.0F;
         }
 
-        return p_110146_2_;
+        return dist;
     }
 
     /**

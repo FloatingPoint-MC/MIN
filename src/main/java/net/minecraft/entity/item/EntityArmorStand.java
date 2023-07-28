@@ -697,7 +697,7 @@ public class EntityArmorStand extends EntityLivingBase
         this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ARMORSTAND_BREAK, this.getSoundCategory(), 1.0F, 1.0F);
     }
 
-    protected float updateDistance(float p_110146_1_, float p_110146_2_)
+    protected float updateDistance(float yawOffset, float dist)
     {
         this.prevRenderYawOffset = this.prevRotationYaw;
         this.renderYawOffset = this.rotationYaw;
