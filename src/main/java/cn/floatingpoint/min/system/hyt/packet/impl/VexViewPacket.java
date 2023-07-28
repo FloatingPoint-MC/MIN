@@ -22,11 +22,12 @@ public class VexViewPacket implements CustomPacket {
     public void process(ByteBuf byteBuf) {
         ButtonDecoder buttonDecoder = new ButtonDecoder(byteBuf);
         if (buttonDecoder.invited) {
-            System.out.println(buttonDecoder.inviter);
             TextComponentString textComponents = new TextComponentString("\247b[MIN] 收到来自\247a" + buttonDecoder.inviter + "\247b的邀请消息。\247e\247n(点此查看)");
             textComponents.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("\247e点击查看!")));
             textComponents.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/min hyt party handle " + buttonDecoder.getButton("同意").getId() + " " + buttonDecoder.getButton("拒绝").getId()));
             ChatUtil.printToChat(textComponents);
+        } else if (buttonDecoder.sign) {
+            Sender.clickButton(buttonDecoder.getButton("sign").getId());
         } else if (buttonDecoder.containsButtons("创建队伍", "申请入队")) {
             mc.displayGuiScreen(new GuiInit(buttonDecoder.getButton("创建队伍"), buttonDecoder.getButton("申请入队")));
         } else if (buttonDecoder.containsButtons("申请列表", "踢出队员", "离开队伍", "解散队伍")) {

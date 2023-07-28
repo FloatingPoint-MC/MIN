@@ -45,7 +45,6 @@ public class GermModButton {
             ));
             hovered = false;
         }
-        GlStateManager.disableBlend();
         int startX = x - 50;
         int endX = x + 50;
         int startY = y - 10;
@@ -55,8 +54,7 @@ public class GermModButton {
         Gui.drawRect(startX + 0.5D, endY - 0.5D, endX - 0.5D, endY, new Color(44, 44, 44, 102).getRGB());
         Gui.drawRect(endX - 0.5D, startY, endX, endY, new Color(44, 44, 44, 102).getRGB());
         Gui.drawRect(startX + 0.5D, startY, endX - 0.5D, startY + 0.5, new Color(44, 44, 44, 102).getRGB());
-        Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x, startY + 6, new Color(216, 216, 216).getRGB());
-        GlStateManager.enableBlend();
+        Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text.replace("\2478", ""), x, startY + 6, new Color(216, 216, 216).getRGB());
     }
 
     public void mouseClicked(String parentUuid) {

@@ -12,11 +12,17 @@ public class ButtonDecoder {
     private final String[] elements;
     public final boolean invited;
     public final String inviter;
+    public final boolean sign;
 
     public ButtonDecoder(ByteBuf byteBuf) {
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
-        elements = decode(bytes).split("<&>");
+        String result = decode(bytes);
+        sign = result.contains("[gui]https://img.166.net/gameyw-misc/opd/squash/20221221/104939-4q3d0pgm59.png");
+        if (sign) {
+            result = result.replace("[but]", "[but]sign");
+        }
+        elements = result.split("<&>");
         int index = this.containsString("邀请你加入队伍");
         if (index != -1) {
             invited = true;
