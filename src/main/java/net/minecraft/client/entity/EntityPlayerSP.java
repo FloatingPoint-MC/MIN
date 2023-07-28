@@ -343,6 +343,17 @@ public class EntityPlayerSP extends AbstractClientPlayer {
             if (CommandMin.execute(message.substring(5).split(" "))) {
                 return;
             }
+        } else if (message.toLowerCase().startsWith("/report")) {
+            if (Managers.moduleManager.miscModules.get("CheaterDetector").isEnabled() && CheaterDetector.autoMark.getValue()) {
+                if (message.split(" ").length >= 2) {
+                    EntityPlayer player = mc.world.getPlayerEntityByName(message.split(" ")[1]);
+                    if (player != null) {
+                        CheatDetection cheatDetection = new CheatDetection();
+                        cheatDetection.hacks = true;
+                        Managers.clientManager.cheaterUuids.put(player.getUniqueID(), cheatDetection);
+                    }
+                }
+            }
         }
         this.connection.sendPacket(new CPacketChatMessage(message));
     }

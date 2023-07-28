@@ -34,15 +34,15 @@ public class GuiOptions extends GuiScreen
         this.title = I18n.format("options.title");
         int i = 0;
 
-        for (GameSettings.Options gamesettings$options : SCREEN_OPTIONS)
+        for (GameSettings.Options options : SCREEN_OPTIONS)
         {
-            if (gamesettings$options.isFloat())
+            if (options.isFloat())
             {
-                this.buttonList.add(new GuiOptionSlider(gamesettings$options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), gamesettings$options));
+                this.buttonList.add(new GuiOptionSlider(options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), options));
             }
             else
             {
-                GuiOptionButton guioptionbutton = new GuiOptionButton(gamesettings$options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), gamesettings$options, this.settings.getKeyBinding(gamesettings$options));
+                GuiOptionButton guioptionbutton = new GuiOptionButton(options.getOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), options, this.settings.getKeyBinding(options));
                 this.buttonList.add(guioptionbutton);
             }
 

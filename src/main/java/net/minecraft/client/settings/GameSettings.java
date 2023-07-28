@@ -89,7 +89,6 @@ public class GameSettings {
     private static final String[] PARTICLES = new String[]{"options.particles.all", "options.particles.decreased", "options.particles.minimal"};
     private static final String[] AMBIENT_OCCLUSIONS = new String[]{"options.ao.off", "options.ao.min", "options.ao.max"};
     private static final String[] CLOUDS_TYPES = new String[]{"options.off", "options.clouds.fast", "options.clouds.fancy"};
-    private static final String[] ATTACK_INDICATORS = new String[]{"options.off", "options.attack.crosshair", "options.attack.hotbar"};
     public static final String[] NARRATOR_MODES = new String[]{"options.narrator.off", "options.narrator.all", "options.narrator.chat", "options.narrator.system"};
     public float mouseSensitivity = 0.5F;
     public boolean invertMouse;
@@ -146,7 +145,6 @@ public class GameSettings {
     private final Map<SoundCategory, Float> soundLevels = Maps.newEnumMap(SoundCategory.class);
     public boolean useNativeTransport = true;
     public boolean entityShadows = true;
-    public int attackIndicator = 1;
     public boolean enableWeakAttacks;
     public boolean showSubtitles;
     public TutorialSteps tutorialStep = TutorialSteps.MOVEMENT;
@@ -593,10 +591,6 @@ public class GameSettings {
             this.entityShadows = !this.entityShadows;
         }
 
-        if (settingsOption == GameSettings.Options.ATTACK_INDICATOR) {
-            this.attackIndicator = (this.attackIndicator + value) % 3;
-        }
-
         if (settingsOption == GameSettings.Options.SHOW_SUBTITLES) {
             this.showSubtitles = !this.showSubtitles;
         }
@@ -795,8 +789,6 @@ public class GameSettings {
                 } else {
                     return s1 + I18n.format("options.graphics.fast");
                 }
-            } else if (settingOption == GameSettings.Options.ATTACK_INDICATOR) {
-                return s1 + getTranslation(ATTACK_INDICATORS, this.attackIndicator);
             } else if (settingOption == GameSettings.Options.NARRATOR) {
                 return NarratorChatListener.INSTANCE.isActive() ? s1 + getTranslation(NARRATOR_MODES, this.narrator) : s1 + I18n.format("options.narrator.notavailable");
             } else {
@@ -922,20 +914,6 @@ public class GameSettings {
                                         break;
                                     case "fast":
                                         this.clouds = 1;
-                                        break;
-                                }
-                            }
-
-                            if ("attackIndicator".equals(s1)) {
-                                switch (s2) {
-                                    case "0":
-                                        this.attackIndicator = 0;
-                                        break;
-                                    case "1":
-                                        this.attackIndicator = 1;
-                                        break;
-                                    case "2":
-                                        this.attackIndicator = 2;
                                         break;
                                 }
                             }
@@ -1214,7 +1192,6 @@ public class GameSettings {
             printwriter.println("useNativeTransport:" + this.useNativeTransport);
             printwriter.println("entityShadows:" + this.entityShadows);
             printwriter.println("mainHand:" + (this.mainHand == EnumHandSide.LEFT ? "left" : "right"));
-            printwriter.println("attackIndicator:" + this.attackIndicator);
             printwriter.println("showSubtitles:" + this.showSubtitles);
             printwriter.println("enableWeakAttacks:" + this.enableWeakAttacks);
             printwriter.println("narrator:" + this.narrator);
@@ -2810,7 +2787,6 @@ public class GameSettings {
         REDUCED_DEBUG_INFO("options.reducedDebugInfo", false, true),
         ENTITY_SHADOWS("options.entityShadows", false, true),
         MAIN_HAND("options.mainHand", false, false),
-        ATTACK_INDICATOR("options.attackIndicator", false, false),
         ENABLE_WEAK_ATTACKS("options.enableWeakAttacks", false, true),
         SHOW_SUBTITLES("options.showSubtitles", false, true),
         NARRATOR("options.narrator", false, false),

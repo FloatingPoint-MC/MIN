@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.AttackIndicator;
 import cn.floatingpoint.min.system.module.impl.render.impl.PotionDisplay;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -389,10 +390,10 @@ public class GuiIngame extends Gui {
         GlStateManager.enableAlpha();
     }
 
-    private void renderAttackIndicator(float partialTicks, ScaledResolution p_184045_2_) {
+    private void renderAttackIndicator(float partialTicks, ScaledResolution scaledResolution) {
         GameSettings gamesettings = this.mc.gameSettings;
 
-        if (gamesettings.thirdPersonView == 0) {
+        if (gamesettings.thirdPersonView == 0 || AttackIndicator.showInThirdPerson.getValue()) {
             if (this.mc.playerController.isSpectator() && this.mc.pointedEntity == null) {
                 RayTraceResult raytraceresult = this.mc.objectMouseOver;
 
@@ -402,8 +403,8 @@ public class GuiIngame extends Gui {
                 return;
             }
 
-            int l = p_184045_2_.getScaledWidth();
-            int i1 = p_184045_2_.getScaledHeight();
+            int l = scaledResolution.getScaledWidth();
+            int i1 = scaledResolution.getScaledHeight();
 
             if (gamesettings.showDebugInfo && !gamesettings.hideGUI && !this.mc.player.hasReducedDebug() && !gamesettings.reducedDebugInfo) {
                 GlStateManager.pushMatrix();

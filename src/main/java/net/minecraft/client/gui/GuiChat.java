@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cn.floatingpoint.min.management.Managers;
@@ -255,7 +256,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
     /**
      * Sets the list of tab completions, as long as they were previously requested.
      */
-    public void setCompletions(String... newCompletions) {
+    public void setCompletions(@Nonnull String... newCompletions) {
         this.tabCompleter.setCompletions(newCompletions);
     }
 

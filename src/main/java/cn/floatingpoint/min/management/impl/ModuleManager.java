@@ -51,6 +51,7 @@ public class ModuleManager implements Manager {
         // Render
         renderModules.put("Animation", new Animation());
         renderModules.put("ArmorDisplay", new ArmorDisplay());
+        renderModules.put("AttackIndicator", new AttackIndicator());
         renderModules.put("BlockOverlay", new BlockOverlay());
         renderModules.put("BoundingBox", new BoundingBox());
         renderModules.put("CleanView", new CleanView());

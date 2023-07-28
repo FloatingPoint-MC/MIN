@@ -5,6 +5,9 @@ import net.minecraft.client.gui.GuiVideoSettings;
 import net.optifine.Config;
 import net.optifine.shaders.Shaders;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class GuiChatOF extends GuiChat
 {
     private static final String CMD_RELOAD_SHADERS = "/reloadShaders";
@@ -65,7 +68,7 @@ public class GuiChatOF extends GuiChat
     /**
      * Sets the list of tab completions, as long as they were previously requested.
      */
-    public void setCompletions(String... newCompletions)
+    public void setCompletions(@Nonnull String... newCompletions)
     {
         String s = GuiVideoSettings.getGuiChatText(this);
 

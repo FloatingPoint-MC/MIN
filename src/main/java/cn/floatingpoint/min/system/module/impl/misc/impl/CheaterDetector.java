@@ -28,6 +28,7 @@ public class CheaterDetector extends MiscModule {
     public static final OptionValue autoTaunt = new OptionValue(false);
     public static final TextValue autoTauntPrefix = new TextValue("@", autoTaunt::getValue);
     private final IntegerValue delay = new IntegerValue(0, 5000, 1000, 1000, autoTaunt::getValue);
+    public static final OptionValue autoMark = new OptionValue(false);
     public static final OptionValue reachCheck = new OptionValue(true);
     public static final IntegerValue reachMaxVL = new IntegerValue(1, 30, 1, 15, reachCheck::getValue);
     private final OptionValue sprintCheck = new OptionValue(true);
@@ -43,6 +44,7 @@ public class CheaterDetector extends MiscModule {
                 new Pair<>("AutoTaunt", autoTaunt),
                 new Pair<>("AutoTauntPrefix", autoTauntPrefix),
                 new Pair<>("Delay", delay),
+                new Pair<>("AutoMark", autoMark),
                 new Pair<>("ReachCheck", reachCheck),
                 new Pair<>("ReachMaxVL", reachMaxVL),
                 new Pair<>("SprintCheck", sprintCheck),
