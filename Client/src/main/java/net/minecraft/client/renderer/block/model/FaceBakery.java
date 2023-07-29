@@ -16,8 +16,8 @@ import org.lwjgl.util.vector.Vector4f;
 
 public class FaceBakery
 {
-    private static final float SCALE_ROTATION_22_5 = 1.0F / (float)Math.cos(0.39269909262657166D) - 1.0F;
-    private static final float SCALE_ROTATION_GENERAL = 1.0F / (float)Math.cos((Math.PI / 4D)) - 1.0F;
+    private static final float SCALE_ROTATION_22_5 = 1.0F / MathHelper.cos(0.39269909262657166f) - 1.0F;
+    private static final float SCALE_ROTATION_GENERAL = 1.0F / MathHelper.cos((float) (Math.PI / 4f)) - 1.0F;
     private static final FaceBakery.Rotation[] UV_ROTATIONS = new FaceBakery.Rotation[ModelRotation.values().length * EnumFacing.values().length];
     private static final FaceBakery.Rotation UV_ROTATION_0 = new FaceBakery.Rotation()
     {

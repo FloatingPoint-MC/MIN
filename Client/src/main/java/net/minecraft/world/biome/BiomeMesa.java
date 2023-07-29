@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -120,7 +121,7 @@ public class BiomeMesa extends Biome
         IBlockState iblockstate = STAINED_HARDENED_CLAY;
         IBlockState iblockstate3 = this.fillerBlock;
         int k = (int)(noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-        boolean flag = Math.cos(noiseVal / 3.0D * Math.PI) > 0.0D;
+        boolean flag = MathHelper.cos((float) (noiseVal / 3.0D * Math.PI)) > 0.0D;
         int l = -1;
         boolean flag1 = false;
         int i1 = 0;

@@ -750,9 +750,9 @@ public abstract class EntityPlayer extends EntityLivingBase {
                 entityitem.motionY = -MathHelper.sin(this.rotationPitch * 0.017453292F) * f2 + 0.1F;
                 float f3 = this.rand.nextFloat() * ((float) Math.PI * 2F);
                 f2 = 0.02F * this.rand.nextFloat();
-                entityitem.motionX += Math.cos(f3) * (double) f2;
+                entityitem.motionX += MathHelper.cos(f3) * (double) f2;
                 entityitem.motionY += (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F;
-                entityitem.motionZ += Math.sin(f3) * (double) f2;
+                entityitem.motionZ += MathHelper.sin(f3) * (double) f2;
             }
 
             ItemStack itemstack = this.dropItemAndGetStack(entityitem);

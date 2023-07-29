@@ -70,7 +70,7 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
                 if (info != null) {
                     int ping = info.getResponseTime();
                     drawButton(x, height + y, "Ping: " + ping + "ms");
-                    height += 22;
+                    height += 20;
                 }
             }
         } else {

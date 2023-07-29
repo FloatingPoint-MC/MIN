@@ -12,7 +12,7 @@ import cn.floatingpoint.min.utils.client.Pair;
  */
 public class ChatBar extends RenderModule {
     public static final ModeValue font = new ModeValue(new String[]{"Minecraft", "SourceSans"}, "Minecraft");
-    public static final OptionValue shadow = new OptionValue(false);
+    public static final OptionValue shadow = new OptionValue(true);
     public static final OptionValue background = new OptionValue(true);
 
     public ChatBar() {

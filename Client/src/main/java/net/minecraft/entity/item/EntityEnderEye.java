@@ -153,8 +153,8 @@ public class EntityEnderEye extends Entity
                 this.motionY *= 0.8D;
             }
 
-            this.motionX = Math.cos(f2) * d2;
-            this.motionZ = Math.sin(f2) * d2;
+            this.motionX = MathHelper.cos(f2) * d2;
+            this.motionZ = MathHelper.sin(f2) * d2;
 
             if (this.posY < this.targetY)
             {

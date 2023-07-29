@@ -20,7 +20,7 @@ public class RenderDragon extends RenderLiving<EntityDragon>
 
     public RenderDragon(RenderManager renderManagerIn)
     {
-        super(renderManagerIn, new ModelDragon(0.0F), 0.5F);
+        super(renderManagerIn, new ModelDragon(), 0.5F);
         this.addLayer(new LayerEnderDragonEyes(this));
         this.addLayer(new LayerEnderDragonDeath());
     }

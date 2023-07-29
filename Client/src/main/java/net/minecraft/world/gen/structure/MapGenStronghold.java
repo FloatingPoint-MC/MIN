@@ -145,8 +145,8 @@ public class MapGenStronghold extends MapGenStructure
             for (int i1 = 0; i1 < this.structureCoords.length; ++i1)
             {
                 double d0 = 4.0D * this.distance + this.distance * (double)j * 6.0D + (random.nextDouble() - 0.5D) * this.distance * 2.5D;
-                int j1 = (int)Math.round(Math.cos(d1) * d0);
-                int k1 = (int)Math.round(Math.sin(d1) * d0);
+                int j1 = (int)Math.round(MathHelper.cos((float) d1) * d0);
+                int k1 = (int)Math.round(MathHelper.sin((float) d1) * d0);
                 BlockPos blockpos = this.world.getBiomeProvider().findBiomePosition((j1 << 4) + 8, (k1 << 4) + 8, 112, this.allowedBiomes, random);
 
                 if (blockpos != null)

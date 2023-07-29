@@ -152,7 +152,7 @@ public abstract class WorldProvider
             --f;
         }
 
-        float f1 = 1.0F - (float)((Math.cos((double)f * Math.PI) + 1.0D) / 2.0D);
+        float f1 = 1.0F - (float)((MathHelper.cos((float) (f * Math.PI)) + 1.0D) / 2.0D);
         f = f + (f1 - f) / 3.0F;
         return f;
     }

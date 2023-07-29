@@ -1,6 +1,7 @@
 package net.minecraft.entity.ai;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAILookIdle extends EntityAIBase
 {
@@ -46,8 +47,8 @@ public class EntityAILookIdle extends EntityAIBase
     public void startExecuting()
     {
         double d0 = (Math.PI * 2D) * this.idleEntity.getRNG().nextDouble();
-        this.lookX = Math.cos(d0);
-        this.lookZ = Math.sin(d0);
+        this.lookX = MathHelper.cos((float) d0);
+        this.lookZ = MathHelper.sin((float) d0);
         this.idleTime = 20 + this.idleEntity.getRNG().nextInt(20);
     }
 

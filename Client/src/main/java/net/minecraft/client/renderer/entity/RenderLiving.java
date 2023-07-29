@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.MathHelper;
 import net.optifine.Config;
 import net.optifine.shaders.Shaders;
 
@@ -84,9 +85,9 @@ public abstract class RenderLiving<T extends EntityLiving> extends RenderLivingB
                 BufferBuilder bufferbuilder = tessellator.getBuffer();
                 double d0 = this.interpolateValue(entity.prevRotationYaw, entity.rotationYaw, partialTicks * 0.5F) * 0.01745329238474369D;
                 double d1 = this.interpolateValue(entity.prevRotationPitch, entity.rotationPitch, partialTicks * 0.5F) * 0.01745329238474369D;
-                double d2 = Math.cos(d0);
-                double d3 = Math.sin(d0);
-                double d4 = Math.sin(d1);
+                double d2 = MathHelper.cos((float) d0);
+                double d3 = MathHelper.sin((float) d0);
+                double d4 = MathHelper.sin((float) d1);
 
                 if (entity instanceof EntityHanging)
                 {
@@ -95,13 +96,13 @@ public abstract class RenderLiving<T extends EntityLiving> extends RenderLivingB
                     d4 = -1.0D;
                 }
 
-                double d5 = Math.cos(d1);
+                double d5 = MathHelper.cos((float) d1);
                 double d6 = this.interpolateValue(entity.prevPosX, entity.posX, partialTicks) - d2 * 0.7D - d3 * 0.5D * d5;
                 double d7 = this.interpolateValue(entity.prevPosY + (double)entity.getEyeHeight() * 0.7D, entity.posY + (double)entity.getEyeHeight() * 0.7D, partialTicks) - d4 * 0.5D - 0.25D;
                 double d8 = this.interpolateValue(entity.prevPosZ, entity.posZ, partialTicks) - d3 * 0.7D + d2 * 0.5D * d5;
                 double d9 = this.interpolateValue(entityLivingIn.prevRenderYawOffset, entityLivingIn.renderYawOffset, partialTicks) * 0.01745329238474369D + (Math.PI / 2D);
-                d2 = Math.cos(d9) * (double)entityLivingIn.width * 0.4D;
-                d3 = Math.sin(d9) * (double)entityLivingIn.width * 0.4D;
+                d2 = MathHelper.cos((float) d9) * (double)entityLivingIn.width * 0.4D;
+                d3 = MathHelper.sin((float) d9) * (double)entityLivingIn.width * 0.4D;
                 double d10 = this.interpolateValue(entityLivingIn.prevPosX, entityLivingIn.posX, partialTicks) + d2;
                 double d11 = this.interpolateValue(entityLivingIn.prevPosY, entityLivingIn.posY, partialTicks);
                 double d12 = this.interpolateValue(entityLivingIn.prevPosZ, entityLivingIn.posZ, partialTicks) + d3;

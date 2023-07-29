@@ -302,7 +302,7 @@ public class ChunkGeneratorHell implements IChunkGenerator
 
         for (int j = 0; j < p_185938_6_; ++j)
         {
-            adouble[j] = Math.cos((double)j * Math.PI * 6.0D / (double)p_185938_6_) * 2.0D;
+            adouble[j] = MathHelper.cos((float) ((double)j * Math.PI * 6.0D / (double)p_185938_6_)) * 2.0D;
             double d2 = j;
 
             if (j > p_185938_6_ / 2)

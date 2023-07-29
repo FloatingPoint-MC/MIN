@@ -542,12 +542,12 @@ public class EntityGuardian extends EntityMob
                 this.entityGuardian.renderYawOffset = this.entityGuardian.rotationYaw;
                 float f1 = (float)(this.speed * this.entityGuardian.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
                 this.entityGuardian.setAIMoveSpeed(this.entityGuardian.getAIMoveSpeed() + (f1 - this.entityGuardian.getAIMoveSpeed()) * 0.125F);
-                double d4 = Math.sin((double)(this.entityGuardian.ticksExisted + this.entityGuardian.getEntityId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos(this.entityGuardian.rotationYaw * 0.017453292F);
-                double d6 = Math.sin(this.entityGuardian.rotationYaw * 0.017453292F);
+                double d4 = MathHelper.sin((float) ((double)(this.entityGuardian.ticksExisted + this.entityGuardian.getEntityId()) * 0.5D)) * 0.05D;
+                double d5 = MathHelper.cos(this.entityGuardian.rotationYaw * 0.017453292F);
+                double d6 = MathHelper.sin(this.entityGuardian.rotationYaw * 0.017453292F);
                 this.entityGuardian.motionX += d4 * d5;
                 this.entityGuardian.motionZ += d4 * d6;
-                d4 = Math.sin((double)(this.entityGuardian.ticksExisted + this.entityGuardian.getEntityId()) * 0.75D) * 0.05D;
+                d4 = MathHelper.sin((float) ((double)(this.entityGuardian.ticksExisted + this.entityGuardian.getEntityId()) * 0.75D)) * 0.05D;
                 this.entityGuardian.motionY += d4 * (d6 + d5) * 0.25D;
                 this.entityGuardian.motionY += (double)this.entityGuardian.getAIMoveSpeed() * d1 * 0.1D;
                 EntityLookHelper entitylookhelper = this.entityGuardian.getLookHelper();

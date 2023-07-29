@@ -1,6 +1,7 @@
 package net.minecraft.client.model;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 
 public class ModelSquid extends ModelBase
 {
@@ -21,8 +22,8 @@ public class ModelSquid extends ModelBase
         {
             this.squidTentacles[j] = new ModelRenderer(this, 48, 0);
             double d0 = (double)j * Math.PI * 2.0D / (double)this.squidTentacles.length;
-            float f = (float)Math.cos(d0) * 5.0F;
-            float f1 = (float)Math.sin(d0) * 5.0F;
+            float f = MathHelper.cos((float) d0) * 5.0F;
+            float f1 = MathHelper.sin((float) d0) * 5.0F;
             this.squidTentacles[j].addBox(-1.0F, 0.0F, -1.0F, 2, 18, 2);
             this.squidTentacles[j].rotationPointX = f;
             this.squidTentacles[j].rotationPointZ = f1;

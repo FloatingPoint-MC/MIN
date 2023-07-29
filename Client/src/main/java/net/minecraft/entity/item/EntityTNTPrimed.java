@@ -11,6 +11,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityTNTPrimed extends Entity {
@@ -36,9 +37,9 @@ public class EntityTNTPrimed extends Entity {
         this(worldIn);
         this.setPosition(x, y, z);
         float f = (float) (Math.random() * (Math.PI * 2D));
-        this.motionX = -((float) Math.sin(f)) * 0.02F;
+        this.motionX = -((float) MathHelper.sin(f)) * 0.02F;
         this.motionY = 0.20000000298023224D;
-        this.motionZ = -((float) Math.cos(f)) * 0.02F;
+        this.motionZ = -((float) MathHelper.cos(f)) * 0.02F;
         this.setFuse(80);
         this.prevPosX = x;
         this.prevPosY = y;

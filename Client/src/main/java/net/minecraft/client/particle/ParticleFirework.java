@@ -342,8 +342,8 @@ public class ParticleFirework
                     {
                         double d9 = (d4 + (d6 - d4) * d8) * speed;
                         double d10 = (d5 + (d7 - d5) * d8) * speed;
-                        double d11 = d9 * Math.sin(d3);
-                        d9 = d9 * Math.cos(d3);
+                        double d11 = d9 * MathHelper.sin((float) d3);
+                        d9 = d9 * MathHelper.cos((float) d3);
 
                         for (double d12 = -1.0D; d12 <= 1.0D; d12 += 2.0D)
                         {

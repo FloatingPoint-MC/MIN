@@ -677,13 +677,13 @@ public class Block
         }
     }
 
-    @Deprecated
-    @Nullable
 
     /**
      * @deprecated call via {@link IBlockState#getCollisionBoundingBox(IBlockAccess,BlockPos)} whenever possible.
      * Implementing/overriding is fine.
      */
+    @Deprecated
+    @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return blockState.getBoundingBox(worldIn, pos);

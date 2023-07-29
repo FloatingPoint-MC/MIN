@@ -52,6 +52,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.optifine.Config;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -166,13 +167,11 @@ public class Shaders
     static int frameCounter = 0;
     static float frameTime = 0.0F;
     static float frameTimeCounter = 0.0F;
-    static int systemTimeInt32 = 0;
     static float rainStrength = 0.0F;
     static float wetness = 0.0F;
     public static float wetnessHalfLife = 600.0F;
     public static float drynessHalfLife = 200.0F;
     public static float eyeBrightnessHalflife = 10.0F;
-    static boolean usewetness = false;
     static int isEyeInWater = 0;
     static int eyeBrightness = 0;
     static float eyeBrightnessFadeX = 0.0F;
@@ -313,11 +312,6 @@ public class Shaders
     static int preShadowPassThirdPersonView;
     public static boolean shouldSkipDefaultShadow = false;
     static boolean waterShadowEnabled = false;
-    static final int MaxDrawBuffers = 8;
-    static final int MaxColorBuffers = 8;
-    static final int MaxDepthBuffers = 3;
-    static final int MaxShadowColorBuffers = 8;
-    static final int MaxShadowDepthBuffers = 2;
     static int usedColorBuffers = 0;
     static int usedDepthBuffers = 0;
     static int usedShadowColorBuffers = 0;
@@ -4547,12 +4541,12 @@ public class Shaders
         }
 
         float f9 = sunAngle * ((float)Math.PI * 2F);
-        float f10 = (float)Math.cos(f9);
-        float f4 = (float)Math.sin(f9);
+        float f10 = MathHelper.cos(f9);
+        float f4 = MathHelper.sin(f9);
         float f5 = sunPathRotation * ((float)Math.PI * 2F);
         float f6 = f10;
-        float f7 = f4 * (float)Math.cos(f5);
-        float f8 = f4 * (float)Math.sin(f5);
+        float f7 = f4 * MathHelper.cos(f5);
+        float f8 = f4 * MathHelper.sin(f5);
 
         if ((double)sunAngle > 0.5D)
         {

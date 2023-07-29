@@ -54,7 +54,7 @@ public class GuiVideoSettings extends GuiScreenOF {
             }
         }
 
-        int l = this.height / 6 + 21 * (videoOptions.length / 2) - 12;
+        int l = this.height / 6 + 21 * ((videoOptions.length + 1) / 2) - 12;
         int i1 = 0;
         i1 = this.width / 2 - 155;
         this.buttonList.add(new GuiOptionButton(231, i1, l, Lang.get("of.options.shaders")));

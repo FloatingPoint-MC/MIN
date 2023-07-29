@@ -72,8 +72,8 @@ public class WorldGenBigTree extends WorldGenAbstractTree
                 {
                     double d0 = this.scaleWidth * (double)f * ((double)this.rand.nextFloat() + 0.328D);
                     double d1 = (double)(this.rand.nextFloat() * 2.0F) * Math.PI;
-                    double d2 = d0 * Math.sin(d1) + 0.5D;
-                    double d3 = d0 * Math.cos(d1) + 0.5D;
+                    double d2 = d0 * MathHelper.sin((float) d1) + 0.5D;
+                    double d3 = d0 * MathHelper.cos((float) d1) + 0.5D;
                     BlockPos blockpos = this.basePos.add(d2, k - 1, d3);
                     BlockPos blockpos1 = blockpos.up(this.leafDistanceLimit);
 

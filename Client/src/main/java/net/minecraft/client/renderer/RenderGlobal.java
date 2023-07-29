@@ -458,14 +458,14 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 double d6 = d1 * 100.0D;
                 double d7 = d2 * 100.0D;
                 double d8 = Math.atan2(d0, d2);
-                double d9 = Math.sin(d8);
-                double d10 = Math.cos(d8);
+                double d9 = MathHelper.sin((float) d8);
+                double d10 = MathHelper.cos((float) d8);
                 double d11 = Math.atan2(Math.sqrt(d0 * d0 + d2 * d2), d1);
-                double d12 = Math.sin(d11);
-                double d13 = Math.cos(d11);
+                double d12 = MathHelper.sin((float) d11);
+                double d13 = MathHelper.cos((float) d11);
                 double d14 = random.nextDouble() * Math.PI * 2.0D;
-                double d15 = Math.sin(d14);
-                double d16 = Math.cos(d14);
+                double d15 = MathHelper.sin((float) d14);
+                double d16 = MathHelper.cos((float) d14);
 
                 for (int j = 0; j < 4; ++j) {
                     double d18 = (double) ((j & 2) - 1) * d3;
@@ -2817,15 +2817,15 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
                 float f5 = (float) (data >> 16 & 255) / 255.0F;
                 float f = (float) (data >> 8 & 255) / 255.0F;
-                float f1 = (float) (data >> 0 & 255) / 255.0F;
+                float f1 = (float) (data & 255) / 255.0F;
                 EnumParticleTypes enumparticletypes = type == 2007 ? EnumParticleTypes.SPELL_INSTANT : EnumParticleTypes.SPELL;
 
                 for (int l2 = 0; l2 < 100; ++l2) {
                     double d10 = random.nextDouble() * 4.0D;
                     double d12 = random.nextDouble() * Math.PI * 2.0D;
-                    double d14 = Math.cos(d12) * d10;
+                    double d14 = MathHelper.cos((float) d12) * d10;
                     double d27 = 0.01D + random.nextDouble() * 0.5D;
-                    double d29 = Math.sin(d12) * d10;
+                    double d29 = MathHelper.sin((float) d12) * d10;
                     Particle particle1 = this.spawnParticle0(enumparticletypes.getParticleID(), enumparticletypes.getShouldIgnoreRange(), d6 + d14 * 0.1D, d7 + 0.3D, d8 + d29 * 0.1D, d14, d27, d29);
 
                     if (particle1 != null) {
@@ -2848,8 +2848,8 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 }
 
                 for (double d25 = 0.0D; d25 < (Math.PI * 2D); d25 += 0.15707963267948966D) {
-                    this.spawnParticle(EnumParticleTypes.PORTAL, d9 + Math.cos(d25) * 5.0D, d11 - 0.4D, d13 + Math.sin(d25) * 5.0D, Math.cos(d25) * -5.0D, 0.0D, Math.sin(d25) * -5.0D);
-                    this.spawnParticle(EnumParticleTypes.PORTAL, d9 + Math.cos(d25) * 5.0D, d11 - 0.4D, d13 + Math.sin(d25) * 5.0D, Math.cos(d25) * -7.0D, 0.0D, Math.sin(d25) * -7.0D);
+                    this.spawnParticle(EnumParticleTypes.PORTAL, d9 + MathHelper.cos((float) d25) * 5.0D, d11 - 0.4D, d13 + MathHelper.sin((float) d25) * 5.0D, MathHelper.cos((float) d25) * -5.0D, 0.0D, MathHelper.sin((float) d25) * -5.0D);
+                    this.spawnParticle(EnumParticleTypes.PORTAL, d9 + MathHelper.cos((float) d25) * 5.0D, d11 - 0.4D, d13 + MathHelper.sin((float) d25) * 5.0D, MathHelper.cos((float) d25) * -7.0D, 0.0D, MathHelper.sin((float) d25) * -7.0D);
                 }
 
                 return;

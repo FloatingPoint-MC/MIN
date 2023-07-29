@@ -8,6 +8,7 @@ import cn.floatingpoint.min.system.module.impl.render.impl.SmoothZoom;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import com.google.gson.JsonSyntaxException;
+import guichaguri.betterfps.BetterFpsHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -1987,6 +1988,12 @@ public class EntityRenderer implements IResourceManagerReloadListener {
      * distance and is used for sky rendering.
      */
     private void setupFog(int startCoords, float partialTicks) {
+        if (!BetterFpsHelper.getConfig().fog) {
+            if (startCoords == -1) {
+                GlStateManager.disableFog();
+                return;
+            }
+        }
         this.fogStandard = false;
         Entity entity = this.mc.getRenderViewEntity();
         this.setupFogColor(false);
@@ -1995,7 +2002,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
         if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(MobEffects.BLINDNESS)) {
             float f4 = 5.0F;
-            int i = ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.BLINDNESS).getDuration();
+            int i = Objects.requireNonNull(((EntityLivingBase) entity).getActivePotionEffect(MobEffects.BLINDNESS)).getDuration();
 
             if (i < 20) {
                 f4 = 5.0F + (this.farPlaneDistance - 5.0F) * (1.0F - (float) i / 20.0F);

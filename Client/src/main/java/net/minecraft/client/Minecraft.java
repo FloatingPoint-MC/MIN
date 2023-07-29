@@ -622,6 +622,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
         this.renderGlobal.makeEntityOutlineShader();
         MIN.init();
+
     }
 
     /**

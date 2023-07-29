@@ -3,6 +3,8 @@ package net.minecraft.block;
 import com.google.common.base.Predicate;
 import java.util.List;
 import javax.annotation.Nullable;
+
+import guichaguri.betterfps.BetterFpsHelper;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -169,9 +171,9 @@ public class BlockHopper extends BlockContainer
     {
         boolean flag = !worldIn.isBlockPowered(pos);
 
-        if (flag != state.getValue(ENABLED).booleanValue())
+        if (flag != state.getValue(ENABLED))
         {
-            worldIn.setBlockState(pos, state.withProperty(ENABLED, Boolean.valueOf(flag)), 4);
+            worldIn.setBlockState(pos, state.withProperty(ENABLED, flag), 4);
         }
     }
 

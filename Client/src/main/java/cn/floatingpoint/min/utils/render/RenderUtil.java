@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -240,35 +241,35 @@ public class RenderUtil {
         if (id == 1) {
             glVertex2d(x, y);
             for (int i = 0; i <= 90; i++) {
-                double x2 = Math.sin((i * Math.PI / 180)) * r;
-                double y2 = Math.cos((i * Math.PI / 180)) * r;
+                double x2 = MathHelper.sin((float) (i * Math.PI / 180)) * r;
+                double y2 = MathHelper.cos((float) (i * Math.PI / 180)) * r;
                 glVertex2d(x - x2, y - y2);
             }
         } else if (id == 2) {
             glVertex2d(x, y);
             for (int i = 90; i <= 180; i++) {
-                double x2 = Math.sin((i * Math.PI / 180)) * r;
-                double y2 = Math.cos((i * Math.PI / 180)) * r;
+                double x2 = MathHelper.sin((float) (i * Math.PI / 180)) * r;
+                double y2 = MathHelper.cos((float) (i * Math.PI / 180)) * r;
                 glVertex2d(x - x2, y - y2);
             }
         } else if (id == 3) {
             glVertex2d(x, y);
             for (int i = 270; i <= 360; i++) {
-                double x2 = Math.sin((i * Math.PI / 180)) * r;
-                double y2 = Math.cos((i * Math.PI / 180)) * r;
+                double x2 = MathHelper.sin((float) (i * Math.PI / 180)) * r;
+                double y2 = MathHelper.cos((float) (i * Math.PI / 180)) * r;
                 glVertex2d(x - x2, y - y2);
             }
         } else if (id == 4) {
             glVertex2d(x, y);
             for (int i = 180; i <= 270; i++) {
-                double x2 = Math.sin((i * Math.PI / 180)) * r;
-                double y2 = Math.cos((i * Math.PI / 180)) * r;
+                double x2 = MathHelper.sin((float) (i * Math.PI / 180)) * r;
+                double y2 = MathHelper.cos((float) (i * Math.PI / 180)) * r;
                 glVertex2d(x - x2, y - y2);
             }
         } else {
             for (int i = 0; i <= 360; i++) {
-                double x2 = Math.sin((i * Math.PI / 180)) * r;
-                double y2 = Math.cos((i * Math.PI / 180)) * r;
+                double x2 = MathHelper.sin((float) (i * Math.PI / 180)) * r;
+                double y2 = MathHelper.cos((float) (i * Math.PI / 180)) * r;
                 glVertex2f((float) (x - x2), (float) (y - y2));
             }
         }

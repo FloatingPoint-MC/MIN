@@ -14,7 +14,7 @@ public class ModelAdapterDragon extends ModelAdapter {
     }
 
     public ModelBase makeModel() {
-        return new ModelDragon(0.0F);
+        return new ModelDragon();
     }
 
     public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {

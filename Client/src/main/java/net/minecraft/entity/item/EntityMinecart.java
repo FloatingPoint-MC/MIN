@@ -553,8 +553,8 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
             if (d6 > 0.0D)
             {
-                double d7 = -Math.sin(entity.rotationYaw * 0.017453292F);
-                double d8 = Math.cos(entity.rotationYaw * 0.017453292F);
+                double d7 = -MathHelper.sin(entity.rotationYaw * 0.017453292F);
+                double d8 = MathHelper.cos(entity.rotationYaw * 0.017453292F);
                 double d9 = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
                 if (d9 < 0.01D)

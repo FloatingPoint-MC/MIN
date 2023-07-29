@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Programs
 {
-    private final List<Program> programs = new ArrayList<Program>();
-    private final Program programNone = this.make("", ProgramStage.NONE, true);
+    private final List<Program> programs = new ArrayList<>();
+    private final Program programNone = this.make("");
 
     public Program make(String name, ProgramStage programStage, Program backupProgram)
     {
@@ -16,10 +16,10 @@ public class Programs
         return program;
     }
 
-    private Program make(String name, ProgramStage programStage, boolean ownBackup)
+    private Program make(String name)
     {
         int i = this.programs.size();
-        Program program = new Program(i, name, programStage, ownBackup);
+        Program program = new Program(i, name, ProgramStage.NONE, true);
         this.programs.add(program);
         return program;
     }
@@ -46,7 +46,7 @@ public class Programs
 
     public Program makeVirtual(String name)
     {
-        return this.make(name, ProgramStage.NONE, true);
+        return this.make(name);
     }
 
     public Program[] makeComposites(String prefix, int count)
@@ -93,13 +93,10 @@ public class Programs
         }
         else
         {
-            for (int i = 0; i < this.programs.size(); ++i)
-            {
-                Program program = this.programs.get(i);
+            for (Program program : this.programs) {
                 String s = program.getName();
 
-                if (s.equals(name))
-                {
+                if (s.equals(name)) {
                     return program;
                 }
             }
@@ -122,30 +119,7 @@ public class Programs
 
     public Program[] getPrograms()
     {
-        Program[] aprogram = this.programs.toArray(new Program[this.programs.size()]);
-        return aprogram;
-    }
-
-    public Program[] getPrograms(Program programFrom, Program programTo)
-    {
-        int i = programFrom.getIndex();
-        int j = programTo.getIndex();
-
-        if (i > j)
-        {
-            int k = i;
-            i = j;
-            j = k;
-        }
-
-        Program[] aprogram = new Program[j - i + 1];
-
-        for (int l = 0; l < aprogram.length; ++l)
-        {
-            aprogram[l] = this.programs.get(i + l);
-        }
-
-        return aprogram;
+        return this.programs.toArray(new Program[0]);
     }
 
     public String toString()
