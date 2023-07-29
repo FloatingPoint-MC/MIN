@@ -1,0 +1,25 @@
+name: Gitee Publish
+
+# 检测到 src 文件内 .java 文件有变动执行编译
+on:
+  push:
+
+jobs:
+  build:
+    #	配置权限
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Github Repos To Gitee  # 名字随便起
+        uses: Yikun/hub-mirror-action@master  # 使用Yikun/hub-mirror-action
+        with:
+          src: github/FloatingPoint-MC  # 源端账户名(github)
+          dst: gitee/FloatingPoint-MC  # 目的端账户名(gitee)
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}  # SSH密钥对中的私钥
+          dst_token:  ${{ secrets.GITEE_TOKEN }}  # Gitee账户的私人令牌
+          account_type: org  # 账户类型
+          clone_style: "https"  # 使用https方式进行clone，也可以使用ssh
+          debug: true  # 启用后会显示所有执行命令
+          force_update: true  # 启用后，强制同步，即强制覆盖目的端仓库
+          white_list: "MIN"
+          timeout: '600s'  # git超时设置，超时后会自动重试git操作
