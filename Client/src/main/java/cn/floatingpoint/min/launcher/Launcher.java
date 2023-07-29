@@ -25,7 +25,7 @@ import java.util.List;
  * @date: 2023-07-24 16:06:41
  */
 public class Launcher {
-    public static void main(String[] args) {
+    public static void launch(String[] args) {
         if (args.length == 0) {
             JFrame frame = new JFrame("MIN Client - 1.12.2");
             frame.setSize(854, 480);
