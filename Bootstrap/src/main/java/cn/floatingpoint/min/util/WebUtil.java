@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  */
 public class WebUtil {
     private static final SSLContext context;
+    private static final int abroad;
 
     static {
         SSLContext ctx = null;
@@ -84,15 +85,14 @@ public class WebUtil {
         } catch (Throwable ignored) {
         }
         context = ctx;
+        abroad = getAddressByIP(getOutIPV4());
     }
 
     public static String getPlatform() {
-        int abroad = getAddressByIP(getOutIPV4());
         return abroad == 1 ? "https://raw.githubusercontent.com/FloatingPoint-MC/MIN/master/" : "https://gitee.com/FloatingPoint-MC/MIN/raw/master/";
     }
 
     public static String getDownloadUrl() {
-        int abroad = getAddressByIP(getOutIPV4());
         return abroad == 1 ? "https://github.com/FloatingPoint-MC/MIN/releases/download/" : "https://gitee.com/FloatingPoint-MC/MIN/releases/download/";
     }
 

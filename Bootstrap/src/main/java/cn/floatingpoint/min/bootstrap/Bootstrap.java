@@ -24,12 +24,12 @@ import java.security.NoSuchAlgorithmException;
  * @date: 2023-07-29 13:49:01
  */
 public class Bootstrap extends JFrame {
-    public static JLabel label;
-    public static JProgressBar progressBar;
-    public static Bootstrap instance;
-    public File dir;
-    public boolean canLaunch = false;
-    private int length;
+    private static JLabel label;
+    private static JProgressBar progressBar;
+    private static Bootstrap instance;
+    private File dir;
+    private boolean canLaunch = false;
+    private int length = 0;
 
     public Bootstrap(String[] args) {
         instance = this;
@@ -79,7 +79,7 @@ public class Bootstrap extends JFrame {
         this.add(label);
         this.add(progressBar);
         JLabel introduction = new JLabel("Developed by FloatingPoint-MC.");
-        introduction.setHorizontalAlignment(SwingConstants.RIGHT);
+        introduction.setHorizontalAlignment(SwingConstants.CENTER);
         introduction.setVerticalAlignment(SwingConstants.BOTTOM);
         this.getContentPane().add(introduction);
         this.setVisible(true);
@@ -97,43 +97,53 @@ public class Bootstrap extends JFrame {
     private void clientStart() {
         new Thread(() -> {
             try {
-                label.setText("Checking status...");
+                label.setText("Checking status: ");
                 String url = WebUtil.getPlatform() + "data.json";
-                JSONObject jsonObject = new JSONObject(WebUtil.getJSON(url));
+                progressBar.setValue(33);
+                JSONObject jsonObject = WebUtil.getJSON(url);
+                progressBar.setValue(66);
                 String remoteVersion = jsonObject.getString("CurrentVersion");
-                if (!remoteVersion.equalsIgnoreCase(Bootstrap.instance.getVersion()) || Bootstrap.instance.checkSha1NonRight(jsonObject.getString("Sha-1"))) {
-                    Bootstrap.instance.deleteJarFile();
-                    Bootstrap.label.setText("Downloading client: ");
-                    Bootstrap.instance.downloadJarFile(remoteVersion);
+                progressBar.setValue(99);
+                if (!remoteVersion.equalsIgnoreCase(getVersion()) || checkSha1NonRight(jsonObject.getString("Sha-1"))) {
+                    progressBar.setValue(100);
+                    deleteJarFile();
+                    downloadJarFile(remoteVersion);
                 } else {
-                    Bootstrap.instance.canLaunch = true;
+                    canLaunch = true;
                 }
             } catch (Exception e) {
-                System.exit(-1);
+                JOptionPane.showMessageDialog(this, "Error while grabbing data.", "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
             }
         }).start();
     }
 
     private void downloadJarFile(String version) {
-        label.setText("Fetching game...");
+        label.setText("Fetching game: ");
+        progressBar.setValue(0);
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(WebUtil.getDownloadUrl() + version + "/MIN-" + version + ".jar").openConnection();
+            progressBar.setValue(33);
             try (InputStream inputStream = connection.getInputStream()) {
+                progressBar.setValue(67);
                 try (FileOutputStream out = new FileOutputStream(new File(this.dir, "Game.jar"))) {
-                    int length = inputStream.available();
+                    progressBar.setValue(100);
+                    int length = connection.getContentLength();
                     label.setText("Downloading Client: ");
+                    progressBar.setValue(0);
                     byte[] bytes = new byte[1024 * 512];
                     int len;
                     while ((len = inputStream.read(bytes)) != -1) {
+                        this.length += len;
+                        progressBar.setValue((int) Math.round(100.0D * this.length / length));
                         out.write(bytes, 0, len);
                     }
-                    this.length += len;
-                    Bootstrap.progressBar.setValue((int) (100.0D * this.length / length));
-                    Bootstrap.instance.canLaunch = true;
+                    canLaunch = true;
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(this, "Error while grabbing game file.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
 
@@ -143,14 +153,16 @@ public class Bootstrap extends JFrame {
             try {
                 Thread.sleep(1000L);
             } catch (InterruptedException e) {
-                System.exit(-1);
+                JOptionPane.showMessageDialog(this, "Error.", "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
             }
         }
         this.launchGame(args);
     }
 
     private void launchGame(String[] args) {
-        label.setText("Launching client...");
+        label.setText("                  Launching client...                  ");
+        progressBar.setVisible(false);
         File jar = new File(this.dir, "Game.jar");
         try (URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{jar.toURI().toURL()})) {
             Class<?> launcherClass = urlClassLoader.loadClass("cn.floatingpoint.min.launcher.Launcher");
@@ -159,7 +171,8 @@ public class Bootstrap extends JFrame {
             launchMethod.invoke(launcherClass, (Object) args);
         } catch (IOException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                  IllegalAccessException e) {
-            System.exit(-1);
+            JOptionPane.showMessageDialog(this, "Error while launching game.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         System.exit(0);
     }
@@ -201,7 +214,9 @@ public class Bootstrap extends JFrame {
         if ((new File(this.dir, "Game.jar")).getAbsoluteFile().exists()) {
             do {
                 label.setText("Removing old client...");
+                progressBar.setValue(0);
             } while (!(new File(this.dir, "Game.jar")).getAbsoluteFile().delete());
+            progressBar.setValue(100);
         }
     }
 }
