@@ -60,7 +60,7 @@ public class CommandBanPlayer extends CommandBase
 
             if (gameprofile == null)
             {
-                throw new CommandException("commands.ban.failed", new Object[] {args[0]});
+                throw new CommandException("commands.ban.failed", args[0]);
             }
             else
             {
@@ -71,21 +71,21 @@ public class CommandBanPlayer extends CommandBase
                     s = getChatComponentFromNthArg(sender, args, 1).getUnformattedText();
                 }
 
-                UserListBansEntry userlistbansentry = new UserListBansEntry(gameprofile, (Date)null, sender.getName(), (Date)null, s);
+                UserListBansEntry userlistbansentry = new UserListBansEntry(gameprofile, null, sender.getName(), null, s);
                 server.getPlayerList().getBannedPlayers().addEntry(userlistbansentry);
                 EntityPlayerMP entityplayermp = server.getPlayerList().getPlayerByUsername(args[0]);
 
                 if (entityplayermp != null)
                 {
-                    entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.banned", new Object[0]));
+                    entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.banned"));
                 }
 
-                notifyCommandListener(sender, this, "commands.ban.success", new Object[] {args[0]});
+                notifyCommandListener(sender, this, "commands.ban.success", args[0]);
             }
         }
         else
         {
-            throw new WrongUsageException("commands.ban.usage", new Object[0]);
+            throw new WrongUsageException("commands.ban.usage");
         }
     }
 

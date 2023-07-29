@@ -34,7 +34,7 @@ public enum TextFormatting
     ITALIC("ITALIC", 'o', true),
     RESET("RESET", 'r', -1);
 
-    private static final Map<String, TextFormatting> NAME_MAPPING = Maps.<String, TextFormatting>newHashMap();
+    private static final Map<String, TextFormatting> NAME_MAPPING = Maps.newHashMap();
 
     /**
      * Matches formatting codes that indicate that the client should treat the following text as bold, recolored,
@@ -63,17 +63,17 @@ public enum TextFormatting
         return p_175745_0_.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
     }
 
-    private TextFormatting(String formattingName, char formattingCodeIn, int colorIndex)
+    TextFormatting(String formattingName, char formattingCodeIn, int colorIndex)
     {
         this(formattingName, formattingCodeIn, false, colorIndex);
     }
 
-    private TextFormatting(String formattingName, char formattingCodeIn, boolean fancyStylingIn)
+    TextFormatting(String formattingName, char formattingCodeIn, boolean fancyStylingIn)
     {
         this(formattingName, formattingCodeIn, fancyStylingIn, -1);
     }
 
-    private TextFormatting(String formattingName, char formattingCodeIn, boolean fancyStylingIn, int colorIndex)
+    TextFormatting(String formattingName, char formattingCodeIn, boolean fancyStylingIn, int colorIndex)
     {
         this.name = formattingName;
         this.formattingCode = formattingCodeIn;
@@ -136,7 +136,7 @@ public enum TextFormatting
      */
     public static TextFormatting getValueByName(@Nullable String friendlyName)
     {
-        return friendlyName == null ? null : (TextFormatting)NAME_MAPPING.get(lowercaseAlpha(friendlyName));
+        return friendlyName == null ? null : NAME_MAPPING.get(lowercaseAlpha(friendlyName));
     }
 
     @Nullable
@@ -166,7 +166,7 @@ public enum TextFormatting
 
     public static Collection<String> getValidValues(boolean p_96296_0_, boolean p_96296_1_)
     {
-        List<String> list = Lists.<String>newArrayList();
+        List<String> list = Lists.newArrayList();
 
         for (TextFormatting textformatting : values())
         {

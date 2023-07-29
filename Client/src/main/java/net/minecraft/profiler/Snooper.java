@@ -16,8 +16,8 @@ import net.minecraft.util.HttpUtil;
 
 public class Snooper
 {
-    private final Map<String, Object> snooperStats = Maps.<String, Object>newHashMap();
-    private final Map<String, Object> clientStats = Maps.<String, Object>newHashMap();
+    private final Map<String, Object> snooperStats = Maps.newHashMap();
+    private final Map<String, Object> clientStats = Maps.newHashMap();
     private final String uniqueID = UUID.randomUUID().toString();
 
     /** URL of the server to send the report to */
@@ -67,7 +67,7 @@ public class Snooper
 
                         synchronized (Snooper.this.syncLock)
                         {
-                            map = Maps.<String, Object>newHashMap(Snooper.this.clientStats);
+                            map = Maps.newHashMap(Snooper.this.clientStats);
 
                             if (Snooper.this.selfCounter == 0)
                             {
@@ -146,7 +146,7 @@ public class Snooper
 
     public Map<String, String> getCurrentStats()
     {
-        Map<String, String> map = Maps.<String, String>newLinkedHashMap();
+        Map<String, String> map = Maps.newLinkedHashMap();
 
         synchronized (this.syncLock)
         {

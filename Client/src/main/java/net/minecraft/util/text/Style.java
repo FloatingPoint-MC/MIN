@@ -330,32 +330,32 @@ public class Style
 
             if (this.getColor() != null)
             {
-                stringbuilder.append((Object)this.getColor());
+                stringbuilder.append(this.getColor());
             }
 
             if (this.getBold())
             {
-                stringbuilder.append((Object)TextFormatting.BOLD);
+                stringbuilder.append(TextFormatting.BOLD);
             }
 
             if (this.getItalic())
             {
-                stringbuilder.append((Object)TextFormatting.ITALIC);
+                stringbuilder.append(TextFormatting.ITALIC);
             }
 
             if (this.getUnderlined())
             {
-                stringbuilder.append((Object)TextFormatting.UNDERLINE);
+                stringbuilder.append(TextFormatting.UNDERLINE);
             }
 
             if (this.getObfuscated())
             {
-                stringbuilder.append((Object)TextFormatting.OBFUSCATED);
+                stringbuilder.append(TextFormatting.OBFUSCATED);
             }
 
             if (this.getStrikethrough())
             {
-                stringbuilder.append((Object)TextFormatting.STRIKETHROUGH);
+                stringbuilder.append(TextFormatting.STRIKETHROUGH);
             }
 
             return stringbuilder.toString();
@@ -539,7 +539,7 @@ public class Style
 
                     if (jsonobject.has("color"))
                     {
-                        style.color = (TextFormatting)p_deserialize_3_.deserialize(jsonobject.get("color"), TextFormatting.class);
+                        style.color = p_deserialize_3_.deserialize(jsonobject.get("color"), TextFormatting.class);
                     }
 
                     if (jsonobject.has("insertion"))
@@ -573,7 +573,7 @@ public class Style
                         {
                             JsonPrimitive jsonprimitive2 = jsonobject2.getAsJsonPrimitive("action");
                             HoverEvent.Action hoverevent$action = jsonprimitive2 == null ? null : HoverEvent.Action.getValueByCanonicalName(jsonprimitive2.getAsString());
-                            ITextComponent itextcomponent = (ITextComponent)p_deserialize_3_.deserialize(jsonobject2.get("value"), ITextComponent.class);
+                            ITextComponent itextcomponent = p_deserialize_3_.deserialize(jsonobject2.get("value"), ITextComponent.class);
 
                             if (hoverevent$action != null && itextcomponent != null && hoverevent$action.shouldAllowInChat())
                             {

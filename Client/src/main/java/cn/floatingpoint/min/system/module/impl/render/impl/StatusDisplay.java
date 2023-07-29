@@ -61,7 +61,7 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
             drawButton(x, y, "FPS:" + Minecraft.getDebugFPS());
             height += 12;
             if (background.getValue()) {
-                height += 14;
+                height += 12;
             }
         }
         if (ping.getValue()) {

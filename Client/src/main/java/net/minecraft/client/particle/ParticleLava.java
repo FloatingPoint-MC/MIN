@@ -15,7 +15,7 @@ public class ParticleLava extends Particle
         this.motionX *= 0.800000011920929D;
         this.motionY *= 0.800000011920929D;
         this.motionZ *= 0.800000011920929D;
-        this.motionY = (double)(this.rand.nextFloat() * 0.4F + 0.05F);
+        this.motionY = this.rand.nextFloat() * 0.4F + 0.05F;
         this.particleRed = 1.0F;
         this.particleGreen = 1.0F;
         this.particleBlue = 1.0F;

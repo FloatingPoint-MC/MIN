@@ -420,9 +420,7 @@ public class CustomGuiProperties {
             if (this.variants != null) {
                 CustomGuiProperties.EnumVariant customguiproperties$enumvariant = this.getDispenserVariant(tileentitydispenser);
 
-                if (!Config.equalsOne(customguiproperties$enumvariant, this.variants)) {
-                    return false;
-                }
+                return Config.equalsOne(customguiproperties$enumvariant, this.variants);
             }
 
             return true;
@@ -444,9 +442,7 @@ public class CustomGuiProperties {
             if (this.colors != null) {
                 EnumDyeColor enumdyecolor = tileentityshulkerbox.getColor();
 
-                if (!Config.equalsOne(enumdyecolor, this.colors)) {
-                    return false;
-                }
+                return Config.equalsOne(enumdyecolor, this.colors);
             }
 
             return true;
@@ -503,9 +499,7 @@ public class CustomGuiProperties {
                     }
                 }
 
-                if (!flag) {
-                    return false;
-                }
+                return flag;
             }
 
             return true;
@@ -530,9 +524,7 @@ public class CustomGuiProperties {
                 EntityLlama entityllama = (EntityLlama) abstracthorse;
                 EnumDyeColor enumdyecolor = entityllama.getColor();
 
-                if (!Config.equalsOne(enumdyecolor, this.colors)) {
-                    return false;
-                }
+                return Config.equalsOne(enumdyecolor, this.colors);
             }
 
             return true;
@@ -564,7 +556,7 @@ public class CustomGuiProperties {
         return "name: " + this.fileName + ", container: " + this.container + ", textures: " + this.textureLocations;
     }
 
-    public static enum EnumContainer {
+    public enum EnumContainer {
         ANVIL,
         BEACON,
         BREWING_STAND,
@@ -578,15 +570,15 @@ public class CustomGuiProperties {
         VILLAGER,
         SHULKER_BOX,
         CREATIVE,
-        INVENTORY;
+        INVENTORY
     }
 
-    private static enum EnumVariant {
+    private enum EnumVariant {
         HORSE,
         DONKEY,
         MULE,
         LLAMA,
         DISPENSER,
-        DROPPER;
+        DROPPER
     }
 }

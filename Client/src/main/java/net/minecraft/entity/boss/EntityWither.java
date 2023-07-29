@@ -50,11 +50,11 @@ import net.minecraft.world.World;
 
 public class EntityWither extends EntityMob implements IRangedAttackMob
 {
-    private static final DataParameter<Integer> FIRST_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntityWither.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> SECOND_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntityWither.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> THIRD_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntityWither.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FIRST_HEAD_TARGET = EntityDataManager.createKey(EntityWither.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> SECOND_HEAD_TARGET = EntityDataManager.createKey(EntityWither.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> THIRD_HEAD_TARGET = EntityDataManager.createKey(EntityWither.class, DataSerializers.VARINT);
     private static final DataParameter<Integer>[] HEAD_TARGETS = new DataParameter[] {FIRST_HEAD_TARGET, SECOND_HEAD_TARGET, THIRD_HEAD_TARGET};
-    private static final DataParameter<Integer> INVULNERABILITY_TIME = EntityDataManager.<Integer>createKey(EntityWither.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> INVULNERABILITY_TIME = EntityDataManager.createKey(EntityWither.class, DataSerializers.VARINT);
     private final float[] xRotationHeads = new float[2];
     private final float[] yRotationHeads = new float[2];
     private final float[] xRotOHeads = new float[2];
@@ -91,7 +91,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_UNDEAD));
     }
 
@@ -186,7 +186,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
 
                 if (d3 > 9.0D)
                 {
-                    double d5 = (double)MathHelper.sqrt(d3);
+                    double d5 = MathHelper.sqrt(d3);
                     this.motionX += (d0 / d5 * 0.5D - this.motionX) * 0.6000000238418579D;
                     this.motionZ += (d1 / d5 * 0.5D - this.motionZ) * 0.6000000238418579D;
                 }
@@ -224,7 +224,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
                 double d6 = entity1.posX - d11;
                 double d7 = entity1.posY + (double)entity1.getEyeHeight() - d12;
                 double d8 = entity1.posZ - d13;
-                double d9 = (double)MathHelper.sqrt(d6 * d6 + d8 * d8);
+                double d9 = MathHelper.sqrt(d6 * d6 + d8 * d8);
                 float f = (float)(MathHelper.atan2(d8, d6) * (180D / Math.PI)) - 90.0F;
                 float f1 = (float)(-(MathHelper.atan2(d7, d9) * (180D / Math.PI)));
                 this.xRotationHeads[j] = this.rotlerp(this.xRotationHeads[j], f1, 40.0F);
@@ -333,7 +333,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
                     }
                     else
                     {
-                        List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(20.0D, 8.0D, 20.0D), Predicates.and(NOT_UNDEAD, EntitySelectors.NOT_SPECTATING));
+                        List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(20.0D, 8.0D, 20.0D), Predicates.and(NOT_UNDEAD, EntitySelectors.NOT_SPECTATING));
 
                         for (int j2 = 0; j2 < 10 && !list.isEmpty(); ++j2)
                         {
@@ -405,7 +405,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
 
                     if (flag)
                     {
-                        this.world.playEvent((EntityPlayer)null, 1022, new BlockPos(this), 0);
+                        this.world.playEvent(null, 1022, new BlockPos(this), 0);
                     }
                 }
             }
@@ -520,7 +520,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
      */
     private void launchWitherSkullToCoords(int p_82209_1_, double x, double y, double z, boolean invulnerable)
     {
-        this.world.playEvent((EntityPlayer)null, 1024, new BlockPos(this), 0);
+        this.world.playEvent(null, 1024, new BlockPos(this), 0);
         double d0 = this.getHeadX(p_82209_1_);
         double d1 = this.getHeadY(p_82209_1_);
         double d2 = this.getHeadZ(p_82209_1_);
@@ -661,7 +661,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
 
     public int getInvulTime()
     {
-        return ((Integer)this.dataManager.get(INVULNERABILITY_TIME)).intValue();
+        return this.dataManager.get(INVULNERABILITY_TIME).intValue();
     }
 
     public void setInvulTime(int time)
@@ -674,7 +674,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
      */
     public int getWatchedTargetId(int head)
     {
-        return ((Integer)this.dataManager.get(HEAD_TARGETS[head])).intValue();
+        return this.dataManager.get(HEAD_TARGETS[head]).intValue();
     }
 
     /**

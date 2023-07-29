@@ -203,7 +203,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
      */
     public void saveWorldInfo(WorldInfo worldInformation)
     {
-        this.saveWorldInfoWithPlayer(worldInformation, (NBTTagCompound)null);
+        this.saveWorldInfoWithPlayer(worldInformation, null);
     }
 
     /**
@@ -227,7 +227,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception var5)
         {
-            LOGGER.warn("Failed to save player data for {}", (Object)player.getName());
+            LOGGER.warn("Failed to save player data for {}", player.getName());
         }
     }
 
@@ -251,7 +251,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
         catch (Exception var4)
         {
-            LOGGER.warn("Failed to load player data for {}", (Object)player.getName());
+            LOGGER.warn("Failed to load player data for {}", player.getName());
         }
 
         if (nbttagcompound != null)

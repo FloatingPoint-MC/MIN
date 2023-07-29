@@ -34,7 +34,7 @@ public class SimpleBakedModel implements IBakedModel
 
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
     {
-        return side == null ? this.generalQuads : (List)this.faceQuads.get(side);
+        return side == null ? this.generalQuads : this.faceQuads.get(side);
     }
 
     public boolean isAmbientOcclusion()
@@ -98,7 +98,7 @@ public class SimpleBakedModel implements IBakedModel
 
         private Builder(boolean ambientOcclusion, boolean gui3d, ItemCameraTransforms transforms, ItemOverrideList overrides)
         {
-            this.builderGeneralQuads = Lists.<BakedQuad>newArrayList();
+            this.builderGeneralQuads = Lists.newArrayList();
             this.builderFaceQuads = Maps.newEnumMap(EnumFacing.class);
 
             for (EnumFacing enumfacing : EnumFacing.values())
@@ -122,7 +122,7 @@ public class SimpleBakedModel implements IBakedModel
 
         private void addGeneralQuads(IBlockState p_188645_1_, IBakedModel p_188645_2_, TextureAtlasSprite p_188645_3_, long p_188645_4_)
         {
-            for (BakedQuad bakedquad : p_188645_2_.getQuads(p_188645_1_, (EnumFacing)null, p_188645_4_))
+            for (BakedQuad bakedquad : p_188645_2_.getQuads(p_188645_1_, null, p_188645_4_))
             {
                 this.addGeneralQuad(new BakedQuadRetextured(bakedquad, p_188645_3_));
             }

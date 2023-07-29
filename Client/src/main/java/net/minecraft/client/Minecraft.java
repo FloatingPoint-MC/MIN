@@ -432,7 +432,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
@@ -656,7 +656,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
-        Display.setTitle("MIN Client(Minecraft 1.12.2) - Release " + MIN.VERSION);
+        if (DEBUG_MODE) {
+            Display.setTitle("MIN Client(Minecraft 1.12.2) - DEBUG MODE");
+        } else {
+            Display.setTitle("MIN Client(Minecraft 1.12.2) - Release " + MIN.VERSION);
+        }
 
         try {
             Display.create((new PixelFormat()).withDepthBits(24));

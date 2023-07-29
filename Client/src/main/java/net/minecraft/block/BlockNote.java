@@ -122,7 +122,7 @@ public class BlockNote extends BlockContainer
     public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
     {
         float f = (float)Math.pow(2.0D, (double)(param - 12) / 12.0D);
-        worldIn.playSound((EntityPlayer)null, pos, this.getInstrument(id), SoundCategory.RECORDS, 3.0F, f);
+        worldIn.playSound(null, pos, this.getInstrument(id), SoundCategory.RECORDS, 3.0F, f);
         worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.2D, (double)pos.getZ() + 0.5D, (double)param / 24.0D, 0.0D, 0.0D);
         return true;
     }

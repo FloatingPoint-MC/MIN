@@ -41,7 +41,7 @@ public class BlockEndRod extends BlockDirectional
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -51,7 +51,7 @@ public class BlockEndRod extends BlockDirectional
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withProperty(FACING, mirrorIn.mirror((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, mirrorIn.mirror(state.getValue(FACING)));
     }
 
     /**
@@ -60,7 +60,7 @@ public class BlockEndRod extends BlockDirectional
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (((EnumFacing)state.getValue(FACING)).getAxis())
+        switch (state.getValue(FACING).getAxis())
         {
             case X:
             default:
@@ -109,7 +109,7 @@ public class BlockEndRod extends BlockDirectional
 
         if (iblockstate.getBlock() == Blocks.END_ROD)
         {
-            EnumFacing enumfacing = (EnumFacing)iblockstate.getValue(FACING);
+            EnumFacing enumfacing = iblockstate.getValue(FACING);
 
             if (enumfacing == facing)
             {
@@ -127,11 +127,11 @@ public class BlockEndRod extends BlockDirectional
      */
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        EnumFacing enumfacing = (EnumFacing)stateIn.getValue(FACING);
+        EnumFacing enumfacing = stateIn.getValue(FACING);
         double d0 = (double)pos.getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
         double d1 = (double)pos.getY() + 0.55D - (double)(rand.nextFloat() * 0.1F);
         double d2 = (double)pos.getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
-        double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
+        double d3 = 0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F;
 
         if (rand.nextInt(5) == 0)
         {
@@ -163,12 +163,12 @@ public class BlockEndRod extends BlockDirectional
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     /**

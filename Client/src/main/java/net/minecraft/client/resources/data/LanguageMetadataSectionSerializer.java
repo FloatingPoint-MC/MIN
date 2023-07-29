@@ -16,7 +16,7 @@ public class LanguageMetadataSectionSerializer extends BaseMetadataSectionSerial
     public LanguageMetadataSection deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
     {
         JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
-        Set<Language> set = Sets.<Language>newHashSet();
+        Set<Language> set = Sets.newHashSet();
 
         for (Entry<String, JsonElement> entry : jsonobject.entrySet())
         {

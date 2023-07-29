@@ -27,7 +27,7 @@ public class StatisticsManagerServer extends StatisticsManager
     private static final Logger LOGGER = LogManager.getLogger();
     private final MinecraftServer server;
     private final File statsFile;
-    private final Set<StatBase> dirty = Sets.<StatBase>newHashSet();
+    private final Set<StatBase> dirty = Sets.newHashSet();
     private int lastStatRequest = -300;
 
     public StatisticsManagerServer(MinecraftServer serverIn, File statsFileIn)
@@ -64,7 +64,7 @@ public class StatisticsManagerServer extends StatisticsManager
         }
         catch (IOException ioexception)
         {
-            LOGGER.error("Couldn't save stats", (Throwable)ioexception);
+            LOGGER.error("Couldn't save stats", ioexception);
         }
     }
 
@@ -90,12 +90,12 @@ public class StatisticsManagerServer extends StatisticsManager
 
         if (!jsonelement.isJsonObject())
         {
-            return Maps.<StatBase, TupleIntJsonSerializable>newHashMap();
+            return Maps.newHashMap();
         }
         else
         {
             JsonObject jsonobject = jsonelement.getAsJsonObject();
-            Map<StatBase, TupleIntJsonSerializable> map = Maps.<StatBase, TupleIntJsonSerializable>newHashMap();
+            Map<StatBase, TupleIntJsonSerializable> map = Maps.newHashMap();
 
             for (Entry<String, JsonElement> entry : jsonobject.entrySet())
             {
@@ -105,13 +105,13 @@ public class StatisticsManagerServer extends StatisticsManager
                 {
                     TupleIntJsonSerializable tupleintjsonserializable = new TupleIntJsonSerializable();
 
-                    if (((JsonElement)entry.getValue()).isJsonPrimitive() && ((JsonElement)entry.getValue()).getAsJsonPrimitive().isNumber())
+                    if (entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isNumber())
                     {
-                        tupleintjsonserializable.setIntegerValue(((JsonElement)entry.getValue()).getAsInt());
+                        tupleintjsonserializable.setIntegerValue(entry.getValue().getAsInt());
                     }
-                    else if (((JsonElement)entry.getValue()).isJsonObject())
+                    else if (entry.getValue().isJsonObject())
                     {
-                        JsonObject jsonobject1 = ((JsonElement)entry.getValue()).getAsJsonObject();
+                        JsonObject jsonobject1 = entry.getValue().getAsJsonObject();
 
                         if (jsonobject1.has("value") && jsonobject1.get("value").isJsonPrimitive() && jsonobject1.get("value").getAsJsonPrimitive().isNumber())
                         {
@@ -152,25 +152,25 @@ public class StatisticsManagerServer extends StatisticsManager
 
         for (Entry<StatBase, TupleIntJsonSerializable> entry : p_150880_0_.entrySet())
         {
-            if (((TupleIntJsonSerializable)entry.getValue()).getJsonSerializableValue() != null)
+            if (entry.getValue().getJsonSerializableValue() != null)
             {
                 JsonObject jsonobject1 = new JsonObject();
-                jsonobject1.addProperty("value", Integer.valueOf(((TupleIntJsonSerializable)entry.getValue()).getIntegerValue()));
+                jsonobject1.addProperty("value", Integer.valueOf(entry.getValue().getIntegerValue()));
 
                 try
                 {
-                    jsonobject1.add("progress", ((TupleIntJsonSerializable)entry.getValue()).getJsonSerializableValue().getSerializableElement());
+                    jsonobject1.add("progress", entry.getValue().getJsonSerializableValue().getSerializableElement());
                 }
                 catch (Throwable throwable)
                 {
-                    LOGGER.warn("Couldn't save statistic {}: error serializing progress", ((StatBase)entry.getKey()).getStatName(), throwable);
+                    LOGGER.warn("Couldn't save statistic {}: error serializing progress", entry.getKey().getStatName(), throwable);
                 }
 
                 jsonobject.add((entry.getKey()).statId, jsonobject1);
             }
             else
             {
-                jsonobject.addProperty((entry.getKey()).statId, Integer.valueOf(((TupleIntJsonSerializable)entry.getValue()).getIntegerValue()));
+                jsonobject.addProperty((entry.getKey()).statId, Integer.valueOf(entry.getValue().getIntegerValue()));
             }
         }
 
@@ -185,7 +185,7 @@ public class StatisticsManagerServer extends StatisticsManager
     public void sendStats(EntityPlayerMP player)
     {
         int i = this.server.getTickCounter();
-        Map<StatBase, Integer> map = Maps.<StatBase, Integer>newHashMap();
+        Map<StatBase, Integer> map = Maps.newHashMap();
 
         if (i - this.lastStatRequest > 300)
         {

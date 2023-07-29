@@ -68,7 +68,7 @@ public class EnchantmentHelper
 
     public static Map<Enchantment, Integer> getEnchantments(ItemStack stack)
     {
-        Map<Enchantment, Integer> map = Maps.<Enchantment, Integer>newLinkedHashMap();
+        Map<Enchantment, Integer> map = Maps.newLinkedHashMap();
         NBTTagList nbttaglist = stack.getItem() == Items.ENCHANTED_BOOK ? ItemEnchantedBook.getEnchantments(stack) : stack.getEnchantmentTagList();
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
@@ -95,7 +95,7 @@ public class EnchantmentHelper
 
             if (enchantment != null)
             {
-                int i = ((Integer)entry.getValue()).intValue();
+                int i = entry.getValue().intValue();
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setShort("id", (short)Enchantment.getEnchantmentID(enchantment));
                 nbttagcompound.setShort("lvl", (short)i);
@@ -317,7 +317,7 @@ public class EnchantmentHelper
         }
         else
         {
-            List<ItemStack> list1 = Lists.<ItemStack>newArrayList();
+            List<ItemStack> list1 = Lists.newArrayList();
 
             for (ItemStack itemstack : list)
             {
@@ -327,7 +327,7 @@ public class EnchantmentHelper
                 }
             }
 
-            return list1.isEmpty() ? ItemStack.EMPTY : (ItemStack)list1.get(p_92099_1_.getRNG().nextInt(list1.size()));
+            return list1.isEmpty() ? ItemStack.EMPTY : list1.get(p_92099_1_.getRNG().nextInt(list1.size()));
         }
     }
 
@@ -394,7 +394,7 @@ public class EnchantmentHelper
 
     public static List<EnchantmentData> buildEnchantmentList(Random randomIn, ItemStack itemStackIn, int level, boolean allowTreasure)
     {
-        List<EnchantmentData> list = Lists.<EnchantmentData>newArrayList();
+        List<EnchantmentData> list = Lists.newArrayList();
         Item item = itemStackIn.getItem();
         int i = item.getItemEnchantability();
 
@@ -415,7 +415,7 @@ public class EnchantmentHelper
 
                 while (randomIn.nextInt(50) <= level)
                 {
-                    removeIncompatible(list1, (EnchantmentData)Util.getLastElement(list));
+                    removeIncompatible(list1, Util.getLastElement(list));
 
                     if (list1.isEmpty())
                     {
@@ -446,7 +446,7 @@ public class EnchantmentHelper
 
     public static List<EnchantmentData> getEnchantmentDatas(int p_185291_0_, ItemStack p_185291_1_, boolean allowTreasure)
     {
-        List<EnchantmentData> list = Lists.<EnchantmentData>newArrayList();
+        List<EnchantmentData> list = Lists.newArrayList();
         Item item = p_185291_1_.getItem();
         boolean flag = p_185291_1_.getItem() == Items.BOOK;
 

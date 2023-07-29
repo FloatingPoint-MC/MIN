@@ -12,7 +12,7 @@ import net.optifine.Config;
 
 public class ExpressionParser
 {
-    private IExpressionResolver expressionResolver;
+    private final IExpressionResolver expressionResolver;
 
     public ExpressionParser(IExpressionResolver expressionResolver)
     {
@@ -244,7 +244,7 @@ public class ExpressionParser
 
     private FunctionType getFunctionType(Token token, Deque<Token> deque) throws ParseException
     {
-        Token tokenNext = (Token)deque.peek();
+        Token tokenNext = deque.peek();
         FunctionType type;
         if (tokenNext != null && tokenNext.getType() == TokenType.BRACKET_OPEN) {
             type = FunctionType.parse(token.getText());
@@ -266,13 +266,13 @@ public class ExpressionParser
     {
         Token tokenNext;
         if (type.getParameterCount(new IExpression[0]) == 0) {
-            tokenNext = (Token)deque.peek();
+            tokenNext = deque.peek();
             if (tokenNext == null || tokenNext.getType() != TokenType.BRACKET_OPEN) {
                 return makeFunction(type, new IExpression[0]);
             }
         }
 
-        tokenNext = (Token)deque.poll();
+        tokenNext = deque.poll();
         Deque<Token> dequeBracketed = getGroup(deque, TokenType.BRACKET_CLOSE, true);
         IExpression[] exprs = this.parseExpressions(dequeBracketed);
         return makeFunction(type, exprs);
@@ -286,7 +286,7 @@ public class ExpressionParser
             Deque<Token> dequeArg = getGroup(deque, TokenType.COMMA, false);
             IExpression expr = this.parseInfix(dequeArg);
             if (expr == null) {
-                IExpression[] exprs = (IExpression[])((IExpression[])list.toArray(new IExpression[list.size()]));
+                IExpression[] exprs = (IExpression[]) list.toArray(new IExpression[list.size()]);
                 return exprs;
             }
 

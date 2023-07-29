@@ -141,7 +141,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         else
         {
             k = 1;
-            l = (int)(Minecraft.getSystemTime() / 100L + (long)(slotIndex * 2) & 7L);
+            l = (int)(Minecraft.getSystemTime() / 100L + (slotIndex * 2L) & 7L);
 
             if (l > 4)
             {
@@ -251,7 +251,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         }
         else
         {
-            ByteBuf bytebuf = Unpooled.copiedBuffer((CharSequence)this.server.getBase64EncodedIconData(), StandardCharsets.UTF_8);
+            ByteBuf bytebuf = Unpooled.copiedBuffer(this.server.getBase64EncodedIconData(), StandardCharsets.UTF_8);
             ByteBuf bytebuf1 = null;
             BufferedImage bufferedimage;
             label99:
@@ -267,7 +267,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                 catch (Throwable throwable)
                 {
                     LOGGER.error("Invalid icon for server {} ({})", this.server.serverName, this.server.serverIP, throwable);
-                    this.server.setBase64EncodedIconData((String)null);
+                    this.server.setBase64EncodedIconData(null);
                 }
                 finally
                 {

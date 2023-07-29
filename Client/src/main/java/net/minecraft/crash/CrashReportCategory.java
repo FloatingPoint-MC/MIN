@@ -10,7 +10,7 @@ public class CrashReportCategory
 {
     private final CrashReport crashReport;
     private final String name;
-    private final List<CrashReportCategory.Entry> children = Lists.<CrashReportCategory.Entry>newArrayList();
+    private final List<CrashReportCategory.Entry> children = Lists.newArrayList();
     private StackTraceElement[] stackTrace = new StackTraceElement[0];
 
     public CrashReportCategory(CrashReport report, String name)
@@ -150,7 +150,7 @@ public class CrashReportCategory
 
             if (stacktraceelement.isNativeMethod() == s1.isNativeMethod() && stacktraceelement.getClassName().equals(s1.getClassName()) && stacktraceelement.getFileName().equals(s1.getFileName()) && stacktraceelement.getMethodName().equals(s1.getMethodName()))
             {
-                if (s2 != null != this.stackTrace.length > 1)
+                if (s2 == null == this.stackTrace.length > 1)
                 {
                     return false;
                 }
@@ -205,7 +205,7 @@ public class CrashReportCategory
             for (StackTraceElement stacktraceelement : this.stackTrace)
             {
                 builder.append("\n\tat ");
-                builder.append((Object)stacktraceelement);
+                builder.append(stacktraceelement);
             }
         }
     }

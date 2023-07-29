@@ -10,7 +10,7 @@ public enum Rotation
     private final String name;
     private static final String[] rotationNames = new String[values().length];
 
-    private Rotation(String nameIn)
+    Rotation(String nameIn)
     {
         this.name = nameIn;
     }

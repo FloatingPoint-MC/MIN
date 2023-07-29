@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public abstract class BlockSlab extends Block
 {
-    public static final PropertyEnum<BlockSlab.EnumBlockHalf> HALF = PropertyEnum.<BlockSlab.EnumBlockHalf>create("half", BlockSlab.EnumBlockHalf.class);
+    public static final PropertyEnum<BlockSlab.EnumBlockHalf> HALF = PropertyEnum.create("half", BlockSlab.EnumBlockHalf.class);
     protected static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
     protected static final AxisAlignedBB AABB_TOP_HALF = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
 
@@ -202,14 +202,14 @@ public abstract class BlockSlab extends Block
 
     public abstract Comparable<?> getTypeForItem(ItemStack stack);
 
-    public static enum EnumBlockHalf implements IStringSerializable
+    public enum EnumBlockHalf implements IStringSerializable
     {
         TOP("top"),
         BOTTOM("bottom");
 
         private final String name;
 
-        private EnumBlockHalf(String name)
+        EnumBlockHalf(String name)
         {
             this.name = name;
         }

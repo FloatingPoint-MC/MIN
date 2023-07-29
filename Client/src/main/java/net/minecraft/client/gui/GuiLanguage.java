@@ -45,8 +45,8 @@ public class GuiLanguage extends GuiScreen
      */
     public void initGui()
     {
-        this.forceUnicodeFontBtn = (GuiOptionButton)this.addButton(new GuiOptionButton(100, this.width / 2 - 155, this.height - 38, GameSettings.Options.FORCE_UNICODE_FONT, this.game_settings_3.getKeyBinding(GameSettings.Options.FORCE_UNICODE_FONT)));
-        this.confirmSettingsBtn = (GuiOptionButton)this.addButton(new GuiOptionButton(6, this.width / 2 - 155 + 160, this.height - 38, I18n.format("gui.done")));
+        this.forceUnicodeFontBtn = this.addButton(new GuiOptionButton(100, this.width / 2 - 155, this.height - 38, GameSettings.Options.FORCE_UNICODE_FONT, this.game_settings_3.getKeyBinding(GameSettings.Options.FORCE_UNICODE_FONT)));
+        this.confirmSettingsBtn = this.addButton(new GuiOptionButton(6, this.width / 2 - 155 + 160, this.height - 38, I18n.format("gui.done")));
         this.list = new GuiLanguage.List(this.mc);
         this.list.registerScrollButtons(7, 8);
     }
@@ -108,8 +108,8 @@ public class GuiLanguage extends GuiScreen
 
     class List extends GuiSlot
     {
-        private final java.util.List<String> langCodeList = Lists.<String>newArrayList();
-        private final Map<String, Language> languageMap = Maps.<String, Language>newHashMap();
+        private final java.util.List<String> langCodeList = Lists.newArrayList();
+        private final Map<String, Language> languageMap = Maps.newHashMap();
 
         public List(Minecraft mcIn)
         {
@@ -142,7 +142,7 @@ public class GuiLanguage extends GuiScreen
 
         protected boolean isSelected(int slotIndex)
         {
-            return ((String)this.langCodeList.get(slotIndex)).equals(GuiLanguage.this.languageManager.getCurrentLanguage().getLanguageCode());
+            return this.langCodeList.get(slotIndex).equals(GuiLanguage.this.languageManager.getCurrentLanguage().getLanguageCode());
         }
 
         protected int getContentHeight()
@@ -158,7 +158,7 @@ public class GuiLanguage extends GuiScreen
         protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks)
         {
             GuiLanguage.this.fontRenderer.setBidiFlag(true);
-            GuiLanguage.this.drawCenteredString(GuiLanguage.this.fontRenderer, ((Language)this.languageMap.get(this.langCodeList.get(slotIndex))).toString(), this.width / 2, yPos + 1, 16777215);
+            GuiLanguage.this.drawCenteredString(GuiLanguage.this.fontRenderer, this.languageMap.get(this.langCodeList.get(slotIndex)).toString(), this.width / 2, yPos + 1, 16777215);
             GuiLanguage.this.fontRenderer.setBidiFlag(GuiLanguage.this.languageManager.getCurrentLanguage().isBidirectional());
         }
     }

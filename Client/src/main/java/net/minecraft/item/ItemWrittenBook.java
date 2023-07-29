@@ -42,7 +42,7 @@ public class ItemWrittenBook extends Item
         else
         {
             String s = nbt.getString("title");
-            return s != null && s.length() <= 32 ? nbt.hasKey("author", 8) : false;
+            return s != null && s.length() <= 32 && nbt.hasKey("author", 8);
         }
     }
 

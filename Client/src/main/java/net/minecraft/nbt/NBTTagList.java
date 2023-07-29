@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class NBTTagList extends NBTBase
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private List<NBTBase> tagList = Lists.<NBTBase>newArrayList();
+    private List<NBTBase> tagList = Lists.newArrayList();
 
     /**
      * The type byte for the tags in the list - they must all be of the same type.
@@ -30,7 +30,7 @@ public class NBTTagList extends NBTBase
         }
         else
         {
-            this.tagType = ((NBTBase)this.tagList.get(0)).getId();
+            this.tagType = this.tagList.get(0).getId();
         }
 
         output.writeByte(this.tagType);
@@ -38,7 +38,7 @@ public class NBTTagList extends NBTBase
 
         for (int i = 0; i < this.tagList.size(); ++i)
         {
-            ((NBTBase)this.tagList.get(i)).write(output);
+            this.tagList.get(i).write(output);
         }
     }
 
@@ -62,7 +62,7 @@ public class NBTTagList extends NBTBase
             else
             {
                 sizeTracker.read(32L * (long)i);
-                this.tagList = Lists.<NBTBase>newArrayListWithCapacity(i);
+                this.tagList = Lists.newArrayListWithCapacity(i);
 
                 for (int j = 0; j < i; ++j)
                 {
@@ -269,7 +269,7 @@ public class NBTTagList extends NBTBase
      */
     public NBTBase get(int idx)
     {
-        return (NBTBase)(idx >= 0 && idx < this.tagList.size() ? (NBTBase)this.tagList.get(idx) : new NBTTagEnd());
+        return idx >= 0 && idx < this.tagList.size() ? this.tagList.get(idx) : new NBTTagEnd();
     }
 
     /**

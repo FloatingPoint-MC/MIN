@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 public class HFNoiseTexture implements ICustomTexture
 {
     private int texID = GL11.glGenTextures();
-    private int textureUnit = 15;
+    private final int textureUnit = 15;
 
     public HFNoiseTexture(int width, int height)
     {

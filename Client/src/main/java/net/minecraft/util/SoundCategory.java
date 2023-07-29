@@ -17,10 +17,10 @@ public enum SoundCategory
     AMBIENT("ambient"),
     VOICE("voice");
 
-    private static final Map<String, SoundCategory> SOUND_CATEGORIES = Maps.<String, SoundCategory>newHashMap();
+    private static final Map<String, SoundCategory> SOUND_CATEGORIES = Maps.newHashMap();
     private final String name;
 
-    private SoundCategory(String nameIn)
+    SoundCategory(String nameIn)
     {
         this.name = nameIn;
     }

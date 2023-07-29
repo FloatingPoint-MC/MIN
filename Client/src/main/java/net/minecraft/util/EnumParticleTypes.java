@@ -61,10 +61,10 @@ public enum EnumParticleTypes
     private final int particleID;
     private final boolean shouldIgnoreRange;
     private final int argumentCount;
-    private static final Map<Integer, EnumParticleTypes> PARTICLES = Maps.<Integer, EnumParticleTypes>newHashMap();
-    private static final Map<String, EnumParticleTypes> BY_NAME = Maps.<String, EnumParticleTypes>newHashMap();
+    private static final Map<Integer, EnumParticleTypes> PARTICLES = Maps.newHashMap();
+    private static final Map<String, EnumParticleTypes> BY_NAME = Maps.newHashMap();
 
-    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean shouldIgnoreRangeIn, int argumentCountIn)
+    EnumParticleTypes(String particleNameIn, int particleIDIn, boolean shouldIgnoreRangeIn, int argumentCountIn)
     {
         this.particleName = particleNameIn;
         this.particleID = particleIDIn;
@@ -72,7 +72,7 @@ public enum EnumParticleTypes
         this.argumentCount = argumentCountIn;
     }
 
-    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean shouldIgnoreRangeIn)
+    EnumParticleTypes(String particleNameIn, int particleIDIn, boolean shouldIgnoreRangeIn)
     {
         this(particleNameIn, particleIDIn, shouldIgnoreRangeIn, 0);
     }

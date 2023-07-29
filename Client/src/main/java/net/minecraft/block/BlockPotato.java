@@ -45,6 +45,6 @@ public class BlockPotato extends BlockCrops
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return POTATO_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
+        return POTATO_AABB[state.getValue(this.getAgeProperty()).intValue()];
     }
 }

@@ -141,7 +141,7 @@ public class EntityMinecartTNT extends EntityMinecart
         if (distance >= 3.0F)
         {
             float f = distance / 10.0F;
-            this.explodeCart((double)(f * f));
+            this.explodeCart(f * f);
         }
 
         super.fall(distance, damageMultiplier);
@@ -186,7 +186,7 @@ public class EntityMinecartTNT extends EntityMinecart
 
             if (!this.isSilent())
             {
-                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
         }
     }
@@ -217,7 +217,7 @@ public class EntityMinecartTNT extends EntityMinecart
 
     public boolean canExplosionDestroyBlock(Explosion explosionIn, World worldIn, BlockPos pos, IBlockState blockStateIn, float p_174816_5_)
     {
-        return !this.isIgnited() || !BlockRailBase.isRailBlock(blockStateIn) && !BlockRailBase.isRailBlock(worldIn, pos.up()) ? super.canExplosionDestroyBlock(explosionIn, worldIn, pos, blockStateIn, p_174816_5_) : false;
+        return (!this.isIgnited() || !BlockRailBase.isRailBlock(blockStateIn) && !BlockRailBase.isRailBlock(worldIn, pos.up())) && super.canExplosionDestroyBlock(explosionIn, worldIn, pos, blockStateIn, p_174816_5_);
     }
 
     /**

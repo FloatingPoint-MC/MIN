@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 import net.optifine.Config;
@@ -124,7 +125,7 @@ public class PlayerConfigurationParser
         try
         {
             byte[] abyte = HttpPipeline.get(s, Minecraft.getMinecraft().getProxy());
-            String s1 = new String(abyte, "ASCII");
+            String s1 = new String(abyte, StandardCharsets.US_ASCII);
             JsonParser jsonparser = new JsonParser();
             JsonObject jsonobject = (JsonObject)jsonparser.parse(s1);
             PlayerItemModel playeritemmodel = PlayerItemParser.parseItemModel(jsonobject);

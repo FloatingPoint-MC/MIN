@@ -5,6 +5,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.optifine.Config;
@@ -12,7 +13,7 @@ import net.optifine.Config;
 public class HttpPipelineReceiver extends Thread
 {
     private HttpPipelineConnection httpPipelineConnection = null;
-    private static final Charset ASCII = Charset.forName("ASCII");
+    private static final Charset ASCII = StandardCharsets.US_ASCII;
     private static final String HEADER_CONTENT_LENGTH = "Content-Length";
     private static final char CR = '\r';
     private static final char LF = '\n';

@@ -31,10 +31,10 @@ public class VertexFormat
 
     public VertexFormat()
     {
-        this.elements = Lists.<VertexFormatElement>newArrayList();
-        this.offsets = Lists.<Integer>newArrayList();
+        this.elements = Lists.newArrayList();
+        this.offsets = Lists.newArrayList();
         this.colorElementOffset = -1;
-        this.uvOffsetsById = Lists.<Integer>newArrayList();
+        this.uvOffsetsById = Lists.newArrayList();
         this.normalElementOffset = -1;
     }
 
@@ -107,7 +107,7 @@ public class VertexFormat
 
     public int getUvOffsetById(int id)
     {
-        return ((Integer)this.uvOffsetsById.get(id)).intValue();
+        return this.uvOffsetsById.get(id).intValue();
     }
 
     public String toString()
@@ -116,7 +116,7 @@ public class VertexFormat
 
         for (int i = 0; i < this.elements.size(); ++i)
         {
-            s = s + ((VertexFormatElement)this.elements.get(i)).toString();
+            s = s + this.elements.get(i).toString();
 
             if (i != this.elements.size() - 1)
             {
@@ -171,7 +171,7 @@ public class VertexFormat
 
     public int getOffset(int index)
     {
-        return ((Integer)this.offsets.get(index)).intValue();
+        return this.offsets.get(index).intValue();
     }
 
     public boolean equals(Object p_equals_1_)

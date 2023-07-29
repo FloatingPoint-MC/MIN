@@ -48,7 +48,7 @@ public class Bootstrap extends JFrame {
         optionparser.accepts("proxyPort").withRequiredArg().defaultsTo("8080", new String[0]).ofType(Integer.class);
         optionparser.accepts("proxyUser").withRequiredArg();
         optionparser.accepts("proxyPass").withRequiredArg();
-        optionparser.accepts("username").withRequiredArg().defaultsTo("SuperSkidder");
+        optionparser.accepts("username").withRequiredArg().defaultsTo("狂笑的蛇将写散文");
         optionparser.accepts("uuid").withRequiredArg();
         optionparser.accepts("accessToken").withRequiredArg().required();
         optionparser.accepts("version").withRequiredArg().required();

@@ -18,10 +18,10 @@ import net.optifine.shaders.config.ShaderOptionScreen;
 
 public class GuiShaderOptions extends GuiScreenOF
 {
-    private GuiScreen prevScreen;
+    private final GuiScreen prevScreen;
     protected String title;
-    private GameSettings settings;
-    private TooltipManager tooltipManager;
+    private final GameSettings settings;
+    private final TooltipManager tooltipManager;
     private String screenName;
     private String screenText;
     private boolean changed;
@@ -126,7 +126,6 @@ public class GuiShaderOptions extends GuiScreenOF
 
             for (int i = fontrenderer.getStringWidth(": " + Lang.getOff()) + 5; fontrenderer.getStringWidth(s) + i >= btnWidth && s.length() > 0; s = s.substring(0, s.length() - 1))
             {
-                ;
             }
 
             String s1 = so.isChanged() ? so.getValueColor(so.getValue()) : "";

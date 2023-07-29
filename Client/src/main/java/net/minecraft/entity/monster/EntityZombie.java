@@ -55,12 +55,12 @@ public class EntityZombie extends EntityMob
     /**
      * The attribute which determines the chance that this mob will spawn reinforcements
      */
-    protected static final IAttribute SPAWN_REINFORCEMENTS_CHANCE = (new RangedAttribute((IAttribute)null, "zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).setDescription("Spawn Reinforcements Chance");
+    protected static final IAttribute SPAWN_REINFORCEMENTS_CHANCE = (new RangedAttribute(null, "zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).setDescription("Spawn Reinforcements Chance");
     private static final UUID BABY_SPEED_BOOST_ID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
     private static final AttributeModifier BABY_SPEED_BOOST = new AttributeModifier(BABY_SPEED_BOOST_ID, "Baby speed boost", 0.5D, 1);
-    private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.<Boolean>createKey(EntityZombie.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> VILLAGER_TYPE = EntityDataManager.<Integer>createKey(EntityZombie.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> ARMS_RAISED = EntityDataManager.<Boolean>createKey(EntityZombie.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.createKey(EntityZombie.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> VILLAGER_TYPE = EntityDataManager.createKey(EntityZombie.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> ARMS_RAISED = EntityDataManager.createKey(EntityZombie.class, DataSerializers.BOOLEAN);
     private final EntityAIBreakDoor breakDoor = new EntityAIBreakDoor(this);
     private boolean isBreakDoorsTaskSet;
 
@@ -90,7 +90,7 @@ public class EntityZombie extends EntityMob
     protected void applyEntityAI()
     {
         this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityPigZombie.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityPigZombie.class));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
@@ -121,7 +121,7 @@ public class EntityZombie extends EntityMob
 
     public boolean isArmsRaised()
     {
-        return ((Boolean)this.getDataManager().get(ARMS_RAISED)).booleanValue();
+        return this.getDataManager().get(ARMS_RAISED).booleanValue();
     }
 
     public boolean isBreakDoorsTaskSet()
@@ -155,7 +155,7 @@ public class EntityZombie extends EntityMob
      */
     public boolean isChild()
     {
-        return ((Boolean)this.getDataManager().get(IS_CHILD)).booleanValue();
+        return this.getDataManager().get(IS_CHILD).booleanValue();
     }
 
     /**
@@ -277,13 +277,13 @@ public class EntityZombie extends EntityMob
 
                     if (this.world.getBlockState(new BlockPos(i1, j1 - 1, k1)).isTopSolid() && this.world.getLightFromNeighbors(new BlockPos(i1, j1, k1)) < 10)
                     {
-                        entityzombie.setPosition((double)i1, (double)j1, (double)k1);
+                        entityzombie.setPosition(i1, j1, k1);
 
-                        if (!this.world.isAnyPlayerWithinRangeAt((double)i1, (double)j1, (double)k1, 7.0D) && this.world.checkNoEntityCollision(entityzombie.getEntityBoundingBox(), entityzombie) && this.world.getCollisionBoxes(entityzombie, entityzombie.getEntityBoundingBox()).isEmpty() && this.world.containsNoLiquid(entityzombie.getEntityBoundingBox()))
+                        if (!this.world.isAnyPlayerWithinRangeAt(i1, j1, k1, 7.0D) && this.world.checkNoEntityCollision(entityzombie.getEntityBoundingBox(), entityzombie) && this.world.getCollisionBoxes(entityzombie, entityzombie.getEntityBoundingBox()).isEmpty() && this.world.containsNoLiquid(entityzombie.getEntityBoundingBox()))
                         {
                             this.world.spawnEntity(entityzombie);
                             entityzombie.setAttackTarget(entitylivingbase);
-                            entityzombie.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityzombie)), (IEntityLivingData)null);
+                            entityzombie.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityzombie)), null);
                             this.getEntityAttribute(SPAWN_REINFORCEMENTS_CHANCE).applyModifier(new AttributeModifier("Zombie reinforcement caller charge", -0.05000000074505806D, 0));
                             entityzombie.getEntityAttribute(SPAWN_REINFORCEMENTS_CHANCE).applyModifier(new AttributeModifier("Zombie reinforcement callee charge", -0.05000000074505806D, 0));
                             break;
@@ -443,7 +443,7 @@ public class EntityZombie extends EntityMob
             }
 
             this.world.spawnEntity(entityzombievillager);
-            this.world.playEvent((EntityPlayer)null, 1026, new BlockPos(this), 0);
+            this.world.playEvent(null, 1026, new BlockPos(this), 0);
         }
     }
 
@@ -461,7 +461,7 @@ public class EntityZombie extends EntityMob
 
     protected boolean canEquipItem(ItemStack stack)
     {
-        return stack.getItem() == Items.EGG && this.isChild() && this.isRiding() ? false : super.canEquipItem(stack);
+        return (stack.getItem() != Items.EGG || !this.isChild() || !this.isRiding()) && super.canEquipItem(stack);
     }
 
     @Nullable
@@ -501,7 +501,7 @@ public class EntityZombie extends EntityMob
 
                 if ((double)this.world.rand.nextFloat() < 0.05D)
                 {
-                    List<EntityChicken> list = this.world.<EntityChicken>getEntitiesWithinAABB(EntityChicken.class, this.getEntityBoundingBox().grow(5.0D, 3.0D, 5.0D), EntitySelectors.IS_STANDALONE);
+                    List<EntityChicken> list = this.world.getEntitiesWithinAABB(EntityChicken.class, this.getEntityBoundingBox().grow(5.0D, 3.0D, 5.0D), EntitySelectors.IS_STANDALONE);
 
                     if (!list.isEmpty())
                     {
@@ -514,7 +514,7 @@ public class EntityZombie extends EntityMob
                 {
                     EntityChicken entitychicken1 = new EntityChicken(this.world);
                     entitychicken1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-                    entitychicken1.onInitialSpawn(difficulty, (IEntityLivingData)null);
+                    entitychicken1.onInitialSpawn(difficulty, null);
                     entitychicken1.setChickenJockey(true);
                     this.world.spawnEntity(entitychicken1);
                     this.startRiding(entitychicken1);

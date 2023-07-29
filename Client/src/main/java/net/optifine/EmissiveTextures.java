@@ -145,7 +145,6 @@ public class EmissiveTextures
             }
             catch (FileNotFoundException var4)
             {
-                return;
             }
             catch (IOException ioexception)
             {
@@ -166,7 +165,7 @@ public class EmissiveTextures
 
     public static boolean isEmissive(ResourceLocation loc)
     {
-        return suffixEmissivePng == null ? false : loc.getPath().endsWith(suffixEmissivePng);
+        return suffixEmissivePng != null && loc.getPath().endsWith(suffixEmissivePng);
     }
 
     public static void loadTexture(ResourceLocation loc, SimpleTexture tex)

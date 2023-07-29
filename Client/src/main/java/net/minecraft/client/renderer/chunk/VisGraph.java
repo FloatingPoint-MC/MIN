@@ -66,7 +66,7 @@ public class VisGraph
 
     private Set<EnumFacing> floodFill(int pos)
     {
-        Set<EnumFacing> set = EnumSet.<EnumFacing>noneOf(EnumFacing.class);
+        Set<EnumFacing> set = EnumSet.noneOf(EnumFacing.class);
         ArrayDeque arraydeque = new ArrayDeque(384);
         arraydeque.add(IntegerCache.getInteger(pos));
         this.bitSet.set(pos, true);

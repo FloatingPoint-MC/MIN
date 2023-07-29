@@ -70,7 +70,7 @@ public class StructureStrongholdPieces
      */
     public static void prepareStructurePieces()
     {
-        structurePieceList = Lists.<StructureStrongholdPieces.PieceWeight>newArrayList();
+        structurePieceList = Lists.newArrayList();
 
         for (StructureStrongholdPieces.PieceWeight structurestrongholdpieces$pieceweight : PIECE_WEIGHTS)
         {
@@ -1278,7 +1278,7 @@ public class StructureStrongholdPieces
     {
         public StructureStrongholdPieces.PieceWeight lastPlaced;
         public StructureStrongholdPieces.PortalRoom strongholdPortalRoom;
-        public List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
+        public List<StructureComponent> pendingChildren = Lists.newArrayList();
 
         public Stairs2()
         {
@@ -1645,12 +1645,12 @@ public class StructureStrongholdPieces
             return p_74991_0_ != null && p_74991_0_.minY > 10;
         }
 
-        public static enum Door
+        public enum Door
         {
             OPENING,
             WOOD_DOOR,
             GRATES,
-            IRON_DOOR;
+            IRON_DOOR
         }
     }
 }

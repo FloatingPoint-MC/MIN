@@ -18,7 +18,7 @@ public class Locale
     /** Splits on "=" */
     private static final Splitter SPLITTER = Splitter.on('=').limit(2);
     private static final Pattern PATTERN = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
-    Map<String, String> properties = Maps.<String, String>newHashMap();
+    Map<String, String> properties = Maps.newHashMap();
     private boolean unicode;
 
     /**
@@ -40,7 +40,6 @@ public class Locale
                 }
                 catch (IOException var9)
                 {
-                    ;
                 }
             }
         }
@@ -103,7 +102,7 @@ public class Locale
         {
             if (!s.isEmpty() && s.charAt(0) != '#')
             {
-                String[] astring = (String[])Iterables.toArray(SPLITTER.split(s), String.class);
+                String[] astring = Iterables.toArray(SPLITTER.split(s), String.class);
 
                 if (astring != null && astring.length == 2)
                 {

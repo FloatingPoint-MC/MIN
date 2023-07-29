@@ -71,7 +71,7 @@ public class LootingEnchantBonus extends LootFunction
         public LootingEnchantBonus deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn)
         {
             int i = JsonUtils.getInt(object, "limit", 0);
-            return new LootingEnchantBonus(conditionsIn, (RandomValueRange)JsonUtils.deserializeClass(object, "count", deserializationContext, RandomValueRange.class), i);
+            return new LootingEnchantBonus(conditionsIn, JsonUtils.deserializeClass(object, "count", deserializationContext, RandomValueRange.class), i);
         }
     }
 }

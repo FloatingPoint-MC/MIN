@@ -46,7 +46,7 @@ public class EntityDragonFireball extends EntityFireball
         {
             if (!this.world.isRemote)
             {
-                List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
+                List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
                 EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
                 entityareaeffectcloud.setOwner(this.shootingEntity);
                 entityareaeffectcloud.setParticle(EnumParticleTypes.DRAGON_BREATH);

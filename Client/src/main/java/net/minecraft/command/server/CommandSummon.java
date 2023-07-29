@@ -55,7 +55,7 @@ public class CommandSummon extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.summon.usage", new Object[0]);
+            throw new WrongUsageException("commands.summon.usage");
         }
         else
         {
@@ -78,12 +78,12 @@ public class CommandSummon extends CommandBase
 
             if (!world.isBlockLoaded(blockpos))
             {
-                throw new CommandException("commands.summon.outOfWorld", new Object[0]);
+                throw new CommandException("commands.summon.outOfWorld");
             }
             else if (EntityList.LIGHTNING_BOLT.equals(new ResourceLocation(s)))
             {
                 world.addWeatherEffect(new EntityLightningBolt(world, d0, d1, d2, false));
-                notifyCommandListener(sender, this, "commands.summon.success", new Object[0]);
+                notifyCommandListener(sender, this, "commands.summon.success");
             }
             else
             {
@@ -101,7 +101,7 @@ public class CommandSummon extends CommandBase
                     }
                     catch (NBTException nbtexception)
                     {
-                        throw new CommandException("commands.summon.tagError", new Object[] {nbtexception.getMessage()});
+                        throw new CommandException("commands.summon.tagError", nbtexception.getMessage());
                     }
                 }
 
@@ -110,7 +110,7 @@ public class CommandSummon extends CommandBase
 
                 if (entity == null)
                 {
-                    throw new CommandException("commands.summon.failed", new Object[0]);
+                    throw new CommandException("commands.summon.failed");
                 }
                 else
                 {
@@ -118,10 +118,10 @@ public class CommandSummon extends CommandBase
 
                     if (!flag && entity instanceof EntityLiving)
                     {
-                        ((EntityLiving)entity).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), (IEntityLivingData)null);
+                        ((EntityLiving)entity).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
                     }
 
-                    notifyCommandListener(sender, this, "commands.summon.success", new Object[0]);
+                    notifyCommandListener(sender, this, "commands.summon.success");
                 }
             }
         }

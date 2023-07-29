@@ -1094,7 +1094,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             boolean flag3 = Config.isFogOn();
 
             while (!deque.isEmpty()) {
-                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation5 = (RenderGlobal.ContainerLocalRenderInformation) deque.poll();
+                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation5 = deque.poll();
                 RenderChunk renderchunk6 = renderglobal$containerlocalrenderinformation5.renderChunk;
                 EnumFacing enumfacing1 = renderglobal$containerlocalrenderinformation5.facing;
                 CompiledChunk compiledchunk = renderchunk6.compiledChunk;

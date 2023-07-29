@@ -40,7 +40,7 @@ public class CommandLocate extends CommandBase
     {
         if (args.length != 1)
         {
-            throw new WrongUsageException("commands.locate.usage", new Object[0]);
+            throw new WrongUsageException("commands.locate.usage");
         }
         else
         {
@@ -49,17 +49,17 @@ public class CommandLocate extends CommandBase
 
             if (blockpos != null)
             {
-                sender.sendMessage(new TextComponentTranslation("commands.locate.success", new Object[] {s, blockpos.getX(), blockpos.getZ()}));
+                sender.sendMessage(new TextComponentTranslation("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
             }
             else
             {
-                throw new CommandException("commands.locate.failure", new Object[] {s});
+                throw new CommandException("commands.locate.failure", s);
             }
         }
     }
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"Stronghold", "Monument", "Village", "Mansion", "EndCity", "Fortress", "Temple", "Mineshaft"}) : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "Stronghold", "Monument", "Village", "Mansion", "EndCity", "Fortress", "Temple", "Mineshaft") : Collections.emptyList();
     }
 }

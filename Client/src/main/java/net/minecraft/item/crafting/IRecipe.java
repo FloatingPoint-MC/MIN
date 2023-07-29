@@ -32,7 +32,7 @@ public interface IRecipe
 
 default NonNullList<Ingredient> getIngredients()
     {
-        return NonNullList.<Ingredient>create();
+        return NonNullList.create();
     }
 
 default boolean isDynamic()

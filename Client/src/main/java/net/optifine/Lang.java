@@ -34,7 +34,7 @@ public class Lang
             list.add(s + Config.getGameSettings().language + s2);
         }
 
-        String[] astring = (String[])list.toArray(new String[list.size()]);
+        String[] astring = list.toArray(new String[list.size()]);
         loadResources(Config.getDefaultResourcePack(), astring, map);
         IResourcePack[] airesourcepack = Config.getResourcePacks();
 
@@ -82,7 +82,7 @@ public class Lang
 
             if (!s.isEmpty() && s.charAt(0) != '#')
             {
-                String[] astring = (String[])Iterables.toArray(splitter.split(s), String.class);
+                String[] astring = Iterables.toArray(splitter.split(s), String.class);
 
                 if (astring != null && astring.length == 2)
                 {

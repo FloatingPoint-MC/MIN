@@ -18,14 +18,14 @@ public class SoundListSerializer implements JsonDeserializer<SoundList>
     {
         JsonObject jsonobject = JsonUtils.getJsonObject(p_deserialize_1_, "entry");
         boolean flag = JsonUtils.getBoolean(jsonobject, "replace", false);
-        String s = JsonUtils.getString(jsonobject, "subtitle", (String)null);
+        String s = JsonUtils.getString(jsonobject, "subtitle", null);
         List<Sound> list = this.deserializeSounds(jsonobject);
         return new SoundList(list, flag, s);
     }
 
     private List<Sound> deserializeSounds(JsonObject object)
     {
-        List<Sound> list = Lists.<Sound>newArrayList();
+        List<Sound> list = Lists.newArrayList();
 
         if (object.has("sounds"))
         {

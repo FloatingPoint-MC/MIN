@@ -101,7 +101,7 @@ public abstract class BossInfo
         return this.createFog;
     }
 
-    public static enum Color
+    public enum Color
     {
         PINK,
         BLUE,
@@ -109,15 +109,15 @@ public abstract class BossInfo
         GREEN,
         YELLOW,
         PURPLE,
-        WHITE;
+        WHITE
     }
 
-    public static enum Overlay
+    public enum Overlay
     {
         PROGRESS,
         NOTCHED_6,
         NOTCHED_10,
         NOTCHED_12,
-        NOTCHED_20;
+        NOTCHED_20
     }
 }

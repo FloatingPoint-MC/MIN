@@ -46,7 +46,7 @@ public class CommandTP extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.tp.usage", new Object[0]);
+            throw new WrongUsageException("commands.tp.usage");
         }
         else
         {
@@ -67,7 +67,7 @@ public class CommandTP extends CommandBase
             {
                 if (args.length < i + 3)
                 {
-                    throw new WrongUsageException("commands.tp.usage", new Object[0]);
+                    throw new WrongUsageException("commands.tp.usage");
                 }
                 else if (entity.world != null)
                 {
@@ -76,10 +76,10 @@ public class CommandTP extends CommandBase
                     CommandBase.CoordinateArg commandbase$coordinatearg = parseCoordinate(entity.posX, args[i], true);
                     CommandBase.CoordinateArg commandbase$coordinatearg1 = parseCoordinate(entity.posY, args[k++], -4096, 4096, false);
                     CommandBase.CoordinateArg commandbase$coordinatearg2 = parseCoordinate(entity.posZ, args[k++], true);
-                    CommandBase.CoordinateArg commandbase$coordinatearg3 = parseCoordinate((double)entity.rotationYaw, args.length > k ? args[k++] : "~", false);
-                    CommandBase.CoordinateArg commandbase$coordinatearg4 = parseCoordinate((double)entity.rotationPitch, args.length > k ? args[k] : "~", false);
+                    CommandBase.CoordinateArg commandbase$coordinatearg3 = parseCoordinate(entity.rotationYaw, args.length > k ? args[k++] : "~", false);
+                    CommandBase.CoordinateArg commandbase$coordinatearg4 = parseCoordinate(entity.rotationPitch, args.length > k ? args[k] : "~", false);
                     teleportEntityToCoordinates(entity, commandbase$coordinatearg, commandbase$coordinatearg1, commandbase$coordinatearg2, commandbase$coordinatearg3, commandbase$coordinatearg4);
-                    notifyCommandListener(sender, this, "commands.tp.success.coordinates", new Object[] {entity.getName(), commandbase$coordinatearg.getResult(), commandbase$coordinatearg1.getResult(), commandbase$coordinatearg2.getResult()});
+                    notifyCommandListener(sender, this, "commands.tp.success.coordinates", entity.getName(), commandbase$coordinatearg.getResult(), commandbase$coordinatearg1.getResult(), commandbase$coordinatearg2.getResult());
                 }
             }
             else
@@ -88,7 +88,7 @@ public class CommandTP extends CommandBase
 
                 if (entity1.world != entity.world)
                 {
-                    throw new CommandException("commands.tp.notSameDimension", new Object[0]);
+                    throw new CommandException("commands.tp.notSameDimension");
                 }
                 else
                 {
@@ -103,7 +103,7 @@ public class CommandTP extends CommandBase
                         entity.setLocationAndAngles(entity1.posX, entity1.posY, entity1.posZ, entity1.rotationYaw, entity1.rotationPitch);
                     }
 
-                    notifyCommandListener(sender, this, "commands.tp.success", new Object[] {entity.getName(), entity1.getName()});
+                    notifyCommandListener(sender, this, "commands.tp.success", entity.getName(), entity1.getName());
                 }
             }
         }
@@ -116,7 +116,7 @@ public class CommandTP extends CommandBase
     {
         if (teleportingEntity instanceof EntityPlayerMP)
         {
-            Set<SPacketPlayerPosLook.EnumFlags> set = EnumSet.<SPacketPlayerPosLook.EnumFlags>noneOf(SPacketPlayerPosLook.EnumFlags.class);
+            Set<SPacketPlayerPosLook.EnumFlags> set = EnumSet.noneOf(SPacketPlayerPosLook.EnumFlags.class);
 
             if (argX.isRelative())
             {

@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class SummonedEntityTrigger implements ICriterionTrigger<SummonedEntityTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("summoned_entity");
-    private final Map<PlayerAdvancements, SummonedEntityTrigger.Listeners> listeners = Maps.<PlayerAdvancements, SummonedEntityTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, SummonedEntityTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -95,7 +95,7 @@ public class SummonedEntityTrigger implements ICriterionTrigger<SummonedEntityTr
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<SummonedEntityTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<SummonedEntityTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<SummonedEntityTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -123,11 +123,11 @@ public class SummonedEntityTrigger implements ICriterionTrigger<SummonedEntityTr
 
             for (ICriterionTrigger.Listener<SummonedEntityTrigger.Instance> listener : this.listeners)
             {
-                if (((SummonedEntityTrigger.Instance)listener.getCriterionInstance()).test(player, entity))
+                if (listener.getCriterionInstance().test(player, entity))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<SummonedEntityTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

@@ -93,10 +93,10 @@ public class BlockPistonMoving extends BlockContainer
      */
     public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
-        BlockPos blockpos = pos.offset(((EnumFacing)state.getValue(FACING)).getOpposite());
+        BlockPos blockpos = pos.offset(state.getValue(FACING).getOpposite());
         IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-        if (iblockstate.getBlock() instanceof BlockPistonBase && ((Boolean)iblockstate.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+        if (iblockstate.getBlock() instanceof BlockPistonBase && iblockstate.getValue(BlockPistonBase.EXTENDED).booleanValue())
         {
             worldIn.setBlockToAir(blockpos);
         }
@@ -249,7 +249,7 @@ public class BlockPistonMoving extends BlockContainer
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -259,7 +259,7 @@ public class BlockPistonMoving extends BlockContainer
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     /**
@@ -268,7 +268,7 @@ public class BlockPistonMoving extends BlockContainer
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getIndex();
+        i = i | state.getValue(FACING).getIndex();
 
         if (state.getValue(TYPE) == BlockPistonExtension.EnumPistonType.STICKY)
         {
@@ -280,7 +280,7 @@ public class BlockPistonMoving extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, TYPE});
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     /**

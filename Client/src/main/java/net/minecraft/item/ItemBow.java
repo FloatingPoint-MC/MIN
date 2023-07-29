@@ -28,7 +28,7 @@ public class ItemBow extends Item {
                 return entityIn.getActiveItemStack().getItem() != Items.BOW ? 0.0F : (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F;
             }
         });
-        this.addPropertyOverride(new ResourceLocation("pulling"), (stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack().getItem() == stack.getItem() ? 1.0F : 0.0F);
+        this.addPropertyOverride(new ResourceLocation("pulling"), (stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
     }
 
     private ItemStack findArrow(EntityPlayer player) {

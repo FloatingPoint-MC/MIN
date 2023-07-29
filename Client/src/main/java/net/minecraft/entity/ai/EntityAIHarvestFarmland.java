@@ -62,7 +62,7 @@ public class EntityAIHarvestFarmland extends EntityAIMoveToBlock
     public void updateTask()
     {
         super.updateTask();
-        this.villager.getLookHelper().setLookPosition((double)this.destinationBlock.getX() + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)this.destinationBlock.getZ() + 0.5D, 10.0F, (float)this.villager.getVerticalFaceSpeed());
+        this.villager.getLookHelper().setLookPosition((double)this.destinationBlock.getX() + 0.5D, this.destinationBlock.getY() + 1, (double)this.destinationBlock.getZ() + 0.5D, 10.0F, (float)this.villager.getVerticalFaceSpeed());
 
         if (this.getIsAboveDestination())
         {

@@ -33,8 +33,8 @@ import net.minecraft.world.World;
 public class BlockStairs extends Block
 {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public static final PropertyEnum<BlockStairs.EnumHalf> HALF = PropertyEnum.<BlockStairs.EnumHalf>create("half", BlockStairs.EnumHalf.class);
-    public static final PropertyEnum<BlockStairs.EnumShape> SHAPE = PropertyEnum.<BlockStairs.EnumShape>create("shape", BlockStairs.EnumShape.class);
+    public static final PropertyEnum<BlockStairs.EnumHalf> HALF = PropertyEnum.create("half", BlockStairs.EnumHalf.class);
+    public static final PropertyEnum<BlockStairs.EnumShape> SHAPE = PropertyEnum.create("shape", BlockStairs.EnumShape.class);
 
     /**
      * B: .. T: xx
@@ -174,10 +174,10 @@ public class BlockStairs extends Block
 
     private static List<AxisAlignedBB> getCollisionBoxList(IBlockState bstate)
     {
-        List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
+        List<AxisAlignedBB> list = Lists.newArrayList();
         boolean flag = bstate.getValue(HALF) == BlockStairs.EnumHalf.TOP;
         list.add(flag ? AABB_SLAB_TOP : AABB_SLAB_BOTTOM);
-        BlockStairs.EnumShape blockstairs$enumshape = (BlockStairs.EnumShape)bstate.getValue(SHAPE);
+        BlockStairs.EnumShape blockstairs$enumshape = bstate.getValue(SHAPE);
 
         if (blockstairs$enumshape == BlockStairs.EnumShape.STRAIGHT || blockstairs$enumshape == BlockStairs.EnumShape.INNER_LEFT || blockstairs$enumshape == BlockStairs.EnumShape.INNER_RIGHT)
         {
@@ -200,7 +200,7 @@ public class BlockStairs extends Block
     {
         boolean flag = bstate.getValue(HALF) == BlockStairs.EnumHalf.TOP;
 
-        switch ((EnumFacing)bstate.getValue(FACING))
+        switch (bstate.getValue(FACING))
         {
             case NORTH:
             default:
@@ -224,10 +224,10 @@ public class BlockStairs extends Block
      */
     private static AxisAlignedBB getCollEighthBlock(IBlockState bstate)
     {
-        EnumFacing enumfacing = (EnumFacing)bstate.getValue(FACING);
+        EnumFacing enumfacing = bstate.getValue(FACING);
         EnumFacing enumfacing1;
 
-        switch ((BlockStairs.EnumShape)bstate.getValue(SHAPE))
+        switch (bstate.getValue(SHAPE))
         {
             case OUTER_LEFT:
             default:
@@ -286,11 +286,11 @@ public class BlockStairs extends Block
         }
         else
         {
-            BlockStairs.EnumShape blockstairs$enumshape = (BlockStairs.EnumShape)state.getValue(SHAPE);
+            BlockStairs.EnumShape blockstairs$enumshape = state.getValue(SHAPE);
 
             if (blockstairs$enumshape != BlockStairs.EnumShape.OUTER_LEFT && blockstairs$enumshape != BlockStairs.EnumShape.OUTER_RIGHT)
             {
-                EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+                EnumFacing enumfacing = state.getValue(FACING);
 
                 switch (blockstairs$enumshape)
                 {
@@ -510,7 +510,7 @@ public class BlockStairs extends Block
      */
     public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end)
     {
-        List<RayTraceResult> list = Lists.<RayTraceResult>newArrayList();
+        List<RayTraceResult> list = Lists.newArrayList();
 
         for (AxisAlignedBB axisalignedbb : getCollisionBoxList(this.getActualState(blockState, worldIn, pos)))
         {
@@ -559,7 +559,7 @@ public class BlockStairs extends Block
             i |= 4;
         }
 
-        i = i | 5 - ((EnumFacing)state.getValue(FACING)).getIndex();
+        i = i | 5 - state.getValue(FACING).getIndex();
         return i;
     }
 
@@ -574,14 +574,14 @@ public class BlockStairs extends Block
 
     private static BlockStairs.EnumShape getStairsShape(IBlockState p_185706_0_, IBlockAccess p_185706_1_, BlockPos p_185706_2_)
     {
-        EnumFacing enumfacing = (EnumFacing)p_185706_0_.getValue(FACING);
+        EnumFacing enumfacing = p_185706_0_.getValue(FACING);
         IBlockState iblockstate = p_185706_1_.getBlockState(p_185706_2_.offset(enumfacing));
 
         if (isBlockStairs(iblockstate) && p_185706_0_.getValue(HALF) == iblockstate.getValue(HALF))
         {
-            EnumFacing enumfacing1 = (EnumFacing)iblockstate.getValue(FACING);
+            EnumFacing enumfacing1 = iblockstate.getValue(FACING);
 
-            if (enumfacing1.getAxis() != ((EnumFacing)p_185706_0_.getValue(FACING)).getAxis() && isDifferentStairs(p_185706_0_, p_185706_1_, p_185706_2_, enumfacing1.getOpposite()))
+            if (enumfacing1.getAxis() != p_185706_0_.getValue(FACING).getAxis() && isDifferentStairs(p_185706_0_, p_185706_1_, p_185706_2_, enumfacing1.getOpposite()))
             {
                 if (enumfacing1 == enumfacing.rotateYCCW())
                 {
@@ -596,9 +596,9 @@ public class BlockStairs extends Block
 
         if (isBlockStairs(iblockstate1) && p_185706_0_.getValue(HALF) == iblockstate1.getValue(HALF))
         {
-            EnumFacing enumfacing2 = (EnumFacing)iblockstate1.getValue(FACING);
+            EnumFacing enumfacing2 = iblockstate1.getValue(FACING);
 
-            if (enumfacing2.getAxis() != ((EnumFacing)p_185706_0_.getValue(FACING)).getAxis() && isDifferentStairs(p_185706_0_, p_185706_1_, p_185706_2_, enumfacing2))
+            if (enumfacing2.getAxis() != p_185706_0_.getValue(FACING).getAxis() && isDifferentStairs(p_185706_0_, p_185706_1_, p_185706_2_, enumfacing2))
             {
                 if (enumfacing2 == enumfacing.rotateYCCW())
                 {
@@ -631,7 +631,7 @@ public class BlockStairs extends Block
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -643,8 +643,8 @@ public class BlockStairs extends Block
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-        BlockStairs.EnumShape blockstairs$enumshape = (BlockStairs.EnumShape)state.getValue(SHAPE);
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockStairs.EnumShape blockstairs$enumshape = state.getValue(SHAPE);
 
         switch (mirrorIn)
         {
@@ -700,17 +700,17 @@ public class BlockStairs extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, HALF, SHAPE});
+        return new BlockStateContainer(this, FACING, HALF, SHAPE);
     }
 
-    public static enum EnumHalf implements IStringSerializable
+    public enum EnumHalf implements IStringSerializable
     {
         TOP("top"),
         BOTTOM("bottom");
 
         private final String name;
 
-        private EnumHalf(String name)
+        EnumHalf(String name)
         {
             this.name = name;
         }
@@ -726,7 +726,7 @@ public class BlockStairs extends Block
         }
     }
 
-    public static enum EnumShape implements IStringSerializable
+    public enum EnumShape implements IStringSerializable
     {
         STRAIGHT("straight"),
         INNER_LEFT("inner_left"),
@@ -736,7 +736,7 @@ public class BlockStairs extends Block
 
         private final String name;
 
-        private EnumShape(String name)
+        EnumShape(String name)
         {
             this.name = name;
         }

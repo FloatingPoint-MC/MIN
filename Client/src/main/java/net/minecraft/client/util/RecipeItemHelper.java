@@ -98,12 +98,12 @@ public class RecipeItemHelper
     class RecipePicker
     {
         private final IRecipe recipe;
-        private final List<Ingredient> ingredients = Lists.<Ingredient>newArrayList();
+        private final List<Ingredient> ingredients = Lists.newArrayList();
         private final int ingredientCount;
         private final int[] possessedIngredientStacks;
         private final int possessedIngredientStackCount;
         private final BitSet data;
-        private IntList path = new IntArrayList();
+        private final IntList path = new IntArrayList();
 
         public RecipePicker(IRecipe recipeIn)
         {
@@ -120,7 +120,7 @@ public class RecipeItemHelper
 
             for (int i = 0; i < this.ingredients.size(); ++i)
             {
-                IntList intlist = ((Ingredient)this.ingredients.get(i)).getValidItemStacksPacked();
+                IntList intlist = this.ingredients.get(i).getValidItemStacksPacked();
 
                 for (int j = 0; j < this.possessedIngredientStackCount; ++j)
                 {
@@ -150,7 +150,7 @@ public class RecipeItemHelper
 
                     for (int i1 = 0; i1 < l; ++i1)
                     {
-                        this.toggleResidual((i1 & 1) == 0, ((Integer)this.path.get(i1)).intValue(), ((Integer)this.path.get(i1 + 1)).intValue());
+                        this.toggleResidual((i1 & 1) == 0, this.path.get(i1).intValue(), this.path.get(i1 + 1).intValue());
                     }
 
                     this.path.clear();
@@ -332,7 +332,7 @@ public class RecipeItemHelper
             {
                 int i1 = (k + l) / 2;
 
-                if (this.tryPick(i1, (IntList)null))
+                if (this.tryPick(i1, null))
                 {
                     if (l - k <= 1)
                     {
@@ -364,7 +364,7 @@ public class RecipeItemHelper
 
                 for (IntListIterator intlistiterator = ingredient.getValidItemStacksPacked().iterator(); intlistiterator.hasNext(); l = Math.max(l, RecipeItemHelper.this.itemToCount.get(i1)))
                 {
-                    i1 = ((Integer)intlistiterator.next()).intValue();
+                    i1 = intlistiterator.next().intValue();
                 }
 
                 if (k > 0)

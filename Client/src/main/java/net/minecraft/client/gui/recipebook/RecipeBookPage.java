@@ -11,11 +11,11 @@ import net.minecraft.stats.RecipeBook;
 
 public class RecipeBookPage
 {
-    private List<GuiButtonRecipe> buttons = Lists.<GuiButtonRecipe>newArrayListWithCapacity(20);
+    private final List<GuiButtonRecipe> buttons = Lists.newArrayListWithCapacity(20);
     private GuiButtonRecipe hoveredButton;
-    private GuiRecipeOverlay overlay = new GuiRecipeOverlay();
+    private final GuiRecipeOverlay overlay = new GuiRecipeOverlay();
     private Minecraft minecraft;
-    private List<IRecipeUpdateListener> listeners = Lists.<IRecipeUpdateListener>newArrayList();
+    private final List<IRecipeUpdateListener> listeners = Lists.newArrayList();
     private List<RecipeList> recipeLists;
     private GuiButtonToggle forwardButton;
     private GuiButtonToggle backButton;
@@ -40,7 +40,7 @@ public class RecipeBookPage
 
         for (int i = 0; i < this.buttons.size(); ++i)
         {
-            ((GuiButtonRecipe)this.buttons.get(i)).setPosition(p_194194_2_ + 11 + 25 * (i % 5), p_194194_3_ + 31 + 25 * (i / 5));
+            this.buttons.get(i).setPosition(p_194194_2_ + 11 + 25 * (i % 5), p_194194_3_ + 31 + 25 * (i / 5));
         }
 
         this.forwardButton = new GuiButtonToggle(0, p_194194_2_ + 93, p_194194_3_ + 137, 12, 17, false);

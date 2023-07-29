@@ -41,18 +41,17 @@ public class CommandDifficulty extends CommandBase
     {
         if (args.length <= 0)
         {
-            throw new WrongUsageException("commands.difficulty.usage", new Object[0]);
+            throw new WrongUsageException("commands.difficulty.usage");
         }
         else
         {
             EnumDifficulty enumdifficulty = this.getDifficultyFromCommand(args[0]);
             server.setDifficultyForAllWorlds(enumdifficulty);
-            notifyCommandListener(sender, this, "commands.difficulty.success", new Object[] {new TextComponentTranslation(enumdifficulty.getTranslationKey(), new Object[0])});
+            notifyCommandListener(sender, this, "commands.difficulty.success", new TextComponentTranslation(enumdifficulty.getTranslationKey()));
         }
     }
 
-    protected EnumDifficulty getDifficultyFromCommand(String difficultyString) throws CommandException, NumberInvalidException
-    {
+    protected EnumDifficulty getDifficultyFromCommand(String difficultyString) throws CommandException {
         if (!"peaceful".equalsIgnoreCase(difficultyString) && !"p".equalsIgnoreCase(difficultyString))
         {
             if (!"easy".equalsIgnoreCase(difficultyString) && !"e".equalsIgnoreCase(difficultyString))
@@ -79,6 +78,6 @@ public class CommandDifficulty extends CommandBase
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"peaceful", "easy", "normal", "hard"}) : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "peaceful", "easy", "normal", "hard") : Collections.emptyList();
     }
 }

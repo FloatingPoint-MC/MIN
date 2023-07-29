@@ -30,13 +30,13 @@ public class CommandDefaultGameMode extends CommandGameMode
     {
         if (args.length <= 0)
         {
-            throw new WrongUsageException("commands.defaultgamemode.usage", new Object[0]);
+            throw new WrongUsageException("commands.defaultgamemode.usage");
         }
         else
         {
             GameType gametype = this.getGameModeFromCommand(sender, args[0]);
             this.setDefaultGameType(gametype, server);
-            notifyCommandListener(sender, this, "commands.defaultgamemode.success", new Object[] {new TextComponentTranslation("gameMode." + gametype.getName(), new Object[0])});
+            notifyCommandListener(sender, this, "commands.defaultgamemode.success", new TextComponentTranslation("gameMode." + gametype.getName()));
         }
     }
 

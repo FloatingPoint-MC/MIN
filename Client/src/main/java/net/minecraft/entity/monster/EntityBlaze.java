@@ -36,7 +36,7 @@ public class EntityBlaze extends EntityMob
 
     /** ticks until heightOffset is randomized */
     private int heightOffsetUpdateTime;
-    private static final DataParameter<Byte> ON_FIRE = EntityDataManager.<Byte>createKey(EntityBlaze.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> ON_FIRE = EntityDataManager.createKey(EntityBlaze.class, DataSerializers.BYTE);
 
     public EntityBlaze(World worldIn)
     {
@@ -61,7 +61,7 @@ public class EntityBlaze extends EntityMob
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
@@ -180,12 +180,12 @@ public class EntityBlaze extends EntityMob
 
     public boolean isCharged()
     {
-        return (((Byte)this.dataManager.get(ON_FIRE)).byteValue() & 1) != 0;
+        return (this.dataManager.get(ON_FIRE).byteValue() & 1) != 0;
     }
 
     public void setOnFire(boolean onFire)
     {
-        byte b0 = ((Byte)this.dataManager.get(ON_FIRE)).byteValue();
+        byte b0 = this.dataManager.get(ON_FIRE).byteValue();
 
         if (onFire)
         {
@@ -280,7 +280,7 @@ public class EntityBlaze extends EntityMob
                     if (this.attackStep > 1)
                     {
                         float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
-                        this.blaze.world.playEvent((EntityPlayer)null, 1018, new BlockPos((int)this.blaze.posX, (int)this.blaze.posY, (int)this.blaze.posZ), 0);
+                        this.blaze.world.playEvent(null, 1018, new BlockPos((int)this.blaze.posX, (int)this.blaze.posY, (int)this.blaze.posZ), 0);
 
                         for (int i = 0; i < 1; ++i)
                         {

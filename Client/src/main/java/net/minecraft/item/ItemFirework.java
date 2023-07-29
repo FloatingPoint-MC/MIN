@@ -26,7 +26,7 @@ public class ItemFirework extends Item
         if (!worldIn.isRemote)
         {
             ItemStack itemstack = player.getHeldItem(hand);
-            EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, (double)((float)pos.getX() + hitX), (double)((float)pos.getY() + hitY), (double)((float)pos.getZ() + hitZ), itemstack);
+            EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, (float)pos.getX() + hitX, (float)pos.getY() + hitY, (float)pos.getZ() + hitZ, itemstack);
             worldIn.spawnEntity(entityfireworkrocket);
 
             if (!player.capabilities.isCreativeMode)
@@ -84,14 +84,14 @@ public class ItemFirework extends Item
                 for (int i = 0; i < nbttaglist.tagCount(); ++i)
                 {
                     NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-                    List<String> list = Lists.<String>newArrayList();
+                    List<String> list = Lists.newArrayList();
                     ItemFireworkCharge.addExplosionInfo(nbttagcompound1, list);
 
                     if (!list.isEmpty())
                     {
                         for (int j = 1; j < list.size(); ++j)
                         {
-                            list.set(j, "  " + (String)list.get(j));
+                            list.set(j, "  " + list.get(j));
                         }
 
                         tooltip.addAll(list);

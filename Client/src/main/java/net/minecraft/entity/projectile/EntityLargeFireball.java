@@ -41,7 +41,7 @@ public class EntityLargeFireball extends EntityFireball
             }
 
             boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
-            this.world.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (float)this.explosionPower, flag, flag);
+            this.world.newExplosion(null, this.posX, this.posY, this.posZ, (float)this.explosionPower, flag, flag);
             this.setDead();
         }
     }

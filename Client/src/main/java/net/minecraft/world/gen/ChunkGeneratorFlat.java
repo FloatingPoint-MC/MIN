@@ -48,7 +48,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
 
             if (map.containsKey("village"))
             {
-                Map<String, String> map1 = (Map)map.get("village");
+                Map<String, String> map1 = map.get("village");
 
                 if (!map1.containsKey("size"))
                 {
@@ -119,7 +119,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
         }
 
         worldIn.setSeaLevel(j);
-        this.hasDecoration = flag && this.flatWorldGenInfo.getBiome() != Biome.getIdForBiome(Biomes.VOID) ? false : this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
+        this.hasDecoration = (!flag || this.flatWorldGenInfo.getBiome() == Biome.getIdForBiome(Biomes.VOID)) && this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
     }
 
     /**
@@ -151,7 +151,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
         }
 
         Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
-        Biome[] abiome = this.world.getBiomeProvider().getBiomes((Biome[])null, x * 16, z * 16, 16, 16);
+        Biome[] abiome = this.world.getBiomeProvider().getBiomes(null, x * 16, z * 16, 16, 16);
         byte[] abyte = chunk.getBiomeArray();
 
         for (int l = 0; l < abyte.length; ++l)
@@ -245,7 +245,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
         MapGenStructure mapgenstructure = this.structureGenerators.get(structureName);
-        return mapgenstructure != null ? mapgenstructure.isInsideStructure(pos) : false;
+        return mapgenstructure != null && mapgenstructure.isInsideStructure(pos);
     }
 
     /**
@@ -257,7 +257,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
     {
         for (MapGenStructure mapgenstructure : this.structureGenerators.values())
         {
-            mapgenstructure.generate(this.world, x, z, (ChunkPrimer)null);
+            mapgenstructure.generate(this.world, x, z, null);
         }
     }
 }

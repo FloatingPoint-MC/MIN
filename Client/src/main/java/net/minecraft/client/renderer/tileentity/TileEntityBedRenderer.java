@@ -27,7 +27,7 @@ public class TileEntityBedRenderer extends TileEntitySpecialRenderer<TileEntityB
         }
 
         boolean flag = te.getWorld() != null;
-        boolean flag1 = flag ? te.isHeadPiece() : true;
+        boolean flag1 = !flag || te.isHeadPiece();
         EnumDyeColor enumdyecolor = te != null ? te.getColor() : EnumDyeColor.RED;
         int i = flag ? te.getBlockMetadata() & 3 : 0;
 

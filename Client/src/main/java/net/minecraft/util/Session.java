@@ -52,19 +52,19 @@ public class Session
         }
         catch (IllegalArgumentException var2)
         {
-            return new GameProfile((UUID)null, this.getUsername());
+            return new GameProfile(null, this.getUsername());
         }
     }
 
-    public static enum Type
+    public enum Type
     {
         LEGACY("legacy"),
         MOJANG("mojang");
 
-        private static final Map<String, Session.Type> SESSION_TYPES = Maps.<String, Session.Type>newHashMap();
+        private static final Map<String, Session.Type> SESSION_TYPES = Maps.newHashMap();
         private final String sessionType;
 
-        private Type(String sessionTypeIn)
+        Type(String sessionTypeIn)
         {
             this.sessionType = sessionTypeIn;
         }

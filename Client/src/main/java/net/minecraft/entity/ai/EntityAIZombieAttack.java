@@ -39,13 +39,6 @@ public class EntityAIZombieAttack extends EntityAIAttackMelee
         super.updateTask();
         ++this.raiseArmTicks;
 
-        if (this.raiseArmTicks >= 5 && this.attackTick < 10)
-        {
-            this.zombie.setArmsRaised(true);
-        }
-        else
-        {
-            this.zombie.setArmsRaised(false);
-        }
+        this.zombie.setArmsRaised(this.raiseArmTicks >= 5 && this.attackTick < 10);
     }
 }

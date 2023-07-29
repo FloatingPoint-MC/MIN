@@ -45,12 +45,12 @@ public class PlayerChunkMap
         }
     };
     private final WorldServer world;
-    private final List<EntityPlayerMP> players = Lists.<EntityPlayerMP>newArrayList();
+    private final List<EntityPlayerMP> players = Lists.newArrayList();
     private final Long2ObjectMap<PlayerChunkMapEntry> entryMap = new Long2ObjectOpenHashMap<PlayerChunkMapEntry>(4096);
-    private final Set<PlayerChunkMapEntry> dirtyEntries = Sets.<PlayerChunkMapEntry>newHashSet();
-    private final List<PlayerChunkMapEntry> pendingSendToPlayers = Lists.<PlayerChunkMapEntry>newLinkedList();
-    private final List<PlayerChunkMapEntry> entriesWithoutChunks = Lists.<PlayerChunkMapEntry>newLinkedList();
-    private final List<PlayerChunkMapEntry> entries = Lists.<PlayerChunkMapEntry>newArrayList();
+    private final Set<PlayerChunkMapEntry> dirtyEntries = Sets.newHashSet();
+    private final List<PlayerChunkMapEntry> pendingSendToPlayers = Lists.newLinkedList();
+    private final List<PlayerChunkMapEntry> entriesWithoutChunks = Lists.newLinkedList();
+    private final List<PlayerChunkMapEntry> entries = Lists.newArrayList();
 
     /** Player view distance, in chunks. */
     private int playerViewRadius;
@@ -112,7 +112,7 @@ public class PlayerChunkMap
                         return chunk;
                     }
 
-                    return (Chunk)this.endOfData();
+                    return this.endOfData();
                 }
             }
         };
@@ -129,7 +129,7 @@ public class PlayerChunkMap
         while (iterator.hasNext())
         {
             Entry<EntityPlayerMP, Set<ChunkPos>> entry = (Entry)iterator.next();
-            Set<ChunkPos> set1 = (Set)entry.getValue();
+            Set<ChunkPos> set1 = entry.getValue();
 
             if (!set1.isEmpty())
             {
@@ -287,13 +287,13 @@ public class PlayerChunkMap
     @Nullable
     public PlayerChunkMapEntry getEntry(int x, int z)
     {
-        return (PlayerChunkMapEntry)this.entryMap.get(getIndex(x, z));
+        return this.entryMap.get(getIndex(x, z));
     }
 
     private PlayerChunkMapEntry getOrCreateEntry(int chunkX, int chunkZ)
     {
         long i = getIndex(chunkX, chunkZ);
-        PlayerChunkMapEntry playerchunkmapentry = (PlayerChunkMapEntry)this.entryMap.get(i);
+        PlayerChunkMapEntry playerchunkmapentry = this.entryMap.get(i);
 
         if (playerchunkmapentry == null)
         {
@@ -592,7 +592,6 @@ public class PlayerChunkMap
 
         for (f = p_getNearest_2_.rotationYaw + 90.0F; f <= -180.0F; f += 360.0F)
         {
-            ;
         }
 
         while (f > 180.0F)
@@ -601,10 +600,10 @@ public class PlayerChunkMap
         }
 
         double d0 = (double)f * 0.017453292519943295D;
-        double d1 = (double)p_getNearest_2_.rotationPitch;
+        double d1 = p_getNearest_2_.rotationPitch;
         double d2 = d1 * 0.017453292519943295D;
         ChunkPosComparator chunkposcomparator = new ChunkPosComparator(p_getNearest_2_.chunkCoordX, p_getNearest_2_.chunkCoordZ, d0, d2);
-        Comparator<ChunkPos> comparator = Collections.<ChunkPos>reverseOrder(chunkposcomparator);
+        Comparator<ChunkPos> comparator = Collections.reverseOrder(chunkposcomparator);
         PriorityQueue<ChunkPos> priorityqueue = new PriorityQueue<ChunkPos>(comparator);
 
         for (ChunkPos chunkpos : p_getNearest_1_)
@@ -630,7 +629,7 @@ public class PlayerChunkMap
 
     private Set<ChunkPos> getPendingEntriesSafe(EntityPlayerMP p_getPendingEntriesSafe_1_)
     {
-        Set<ChunkPos> set = (Set)this.mapPlayerPendingEntries.get(p_getPendingEntriesSafe_1_);
+        Set<ChunkPos> set = this.mapPlayerPendingEntries.get(p_getPendingEntriesSafe_1_);
 
         if (set != null)
         {

@@ -7,8 +7,8 @@ import net.optifine.Config;
 
 public class CacheObjectArray
 {
-    private static ArrayDeque<int[]> arrays = new ArrayDeque<int[]>();
-    private static int maxCacheSize = 10;
+    private static final ArrayDeque<int[]> arrays = new ArrayDeque<int[]>();
+    private static final int maxCacheSize = 10;
 
     private static synchronized int[] allocateArray(int size)
     {
@@ -58,7 +58,7 @@ public class CacheObjectArray
 
         for (int j = 0; j < count; ++j)
         {
-            int[] aint1 = (int[])aint.clone();
+            int[] aint1 = aint.clone();
         }
 
         long k = System.currentTimeMillis();
@@ -85,7 +85,7 @@ public class CacheObjectArray
 
         for (int j = 0; j < count; ++j)
         {
-            IBlockState[] aiblockstate1 = (IBlockState[])aiblockstate.clone();
+            IBlockState[] aiblockstate1 = aiblockstate.clone();
         }
 
         long k = System.currentTimeMillis();

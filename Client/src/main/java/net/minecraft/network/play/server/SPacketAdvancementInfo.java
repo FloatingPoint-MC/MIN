@@ -28,7 +28,7 @@ public class SPacketAdvancementInfo implements Packet<INetHandlerPlayClient>
     public SPacketAdvancementInfo(boolean p_i47519_1_, Collection<Advancement> p_i47519_2_, Set<ResourceLocation> p_i47519_3_, Map<ResourceLocation, AdvancementProgress> p_i47519_4_)
     {
         this.firstSync = p_i47519_1_;
-        this.advancementsToAdd = Maps.<ResourceLocation, Advancement.Builder>newHashMap();
+        this.advancementsToAdd = Maps.newHashMap();
 
         for (Advancement advancement : p_i47519_2_)
         {
@@ -36,7 +36,7 @@ public class SPacketAdvancementInfo implements Packet<INetHandlerPlayClient>
         }
 
         this.advancementsToRemove = p_i47519_3_;
-        this.progressUpdates = Maps.<ResourceLocation, AdvancementProgress>newHashMap(p_i47519_4_);
+        this.progressUpdates = Maps.newHashMap(p_i47519_4_);
     }
 
     /**
@@ -53,9 +53,9 @@ public class SPacketAdvancementInfo implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.firstSync = buf.readBoolean();
-        this.advancementsToAdd = Maps.<ResourceLocation, Advancement.Builder>newHashMap();
-        this.advancementsToRemove = Sets.<ResourceLocation>newLinkedHashSet();
-        this.progressUpdates = Maps.<ResourceLocation, AdvancementProgress>newHashMap();
+        this.advancementsToAdd = Maps.newHashMap();
+        this.advancementsToRemove = Sets.newLinkedHashSet();
+        this.progressUpdates = Maps.newHashMap();
         int i = buf.readVarInt();
 
         for (int j = 0; j < i; ++j)
@@ -110,7 +110,7 @@ public class SPacketAdvancementInfo implements Packet<INetHandlerPlayClient>
         for (Entry<ResourceLocation, AdvancementProgress> entry1 : this.progressUpdates.entrySet())
         {
             buf.writeResourceLocation(entry1.getKey());
-            ((AdvancementProgress)entry1.getValue()).serializeToNetwork(buf);
+            entry1.getValue().serializeToNetwork(buf);
         }
     }
 

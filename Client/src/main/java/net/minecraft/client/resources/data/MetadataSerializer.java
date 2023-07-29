@@ -41,7 +41,7 @@ public class MetadataSerializer
         }
         else if (!json.has(sectionName))
         {
-            return (T)null;
+            return null;
         }
         else if (!json.get(sectionName).isJsonObject())
         {
@@ -49,7 +49,7 @@ public class MetadataSerializer
         }
         else
         {
-            MetadataSerializer.Registration<?> registration = (MetadataSerializer.Registration)this.metadataSectionSerializerRegistry.getObject(sectionName);
+            MetadataSerializer.Registration<?> registration = this.metadataSectionSerializerRegistry.getObject(sectionName);
 
             if (registration == null)
             {

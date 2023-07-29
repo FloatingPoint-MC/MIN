@@ -45,7 +45,7 @@ public class TutorialToast implements IToast
         if (this.hasProgressBar)
         {
             Gui.drawRect(3, 28, 157, 29, -1);
-            float f = (float)MathHelper.clampedLerp((double)this.displayedProgress, (double)this.currentProgress, (double)((float)(delta - this.lastDelta) / 100.0F));
+            float f = (float)MathHelper.clampedLerp(this.displayedProgress, this.currentProgress, (float)(delta - this.lastDelta) / 100.0F);
             int i;
 
             if (this.currentProgress >= this.displayedProgress)
@@ -75,7 +75,7 @@ public class TutorialToast implements IToast
         this.currentProgress = progress;
     }
 
-    public static enum Icons
+    public enum Icons
     {
         MOVEMENT_KEYS(0, 0),
         MOUSE(1, 0),
@@ -86,7 +86,7 @@ public class TutorialToast implements IToast
         private final int column;
         private final int row;
 
-        private Icons(int columnIn, int rowIn)
+        Icons(int columnIn, int rowIn)
         {
             this.column = columnIn;
             this.row = rowIn;

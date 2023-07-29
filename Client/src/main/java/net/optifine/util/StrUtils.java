@@ -17,7 +17,7 @@ public class StrUtils
             else
             {
                 List list = new ArrayList();
-                String s = "" + wildChar;
+                String s = String.valueOf(wildChar);
 
                 if (mask.startsWith(s))
                 {
@@ -157,7 +157,7 @@ public class StrUtils
             }
             else
             {
-                String s = str.substring(str.length() - mask.length(), str.length());
+                String s = str.substring(str.length() - mask.length());
                 return equalsMaskSingle(s, mask, wildCharSingle);
             }
         }
@@ -213,7 +213,7 @@ public class StrUtils
             else
             {
                 List list = new ArrayList();
-                String s = "" + wildChar;
+                String s = String.valueOf(wildChar);
 
                 if (mask.startsWith(s))
                 {
@@ -302,7 +302,7 @@ public class StrUtils
                     }
                 }
 
-                list.add(str.substring(i, str.length()));
+                list.add(str.substring(i));
                 return (String[])list.toArray(new String[list.size()]);
             }
         }
@@ -363,8 +363,8 @@ public class StrUtils
         else
         {
             ++i;
-            String s = "" + i;
-            return s.length() > str.length() ? "" : fillLeft("" + i, str.length(), '0');
+            String s = String.valueOf(i);
+            return s.length() > str.length() ? "" : fillLeft(String.valueOf(i), str.length(), '0');
         }
     }
 
@@ -426,7 +426,7 @@ public class StrUtils
                 stringbuffer.append(fillChar);
             }
 
-            return stringbuffer.toString() + s;
+            return stringbuffer + s;
         }
     }
 
@@ -676,7 +676,7 @@ public class StrUtils
                     }
                 }
 
-                String[] astring = (String[])list.toArray(new String[list.size()]);
+                String[] astring = list.toArray(new String[list.size()]);
                 return astring;
             }
         }

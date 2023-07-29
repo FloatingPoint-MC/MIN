@@ -25,7 +25,7 @@ public class NBTTagCompound extends NBTBase
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
-    private final Map<String, NBTBase> tagMap = Maps.<String, NBTBase>newHashMap();
+    private final Map<String, NBTBase> tagMap = Maps.newHashMap();
 
     /**
      * Write the actual data contents of the tag, implemented in NBT extension classes
@@ -57,7 +57,7 @@ public class NBTTagCompound extends NBTBase
             while ((b0 = readType(input, sizeTracker)) != 0)
             {
                 String s = readKey(input, sizeTracker);
-                sizeTracker.read((long)(224 + 16 * s.length()));
+                sizeTracker.read(224 + 16L * s.length());
                 NBTBase nbtbase = readNBT(b0, s, input, depth + 1, sizeTracker);
 
                 if (this.tagMap.put(s, nbtbase) != null)
@@ -253,7 +253,6 @@ public class NBTTagCompound extends NBTBase
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return 0;
@@ -273,7 +272,6 @@ public class NBTTagCompound extends NBTBase
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return 0;
@@ -293,7 +291,6 @@ public class NBTTagCompound extends NBTBase
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return 0;
@@ -313,7 +310,6 @@ public class NBTTagCompound extends NBTBase
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return 0L;
@@ -333,7 +329,6 @@ public class NBTTagCompound extends NBTBase
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return 0.0F;
@@ -353,7 +348,6 @@ public class NBTTagCompound extends NBTBase
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return 0.0D;
@@ -368,12 +362,11 @@ public class NBTTagCompound extends NBTBase
         {
             if (this.hasKey(key, 8))
             {
-                return ((NBTBase)this.tagMap.get(key)).getString();
+                return this.tagMap.get(key).getString();
             }
         }
         catch (ClassCastException var3)
         {
-            ;
         }
 
         return "";
@@ -528,7 +521,7 @@ public class NBTTagCompound extends NBTBase
         {
             public String call() throws Exception
             {
-                return NBTBase.NBT_TYPES[((NBTBase)NBTTagCompound.this.tagMap.get(key)).getId()];
+                return NBTBase.NBT_TYPES[NBTTagCompound.this.tagMap.get(key).getId()];
             }
         });
         crashreportcategory.addDetail("Tag type expected", new ICrashReportDetail<String>()
@@ -551,7 +544,7 @@ public class NBTTagCompound extends NBTBase
 
         for (String s : this.tagMap.keySet())
         {
-            nbttagcompound.setTag(s, ((NBTBase)this.tagMap.get(s)).copy());
+            nbttagcompound.setTag(s, this.tagMap.get(s).copy());
         }
 
         return nbttagcompound;

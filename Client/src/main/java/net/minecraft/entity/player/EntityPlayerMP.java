@@ -133,7 +133,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     /** player Z position as seen by PlayerManager */
     public double managedPosZ;
-    private final List<Integer> entityRemoveQueue = Lists.<Integer>newLinkedList();
+    private final List<Integer> entityRemoveQueue = Lists.newLinkedList();
     private final PlayerAdvancements advancements;
     private final StatisticsManagerServer statsFile;
 
@@ -204,7 +204,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         if (worldIn.provider.hasSkyLight() && worldIn.getWorldInfo().getGameType() != GameType.ADVENTURE)
         {
             int i = Math.max(0, server.getSpawnRadius(worldIn));
-            int j = MathHelper.floor(worldIn.getWorldBorder().getClosestDistance((double)blockpos.getX(), (double)blockpos.getZ()));
+            int j = MathHelper.floor(worldIn.getWorldBorder().getClosestDistance(blockpos.getX(), blockpos.getZ()));
 
             if (j < i)
             {
@@ -392,7 +392,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
             while (iterator.hasNext() && j < i)
             {
-                aint[j++] = ((Integer)iterator.next()).intValue();
+                aint[j++] = iterator.next().intValue();
                 iterator.remove();
             }
 
@@ -647,7 +647,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
             }
         }
 
-        return Lists.<ScoreObjective>newArrayList();
+        return Lists.newArrayList();
     }
 
     /**
@@ -696,7 +696,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     public boolean canNotAttackPlayer(EntityPlayer other)
     {
-        return !this.canPlayersAttack() ? true : super.canNotAttackPlayer(other);
+        return !this.canPlayersAttack() || super.canNotAttackPlayer(other);
     }
 
     /**
@@ -758,7 +758,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         }
         else
         {
-            return this.isSpectator() ? false : super.isSpectatedByPlayer(player);
+            return !this.isSpectator() && super.isSpectatedByPlayer(player);
         }
     }
 
@@ -920,7 +920,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     {
         if (guiOwner instanceof ILootContainer && ((ILootContainer)guiOwner).getLootTable() != null && this.isSpectator())
         {
-            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen", new Object[0])).setStyle((new Style()).setColor(TextFormatting.RED)), true);
+            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen")).setStyle((new Style()).setColor(TextFormatting.RED)), true);
         }
         else
         {
@@ -939,7 +939,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     {
         if (chestInventory instanceof ILootContainer && ((ILootContainer)chestInventory).getLootTable() != null && this.isSpectator())
         {
-            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen", new Object[0])).setStyle((new Style()).setColor(TextFormatting.RED)), true);
+            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen")).setStyle((new Style()).setColor(TextFormatting.RED)), true);
         }
         else
         {
@@ -954,7 +954,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
                 if (ilockablecontainer.isLocked() && !this.canOpen(ilockablecontainer.getLockCode()) && !this.isSpectator())
                 {
-                    this.connection.sendPacket(new SPacketChat(new TextComponentTranslation("container.isLocked", new Object[] {chestInventory.getDisplayName()}), ChatType.GAME_INFO));
+                    this.connection.sendPacket(new SPacketChat(new TextComponentTranslation("container.isLocked", chestInventory.getDisplayName()), ChatType.GAME_INFO));
                     this.connection.sendPacket(new SPacketSoundEffect(SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, this.posX, this.posY, this.posZ, 1.0F, 1.0F));
                     return;
                 }
@@ -1166,7 +1166,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     public void unlockRecipes(ResourceLocation[] p_193102_1_)
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (ResourceLocation resourcelocation : p_193102_1_)
         {
@@ -1389,7 +1389,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         {
             if (this.server.getPlayerList().canSendCommands(this.getGameProfile()))
             {
-                UserListOpsEntry userlistopsentry = (UserListOpsEntry)this.server.getPlayerList().getOppedPlayers().getEntry(this.getGameProfile());
+                UserListOpsEntry userlistopsentry = this.server.getPlayerList().getOppedPlayers().getEntry(this.getGameProfile());
 
                 if (userlistopsentry != null)
                 {
@@ -1475,7 +1475,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     {
         if (entityIn instanceof EntityPlayer)
         {
-            this.connection.sendPacket(new SPacketDestroyEntities(new int[] {entityIn.getEntityId()}));
+            this.connection.sendPacket(new SPacketDestroyEntities(entityIn.getEntityId()));
         }
         else
         {
@@ -1509,13 +1509,13 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     public Entity getSpectatingEntity()
     {
-        return (Entity)(this.spectatingEntity == null ? this : this.spectatingEntity);
+        return this.spectatingEntity == null ? this : this.spectatingEntity;
     }
 
     public void setSpectatingEntity(Entity entityToSpectate)
     {
         Entity entity = this.getSpectatingEntity();
-        this.spectatingEntity = (Entity)(entityToSpectate == null ? this : entityToSpectate);
+        this.spectatingEntity = entityToSpectate == null ? this : entityToSpectate;
 
         if (entity != this.spectatingEntity)
         {

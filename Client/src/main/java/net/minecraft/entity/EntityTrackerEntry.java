@@ -113,11 +113,11 @@ public class EntityTrackerEntry
      * remains fully synced.
      */
     private int ticksSinceLastForcedTeleport;
-    private List<Entity> passengers = Collections.<Entity>emptyList();
+    private List<Entity> passengers = Collections.emptyList();
     private boolean ridingEntity;
     private boolean onGround;
     public boolean playerEntitiesUpdated;
-    private final Set<EntityPlayerMP> trackingPlayers = Sets.<EntityPlayerMP>newHashSet();
+    private final Set<EntityPlayerMP> trackingPlayers = Sets.newHashSet();
 
     public EntityTrackerEntry(Entity entityIn, int rangeIn, int maxRangeIn, int updateFrequencyIn, boolean sendVelocityUpdatesIn)
     {

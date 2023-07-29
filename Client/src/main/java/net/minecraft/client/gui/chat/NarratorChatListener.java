@@ -44,23 +44,23 @@ public class NarratorChatListener implements IChatListener
     public void announceMode(int p_193641_1_)
     {
         this.narrator.clear();
-        this.narrator.say((new TextComponentTranslation("options.narrator", new Object[0])).getUnformattedText() + " : " + (new TextComponentTranslation(GameSettings.NARRATOR_MODES[p_193641_1_], new Object[0])).getUnformattedText());
+        this.narrator.say((new TextComponentTranslation("options.narrator")).getUnformattedText() + " : " + (new TextComponentTranslation(GameSettings.NARRATOR_MODES[p_193641_1_])).getUnformattedText());
         GuiToast guitoast = Minecraft.getMinecraft().getToastGui();
 
         if (this.narrator.active())
         {
             if (p_193641_1_ == 0)
             {
-                SystemToast.addOrUpdate(guitoast, SystemToast.Type.NARRATOR_TOGGLE, new TextComponentTranslation("narrator.toast.disabled", new Object[0]), (ITextComponent)null);
+                SystemToast.addOrUpdate(guitoast, SystemToast.Type.NARRATOR_TOGGLE, new TextComponentTranslation("narrator.toast.disabled"), null);
             }
             else
             {
-                SystemToast.addOrUpdate(guitoast, SystemToast.Type.NARRATOR_TOGGLE, new TextComponentTranslation("narrator.toast.enabled", new Object[0]), new TextComponentTranslation(GameSettings.NARRATOR_MODES[p_193641_1_], new Object[0]));
+                SystemToast.addOrUpdate(guitoast, SystemToast.Type.NARRATOR_TOGGLE, new TextComponentTranslation("narrator.toast.enabled"), new TextComponentTranslation(GameSettings.NARRATOR_MODES[p_193641_1_]));
             }
         }
         else
         {
-            SystemToast.addOrUpdate(guitoast, SystemToast.Type.NARRATOR_TOGGLE, new TextComponentTranslation("narrator.toast.disabled", new Object[0]), new TextComponentTranslation("options.narrator.notavailable", new Object[0]));
+            SystemToast.addOrUpdate(guitoast, SystemToast.Type.NARRATOR_TOGGLE, new TextComponentTranslation("narrator.toast.disabled"), new TextComponentTranslation("options.narrator.notavailable"));
         }
     }
 

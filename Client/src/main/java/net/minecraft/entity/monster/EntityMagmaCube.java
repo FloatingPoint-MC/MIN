@@ -51,7 +51,7 @@ public class EntityMagmaCube extends EntitySlime
     protected void setSlimeSize(int size, boolean resetHealth)
     {
         super.setSlimeSize(size, resetHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue((double)(size * 3));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(size * 3);
     }
 
     public int getBrightnessForRender()
@@ -109,13 +109,13 @@ public class EntityMagmaCube extends EntitySlime
      */
     protected void jump()
     {
-        this.motionY = (double)(0.42F + (float)this.getSlimeSize() * 0.1F);
+        this.motionY = 0.42F + (float)this.getSlimeSize() * 0.1F;
         this.isAirBorne = true;
     }
 
     protected void handleJumpLava()
     {
-        this.motionY = (double)(0.22F + (float)this.getSlimeSize() * 0.05F);
+        this.motionY = 0.22F + (float)this.getSlimeSize() * 0.05F;
         this.isAirBorne = true;
     }
 

@@ -99,7 +99,7 @@ public class Selector
         public Selector deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
         {
             JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
-            return new Selector(this.getWhenCondition(jsonobject), (VariantList)p_deserialize_3_.deserialize(jsonobject.get("apply"), VariantList.class));
+            return new Selector(this.getWhenCondition(jsonobject), p_deserialize_3_.deserialize(jsonobject.get("apply"), VariantList.class));
         }
 
         private ICondition getWhenCondition(JsonObject json)
@@ -124,7 +124,7 @@ public class Selector
                 }
                 else
                 {
-                    return (ICondition)(json.has("AND") ? new ConditionAnd(Iterables.transform(JsonUtils.getJsonArray(json, "AND"), FUNCTION_OR_AND)) : makePropertyValue(set.iterator().next()));
+                    return json.has("AND") ? new ConditionAnd(Iterables.transform(JsonUtils.getJsonArray(json, "AND"), FUNCTION_OR_AND)) : makePropertyValue(set.iterator().next());
                 }
             }
             else
@@ -135,7 +135,7 @@ public class Selector
 
         private static ConditionPropertyValue makePropertyValue(Entry<String, JsonElement> entry)
         {
-            return new ConditionPropertyValue(entry.getKey(), ((JsonElement)entry.getValue()).getAsString());
+            return new ConditionPropertyValue(entry.getKey(), entry.getValue().getAsString());
         }
     }
 }

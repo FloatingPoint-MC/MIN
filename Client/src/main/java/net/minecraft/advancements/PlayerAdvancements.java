@@ -39,10 +39,10 @@ public class PlayerAdvancements
     };
     private final MinecraftServer server;
     private final File progressFile;
-    private final Map<Advancement, AdvancementProgress> progress = Maps.<Advancement, AdvancementProgress>newLinkedHashMap();
-    private final Set<Advancement> visible = Sets.<Advancement>newLinkedHashSet();
-    private final Set<Advancement> visibilityChanged = Sets.<Advancement>newLinkedHashSet();
-    private final Set<Advancement> progressChanged = Sets.<Advancement>newLinkedHashSet();
+    private final Map<Advancement, AdvancementProgress> progress = Maps.newLinkedHashMap();
+    private final Set<Advancement> visible = Sets.newLinkedHashSet();
+    private final Set<Advancement> visibilityChanged = Sets.newLinkedHashSet();
+    private final Set<Advancement> progressChanged = Sets.newLinkedHashSet();
     private EntityPlayerMP player;
     @Nullable
     private Advancement lastSelectedTab;
@@ -91,11 +91,11 @@ public class PlayerAdvancements
 
     private void ensureAllVisible()
     {
-        List<Advancement> list = Lists.<Advancement>newArrayList();
+        List<Advancement> list = Lists.newArrayList();
 
         for (Entry<Advancement, AdvancementProgress> entry : this.progress.entrySet())
         {
-            if (((AdvancementProgress)entry.getValue()).isDone())
+            if (entry.getValue().isDone())
             {
                 list.add(entry.getKey());
                 this.progressChanged.add(entry.getKey());
@@ -127,7 +127,7 @@ public class PlayerAdvancements
             try
             {
                 String s = Files.toString(this.progressFile, StandardCharsets.UTF_8);
-                Map<ResourceLocation, AdvancementProgress> map = (Map)JsonUtils.gsonDeserialize(GSON, s, MAP_TOKEN.getType());
+                Map<ResourceLocation, AdvancementProgress> map = JsonUtils.gsonDeserialize(GSON, s, MAP_TOKEN.getType());
 
                 if (map == null)
                 {
@@ -152,11 +152,11 @@ public class PlayerAdvancements
             }
             catch (JsonParseException jsonparseexception)
             {
-                LOGGER.error("Couldn't parse player advancements in " + this.progressFile, (Throwable)jsonparseexception);
+                LOGGER.error("Couldn't parse player advancements in " + this.progressFile, jsonparseexception);
             }
             catch (IOException ioexception)
             {
-                LOGGER.error("Couldn't access player advancements in " + this.progressFile, (Throwable)ioexception);
+                LOGGER.error("Couldn't access player advancements in " + this.progressFile, ioexception);
             }
         }
 
@@ -167,7 +167,7 @@ public class PlayerAdvancements
 
     public void save()
     {
-        Map<ResourceLocation, AdvancementProgress> map = Maps.<ResourceLocation, AdvancementProgress>newHashMap();
+        Map<ResourceLocation, AdvancementProgress> map = Maps.newHashMap();
 
         for (Entry<Advancement, AdvancementProgress> entry : this.progress.entrySet())
         {
@@ -175,7 +175,7 @@ public class PlayerAdvancements
 
             if (advancementprogress.hasProgress())
             {
-                map.put(((Advancement)entry.getKey()).getId(), advancementprogress);
+                map.put(entry.getKey().getId(), advancementprogress);
             }
         }
 
@@ -190,7 +190,7 @@ public class PlayerAdvancements
         }
         catch (IOException ioexception)
         {
-            LOGGER.error("Couldn't save player advancements to " + this.progressFile, (Throwable)ioexception);
+            LOGGER.error("Couldn't save player advancements to " + this.progressFile, ioexception);
         }
     }
 
@@ -212,7 +212,7 @@ public class PlayerAdvancements
 
                 if (p_192750_1_.getDisplay() != null && p_192750_1_.getDisplay().shouldAnnounceToChat() && this.player.world.getGameRules().getBoolean("announceAdvancements"))
                 {
-                    this.server.getPlayerList().sendMessage(new TextComponentTranslation("chat.type.advancement." + p_192750_1_.getDisplay().getFrame().getName(), new Object[] {this.player.getDisplayName(), p_192750_1_.getDisplayText()}));
+                    this.server.getPlayerList().sendMessage(new TextComponentTranslation("chat.type.advancement." + p_192750_1_.getDisplay().getFrame().getName(), this.player.getDisplayName(), p_192750_1_.getDisplayText()));
                 }
             }
         }
@@ -257,11 +257,11 @@ public class PlayerAdvancements
 
                 if (criterionprogress != null && !criterionprogress.isObtained())
                 {
-                    ICriterionInstance icriterioninstance = ((Criterion)entry.getValue()).getCriterionInstance();
+                    ICriterionInstance icriterioninstance = entry.getValue().getCriterionInstance();
 
                     if (icriterioninstance != null)
                     {
-                        ICriterionTrigger<ICriterionInstance> icriteriontrigger = CriteriaTriggers.<ICriterionInstance>get(icriterioninstance.getId());
+                        ICriterionTrigger<ICriterionInstance> icriteriontrigger = CriteriaTriggers.get(icriterioninstance.getId());
 
                         if (icriteriontrigger != null)
                         {
@@ -283,11 +283,11 @@ public class PlayerAdvancements
 
             if (criterionprogress != null && (criterionprogress.isObtained() || advancementprogress.isDone()))
             {
-                ICriterionInstance icriterioninstance = ((Criterion)entry.getValue()).getCriterionInstance();
+                ICriterionInstance icriterioninstance = entry.getValue().getCriterionInstance();
 
                 if (icriterioninstance != null)
                 {
-                    ICriterionTrigger<ICriterionInstance> icriteriontrigger = CriteriaTriggers.<ICriterionInstance>get(icriterioninstance.getId());
+                    ICriterionTrigger<ICriterionInstance> icriteriontrigger = CriteriaTriggers.get(icriterioninstance.getId());
 
                     if (icriteriontrigger != null)
                     {
@@ -302,9 +302,9 @@ public class PlayerAdvancements
     {
         if (!this.visibilityChanged.isEmpty() || !this.progressChanged.isEmpty())
         {
-            Map<ResourceLocation, AdvancementProgress> map = Maps.<ResourceLocation, AdvancementProgress>newHashMap();
-            Set<Advancement> set = Sets.<Advancement>newLinkedHashSet();
-            Set<ResourceLocation> set1 = Sets.<ResourceLocation>newLinkedHashSet();
+            Map<ResourceLocation, AdvancementProgress> map = Maps.newHashMap();
+            Set<Advancement> set = Sets.newLinkedHashSet();
+            Set<ResourceLocation> set1 = Sets.newLinkedHashSet();
 
             for (Advancement advancement : this.progressChanged)
             {

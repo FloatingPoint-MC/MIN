@@ -29,7 +29,7 @@ public class GuiAdvancement extends Gui
     private final List<String> description;
     private final Minecraft minecraft;
     private GuiAdvancement parent;
-    private final List<GuiAdvancement> children = Lists.<GuiAdvancement>newArrayList();
+    private final List<GuiAdvancement> children = Lists.newArrayList();
     private AdvancementProgress advancementProgress;
     private final int x;
     private final int y;
@@ -62,7 +62,7 @@ public class GuiAdvancement extends Gui
     {
         if (p_192995_1_.isEmpty())
         {
-            return Collections.<String>emptyList();
+            return Collections.emptyList();
         }
         else
         {
@@ -182,7 +182,7 @@ public class GuiAdvancement extends Gui
             GlStateManager.enableBlend();
             this.drawTexturedModalRect(p_191817_1_ + this.x + 3, p_191817_2_ + this.y, this.displayInfo.getFrame().getIcon(), 128 + advancementstate.getId() * 26, 26, 26);
             RenderHelper.enableGUIStandardItemLighting();
-            this.minecraft.getRenderItem().renderItemAndEffectIntoGUI((EntityLivingBase)null, this.displayInfo.getIcon(), p_191817_1_ + this.x + 8, p_191817_2_ + this.y + 5);
+            this.minecraft.getRenderItem().renderItemAndEffectIntoGUI(null, this.displayInfo.getIcon(), p_191817_1_ + this.x + 8, p_191817_2_ + this.y + 5);
         }
 
         for (GuiAdvancement guiadvancement : this.children)
@@ -310,7 +310,7 @@ public class GuiAdvancement extends Gui
         }
 
         RenderHelper.enableGUIStandardItemLighting();
-        this.minecraft.getRenderItem().renderItemAndEffectIntoGUI((EntityLivingBase)null, this.displayInfo.getIcon(), p_191821_1_ + this.x + 8, p_191821_2_ + this.y + 5);
+        this.minecraft.getRenderItem().renderItemAndEffectIntoGUI(null, this.displayInfo.getIcon(), p_191821_1_ + this.x + 8, p_191821_2_ + this.y + 5);
     }
 
     protected void render9Sprite(int p_192994_1_, int p_192994_2_, int p_192994_3_, int p_192994_4_, int p_192994_5_, int p_192994_6_, int p_192994_7_, int p_192994_8_, int p_192994_9_)

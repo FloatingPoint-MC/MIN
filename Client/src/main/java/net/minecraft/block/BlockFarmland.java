@@ -60,7 +60,7 @@ public class BlockFarmland extends Block
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        int i = ((Integer)state.getValue(MOISTURE)).intValue();
+        int i = state.getValue(MOISTURE).intValue();
 
         if (!this.hasWater(worldIn, pos) && !worldIn.isRainingAt(pos.up()))
         {
@@ -97,7 +97,7 @@ public class BlockFarmland extends Block
         p_190970_0_.setBlockState(worldIn, Blocks.DIRT.getDefaultState());
         AxisAlignedBB axisalignedbb = field_194405_c.offset(worldIn);
 
-        for (Entity entity : p_190970_0_.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb))
+        for (Entity entity : p_190970_0_.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb))
         {
             double d0 = Math.min(axisalignedbb.maxY - axisalignedbb.minY, axisalignedbb.maxY - entity.getEntityBoundingBox().minY);
             entity.setPositionAndUpdate(entity.posX, entity.posY + d0 + 0.001D, entity.posZ);
@@ -196,12 +196,12 @@ public class BlockFarmland extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(MOISTURE)).intValue();
+        return state.getValue(MOISTURE).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {MOISTURE});
+        return new BlockStateContainer(this, MOISTURE);
     }
 
     /**

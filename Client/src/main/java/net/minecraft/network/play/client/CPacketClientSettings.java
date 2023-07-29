@@ -37,10 +37,10 @@ public class CPacketClientSettings implements Packet<INetHandlerPlayServer>
     {
         this.lang = buf.readString(16);
         this.view = buf.readByte();
-        this.chatVisibility = (EntityPlayer.EnumChatVisibility)buf.readEnumValue(EntityPlayer.EnumChatVisibility.class);
+        this.chatVisibility = buf.readEnumValue(EntityPlayer.EnumChatVisibility.class);
         this.enableColors = buf.readBoolean();
         this.modelPartFlags = buf.readUnsignedByte();
-        this.mainHand = (EnumHandSide)buf.readEnumValue(EnumHandSide.class);
+        this.mainHand = buf.readEnumValue(EnumHandSide.class);
     }
 
     /**

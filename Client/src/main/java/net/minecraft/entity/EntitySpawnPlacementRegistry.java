@@ -46,7 +46,7 @@ import net.minecraft.entity.passive.EntityZombieHorse;
 
 public class EntitySpawnPlacementRegistry
 {
-    private static final Map < Class<?>, EntityLiving.SpawnPlacementType > ENTITY_PLACEMENTS = Maps. < Class<?>, EntityLiving.SpawnPlacementType > newHashMap();
+    private static final Map < Class<?>, EntityLiving.SpawnPlacementType > ENTITY_PLACEMENTS = Maps.newHashMap();
 
     public static EntityLiving.SpawnPlacementType getPlacementForEntity(Class<?> entityClass)
     {

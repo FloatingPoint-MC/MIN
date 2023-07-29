@@ -32,7 +32,7 @@ public class EntityAIMoveIndoors extends EntityAIBase
             {
                 return false;
             }
-            else if (this.insidePosX != -1 && this.entity.getDistanceSq((double)this.insidePosX, this.entity.posY, (double)this.insidePosZ) < 4.0D)
+            else if (this.insidePosX != -1 && this.entity.getDistanceSq(this.insidePosX, this.entity.posY, this.insidePosZ) < 4.0D)
             {
                 return false;
             }
@@ -78,7 +78,7 @@ public class EntityAIMoveIndoors extends EntityAIBase
 
         if (this.entity.getDistanceSq(blockpos) > 256.0D)
         {
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d((double)i + 0.5D, (double)j, (double)k + 0.5D));
+            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d((double)i + 0.5D, j, (double)k + 0.5D));
 
             if (vec3d != null)
             {
@@ -87,7 +87,7 @@ public class EntityAIMoveIndoors extends EntityAIBase
         }
         else
         {
-            this.entity.getNavigator().tryMoveToXYZ((double)i + 0.5D, (double)j, (double)k + 0.5D, 1.0D);
+            this.entity.getNavigator().tryMoveToXYZ((double)i + 0.5D, j, (double)k + 0.5D, 1.0D);
         }
     }
 

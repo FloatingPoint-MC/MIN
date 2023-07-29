@@ -52,18 +52,18 @@ public class CommandListBans extends CommandBase
     {
         if (args.length >= 1 && "ips".equalsIgnoreCase(args[0]))
         {
-            sender.sendMessage(new TextComponentTranslation("commands.banlist.ips", new Object[] {server.getPlayerList().getBannedIPs().getKeys().length}));
+            sender.sendMessage(new TextComponentTranslation("commands.banlist.ips", server.getPlayerList().getBannedIPs().getKeys().length));
             sender.sendMessage(new TextComponentString(joinNiceString(server.getPlayerList().getBannedIPs().getKeys())));
         }
         else
         {
-            sender.sendMessage(new TextComponentTranslation("commands.banlist.players", new Object[] {server.getPlayerList().getBannedPlayers().getKeys().length}));
+            sender.sendMessage(new TextComponentTranslation("commands.banlist.players", server.getPlayerList().getBannedPlayers().getKeys().length));
             sender.sendMessage(new TextComponentString(joinNiceString(server.getPlayerList().getBannedPlayers().getKeys())));
         }
     }
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"players", "ips"}) : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "players", "ips") : Collections.emptyList();
     }
 }

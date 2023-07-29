@@ -58,7 +58,7 @@ public class ModelRenderer
     private ResourceLocation textureLocation;
     private String id;
     private ModelUpdater modelUpdater;
-    private RenderGlobal renderGlobal;
+    private final RenderGlobal renderGlobal;
 
     public ModelRenderer(ModelBase model, String boxNameIn)
     {
@@ -73,7 +73,7 @@ public class ModelRenderer
         this.textureWidth = 64.0F;
         this.textureHeight = 32.0F;
         this.showModel = true;
-        this.cubeList = Lists.<ModelBox>newArrayList();
+        this.cubeList = Lists.newArrayList();
         this.baseModel = model;
         model.boxList.add(this);
         this.boxName = boxNameIn;
@@ -82,7 +82,7 @@ public class ModelRenderer
 
     public ModelRenderer(ModelBase model)
     {
-        this(model, (String)null);
+        this(model, null);
     }
 
     public ModelRenderer(ModelBase model, int texOffX, int texOffY)
@@ -98,7 +98,7 @@ public class ModelRenderer
     {
         if (this.childModels == null)
         {
-            this.childModels = Lists.<ModelRenderer>newArrayList();
+            this.childModels = Lists.newArrayList();
         }
 
         this.childModels.add(renderer);
@@ -194,7 +194,7 @@ public class ModelRenderer
                     {
                         for (int l = 0; l < this.childModels.size(); ++l)
                         {
-                            ((ModelRenderer)this.childModels.get(l)).render(scale);
+                            this.childModels.get(l).render(scale);
                         }
                     }
 
@@ -218,7 +218,7 @@ public class ModelRenderer
                     {
                         for (int k = 0; k < this.childModels.size(); ++k)
                         {
-                            ((ModelRenderer)this.childModels.get(k)).render(scale);
+                            this.childModels.get(k).render(scale);
                         }
                     }
 
@@ -261,7 +261,7 @@ public class ModelRenderer
                 {
                     for (int j = 0; j < this.childModels.size(); ++j)
                     {
-                        ((ModelRenderer)this.childModels.get(j)).render(scale);
+                        this.childModels.get(j).render(scale);
                     }
                 }
 
@@ -336,7 +336,7 @@ public class ModelRenderer
             {
                 for (int j = 0; j < this.childModels.size(); ++j)
                 {
-                    ((ModelRenderer)this.childModels.get(j)).render(scale);
+                    this.childModels.get(j).render(scale);
                 }
             }
 
@@ -407,7 +407,7 @@ public class ModelRenderer
 
         for (int i = 0; i < this.cubeList.size(); ++i)
         {
-            ((ModelBox)this.cubeList.get(i)).render(bufferbuilder, scale);
+            this.cubeList.get(i).render(bufferbuilder, scale);
         }
 
         for (int j = 0; j < this.spriteList.size(); ++j)
@@ -546,8 +546,6 @@ public class ModelRenderer
 
     public String toString()
     {
-        StringBuffer stringbuffer = new StringBuffer();
-        stringbuffer.append("id: " + this.id + ", boxes: " + (this.cubeList != null ? this.cubeList.size() : null) + ", submodels: " + (this.childModels != null ? this.childModels.size() : null));
-        return stringbuffer.toString();
+        return "id: " + this.id + ", boxes: " + (this.cubeList != null ? this.cubeList.size() : null) + ", submodels: " + (this.childModels != null ? this.childModels.size() : null);
     }
 }

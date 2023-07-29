@@ -21,7 +21,7 @@ import net.optifine.util.Json;
 
 public class PlayerItemParser
 {
-    private static JsonParser jsonParser = new JsonParser();
+    private static final JsonParser jsonParser = new JsonParser();
     public static final String ITEM_TYPE = "type";
     public static final String ITEM_TEXTURE_SIZE = "textureSize";
     public static final String ITEM_USE_PLAYER_TEXTURE = "usePlayerTexture";
@@ -209,7 +209,7 @@ public class PlayerItemParser
             ModelBase modelbase = new ModelPlayerItem();
             modelbase.textureWidth = textureDim.width;
             modelbase.textureHeight = textureDim.height;
-            ModelRenderer modelrenderer = parseModelRenderer(elem, modelbase, (int[])null, (String)null);
+            ModelRenderer modelrenderer = parseModelRenderer(elem, modelbase, null, null);
             PlayerItemRenderer playeritemrenderer = new PlayerItemRenderer(i, modelrenderer);
             return playeritemrenderer;
         }
@@ -459,15 +459,15 @@ public class PlayerItemParser
 
         for (int i = 0; i < aint.length; ++i)
         {
-            if (aint[i] != null)
-            {
+            if (aint[i] != null) {
                 flag = true;
+                break;
             }
         }
 
         if (!flag)
         {
-            return (int[][])null;
+            return null;
         }
         else
         {

@@ -54,7 +54,7 @@ public class BiomeForest extends Biome
         }
         else if (this.type != BiomeForest.Type.BIRCH && rand.nextInt(5) != 0)
         {
-            return (WorldGenAbstractTree)(rand.nextInt(10) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE);
+            return rand.nextInt(10) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE;
         }
         else
         {
@@ -167,11 +167,11 @@ public class BiomeForest extends Biome
         return this.type == BiomeForest.Type.ROOFED ? (i & 16711422) + 2634762 >> 1 : i;
     }
 
-    public static enum Type
+    public enum Type
     {
         NORMAL,
         FLOWER,
         BIRCH,
-        ROOFED;
+        ROOFED
     }
 }

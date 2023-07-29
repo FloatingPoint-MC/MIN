@@ -178,10 +178,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
                 Entity entity = this.mc.getRenderViewEntity();
                 double d0 = p_isRenderItem_1_.getDistanceSq(entity.posX, entity.posY, entity.posZ);
 
-                if (d0 > itemRenderDistanceSq)
-                {
-                    return false;
-                }
+                return !(d0 > itemRenderDistanceSq);
             }
 
             return true;
@@ -191,7 +188,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
     public static void updateItemRenderDistance()
     {
         Minecraft minecraft = Config.getMinecraft();
-        double d0 = (double)Config.limit(minecraft.gameSettings.fovSetting, 1.0F, 120.0F);
+        double d0 = Config.limit(minecraft.gameSettings.fovSetting, 1.0F, 120.0F);
         double d1 = Math.max(6.0D * (double)minecraft.displayHeight / d0, 16.0D);
         itemRenderDistanceSq = d1 * d1;
     }

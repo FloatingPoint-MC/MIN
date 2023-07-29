@@ -13,7 +13,7 @@ import net.minecraft.world.LockCode;
 public class ContainerLocalMenu extends InventoryBasic implements ILockableContainer
 {
     private final String guiID;
-    private final Map<Integer, Integer> dataValues = Maps.<Integer, Integer>newHashMap();
+    private final Map<Integer, Integer> dataValues = Maps.newHashMap();
 
     public ContainerLocalMenu(String id, ITextComponent title, int slotCount)
     {
@@ -23,7 +23,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     public int getField(int id)
     {
-        return this.dataValues.containsKey(Integer.valueOf(id)) ? ((Integer)this.dataValues.get(Integer.valueOf(id))).intValue() : 0;
+        return this.dataValues.containsKey(Integer.valueOf(id)) ? this.dataValues.get(Integer.valueOf(id)).intValue() : 0;
     }
 
     public void setField(int id, int value)

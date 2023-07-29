@@ -23,7 +23,7 @@ public class CPacketClientStatus implements Packet<INetHandlerPlayServer>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.status = (CPacketClientStatus.State)buf.readEnumValue(CPacketClientStatus.State.class);
+        this.status = buf.readEnumValue(State.class);
     }
 
     /**
@@ -47,9 +47,9 @@ public class CPacketClientStatus implements Packet<INetHandlerPlayServer>
         return this.status;
     }
 
-    public static enum State
+    public enum State
     {
         PERFORM_RESPAWN,
-        REQUEST_STATS;
+        REQUEST_STATS
     }
 }

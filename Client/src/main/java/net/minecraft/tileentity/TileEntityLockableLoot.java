@@ -120,8 +120,8 @@ public abstract class TileEntityLockableLoot extends TileEntityLockable implemen
      */
     public ItemStack getStackInSlot(int index)
     {
-        this.fillWithLoot((EntityPlayer)null);
-        return (ItemStack)this.getItems().get(index);
+        this.fillWithLoot(null);
+        return this.getItems().get(index);
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class TileEntityLockableLoot extends TileEntityLockable implemen
      */
     public ItemStack decrStackSize(int index, int count)
     {
-        this.fillWithLoot((EntityPlayer)null);
+        this.fillWithLoot(null);
         ItemStack itemstack = ItemStackHelper.getAndSplit(this.getItems(), index, count);
 
         if (!itemstack.isEmpty())
@@ -145,7 +145,7 @@ public abstract class TileEntityLockableLoot extends TileEntityLockable implemen
      */
     public ItemStack removeStackFromSlot(int index)
     {
-        this.fillWithLoot((EntityPlayer)null);
+        this.fillWithLoot(null);
         return ItemStackHelper.getAndRemove(this.getItems(), index);
     }
 
@@ -154,7 +154,7 @@ public abstract class TileEntityLockableLoot extends TileEntityLockable implemen
      */
     public void setInventorySlotContents(int index, @Nullable ItemStack stack)
     {
-        this.fillWithLoot((EntityPlayer)null);
+        this.fillWithLoot(null);
         this.getItems().set(index, stack);
 
         if (stack.getCount() > this.getInventoryStackLimit())
@@ -213,7 +213,7 @@ public abstract class TileEntityLockableLoot extends TileEntityLockable implemen
 
     public void clear()
     {
-        this.fillWithLoot((EntityPlayer)null);
+        this.fillWithLoot(null);
         this.getItems().clear();
     }
 

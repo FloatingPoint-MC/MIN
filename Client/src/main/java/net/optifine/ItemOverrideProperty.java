@@ -10,13 +10,13 @@ import net.minecraft.world.World;
 
 public class ItemOverrideProperty
 {
-    private ResourceLocation location;
-    private float[] values;
+    private final ResourceLocation location;
+    private final float[] values;
 
     public ItemOverrideProperty(ResourceLocation location, float[] values)
     {
         this.location = location;
-        this.values = (float[])values.clone();
+        this.values = values.clone();
         Arrays.sort(this.values);
     }
 

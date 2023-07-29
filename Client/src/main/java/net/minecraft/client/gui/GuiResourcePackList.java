@@ -25,7 +25,7 @@ public abstract class GuiResourcePackList extends GuiListExtended
      */
     protected void drawListHeader(int insideLeft, int insideTop, Tessellator tessellatorIn)
     {
-        String s = TextFormatting.UNDERLINE + "" + TextFormatting.BOLD + this.getListHeader();
+        String s = TextFormatting.UNDERLINE + String.valueOf(TextFormatting.BOLD) + this.getListHeader();
         this.mc.fontRenderer.drawString(s, insideLeft + this.width / 2 - this.mc.fontRenderer.getStringWidth(s) / 2, Math.min(this.top + 3, insideTop), 16777215);
     }
 
@@ -46,7 +46,7 @@ public abstract class GuiResourcePackList extends GuiListExtended
      */
     public ResourcePackListEntry getListEntry(int index)
     {
-        return (ResourcePackListEntry)this.getList().get(index);
+        return this.getList().get(index);
     }
 
     /**

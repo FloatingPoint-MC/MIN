@@ -86,7 +86,7 @@ public class LinkedListTest
         VboRange range;
         for(Iterator it = linkedList.iterator(); it.hasNext(); sb.append(range.getPosition())) {
             LinkedList.Node<VboRange> node = (LinkedList.Node)it.next();
-            range = (VboRange)node.getItem();
+            range = node.getItem();
             if (sb.length() > 0) {
                 sb.append(", ");
             }

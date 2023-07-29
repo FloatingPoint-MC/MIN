@@ -611,8 +611,8 @@ public class ItemRenderer {
             this.equippedProgressMainHand = MathHelper.clamp(this.equippedProgressMainHand - 0.4F, 0.0F, 1.0F);
             this.equippedProgressOffHand = MathHelper.clamp(this.equippedProgressOffHand - 0.4F, 0.0F, 1.0F);
         } else {
-            this.equippedProgressMainHand += MathHelper.clamp((Objects.equals(this.itemStackMainHand.getItem(), itemstack.getItem()) ? 1.0F : 0.0F) - this.equippedProgressMainHand, -0.4F, 0.4F);
-            this.equippedProgressOffHand += MathHelper.clamp((Objects.equals(this.itemStackOffHand.getItem(), itemstack1.getItem()) ? 1.0F : 0.0F) - this.equippedProgressOffHand, -0.4F, 0.4F);
+            this.equippedProgressMainHand += MathHelper.clamp((this.itemStackMainHand.isItemStackEqual(itemstack) ? 1.0F : 0.0F) - this.equippedProgressMainHand, -0.4F, 0.4F);
+            this.equippedProgressOffHand += MathHelper.clamp((Objects.equals(this.itemStackOffHand, itemstack1) ? 1.0F : 0.0F) - this.equippedProgressOffHand, -0.4F, 0.4F);
         }
 
         if (this.equippedProgressMainHand < 0.1F) {

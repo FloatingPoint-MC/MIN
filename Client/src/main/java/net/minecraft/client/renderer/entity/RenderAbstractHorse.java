@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderAbstractHorse extends RenderLiving<AbstractHorse>
 {
-    private static final Map < Class<?>, ResourceLocation > MAP = Maps. < Class<?>, ResourceLocation > newHashMap();
+    private static final Map < Class<?>, ResourceLocation > MAP = Maps.newHashMap();
     private final float scale;
 
     public RenderAbstractHorse(RenderManager manager)

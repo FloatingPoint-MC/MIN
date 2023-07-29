@@ -120,7 +120,7 @@ public class RecipeFireworks implements IRecipe
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 NBTTagCompound nbttagcompound2 = new NBTTagCompound();
                 byte b0 = 0;
-                List<Integer> list = Lists.<Integer>newArrayList();
+                List<Integer> list = Lists.newArrayList();
 
                 for (int l1 = 0; l1 < inv.getSizeInventory(); ++l1)
                 {
@@ -163,7 +163,7 @@ public class RecipeFireworks implements IRecipe
 
                 for (int l2 = 0; l2 < aint1.length; ++l2)
                 {
-                    aint1[l2] = ((Integer)list.get(l2)).intValue();
+                    aint1[l2] = list.get(l2).intValue();
                 }
 
                 nbttagcompound2.setIntArray("Colors", aint1);
@@ -174,7 +174,7 @@ public class RecipeFireworks implements IRecipe
             }
             else if (j == 0 && i == 0 && l == 1 && k > 0 && k == i1)
             {
-                List<Integer> list1 = Lists.<Integer>newArrayList();
+                List<Integer> list1 = Lists.newArrayList();
 
                 for (int i2 = 0; i2 < inv.getSizeInventory(); ++i2)
                 {
@@ -198,7 +198,7 @@ public class RecipeFireworks implements IRecipe
 
                 for (int j2 = 0; j2 < aint.length; ++j2)
                 {
-                    aint[j2] = ((Integer)list1.get(j2)).intValue();
+                    aint[j2] = list1.get(j2).intValue();
                 }
 
                 if (!this.resultItem.isEmpty() && this.resultItem.hasTagCompound())
@@ -250,7 +250,7 @@ public class RecipeFireworks implements IRecipe
 
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i)
         {

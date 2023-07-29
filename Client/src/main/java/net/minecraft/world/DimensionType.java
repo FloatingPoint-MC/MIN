@@ -14,7 +14,7 @@ public enum DimensionType
     private final String suffix;
     private final Class <? extends WorldProvider > clazz;
 
-    private DimensionType(int idIn, String nameIn, String suffixIn, Class <? extends WorldProvider > clazzIn)
+    DimensionType(int idIn, String nameIn, String suffixIn, Class <? extends WorldProvider > clazzIn)
     {
         this.id = idIn;
         this.name = nameIn;

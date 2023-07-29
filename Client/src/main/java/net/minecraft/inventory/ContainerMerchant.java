@@ -133,7 +133,7 @@ public class ContainerMerchant extends Container
     public void onContainerClosed(EntityPlayer playerIn)
     {
         super.onContainerClosed(playerIn);
-        this.merchant.setCustomer((EntityPlayer)null);
+        this.merchant.setCustomer(null);
         super.onContainerClosed(playerIn);
 
         if (!this.world.isRemote)

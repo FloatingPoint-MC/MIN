@@ -12,7 +12,7 @@ public class PathFinder
 {
     /** The path being generated */
     private final PathHeap path = new PathHeap();
-    private final Set<PathPoint> closedSet = Sets.<PathPoint>newHashSet();
+    private final Set<PathPoint> closedSet = Sets.newHashSet();
 
     /** Selection of path points to add to the path */
     private final PathPoint[] pathOptions = new PathPoint[32];
@@ -32,7 +32,7 @@ public class PathFinder
     @Nullable
     public Path findPath(IBlockAccess worldIn, EntityLiving entitylivingIn, BlockPos targetPos, float maxDistance)
     {
-        return this.findPath(worldIn, entitylivingIn, (double)((float)targetPos.getX() + 0.5F), (double)((float)targetPos.getY() + 0.5F), (double)((float)targetPos.getZ() + 0.5F), maxDistance);
+        return this.findPath(worldIn, entitylivingIn, (float)targetPos.getX() + 0.5F, (float)targetPos.getY() + 0.5F, (float)targetPos.getZ() + 0.5F, maxDistance);
     }
 
     @Nullable

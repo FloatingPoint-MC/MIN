@@ -39,7 +39,7 @@ public class Vec3d
 
     public Vec3d(Vec3i vector)
     {
-        this((double)vector.getX(), (double)vector.getY(), (double)vector.getZ());
+        this(vector.getX(), vector.getY(), vector.getZ());
     }
 
     /**
@@ -55,7 +55,7 @@ public class Vec3d
      */
     public Vec3d normalize()
     {
-        double d0 = (double)MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        double d0 = MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
         return d0 < 1.0E-4D ? ZERO : new Vec3d(this.x / d0, this.y / d0, this.z / d0);
     }
 
@@ -104,7 +104,7 @@ public class Vec3d
         double d0 = vec.x - this.x;
         double d1 = vec.y - this.y;
         double d2 = vec.z - this.z;
-        return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
     /**
@@ -136,7 +136,7 @@ public class Vec3d
      */
     public double length()
     {
-        return (double)MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        return MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
     public double lengthSquared()
@@ -295,6 +295,6 @@ public class Vec3d
         float f1 = MathHelper.sin(-p_189986_1_ * 0.017453292F - (float)Math.PI);
         float f2 = -MathHelper.cos(-p_189986_0_ * 0.017453292F);
         float f3 = MathHelper.sin(-p_189986_0_ * 0.017453292F);
-        return new Vec3d((double)(f1 * f2), (double)f3, (double)(f * f2));
+        return new Vec3d(f1 * f2, f3, f * f2);
     }
 }

@@ -5,5 +5,5 @@ public enum EnumCreatureAttribute
     UNDEFINED,
     UNDEAD,
     ARTHROPOD,
-    ILLAGER;
+    ILLAGER
 }

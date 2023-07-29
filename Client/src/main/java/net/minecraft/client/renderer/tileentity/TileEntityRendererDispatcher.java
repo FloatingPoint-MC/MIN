@@ -59,7 +59,7 @@ public class TileEntityRendererDispatcher
     public double entityY;
     public double entityZ;
     public TileEntity tileEntityRendered;
-    private Tessellator batchBuffer = new Tessellator(2097152);
+    private final Tessellator batchBuffer = new Tessellator(2097152);
     private boolean drawingBatch = false;
 
     private TileEntityRendererDispatcher()
@@ -91,7 +91,7 @@ public class TileEntityRendererDispatcher
 
         if (tileentityspecialrenderer == null && teClass != TileEntity.class)
         {
-            tileentityspecialrenderer = this.<T>getRenderer((Class<? extends TileEntity>) teClass.getSuperclass());
+            tileentityspecialrenderer = this.getRenderer((Class<? extends TileEntity>) teClass.getSuperclass());
             this.renderers.put(teClass, tileentityspecialrenderer);
         }
 
@@ -175,7 +175,7 @@ public class TileEntityRendererDispatcher
 
     public void render(TileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage, float p_192854_10_)
     {
-        TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer = this.<TileEntity>getRenderer(tileEntityIn);
+        TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer = this.getRenderer(tileEntityIn);
 
         if (tileentityspecialrenderer != null)
         {

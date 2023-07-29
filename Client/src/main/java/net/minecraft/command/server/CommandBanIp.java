@@ -83,7 +83,7 @@ public class CommandBanIp extends CommandBase
         }
         else
         {
-            throw new WrongUsageException("commands.banip.usage", new Object[0]);
+            throw new WrongUsageException("commands.banip.usage");
         }
     }
 
@@ -94,7 +94,7 @@ public class CommandBanIp extends CommandBase
 
     protected void banIp(MinecraftServer server, ICommandSender sender, String ipAddress, @Nullable String banReason)
     {
-        UserListIPBansEntry userlistipbansentry = new UserListIPBansEntry(ipAddress, (Date)null, sender.getName(), (Date)null, banReason);
+        UserListIPBansEntry userlistipbansentry = new UserListIPBansEntry(ipAddress, null, sender.getName(), null, banReason);
         server.getPlayerList().getBannedIPs().addEntry(userlistipbansentry);
         List<EntityPlayerMP> list = server.getPlayerList().getPlayersMatchingAddress(ipAddress);
         String[] astring = new String[list.size()];
@@ -102,17 +102,17 @@ public class CommandBanIp extends CommandBase
 
         for (EntityPlayerMP entityplayermp : list)
         {
-            entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.ip_banned", new Object[0]));
+            entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.ip_banned"));
             astring[i++] = entityplayermp.getName();
         }
 
         if (list.isEmpty())
         {
-            notifyCommandListener(sender, this, "commands.banip.success", new Object[] {ipAddress});
+            notifyCommandListener(sender, this, "commands.banip.success", ipAddress);
         }
         else
         {
-            notifyCommandListener(sender, this, "commands.banip.success.players", new Object[] {ipAddress, joinNiceString(astring)});
+            notifyCommandListener(sender, this, "commands.banip.success.players", ipAddress, joinNiceString(astring));
         }
     }
 }

@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class KilledTrigger implements ICriterionTrigger<KilledTrigger.Instance>
 {
-    private final Map<PlayerAdvancements, KilledTrigger.Listeners> listeners = Maps.<PlayerAdvancements, KilledTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, KilledTrigger.Listeners> listeners = Maps.newHashMap();
     private final ResourceLocation id;
 
     public KilledTrigger(ResourceLocation id)
@@ -95,14 +95,14 @@ public class KilledTrigger implements ICriterionTrigger<KilledTrigger.Instance>
 
         public boolean test(EntityPlayerMP player, Entity entity, DamageSource source)
         {
-            return !this.killingBlow.test(player, source) ? false : this.entity.test(player, entity);
+            return this.killingBlow.test(player, source) && this.entity.test(player, entity);
         }
     }
 
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<KilledTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<KilledTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<KilledTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -130,11 +130,11 @@ public class KilledTrigger implements ICriterionTrigger<KilledTrigger.Instance>
 
             for (ICriterionTrigger.Listener<KilledTrigger.Instance> listener : this.listeners)
             {
-                if (((KilledTrigger.Instance)listener.getCriterionInstance()).test(player, entity, source))
+                if (listener.getCriterionInstance().test(player, entity, source))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<KilledTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

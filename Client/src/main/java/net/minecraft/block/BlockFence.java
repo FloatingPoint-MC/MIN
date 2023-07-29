@@ -61,22 +61,22 @@ public class BlockFence extends Block
 
         addCollisionBoxToList(pos, entityBox, collidingBoxes, PILLAR_AABB);
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if (state.getValue(NORTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if (state.getValue(EAST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if (state.getValue(SOUTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if (state.getValue(WEST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
         }
@@ -99,22 +99,22 @@ public class BlockFence extends Block
     {
         int i = 0;
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if (state.getValue(NORTH).booleanValue())
         {
             i |= 1 << EnumFacing.NORTH.getHorizontalIndex();
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if (state.getValue(EAST).booleanValue())
         {
             i |= 1 << EnumFacing.EAST.getHorizontalIndex();
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if (state.getValue(SOUTH).booleanValue())
         {
             i |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if (state.getValue(WEST).booleanValue())
         {
             i |= 1 << EnumFacing.WEST.getHorizontalIndex();
         }
@@ -249,7 +249,7 @@ public class BlockFence extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, WEST, SOUTH});
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 
     /**

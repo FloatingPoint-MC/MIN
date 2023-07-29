@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 public class InventoryChangeTrigger implements ICriterionTrigger<InventoryChangeTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("inventory_changed");
-    private final Map<PlayerAdvancements, InventoryChangeTrigger.Listeners> listeners = Maps.<PlayerAdvancements, InventoryChangeTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, InventoryChangeTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -149,21 +149,14 @@ public class InventoryChangeTrigger implements ICriterionTrigger<InventoryChange
             {
                 return false;
             }
-            else if (!list.isEmpty())
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            else return list.isEmpty();
         }
     }
 
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<InventoryChangeTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<InventoryChangeTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<InventoryChangeTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -191,11 +184,11 @@ public class InventoryChangeTrigger implements ICriterionTrigger<InventoryChange
 
             for (ICriterionTrigger.Listener<InventoryChangeTrigger.Instance> listener : this.listeners)
             {
-                if (((InventoryChangeTrigger.Instance)listener.getCriterionInstance()).test(inventory))
+                if (listener.getCriterionInstance().test(inventory))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<InventoryChangeTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

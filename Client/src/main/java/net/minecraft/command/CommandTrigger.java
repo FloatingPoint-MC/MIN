@@ -46,7 +46,7 @@ public class CommandTrigger extends CommandBase
     {
         if (args.length < 3)
         {
-            throw new WrongUsageException("commands.trigger.usage", new Object[0]);
+            throw new WrongUsageException("commands.trigger.usage");
         }
         else
         {
@@ -62,7 +62,7 @@ public class CommandTrigger extends CommandBase
 
                 if (!(entity instanceof EntityPlayerMP))
                 {
-                    throw new CommandException("commands.trigger.invalidPlayer", new Object[0]);
+                    throw new CommandException("commands.trigger.invalidPlayer");
                 }
 
                 entityplayermp = (EntityPlayerMP)entity;
@@ -77,7 +77,7 @@ public class CommandTrigger extends CommandBase
 
                 if (!scoreboard.entityHasObjective(entityplayermp.getName(), scoreobjective))
                 {
-                    throw new CommandException("commands.trigger.invalidObjective", new Object[] {args[0]});
+                    throw new CommandException("commands.trigger.invalidObjective", args[0]);
                 }
                 else
                 {
@@ -85,7 +85,7 @@ public class CommandTrigger extends CommandBase
 
                     if (score.isLocked())
                     {
-                        throw new CommandException("commands.trigger.disabled", new Object[] {args[0]});
+                        throw new CommandException("commands.trigger.disabled", args[0]);
                     }
                     else
                     {
@@ -97,7 +97,7 @@ public class CommandTrigger extends CommandBase
                         {
                             if (!"add".equals(args[1]))
                             {
-                                throw new CommandException("commands.trigger.invalidMode", new Object[] {args[1]});
+                                throw new CommandException("commands.trigger.invalidMode", args[1]);
                             }
 
                             score.increaseScore(i);
@@ -107,14 +107,14 @@ public class CommandTrigger extends CommandBase
 
                         if (entityplayermp.interactionManager.isCreative())
                         {
-                            notifyCommandListener(sender, this, "commands.trigger.success", new Object[] {args[0], args[1], args[2]});
+                            notifyCommandListener(sender, this, "commands.trigger.success", args[0], args[1], args[2]);
                         }
                     }
                 }
             }
             else
             {
-                throw new CommandException("commands.trigger.invalidObjective", new Object[] {args[0]});
+                throw new CommandException("commands.trigger.invalidObjective", args[0]);
             }
         }
     }
@@ -124,7 +124,7 @@ public class CommandTrigger extends CommandBase
         if (args.length == 1)
         {
             Scoreboard scoreboard = server.getWorld(0).getScoreboard();
-            List<String> list = Lists.<String>newArrayList();
+            List<String> list = Lists.newArrayList();
 
             for (ScoreObjective scoreobjective : scoreboard.getScoreObjectives())
             {
@@ -134,11 +134,11 @@ public class CommandTrigger extends CommandBase
                 }
             }
 
-            return getListOfStringsMatchingLastWord(args, (String[])list.toArray(new String[list.size()]));
+            return getListOfStringsMatchingLastWord(args, list.toArray(new String[list.size()]));
         }
         else
         {
-            return args.length == 2 ? getListOfStringsMatchingLastWord(args, new String[] {"add", "set"}) : Collections.emptyList();
+            return args.length == 2 ? getListOfStringsMatchingLastWord(args, "add", "set") : Collections.emptyList();
         }
     }
 }

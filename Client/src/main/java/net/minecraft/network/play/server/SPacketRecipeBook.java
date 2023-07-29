@@ -43,11 +43,11 @@ public class SPacketRecipeBook implements Packet<INetHandlerPlayClient>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.state = (SPacketRecipeBook.State)buf.readEnumValue(SPacketRecipeBook.State.class);
+        this.state = buf.readEnumValue(State.class);
         this.guiOpen = buf.readBoolean();
         this.filteringCraftable = buf.readBoolean();
         int i = buf.readVarInt();
-        this.recipes = Lists.<IRecipe>newArrayList();
+        this.recipes = Lists.newArrayList();
 
         for (int j = 0; j < i; ++j)
         {
@@ -57,7 +57,7 @@ public class SPacketRecipeBook implements Packet<INetHandlerPlayClient>
         if (this.state == SPacketRecipeBook.State.INIT)
         {
             i = buf.readVarInt();
-            this.displayedRecipes = Lists.<IRecipe>newArrayList();
+            this.displayedRecipes = Lists.newArrayList();
 
             for (int k = 0; k < i; ++k)
             {
@@ -117,10 +117,10 @@ public class SPacketRecipeBook implements Packet<INetHandlerPlayClient>
         return this.state;
     }
 
-    public static enum State
+    public enum State
     {
         INIT,
         ADD,
-        REMOVE;
+        REMOVE
     }
 }

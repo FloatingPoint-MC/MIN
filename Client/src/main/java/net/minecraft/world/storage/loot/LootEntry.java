@@ -53,7 +53,7 @@ public abstract class LootEntry
 
             if (jsonobject.has("conditions"))
             {
-                alootcondition = (LootCondition[])JsonUtils.deserializeClass(jsonobject, "conditions", p_deserialize_3_, LootCondition[].class);
+                alootcondition = JsonUtils.deserializeClass(jsonobject, "conditions", p_deserialize_3_, LootCondition[].class);
             }
             else
             {

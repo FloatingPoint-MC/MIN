@@ -40,7 +40,7 @@ public class EntityFallingBlock extends Entity
     private int fallHurtMax = 40;
     private float fallHurtAmount = 2.0F;
     public NBTTagCompound tileEntityData;
-    protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(EntityFallingBlock.class, DataSerializers.BLOCK_POS);
+    protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityFallingBlock.class, DataSerializers.BLOCK_POS);
 
     public EntityFallingBlock(World worldIn)
     {
@@ -78,7 +78,7 @@ public class EntityFallingBlock extends Entity
 
     public BlockPos getOrigin()
     {
-        return (BlockPos)this.dataManager.get(ORIGIN);
+        return this.dataManager.get(ORIGIN);
     }
 
     /**
@@ -192,7 +192,7 @@ public class EntityFallingBlock extends Entity
 
                         if (!this.dontSetBlock)
                         {
-                            if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, (Entity)null) && (flag1 || !BlockFalling.canFallThrough(this.world.getBlockState(blockpos1.down()))) && this.world.setBlockState(blockpos1, this.fallTile, 3))
+                            if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, null) && (flag1 || !BlockFalling.canFallThrough(this.world.getBlockState(blockpos1.down()))) && this.world.setBlockState(blockpos1, this.fallTile, 3))
                             {
                                 if (block instanceof BlockFalling)
                                 {
@@ -262,7 +262,7 @@ public class EntityFallingBlock extends Entity
 
                 if (flag && (double)this.rand.nextFloat() < 0.05000000074505806D + (double)i * 0.05D)
                 {
-                    int j = ((Integer)this.fallTile.getValue(BlockAnvil.DAMAGE)).intValue();
+                    int j = this.fallTile.getValue(BlockAnvil.DAMAGE).intValue();
                     ++j;
 
                     if (j > 2)

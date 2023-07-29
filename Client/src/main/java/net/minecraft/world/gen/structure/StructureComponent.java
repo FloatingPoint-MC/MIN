@@ -469,7 +469,7 @@ public abstract class StructureComponent
     protected boolean generateChest(World worldIn, StructureBoundingBox structurebb, Random randomIn, int x, int y, int z, ResourceLocation loot)
     {
         BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
-        return this.generateChest(worldIn, structurebb, randomIn, blockpos, loot, (IBlockState)null);
+        return this.generateChest(worldIn, structurebb, randomIn, blockpos, loot, null);
     }
 
     protected boolean generateChest(World p_191080_1_, StructureBoundingBox p_191080_2_, Random p_191080_3_, BlockPos p_191080_4_, ResourceLocation p_191080_5_, @Nullable IBlockState p_191080_6_)

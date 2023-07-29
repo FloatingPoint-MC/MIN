@@ -20,7 +20,7 @@ public class ObjectIntIdentityMap<T> implements IObjectIntIterable<T>
 
     public ObjectIntIdentityMap(int expectedSize)
     {
-        this.objectList = Lists.<T>newArrayListWithExpectedSize(expectedSize);
+        this.objectList = Lists.newArrayListWithExpectedSize(expectedSize);
         this.identityMap = new IdentityHashMap<T, Integer>(expectedSize);
     }
 
@@ -45,7 +45,7 @@ public class ObjectIntIdentityMap<T> implements IObjectIntIterable<T>
     @Nullable
     public final T getByValue(int value)
     {
-        return (T)(value >= 0 && value < this.objectList.size() ? this.objectList.get(value) : null);
+        return value >= 0 && value < this.objectList.size() ? this.objectList.get(value) : null;
     }
 
     public Iterator<T> iterator()

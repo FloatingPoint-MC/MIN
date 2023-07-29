@@ -29,7 +29,7 @@ public class BlockPressurePlate extends BlockBasePressurePlate
 
     protected int getRedstoneStrength(IBlockState state)
     {
-        return ((Boolean)state.getValue(POWERED)).booleanValue() ? 15 : 0;
+        return state.getValue(POWERED).booleanValue() ? 15 : 0;
     }
 
     protected IBlockState setRedstoneStrength(IBlockState state, int strength)
@@ -41,11 +41,11 @@ public class BlockPressurePlate extends BlockBasePressurePlate
     {
         if (this.material == Material.WOOD)
         {
-            worldIn.playSound((EntityPlayer)null, color, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
+            worldIn.playSound(null, color, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
         }
         else
         {
-            worldIn.playSound((EntityPlayer)null, color, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+            worldIn.playSound(null, color, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
         }
     }
 
@@ -53,11 +53,11 @@ public class BlockPressurePlate extends BlockBasePressurePlate
     {
         if (this.material == Material.WOOD)
         {
-            worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.7F);
+            worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.7F);
         }
         else
         {
-            worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+            worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
         }
     }
 
@@ -69,7 +69,7 @@ public class BlockPressurePlate extends BlockBasePressurePlate
         switch (this.sensitivity)
         {
             case EVERYTHING:
-                list = worldIn.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb);
+                list = worldIn.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb);
                 break;
 
             case MOBS:
@@ -107,17 +107,17 @@ public class BlockPressurePlate extends BlockBasePressurePlate
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean)state.getValue(POWERED)).booleanValue() ? 1 : 0;
+        return state.getValue(POWERED).booleanValue() ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWERED});
+        return new BlockStateContainer(this, POWERED);
     }
 
-    public static enum Sensitivity
+    public enum Sensitivity
     {
         EVERYTHING,
-        MOBS;
+        MOBS
     }
 }

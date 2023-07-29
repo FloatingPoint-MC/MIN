@@ -40,7 +40,7 @@ public class SPacketSoundEffect implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.sound = SoundEvent.REGISTRY.getObjectById(buf.readVarInt());
-        this.category = (SoundCategory)buf.readEnumValue(SoundCategory.class);
+        this.category = buf.readEnumValue(SoundCategory.class);
         this.posX = buf.readInt();
         this.posY = buf.readInt();
         this.posZ = buf.readInt();
@@ -74,17 +74,17 @@ public class SPacketSoundEffect implements Packet<INetHandlerPlayClient>
 
     public double getX()
     {
-        return (double)((float)this.posX / 8.0F);
+        return (float)this.posX / 8.0F;
     }
 
     public double getY()
     {
-        return (double)((float)this.posY / 8.0F);
+        return (float)this.posY / 8.0F;
     }
 
     public double getZ()
     {
-        return (double)((float)this.posZ / 8.0F);
+        return (float)this.posZ / 8.0F;
     }
 
     public float getVolume()

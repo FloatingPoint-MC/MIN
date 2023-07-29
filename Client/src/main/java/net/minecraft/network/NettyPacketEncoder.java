@@ -20,13 +20,13 @@ public class NettyPacketEncoder extends MessageToByteEncoder < Packet<? >>
         this.direction = direction;
     }
 
-    protected void encode(ChannelHandlerContext p_encode_1_, Packet<?> p_encode_2_, ByteBuf p_encode_3_) throws IOException, Exception
+    protected void encode(ChannelHandlerContext p_encode_1_, Packet<?> p_encode_2_, ByteBuf p_encode_3_) throws Exception
     {
-        EnumConnectionState enumconnectionstate = (EnumConnectionState)p_encode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get();
+        EnumConnectionState enumconnectionstate = p_encode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get();
 
         if (enumconnectionstate == null)
         {
-            throw new RuntimeException("ConnectionProtocol unknown: " + p_encode_2_.toString());
+            throw new RuntimeException("ConnectionProtocol unknown: " + p_encode_2_);
         }
         else
         {

@@ -10,7 +10,7 @@ public abstract class LazyLoadBase<T>
         if (!this.isLoaded)
         {
             this.isLoaded = true;
-            this.value = (T)this.load();
+            this.value = this.load();
         }
 
         return this.value;

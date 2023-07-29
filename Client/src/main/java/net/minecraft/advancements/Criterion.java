@@ -65,7 +65,7 @@ public class Criterion
 
     public static Map<String, Criterion> criteriaFromJson(JsonObject json, JsonDeserializationContext context)
     {
-        Map<String, Criterion> map = Maps.<String, Criterion>newHashMap();
+        Map<String, Criterion> map = Maps.newHashMap();
 
         for (Entry<String, JsonElement> entry : json.entrySet())
         {
@@ -77,7 +77,7 @@ public class Criterion
 
     public static Map<String, Criterion> criteriaFromNetwork(PacketBuffer bus)
     {
-        Map<String, Criterion> map = Maps.<String, Criterion>newHashMap();
+        Map<String, Criterion> map = Maps.newHashMap();
         int i = bus.readVarInt();
 
         for (int j = 0; j < i; ++j)
@@ -104,7 +104,7 @@ public class Criterion
         for (Entry<String, Criterion> entry : criteria.entrySet())
         {
             buf.writeString(entry.getKey());
-            ((Criterion)entry.getValue()).serializeToNetwork(buf);
+            entry.getValue().serializeToNetwork(buf);
         }
     }
 

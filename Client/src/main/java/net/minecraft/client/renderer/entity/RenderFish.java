@@ -83,8 +83,8 @@ public class RenderFish extends Render<EntityFishHook>
             float f7 = entityplayer.getSwingProgress(partialTicks);
             float f8 = MathHelper.sin(MathHelper.sqrt(f7) * (float)Math.PI);
             float f9 = (entityplayer.prevRenderYawOffset + (entityplayer.renderYawOffset - entityplayer.prevRenderYawOffset) * partialTicks) * 0.017453292F;
-            double d0 = (double)MathHelper.sin(f9);
-            double d1 = (double)MathHelper.cos(f9);
+            double d0 = MathHelper.sin(f9);
+            double d1 = MathHelper.cos(f9);
             double d2 = (double)k * 0.35D;
             double d3 = 0.8D;
             double d4;
@@ -104,7 +104,7 @@ public class RenderFish extends Render<EntityFishHook>
                 d4 = entityplayer.prevPosX + (entityplayer.posX - entityplayer.prevPosX) * (double)partialTicks + vec3d.x;
                 d5 = entityplayer.prevPosY + (entityplayer.posY - entityplayer.prevPosY) * (double)partialTicks + vec3d.y;
                 d6 = entityplayer.prevPosZ + (entityplayer.posZ - entityplayer.prevPosZ) * (double)partialTicks + vec3d.z;
-                d7 = (double)entityplayer.getEyeHeight();
+                d7 = entityplayer.getEyeHeight();
             }
             else
             {
@@ -117,9 +117,9 @@ public class RenderFish extends Render<EntityFishHook>
             double d13 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)partialTicks;
             double d8 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)partialTicks + 0.25D;
             double d9 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)partialTicks;
-            double d10 = (double)((float)(d4 - d13));
+            double d10 = (float)(d4 - d13);
             double d11 = (double)((float)(d5 - d8)) + d7;
-            double d12 = (double)((float)(d6 - d9));
+            double d12 = (float)(d6 - d9);
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
             bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);

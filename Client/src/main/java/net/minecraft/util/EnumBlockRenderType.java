@@ -5,5 +5,5 @@ public enum EnumBlockRenderType
     INVISIBLE,
     LIQUID,
     ENTITYBLOCK_ANIMATED,
-    MODEL;
+    MODEL
 }

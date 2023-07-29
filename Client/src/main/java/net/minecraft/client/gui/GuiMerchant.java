@@ -61,8 +61,8 @@ public class GuiMerchant extends GuiContainer
         super.initGui();
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.nextButton = (GuiMerchant.MerchantButton)this.addButton(new GuiMerchant.MerchantButton(1, i + 120 + 27, j + 24 - 1, true));
-        this.previousButton = (GuiMerchant.MerchantButton)this.addButton(new GuiMerchant.MerchantButton(2, i + 36 - 19, j + 24 - 1, false));
+        this.nextButton = this.addButton(new MerchantButton(1, i + 120 + 27, j + 24 - 1, true));
+        this.previousButton = this.addButton(new MerchantButton(2, i + 36 - 19, j + 24 - 1, false));
         this.nextButton.enabled = false;
         this.previousButton.enabled = false;
     }
@@ -153,7 +153,7 @@ public class GuiMerchant extends GuiContainer
                 return;
             }
 
-            MerchantRecipe merchantrecipe = (MerchantRecipe)merchantrecipelist.get(k);
+            MerchantRecipe merchantrecipe = merchantrecipelist.get(k);
 
             if (merchantrecipe.isRecipeDisabled())
             {
@@ -180,7 +180,7 @@ public class GuiMerchant extends GuiContainer
             int i = (this.width - this.xSize) / 2;
             int j = (this.height - this.ySize) / 2;
             int k = this.selectedMerchantRecipe;
-            MerchantRecipe merchantrecipe = (MerchantRecipe)merchantrecipelist.get(k);
+            MerchantRecipe merchantrecipe = merchantrecipelist.get(k);
             ItemStack itemstack = merchantrecipe.getItemToBuy();
             ItemStack itemstack1 = merchantrecipe.getSecondItemToBuy();
             ItemStack itemstack2 = merchantrecipe.getItemToSell();

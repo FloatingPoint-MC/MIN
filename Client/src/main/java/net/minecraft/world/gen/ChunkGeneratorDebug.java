@@ -16,7 +16,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 
 public class ChunkGeneratorDebug implements IChunkGenerator
 {
-    private static final List<IBlockState> ALL_VALID_STATES = Lists.<IBlockState>newArrayList();
+    private static final List<IBlockState> ALL_VALID_STATES = Lists.newArrayList();
     private static final int GRID_WIDTH;
     private static final int GRID_HEIGHT;
     protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
@@ -53,7 +53,7 @@ public class ChunkGeneratorDebug implements IChunkGenerator
 
         Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
         chunk.generateSkylightMap();
-        Biome[] abiome = this.world.getBiomeProvider().getBiomes((Biome[])null, x * 16, z * 16, 16, 16);
+        Biome[] abiome = this.world.getBiomeProvider().getBiomes(null, x * 16, z * 16, 16, 16);
         byte[] abyte = chunk.getBiomeArray();
 
         for (int i1 = 0; i1 < abyte.length; ++i1)

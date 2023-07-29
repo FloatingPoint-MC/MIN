@@ -82,7 +82,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 {
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.<Integer>createKey(EntityParrot.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityParrot.class, DataSerializers.VARINT);
     private static final Predicate<EntityLiving> CAN_MIMIC = new Predicate<EntityLiving>()
     {
         public boolean apply(@Nullable EntityLiving p_apply_1_)
@@ -230,7 +230,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
     {
         if (!parrotIn.isSilent() && worldIn.rand.nextInt(50) == 0)
         {
-            List<EntityLiving> list = worldIn.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, parrotIn.getEntityBoundingBox().grow(20.0D), CAN_MIMIC);
+            List<EntityLiving> list = worldIn.getEntitiesWithinAABB(EntityLiving.class, parrotIn.getEntityBoundingBox().grow(20.0D), CAN_MIMIC);
 
             if (!list.isEmpty())
             {
@@ -239,7 +239,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
                 if (!entityliving.isSilent())
                 {
                     SoundEvent soundevent = getImitatedSound(EntityList.REGISTRY.getIDForObject(entityliving.getClass()));
-                    worldIn.playSound((EntityPlayer)null, parrotIn.posX, parrotIn.posY, parrotIn.posZ, soundevent, parrotIn.getSoundCategory(), 0.7F, getPitch(worldIn.rand));
+                    worldIn.playSound(null, parrotIn.posX, parrotIn.posY, parrotIn.posZ, soundevent, parrotIn.getSoundCategory(), 0.7F, getPitch(worldIn.rand));
                     return true;
                 }
             }
@@ -265,7 +265,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 
             if (!this.isSilent())
             {
-                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+                this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PARROT_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
             }
 
             if (!this.world.isRemote)
@@ -360,7 +360,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
     {
         if (!parrotIn.isSilent() && !playMimicSound(worldIn, parrotIn) && worldIn.rand.nextInt(200) == 0)
         {
-            worldIn.playSound((EntityPlayer)null, parrotIn.posX, parrotIn.posY, parrotIn.posZ, getAmbientSound(worldIn.rand), parrotIn.getSoundCategory(), 1.0F, getPitch(worldIn.rand));
+            worldIn.playSound(null, parrotIn.posX, parrotIn.posY, parrotIn.posZ, getAmbientSound(worldIn.rand), parrotIn.getSoundCategory(), 1.0F, getPitch(worldIn.rand));
         }
     }
 
@@ -380,7 +380,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
         if (random.nextInt(1000) == 0)
         {
             List<Integer> list = new ArrayList<Integer>(IMITATION_SOUND_EVENTS.keySet());
-            return getImitatedSound(((Integer)list.get(random.nextInt(list.size()))).intValue());
+            return getImitatedSound(list.get(random.nextInt(list.size())).intValue());
         }
         else
         {
@@ -390,7 +390,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 
     public static SoundEvent getImitatedSound(int p_191999_0_)
     {
-        return IMITATION_SOUND_EVENTS.containsKey(p_191999_0_) ? (SoundEvent)IMITATION_SOUND_EVENTS.get(p_191999_0_) : SoundEvents.ENTITY_PARROT_AMBIENT;
+        return IMITATION_SOUND_EVENTS.containsKey(p_191999_0_) ? IMITATION_SOUND_EVENTS.get(p_191999_0_) : SoundEvents.ENTITY_PARROT_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
@@ -475,7 +475,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 
     public int getVariant()
     {
-        return MathHelper.clamp(((Integer)this.dataManager.get(VARIANT)).intValue(), 0, 4);
+        return MathHelper.clamp(this.dataManager.get(VARIANT).intValue(), 0, 4);
     }
 
     public void setVariant(int variantIn)

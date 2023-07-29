@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 public class UsedEnderEyeTrigger implements ICriterionTrigger<UsedEnderEyeTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("used_ender_eye");
-    private final Map<PlayerAdvancements, UsedEnderEyeTrigger.Listeners> listeners = Maps.<PlayerAdvancements, UsedEnderEyeTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, UsedEnderEyeTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -97,7 +97,7 @@ public class UsedEnderEyeTrigger implements ICriterionTrigger<UsedEnderEyeTrigge
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<UsedEnderEyeTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<UsedEnderEyeTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<UsedEnderEyeTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -125,11 +125,11 @@ public class UsedEnderEyeTrigger implements ICriterionTrigger<UsedEnderEyeTrigge
 
             for (ICriterionTrigger.Listener<UsedEnderEyeTrigger.Instance> listener : this.listeners)
             {
-                if (((UsedEnderEyeTrigger.Instance)listener.getCriterionInstance()).test(distanceSq))
+                if (listener.getCriterionInstance().test(distanceSq))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<UsedEnderEyeTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

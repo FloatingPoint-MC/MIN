@@ -101,7 +101,7 @@ public class HttpUtil
             HttpURLConnection httpurlconnection = (HttpURLConnection)url.openConnection(p_151225_3_);
             httpurlconnection.setRequestMethod("POST");
             httpurlconnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            httpurlconnection.setRequestProperty("Content-Length", "" + content.getBytes().length);
+            httpurlconnection.setRequestProperty("Content-Length", String.valueOf(content.getBytes().length));
             httpurlconnection.setRequestProperty("Content-Language", "en-US");
             httpurlconnection.setUseCaches(false);
             httpurlconnection.setDoInput(true);
@@ -253,7 +253,6 @@ public class HttpUtil
                         if (p_180192_4_ != null)
                         {
                             p_180192_4_.setDoneWorking();
-                            return;
                         }
                     }
                     catch (Throwable throwable)
@@ -277,7 +276,6 @@ public class HttpUtil
                         if (p_180192_4_ != null)
                         {
                             p_180192_4_.setDoneWorking();
-                            return;
                         }
                     }
                 }
@@ -312,7 +310,6 @@ public class HttpUtil
             }
             catch (IOException var8)
             {
-                ;
             }
         }
 

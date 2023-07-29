@@ -48,17 +48,17 @@ public class CommandDeOp extends CommandBase
 
             if (gameprofile == null)
             {
-                throw new CommandException("commands.deop.failed", new Object[] {args[0]});
+                throw new CommandException("commands.deop.failed", args[0]);
             }
             else
             {
                 server.getPlayerList().removeOp(gameprofile);
-                notifyCommandListener(sender, this, "commands.deop.success", new Object[] {args[0]});
+                notifyCommandListener(sender, this, "commands.deop.success", args[0]);
             }
         }
         else
         {
-            throw new WrongUsageException("commands.deop.usage", new Object[0]);
+            throw new WrongUsageException("commands.deop.usage");
         }
     }
 

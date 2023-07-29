@@ -158,17 +158,17 @@ public class ServerStatusResponse
 
             if (jsonobject.has("description"))
             {
-                serverstatusresponse.setServerDescription((ITextComponent)p_deserialize_3_.deserialize(jsonobject.get("description"), ITextComponent.class));
+                serverstatusresponse.setServerDescription(p_deserialize_3_.deserialize(jsonobject.get("description"), ITextComponent.class));
             }
 
             if (jsonobject.has("players"))
             {
-                serverstatusresponse.setPlayers((ServerStatusResponse.Players)p_deserialize_3_.deserialize(jsonobject.get("players"), ServerStatusResponse.Players.class));
+                serverstatusresponse.setPlayers(p_deserialize_3_.deserialize(jsonobject.get("players"), Players.class));
             }
 
             if (jsonobject.has("version"))
             {
-                serverstatusresponse.setVersion((ServerStatusResponse.Version)p_deserialize_3_.deserialize(jsonobject.get("version"), ServerStatusResponse.Version.class));
+                serverstatusresponse.setVersion(p_deserialize_3_.deserialize(jsonobject.get("version"), Version.class));
             }
 
             if (jsonobject.has("favicon"))

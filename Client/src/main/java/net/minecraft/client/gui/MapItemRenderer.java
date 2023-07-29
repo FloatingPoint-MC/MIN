@@ -18,7 +18,7 @@ public class MapItemRenderer
 {
     private static final ResourceLocation TEXTURE_MAP_ICONS = new ResourceLocation("textures/map/map_icons.png");
     private final TextureManager textureManager;
-    private final Map<String, MapItemRenderer.Instance> loadedMaps = Maps.<String, MapItemRenderer.Instance>newHashMap();
+    private final Map<String, MapItemRenderer.Instance> loadedMaps = Maps.newHashMap();
 
     public MapItemRenderer(TextureManager textureManagerIn)
     {
@@ -150,16 +150,16 @@ public class MapItemRenderer
                     GlStateManager.scale(4.0F, 4.0F, 3.0F);
                     GlStateManager.translate(-0.125F, 0.125F, 0.0F);
                     byte b0 = mapdecoration.getImage();
-                    float f1 = (float)(b0 % 4 + 0) / 4.0F;
-                    float f2 = (float)(b0 / 4 + 0) / 4.0F;
+                    float f1 = (float)(b0 % 4) / 4.0F;
+                    float f2 = (float)(b0 / 4) / 4.0F;
                     float f3 = (float)(b0 % 4 + 1) / 4.0F;
                     float f4 = (float)(b0 / 4 + 1) / 4.0F;
                     bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
                     float f5 = -0.001F;
-                    bufferbuilder.pos(-1.0D, 1.0D, (double)((float)k * -0.001F)).tex((double)f1, (double)f2).endVertex();
-                    bufferbuilder.pos(1.0D, 1.0D, (double)((float)k * -0.001F)).tex((double)f3, (double)f2).endVertex();
-                    bufferbuilder.pos(1.0D, -1.0D, (double)((float)k * -0.001F)).tex((double)f3, (double)f4).endVertex();
-                    bufferbuilder.pos(-1.0D, -1.0D, (double)((float)k * -0.001F)).tex((double)f1, (double)f4).endVertex();
+                    bufferbuilder.pos(-1.0D, 1.0D, (float)k * -0.001F).tex(f1, f2).endVertex();
+                    bufferbuilder.pos(1.0D, 1.0D, (float)k * -0.001F).tex(f3, f2).endVertex();
+                    bufferbuilder.pos(1.0D, -1.0D, (float)k * -0.001F).tex(f3, f4).endVertex();
+                    bufferbuilder.pos(-1.0D, -1.0D, (float)k * -0.001F).tex(f1, f4).endVertex();
                     tessellator.draw();
                     GlStateManager.popMatrix();
                     ++k;

@@ -6,8 +6,6 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -55,7 +53,7 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
     private String lastSearch = "";
     private RecipeBook recipeBook;
     private final RecipeBookPage recipeBookPage = new RecipeBookPage();
-    private RecipeItemHelper stackedContents = new RecipeItemHelper();
+    private final RecipeItemHelper stackedContents = new RecipeItemHelper();
     private int timesInventoryChanged;
 
     public void func_194303_a(int p_194303_1_, int p_194303_2_, Minecraft p_194303_3_, boolean p_194303_4_, InventoryCrafting p_194303_5_)
@@ -156,7 +154,7 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
 
     private void updateCollections(boolean p_193003_1_)
     {
-        List<RecipeList> list = (List)RecipeBookClient.RECIPES_BY_TAB.get(this.currentTab.getCategory());
+        List<RecipeList> list = RecipeBookClient.RECIPES_BY_TAB.get(this.currentTab.getCategory());
         list.forEach((p_193944_1_) ->
         {
             p_193944_1_.canCraft(this.stackedContents, this.craftingSlots.getWidth(), this.craftingSlots.getHeight(), this.recipeBook);
@@ -327,7 +325,7 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
                     }
 
                     this.ghostRecipe.clear();
-                    this.mc.playerController.func_194338_a(this.mc.player.openContainer.windowId, irecipe, GuiScreen.isShiftKeyDown(), this.mc.player);
+                    this.mc.playerController.placeRecipe(this.mc.player.openContainer.windowId, irecipe, GuiScreen.isShiftKeyDown());
 
                     if (!this.isOffsetNextToMainGUI() && p_191862_3_ == 0)
                     {

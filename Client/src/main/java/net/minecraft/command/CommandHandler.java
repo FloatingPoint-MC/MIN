@@ -20,8 +20,8 @@ import org.apache.logging.log4j.Logger;
 public abstract class CommandHandler implements ICommandManager
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Map<String, ICommand> commandMap = Maps.<String, ICommand>newHashMap();
-    private final Set<ICommand> commandSet = Sets.<ICommand>newHashSet();
+    private final Map<String, ICommand> commandMap = Maps.newHashMap();
+    private final Set<ICommand> commandSet = Sets.newHashSet();
 
     /**
      * Attempt to execute a command. This method should return the number of times that the command was executed. If the
@@ -49,7 +49,7 @@ public abstract class CommandHandler implements ICommandManager
 
             if (icommand == null)
             {
-                TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.generic.notFound", new Object[0]);
+                TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.generic.notFound");
                 textcomponenttranslation1.getStyle().setColor(TextFormatting.RED);
                 sender.sendMessage(textcomponenttranslation1);
             }
@@ -57,13 +57,13 @@ public abstract class CommandHandler implements ICommandManager
             {
                 if (j > -1)
                 {
-                    List<Entity> list = EntitySelector.<Entity>matchEntities(sender, astring[j], Entity.class);
+                    List<Entity> list = EntitySelector.matchEntities(sender, astring[j], Entity.class);
                     String s1 = astring[j];
                     sender.setCommandStat(CommandResultStats.Type.AFFECTED_ENTITIES, list.size());
 
                     if (list.isEmpty())
                     {
-                        throw new PlayerNotFoundException("commands.generic.selector.notFound", new Object[] {astring[j]});
+                        throw new PlayerNotFoundException("commands.generic.selector.notFound", astring[j]);
                     }
 
                     for (Entity entity : list)
@@ -90,7 +90,7 @@ public abstract class CommandHandler implements ICommandManager
             }
             else
             {
-                TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.permission", new Object[0]);
+                TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.permission");
                 textcomponenttranslation2.getStyle().setColor(TextFormatting.RED);
                 sender.sendMessage(textcomponenttranslation2);
             }
@@ -115,7 +115,7 @@ public abstract class CommandHandler implements ICommandManager
         }
         catch (WrongUsageException wrongusageexception)
         {
-            TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.usage", new Object[] {new TextComponentTranslation(wrongusageexception.getMessage(), wrongusageexception.getErrorObjects())});
+            TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.usage", new TextComponentTranslation(wrongusageexception.getMessage(), wrongusageexception.getErrorObjects()));
             textcomponenttranslation2.getStyle().setColor(TextFormatting.RED);
             sender.sendMessage(textcomponenttranslation2);
         }
@@ -127,7 +127,7 @@ public abstract class CommandHandler implements ICommandManager
         }
         catch (Throwable throwable)
         {
-            TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.generic.exception", new Object[0]);
+            TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.generic.exception");
             textcomponenttranslation.getStyle().setColor(TextFormatting.RED);
             sender.sendMessage(textcomponenttranslation);
             LOGGER.warn("Couldn't process command: " + input, throwable);
@@ -176,11 +176,11 @@ public abstract class CommandHandler implements ICommandManager
 
         if (astring.length == 1)
         {
-            List<String> list = Lists.<String>newArrayList();
+            List<String> list = Lists.newArrayList();
 
             for (Entry<String, ICommand> entry : this.commandMap.entrySet())
             {
-                if (CommandBase.doesStringStartWith(s, entry.getKey()) && ((ICommand)entry.getValue()).checkPermission(this.getServer(), sender))
+                if (CommandBase.doesStringStartWith(s, entry.getKey()) && entry.getValue().checkPermission(this.getServer(), sender))
                 {
                     list.add(entry.getKey());
                 }
@@ -200,13 +200,13 @@ public abstract class CommandHandler implements ICommandManager
                 }
             }
 
-            return Collections.<String>emptyList();
+            return Collections.emptyList();
         }
     }
 
     public List<ICommand> getPossibleCommands(ICommandSender sender)
     {
-        List<ICommand> list = Lists.<ICommand>newArrayList();
+        List<ICommand> list = Lists.newArrayList();
 
         for (ICommand icommand : this.commandSet)
         {

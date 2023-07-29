@@ -21,7 +21,7 @@ public class RecipeBookServer extends RecipeBook
 
     public void add(List<IRecipe> recipesIn, EntityPlayerMP player)
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (IRecipe irecipe : recipesIn)
         {
@@ -39,7 +39,7 @@ public class RecipeBookServer extends RecipeBook
 
     public void remove(List<IRecipe> recipesIn, EntityPlayerMP player)
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (IRecipe irecipe : recipesIn)
         {
@@ -67,7 +67,7 @@ public class RecipeBookServer extends RecipeBook
 
         for (IRecipe irecipe : this.getRecipes())
         {
-            nbttaglist.appendTag(new NBTTagString(((ResourceLocation)CraftingManager.REGISTRY.getNameForObject(irecipe)).toString()));
+            nbttaglist.appendTag(new NBTTagString(CraftingManager.REGISTRY.getNameForObject(irecipe).toString()));
         }
 
         nbttagcompound.setTag("recipes", nbttaglist);
@@ -75,7 +75,7 @@ public class RecipeBookServer extends RecipeBook
 
         for (IRecipe irecipe1 : this.getDisplayedRecipes())
         {
-            nbttaglist1.appendTag(new NBTTagString(((ResourceLocation)CraftingManager.REGISTRY.getNameForObject(irecipe1)).toString()));
+            nbttaglist1.appendTag(new NBTTagString(CraftingManager.REGISTRY.getNameForObject(irecipe1).toString()));
         }
 
         nbttagcompound.setTag("toBeDisplayed", nbttaglist1);
@@ -95,7 +95,7 @@ public class RecipeBookServer extends RecipeBook
 
             if (irecipe == null)
             {
-                LOGGER.info("Tried to load unrecognized recipe: {} removed now.", (Object)resourcelocation);
+                LOGGER.info("Tried to load unrecognized recipe: {} removed now.", resourcelocation);
             }
             else
             {
@@ -112,7 +112,7 @@ public class RecipeBookServer extends RecipeBook
 
             if (irecipe1 == null)
             {
-                LOGGER.info("Tried to load unrecognized recipe: {} removed now.", (Object)resourcelocation1);
+                LOGGER.info("Tried to load unrecognized recipe: {} removed now.", resourcelocation1);
             }
             else
             {
@@ -123,7 +123,7 @@ public class RecipeBookServer extends RecipeBook
 
     private List<IRecipe> getRecipes()
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (int i = this.recipes.nextSetBit(0); i >= 0; i = this.recipes.nextSetBit(i + 1))
         {
@@ -135,7 +135,7 @@ public class RecipeBookServer extends RecipeBook
 
     private List<IRecipe> getDisplayedRecipes()
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (int i = this.newRecipes.nextSetBit(0); i >= 0; i = this.newRecipes.nextSetBit(i + 1))
         {

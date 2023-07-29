@@ -38,13 +38,13 @@ public class ParticleManager
     /** Reference to the World object. */
     protected World world;
     private final ArrayDeque<Particle>[][] fxLayers = new ArrayDeque[4][];
-    private final Queue<ParticleEmitter> particleEmitters = Queues.<ParticleEmitter>newArrayDeque();
+    private final Queue<ParticleEmitter> particleEmitters = Queues.newArrayDeque();
     private final TextureManager renderer;
 
     /** RNG. */
     private final Random rand = new Random();
-    private final Map<Integer, IParticleFactory> particleTypes = Maps.<Integer, IParticleFactory>newHashMap();
-    private final Queue<Particle> queue = Queues.<Particle>newArrayDeque();
+    private final Map<Integer, IParticleFactory> particleTypes = Maps.newHashMap();
+    private final Queue<Particle> queue = Queues.newArrayDeque();
 
     public ParticleManager(World worldIn, TextureManager rendererIn)
     {
@@ -174,7 +174,7 @@ public class ParticleManager
 
         if (!this.particleEmitters.isEmpty())
         {
-            List<ParticleEmitter> list = Lists.<ParticleEmitter>newArrayList();
+            List<ParticleEmitter> list = Lists.newArrayList();
 
             for (ParticleEmitter particleemitter : this.particleEmitters)
             {

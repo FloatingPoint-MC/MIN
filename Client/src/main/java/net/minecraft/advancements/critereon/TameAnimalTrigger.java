@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class TameAnimalTrigger implements ICriterionTrigger<TameAnimalTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("tame_animal");
-    private final Map<PlayerAdvancements, TameAnimalTrigger.Listeners> listeners = Maps.<PlayerAdvancements, TameAnimalTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, TameAnimalTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -95,7 +95,7 @@ public class TameAnimalTrigger implements ICriterionTrigger<TameAnimalTrigger.In
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<TameAnimalTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<TameAnimalTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<TameAnimalTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -123,11 +123,11 @@ public class TameAnimalTrigger implements ICriterionTrigger<TameAnimalTrigger.In
 
             for (ICriterionTrigger.Listener<TameAnimalTrigger.Instance> listener : this.listeners)
             {
-                if (((TameAnimalTrigger.Instance)listener.getCriterionInstance()).test(player, entity))
+                if (listener.getCriterionInstance().test(player, entity))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<TameAnimalTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

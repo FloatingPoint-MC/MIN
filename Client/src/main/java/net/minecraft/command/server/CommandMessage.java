@@ -19,7 +19,7 @@ public class CommandMessage extends CommandBase
 {
     public List<String> getAliases()
     {
-        return Arrays.<String>asList("w", "msg");
+        return Arrays.asList("w", "msg");
     }
 
     /**
@@ -53,7 +53,7 @@ public class CommandMessage extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.message.usage", new Object[0]);
+            throw new WrongUsageException("commands.message.usage");
         }
         else
         {
@@ -66,8 +66,8 @@ public class CommandMessage extends CommandBase
             else
             {
                 ITextComponent itextcomponent = getChatComponentFromNthArg(sender, args, 1, !(sender instanceof EntityPlayer));
-                TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.message.display.incoming", new Object[] {sender.getDisplayName(), itextcomponent.createCopy()});
-                TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.message.display.outgoing", new Object[] {entityplayer.getDisplayName(), itextcomponent.createCopy()});
+                TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.message.display.incoming", sender.getDisplayName(), itextcomponent.createCopy());
+                TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.message.display.outgoing", entityplayer.getDisplayName(), itextcomponent.createCopy());
                 textcomponenttranslation.getStyle().setColor(TextFormatting.GRAY).setItalic(Boolean.valueOf(true));
                 textcomponenttranslation1.getStyle().setColor(TextFormatting.GRAY).setItalic(Boolean.valueOf(true));
                 entityplayer.sendMessage(textcomponenttranslation);

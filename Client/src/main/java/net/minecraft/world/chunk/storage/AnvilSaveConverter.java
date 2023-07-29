@@ -48,7 +48,7 @@ public class AnvilSaveConverter extends SaveFormatOld
     {
         if (this.savesDirectory != null && this.savesDirectory.exists() && this.savesDirectory.isDirectory())
         {
-            List<WorldSummary> list = Lists.<WorldSummary>newArrayList();
+            List<WorldSummary> list = Lists.newArrayList();
             File[] afile = this.savesDirectory.listFiles();
 
             for (File file1 : afile)
@@ -121,9 +121,9 @@ public class AnvilSaveConverter extends SaveFormatOld
     public boolean convertMapFormat(String filename, IProgressUpdate progressCallback)
     {
         progressCallback.setLoadingProgress(0);
-        List<File> list = Lists.<File>newArrayList();
-        List<File> list1 = Lists.<File>newArrayList();
-        List<File> list2 = Lists.<File>newArrayList();
+        List<File> list = Lists.newArrayList();
+        List<File> list1 = Lists.newArrayList();
+        List<File> list2 = Lists.newArrayList();
         File file1 = new File(this.savesDirectory, filename);
         File file2 = new File(file1, "DIM-1");
         File file3 = new File(file1, "DIM1");
@@ -141,7 +141,7 @@ public class AnvilSaveConverter extends SaveFormatOld
         }
 
         int i = list.size() + list1.size() + list2.size();
-        LOGGER.info("Total conversion count is {}", (int)i);
+        LOGGER.info("Total conversion count is {}", i);
         WorldInfo worldinfo = this.getWorldInfo(filename);
         BiomeProvider biomeprovider;
 

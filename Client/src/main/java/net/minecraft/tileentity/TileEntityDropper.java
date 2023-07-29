@@ -8,7 +8,7 @@ public class TileEntityDropper extends TileEntityDispenser
 {
     public static void registerFixesDropper(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDropper.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDropper.class, "Items"));
     }
 
     /**

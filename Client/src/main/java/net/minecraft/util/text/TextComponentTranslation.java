@@ -18,7 +18,7 @@ public class TextComponentTranslation extends TextComponentBase
     private final Object syncLock = new Object();
     private long lastTranslationUpdateTimeInMilliseconds = -1L;
     @VisibleForTesting
-    List<ITextComponent> children = Lists.<ITextComponent>newArrayList();
+    List<ITextComponent> children = Lists.newArrayList();
     public static final Pattern STRING_VARIABLE_PATTERN = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
     public TextComponentTranslation(String translationKey, Object... args)
@@ -193,7 +193,7 @@ public class TextComponentTranslation extends TextComponentBase
     public Iterator<ITextComponent> iterator()
     {
         this.ensureInitialized();
-        return Iterators.<ITextComponent>concat(createDeepCopyIterator(this.children), createDeepCopyIterator(this.siblings));
+        return Iterators.concat(createDeepCopyIterator(this.children), createDeepCopyIterator(this.siblings));
     }
 
     /**

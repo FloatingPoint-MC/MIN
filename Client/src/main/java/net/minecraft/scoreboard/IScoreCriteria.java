@@ -6,7 +6,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public interface IScoreCriteria
 {
-    Map<String, IScoreCriteria> INSTANCES = Maps.<String, IScoreCriteria>newHashMap();
+    Map<String, IScoreCriteria> INSTANCES = Maps.newHashMap();
     IScoreCriteria DUMMY = new ScoreCriteria("dummy");
     IScoreCriteria TRIGGER = new ScoreCriteria("trigger");
     IScoreCriteria DEATH_COUNT = new ScoreCriteria("deathCount");
@@ -27,15 +27,15 @@ public interface IScoreCriteria
 
     IScoreCriteria.EnumRenderType getRenderType();
 
-    public static enum EnumRenderType
+    enum EnumRenderType
     {
         INTEGER("integer"),
         HEARTS("hearts");
 
-        private static final Map<String, IScoreCriteria.EnumRenderType> BY_NAME = Maps.<String, IScoreCriteria.EnumRenderType>newHashMap();
+        private static final Map<String, IScoreCriteria.EnumRenderType> BY_NAME = Maps.newHashMap();
         private final String renderType;
 
-        private EnumRenderType(String renderTypeIn)
+        EnumRenderType(String renderTypeIn)
         {
             this.renderType = renderTypeIn;
         }

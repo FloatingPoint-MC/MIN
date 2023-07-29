@@ -57,7 +57,7 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
     {
         this.bookSpreadPrev = this.bookSpread;
         this.bookRotationPrev = this.bookRotation;
-        EntityPlayer entityplayer = this.world.getClosestPlayer((double)((float)this.pos.getX() + 0.5F), (double)((float)this.pos.getY() + 0.5F), (double)((float)this.pos.getZ() + 0.5F), 3.0D, false);
+        EntityPlayer entityplayer = this.world.getClosestPlayer((float)this.pos.getX() + 0.5F, (float)this.pos.getY() + 0.5F, (float)this.pos.getZ() + 0.5F, 3.0D, false);
 
         if (entityplayer != null)
         {
@@ -111,7 +111,6 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
 
         for (f2 = this.tRot - this.bookRotation; f2 >= (float)Math.PI; f2 -= ((float)Math.PI * 2F))
         {
-            ;
         }
 
         while (f2 < -(float)Math.PI)
@@ -217,7 +216,7 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
      */
     public ITextComponent getDisplayName()
     {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
     }
 
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)

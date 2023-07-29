@@ -43,7 +43,7 @@ import net.minecraft.world.World;
 
 public abstract class AbstractSkeleton extends EntityMob implements IRangedAttackMob
 {
-    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.<Boolean>createKey(AbstractSkeleton.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(AbstractSkeleton.class, DataSerializers.BOOLEAN);
     private final EntityAIAttackRangedBow<AbstractSkeleton> aiArrowAttack = new EntityAIAttackRangedBow<AbstractSkeleton>(this, 1.0D, 20, 15.0F);
     private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false)
     {
@@ -75,7 +75,7 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
     }
@@ -249,7 +249,7 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
-        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
         entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityarrow);
@@ -296,7 +296,7 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
 
     public boolean isSwingingArms()
     {
-        return ((Boolean)this.dataManager.get(SWINGING_ARMS)).booleanValue();
+        return this.dataManager.get(SWINGING_ARMS).booleanValue();
     }
 
     public void setSwingingArms(boolean swingingArms)

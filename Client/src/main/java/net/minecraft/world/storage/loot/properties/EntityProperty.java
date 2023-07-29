@@ -11,7 +11,7 @@ public interface EntityProperty
 {
     boolean testProperty(Random random, Entity entityIn);
 
-    public abstract static class Serializer<T extends EntityProperty>
+    abstract class Serializer<T extends EntityProperty>
     {
         private final ResourceLocation name;
         private final Class<T> propertyClass;

@@ -28,7 +28,7 @@ public class BlockObserver extends BlockDirectional
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+        return new BlockStateContainer(this, FACING, POWERED);
     }
 
     /**
@@ -39,7 +39,7 @@ public class BlockObserver extends BlockDirectional
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -49,12 +49,12 @@ public class BlockObserver extends BlockDirectional
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if (state.getValue(POWERED).booleanValue())
         {
             worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)), 2);
         }
@@ -78,7 +78,7 @@ public class BlockObserver extends BlockDirectional
 
     public void observedNeighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (!worldIn.isRemote && pos.offset((EnumFacing)state.getValue(FACING)).equals(fromPos))
+        if (!worldIn.isRemote && pos.offset(state.getValue(FACING)).equals(fromPos))
         {
             this.startSignal(state, worldIn, pos);
         }
@@ -86,7 +86,7 @@ public class BlockObserver extends BlockDirectional
 
     private void startSignal(IBlockState p_190960_1_, World p_190960_2_, BlockPos pos)
     {
-        if (!((Boolean)p_190960_1_.getValue(POWERED)).booleanValue())
+        if (!p_190960_1_.getValue(POWERED).booleanValue())
         {
             if (!p_190960_2_.isUpdateScheduled(pos, this))
             {
@@ -97,7 +97,7 @@ public class BlockObserver extends BlockDirectional
 
     protected void updateNeighborsInFront(World worldIn, BlockPos pos, IBlockState state)
     {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         BlockPos blockpos = pos.offset(enumfacing.getOpposite());
         worldIn.neighborChanged(blockpos, this, pos);
         worldIn.notifyNeighborsOfStateExcept(blockpos, this, enumfacing);
@@ -127,7 +127,7 @@ public class BlockObserver extends BlockDirectional
      */
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return ((Boolean)blockState.getValue(POWERED)).booleanValue() && blockState.getValue(FACING) == side ? 15 : 0;
+        return blockState.getValue(POWERED).booleanValue() && blockState.getValue(FACING) == side ? 15 : 0;
     }
 
     /**
@@ -137,7 +137,7 @@ public class BlockObserver extends BlockDirectional
     {
         if (!worldIn.isRemote)
         {
-            if (((Boolean)state.getValue(POWERED)).booleanValue())
+            if (state.getValue(POWERED).booleanValue())
             {
                 this.updateTick(worldIn, pos, state, worldIn.rand);
             }
@@ -151,7 +151,7 @@ public class BlockObserver extends BlockDirectional
      */
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (((Boolean)state.getValue(POWERED)).booleanValue() && worldIn.isUpdateScheduled(pos, this))
+        if (state.getValue(POWERED).booleanValue() && worldIn.isUpdateScheduled(pos, this))
         {
             this.updateNeighborsInFront(worldIn, pos, state.withProperty(POWERED, Boolean.valueOf(false)));
         }
@@ -172,9 +172,9 @@ public class BlockObserver extends BlockDirectional
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getIndex();
+        i = i | state.getValue(FACING).getIndex();
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if (state.getValue(POWERED).booleanValue())
         {
             i |= 8;
         }

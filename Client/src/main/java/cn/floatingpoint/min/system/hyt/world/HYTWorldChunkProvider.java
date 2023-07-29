@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class HYTWorldChunkProvider extends ChunkProviderClient {
     public static HYTWorldChunkProvider instance;
-    private IChunkLoader chunkLoader;
+    private final IChunkLoader chunkLoader;
 
     public HYTWorldChunkProvider(World worldIn) {
         super(worldIn);

@@ -87,7 +87,7 @@ public class TileEntityItemStackRenderer
                 }
                 else if (nbttagcompound.hasKey("SkullOwner", 8) && !StringUtils.isBlank(nbttagcompound.getString("SkullOwner")))
                 {
-                    GameProfile gameprofile1 = new GameProfile((UUID)null, nbttagcompound.getString("SkullOwner"));
+                    GameProfile gameprofile1 = new GameProfile(null, nbttagcompound.getString("SkullOwner"));
                     gameprofile = TileEntitySkull.updateGameProfile(gameprofile1);
                     nbttagcompound.removeTag("SkullOwner");
                     nbttagcompound.setTag("SkullOwner", NBTUtil.writeGameProfile(new NBTTagCompound(), gameprofile));

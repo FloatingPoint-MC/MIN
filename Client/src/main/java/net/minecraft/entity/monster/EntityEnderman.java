@@ -52,9 +52,9 @@ public class EntityEnderman extends EntityMob
 {
     private static final UUID ATTACKING_SPEED_BOOST_ID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
     private static final AttributeModifier ATTACKING_SPEED_BOOST = (new AttributeModifier(ATTACKING_SPEED_BOOST_ID, "Attacking speed boost", 0.15000000596046448D, 0)).setSaved(false);
-    private static final Set<Block> CARRIABLE_BLOCKS = Sets.<Block>newIdentityHashSet();
-    private static final DataParameter<Optional<IBlockState>> CARRIED_BLOCK = EntityDataManager.<Optional<IBlockState>>createKey(EntityEnderman.class, DataSerializers.OPTIONAL_BLOCK_STATE);
-    private static final DataParameter<Boolean> SCREAMING = EntityDataManager.<Boolean>createKey(EntityEnderman.class, DataSerializers.BOOLEAN);
+    private static final Set<Block> CARRIABLE_BLOCKS = Sets.newIdentityHashSet();
+    private static final DataParameter<Optional<IBlockState>> CARRIED_BLOCK = EntityDataManager.createKey(EntityEnderman.class, DataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final DataParameter<Boolean> SCREAMING = EntityDataManager.createKey(EntityEnderman.class, DataSerializers.BOOLEAN);
     private int lastCreepySound;
     private int targetChangeTime;
 
@@ -76,7 +76,7 @@ public class EntityEnderman extends EntityMob
         this.tasks.addTask(10, new EntityEnderman.AIPlaceBlock(this));
         this.tasks.addTask(11, new EntityEnderman.AITakeBlock(this));
         this.targetTasks.addTask(1, new EntityEnderman.AIFindPlayer(this));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityEndermite.class, 10, true, false, new Predicate<EntityEndermite>()
         {
             public boolean apply(@Nullable EntityEndermite p_apply_1_)
@@ -214,7 +214,7 @@ public class EntityEnderman extends EntityMob
             double d0 = vec3d1.length();
             vec3d1 = vec3d1.normalize();
             double d1 = vec3d.dotProduct(vec3d1);
-            return d1 > 1.0D - 0.025D / d0 ? player.canEntityBeSeen(this) : false;
+            return d1 > 1.0D - 0.025D / d0 && player.canEntityBeSeen(this);
         }
     }
 
@@ -254,7 +254,7 @@ public class EntityEnderman extends EntityMob
 
             if (f > 0.5F && this.world.canSeeSky(new BlockPos(this)) && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F)
             {
-                this.setAttackTarget((EntityLivingBase)null);
+                this.setAttackTarget(null);
                 this.teleportRandomly();
             }
         }
@@ -296,7 +296,7 @@ public class EntityEnderman extends EntityMob
 
         if (flag)
         {
-            this.world.playSound((EntityPlayer)null, this.prevPosX, this.prevPosY, this.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
+            this.world.playSound(null, this.prevPosX, this.prevPosY, this.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
             this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
         }
 
@@ -394,7 +394,7 @@ public class EntityEnderman extends EntityMob
 
     public boolean isScreaming()
     {
-        return ((Boolean)this.dataManager.get(SCREAMING)).booleanValue();
+        return this.dataManager.get(SCREAMING).booleanValue();
     }
 
     static
@@ -432,7 +432,7 @@ public class EntityEnderman extends EntityMob
         public boolean shouldExecute()
         {
             double d0 = this.getTargetDistance();
-            this.player = this.enderman.world.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, (Function)null, new Predicate<EntityPlayer>()
+            this.player = this.enderman.world.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, null, new Predicate<EntityPlayer>()
             {
                 public boolean apply(@Nullable EntityPlayer p_apply_1_)
                 {
@@ -470,7 +470,7 @@ public class EntityEnderman extends EntityMob
             }
             else
             {
-                return this.targetEntity != null && ((EntityPlayer)this.targetEntity).isEntityAlive() ? true : super.shouldContinueExecuting();
+                return this.targetEntity != null && this.targetEntity.isEntityAlive() || super.shouldContinueExecuting();
             }
         }
 
@@ -489,16 +489,16 @@ public class EntityEnderman extends EntityMob
             {
                 if (this.targetEntity != null)
                 {
-                    if (this.enderman.shouldAttackPlayer((EntityPlayer)this.targetEntity))
+                    if (this.enderman.shouldAttackPlayer(this.targetEntity))
                     {
-                        if (((EntityPlayer)this.targetEntity).getDistanceSq(this.enderman) < 16.0D)
+                        if (this.targetEntity.getDistanceSq(this.enderman) < 16.0D)
                         {
                             this.enderman.teleportRandomly();
                         }
 
                         this.teleportTime = 0;
                     }
-                    else if (((EntityPlayer)this.targetEntity).getDistanceSq(this.enderman) > 256.0D && this.teleportTime++ >= 30 && this.enderman.teleportToEntity(this.targetEntity))
+                    else if (this.targetEntity.getDistanceSq(this.enderman) > 256.0D && this.teleportTime++ >= 30 && this.enderman.teleportToEntity(this.targetEntity))
                     {
                         this.teleportTime = 0;
                     }
@@ -549,7 +549,7 @@ public class EntityEnderman extends EntityMob
             if (iblockstate2 != null && this.canPlaceBlock(world, blockpos, iblockstate2.getBlock(), iblockstate, iblockstate1))
             {
                 world.setBlockState(blockpos, iblockstate2, 3);
-                this.enderman.setHeldBlockState((IBlockState)null);
+                this.enderman.setHeldBlockState(null);
             }
         }
 
@@ -609,7 +609,7 @@ public class EntityEnderman extends EntityMob
             BlockPos blockpos = new BlockPos(i, j, k);
             IBlockState iblockstate = world.getBlockState(blockpos);
             Block block = iblockstate.getBlock();
-            RayTraceResult raytraceresult = world.rayTraceBlocks(new Vec3d((double)((float)MathHelper.floor(this.enderman.posX) + 0.5F), (double)((float)j + 0.5F), (double)((float)MathHelper.floor(this.enderman.posZ) + 0.5F)), new Vec3d((double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F)), false, true, false);
+            RayTraceResult raytraceresult = world.rayTraceBlocks(new Vec3d((float)MathHelper.floor(this.enderman.posX) + 0.5F, (float)j + 0.5F, (float)MathHelper.floor(this.enderman.posZ) + 0.5F), new Vec3d((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F), false, true, false);
             boolean flag = raytraceresult != null && raytraceresult.getBlockPos().equals(blockpos);
 
             if (EntityEnderman.CARRIABLE_BLOCKS.contains(block) && flag)

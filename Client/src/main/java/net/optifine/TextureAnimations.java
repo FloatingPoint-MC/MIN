@@ -96,7 +96,7 @@ public class TextureAnimations
 
     private static TextureAnimation[] getTextureAnimations(IResourcePack rp)
     {
-        String[] astring = ResUtils.collectFiles(rp, "mcpatcher/anim/", ".properties", (String[])null);
+        String[] astring = ResUtils.collectFiles(rp, "mcpatcher/anim/", ".properties", null);
 
         if (astring.length <= 0)
         {
@@ -273,7 +273,7 @@ public class TextureAnimations
                 {
                     if (targetWidth > 0 && bufferedimage.getWidth() != targetWidth)
                     {
-                        double d0 = (double)(bufferedimage.getHeight() / bufferedimage.getWidth());
+                        double d0 = bufferedimage.getHeight() / bufferedimage.getWidth();
                         int j = (int)((double)targetWidth * d0);
                         bufferedimage = scaleBufferedImage(bufferedimage, targetWidth, j);
                     }
@@ -301,7 +301,7 @@ public class TextureAnimations
                             k1 = j2;
                         }
 
-                        abyte[k * 4 + 0] = (byte)i1;
+                        abyte[k * 4] = (byte)i1;
                         abyte[k * 4 + 1] = (byte)j1;
                         abyte[k * 4 + 2] = (byte)k1;
                         abyte[k * 4 + 3] = (byte)l;
@@ -334,7 +334,7 @@ public class TextureAnimations
         BufferedImage bufferedimage = new BufferedImage(width, height, 2);
         Graphics2D graphics2d = bufferedimage.createGraphics();
         graphics2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        graphics2d.drawImage(image, 0, 0, width, height, (ImageObserver)null);
+        graphics2d.drawImage(image, 0, 0, width, height, null);
         return bufferedimage;
     }
 

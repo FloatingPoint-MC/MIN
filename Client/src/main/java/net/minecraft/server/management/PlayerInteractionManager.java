@@ -142,7 +142,7 @@ public class PlayerInteractionManager {
      */
     public void onBlockClicked(BlockPos pos, EnumFacing side) {
         if (this.isCreative()) {
-            if (!this.world.extinguishFire((EntityPlayer) null, pos, side)) {
+            if (!this.world.extinguishFire(null, pos, side)) {
                 this.tryHarvestBlock(pos);
             }
         } else {
@@ -167,7 +167,7 @@ public class PlayerInteractionManager {
                 }
             }
 
-            this.world.extinguishFire((EntityPlayer) null, pos, side);
+            this.world.extinguishFire(null, pos, side);
             this.initialDamage = this.curblockDamage;
             float f = 1.0F;
 

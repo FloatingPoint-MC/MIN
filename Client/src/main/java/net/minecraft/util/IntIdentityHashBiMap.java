@@ -32,7 +32,7 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
     @Nullable
     public K get(int idIn)
     {
-        return (K)(idIn >= 0 && idIn < this.byId.length ? this.byId[idIn] : null);
+        return idIn >= 0 && idIn < this.byId.length ? this.byId[idIn] : null;
     }
 
     private int getValue(int p_186805_1_)
@@ -95,7 +95,6 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
 
             for (j = this.values.length << 1; j < intKey; j <<= 1)
             {
-                ;
             }
 
             this.grow(j);
@@ -177,8 +176,8 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
 
     public void clear()
     {
-        Arrays.fill(this.values, (Object)null);
-        Arrays.fill(this.byId, (Object)null);
+        Arrays.fill(this.values, null);
+        Arrays.fill(this.byId, null);
         this.nextFreeIndex = 0;
         this.mapSize = 0;
     }

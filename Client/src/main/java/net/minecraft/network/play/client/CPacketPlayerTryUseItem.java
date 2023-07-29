@@ -24,7 +24,7 @@ public class CPacketPlayerTryUseItem implements Packet<INetHandlerPlayServer>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.hand = (EnumHand)buf.readEnumValue(EnumHand.class);
+        this.hand = buf.readEnumValue(EnumHand.class);
     }
 
     /**

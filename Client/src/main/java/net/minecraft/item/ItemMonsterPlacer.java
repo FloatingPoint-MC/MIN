@@ -42,7 +42,7 @@ public class ItemMonsterPlacer extends Item
 
     public String getItemStackDisplayName(ItemStack stack)
     {
-        String s = ("" + I18n.translateToLocal(this.getTranslationKey() + ".name")).trim();
+        String s = (I18n.translateToLocal(this.getTranslationKey() + ".name")).trim();
         String s1 = EntityList.getTranslationName(getNamedIdFrom(stack));
 
         if (s1 != null)
@@ -119,7 +119,7 @@ public class ItemMonsterPlacer extends Item
     protected double getYOffset(World p_190909_1_, BlockPos p_190909_2_)
     {
         AxisAlignedBB axisalignedbb = (new AxisAlignedBB(p_190909_2_)).expand(0.0D, -1.0D, 0.0D);
-        List<AxisAlignedBB> list = p_190909_1_.getCollisionBoxes((Entity)null, axisalignedbb);
+        List<AxisAlignedBB> list = p_190909_1_.getCollisionBoxes(null, axisalignedbb);
 
         if (list.isEmpty())
         {
@@ -245,7 +245,7 @@ public class ItemMonsterPlacer extends Item
                     entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
-                    entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
+                    entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), null);
                     worldIn.spawnEntity(entity);
                     entityliving.playLivingSound();
                 }

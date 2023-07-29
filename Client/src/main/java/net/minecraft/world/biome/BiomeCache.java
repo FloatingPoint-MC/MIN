@@ -14,7 +14,7 @@ public class BiomeCache
     /** The last time this BiomeCache was cleaned, in milliseconds. */
     private long lastCleanupTime;
     private final Long2ObjectMap<BiomeCache.Block> cacheMap = new Long2ObjectOpenHashMap<BiomeCache.Block>(4096);
-    private final List<BiomeCache.Block> cache = Lists.<BiomeCache.Block>newArrayList();
+    private final List<BiomeCache.Block> cache = Lists.newArrayList();
 
     public BiomeCache(BiomeProvider provider)
     {
@@ -29,7 +29,7 @@ public class BiomeCache
         x = x >> 4;
         z = z >> 4;
         long i = (long)x & 4294967295L | ((long)z & 4294967295L) << 32;
-        BiomeCache.Block biomecache$block = (BiomeCache.Block)this.cacheMap.get(i);
+        BiomeCache.Block biomecache$block = this.cacheMap.get(i);
 
         if (biomecache$block == null)
         {

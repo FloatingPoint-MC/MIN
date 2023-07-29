@@ -17,7 +17,7 @@ import net.minecraft.world.WorldServer;
 public class PositionTrigger implements ICriterionTrigger<PositionTrigger.Instance>
 {
     private final ResourceLocation id;
-    private final Map<PlayerAdvancements, PositionTrigger.Listeners> listeners = Maps.<PlayerAdvancements, PositionTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, PositionTrigger.Listeners> listeners = Maps.newHashMap();
 
     public PositionTrigger(ResourceLocation id)
     {
@@ -100,7 +100,7 @@ public class PositionTrigger implements ICriterionTrigger<PositionTrigger.Instan
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<PositionTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<PositionTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<PositionTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -128,11 +128,11 @@ public class PositionTrigger implements ICriterionTrigger<PositionTrigger.Instan
 
             for (ICriterionTrigger.Listener<PositionTrigger.Instance> listener : this.listeners)
             {
-                if (((PositionTrigger.Instance)listener.getCriterionInstance()).test(world, x, y, z))
+                if (listener.getCriterionInstance().test(world, x, y, z))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<PositionTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

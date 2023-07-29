@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockColored extends Block
 {
-    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.<EnumDyeColor>create("color", EnumDyeColor.class);
+    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
     public BlockColored(Material materialIn)
     {
@@ -30,7 +30,7 @@ public class BlockColored extends Block
      */
     public int damageDropped(IBlockState state)
     {
-        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     /**
@@ -51,7 +51,7 @@ public class BlockColored extends Block
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return MapColor.getBlockColor((EnumDyeColor)state.getValue(COLOR));
+        return MapColor.getBlockColor(state.getValue(COLOR));
     }
 
     /**
@@ -67,11 +67,11 @@ public class BlockColored extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {COLOR});
+        return new BlockStateContainer(this, COLOR);
     }
 }

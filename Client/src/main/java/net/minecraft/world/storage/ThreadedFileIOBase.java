@@ -8,7 +8,7 @@ public class ThreadedFileIOBase implements Runnable
 {
     /** Instance of ThreadedFileIOBase */
     private static final ThreadedFileIOBase INSTANCE = new ThreadedFileIOBase();
-    private final List<IThreadedFileIO> threadedIOQueue = Collections.<IThreadedFileIO>synchronizedList(Lists.newArrayList());
+    private final List<IThreadedFileIO> threadedIOQueue = Collections.synchronizedList(Lists.newArrayList());
     private volatile long writeQueuedCounter;
     private volatile long savedIOCounter;
     private volatile boolean isThreadWaiting;

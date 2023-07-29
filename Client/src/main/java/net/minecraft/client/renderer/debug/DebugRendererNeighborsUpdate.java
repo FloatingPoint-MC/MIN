@@ -27,11 +27,11 @@ public class DebugRendererNeighborsUpdate implements DebugRenderer.IDebugRendere
 
     public void addUpdate(long worldTime, BlockPos pos)
     {
-        Map<BlockPos, Integer> map = (Map)this.lastUpdate.get(Long.valueOf(worldTime));
+        Map<BlockPos, Integer> map = this.lastUpdate.get(Long.valueOf(worldTime));
 
         if (map == null)
         {
-            map = Maps.<BlockPos, Integer>newHashMap();
+            map = Maps.newHashMap();
             this.lastUpdate.put(Long.valueOf(worldTime), map);
         }
 
@@ -60,15 +60,15 @@ public class DebugRendererNeighborsUpdate implements DebugRenderer.IDebugRendere
         GlStateManager.depthMask(false);
         int j = 200;
         double d3 = 0.0025D;
-        Set<BlockPos> set = Sets.<BlockPos>newHashSet();
-        Map<BlockPos, Integer> map = Maps.<BlockPos, Integer>newHashMap();
+        Set<BlockPos> set = Sets.newHashSet();
+        Map<BlockPos, Integer> map = Maps.newHashMap();
         Iterator<Entry<Long, Map<BlockPos, Integer>>> iterator = this.lastUpdate.entrySet().iterator();
 
         while (iterator.hasNext())
         {
-            Entry<Long, Map<BlockPos, Integer>> entry = (Entry)iterator.next();
+            Entry<Long, Map<BlockPos, Integer>> entry = iterator.next();
             Long olong = entry.getKey();
-            Map<BlockPos, Integer> map1 = (Map)entry.getValue();
+            Map<BlockPos, Integer> map1 = entry.getValue();
             long k = i - olong.longValue();
 
             if (k > 200L)
@@ -84,7 +84,7 @@ public class DebugRendererNeighborsUpdate implements DebugRenderer.IDebugRendere
 
                     if (set.add(blockpos))
                     {
-                        RenderGlobal.drawSelectionBoundingBox((new AxisAlignedBB(BlockPos.ORIGIN)).grow(0.002D).shrink(0.0025D * (double)k).offset((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ()).offset(-d0, -d1, -d2), 1.0F, 1.0F, 1.0F, 1.0F);
+                        RenderGlobal.drawSelectionBoundingBox((new AxisAlignedBB(BlockPos.ORIGIN)).grow(0.002D).shrink(0.0025D * (double)k).offset(blockpos.getX(), blockpos.getY(), blockpos.getZ()).offset(-d0, -d1, -d2), 1.0F, 1.0F, 1.0F, 1.0F);
                         map.put(blockpos, integer);
                     }
                 }
@@ -95,7 +95,7 @@ public class DebugRendererNeighborsUpdate implements DebugRenderer.IDebugRendere
         {
             BlockPos blockpos1 = entry2.getKey();
             Integer integer1 = entry2.getValue();
-            DebugRenderer.renderDebugText(String.valueOf((Object)integer1), blockpos1.getX(), blockpos1.getY(), blockpos1.getZ(), partialTicks, -1);
+            DebugRenderer.renderDebugText(String.valueOf(integer1), blockpos1.getX(), blockpos1.getY(), blockpos1.getZ(), partialTicks, -1);
         }
 
         GlStateManager.depthMask(true);

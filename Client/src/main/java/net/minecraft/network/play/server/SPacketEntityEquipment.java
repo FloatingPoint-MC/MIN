@@ -30,7 +30,7 @@ public class SPacketEntityEquipment implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.entityID = buf.readVarInt();
-        this.equipmentSlot = (EntityEquipmentSlot)buf.readEnumValue(EntityEquipmentSlot.class);
+        this.equipmentSlot = buf.readEnumValue(EntityEquipmentSlot.class);
         this.itemStack = buf.readItemStack();
     }
 

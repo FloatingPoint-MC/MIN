@@ -122,7 +122,7 @@ public class BlockSign extends BlockContainer
         else
         {
             TileEntity tileentity = worldIn.getTileEntity(pos);
-            return tileentity instanceof TileEntitySign ? ((TileEntitySign)tileentity).executeCommand(playerIn) : false;
+            return tileentity instanceof TileEntitySign && ((TileEntitySign) tileentity).executeCommand(playerIn);
         }
     }
 

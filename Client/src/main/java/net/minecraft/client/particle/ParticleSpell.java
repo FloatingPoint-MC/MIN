@@ -116,7 +116,7 @@ public class ParticleSpell extends Particle
             Particle particle = new ParticleSpell(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
             ((ParticleSpell)particle).setBaseSpellTextureIndex(144);
             float f = worldIn.rand.nextFloat() * 0.5F + 0.35F;
-            particle.setRBGColorF(1.0F * f, 0.0F * f, 1.0F * f);
+            particle.setRBGColorF(f, 0.0F * f, f);
             return particle;
         }
     }

@@ -7,7 +7,7 @@ import net.minecraft.util.TupleIntJsonSerializable;
 
 public class StatisticsManager
 {
-    protected final Map<StatBase, TupleIntJsonSerializable> statsData = Maps.<StatBase, TupleIntJsonSerializable>newConcurrentMap();
+    protected final Map<StatBase, TupleIntJsonSerializable> statsData = Maps.newConcurrentMap();
 
     public void increaseStat(EntityPlayer player, StatBase stat, int amount)
     {

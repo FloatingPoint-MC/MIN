@@ -228,7 +228,6 @@ public class ShaderUniform
     {
         if (!this.dirty)
         {
-            ;
         }
 
         this.dirty = false;
@@ -245,7 +244,7 @@ public class ShaderUniform
         {
             if (this.uniformType > 10)
             {
-                LOGGER.warn("Uniform.upload called, but type value ({}) is not a valid type. Ignoring.", (int)this.uniformType);
+                LOGGER.warn("Uniform.upload called, but type value ({}) is not a valid type. Ignoring.", this.uniformType);
                 return;
             }
 
@@ -274,7 +273,7 @@ public class ShaderUniform
                 break;
 
             default:
-                LOGGER.warn("Uniform.upload called, but count value ({}) is  not in the range of 1 to 4. Ignoring.", (int)this.uniformCount);
+                LOGGER.warn("Uniform.upload called, but count value ({}) is  not in the range of 1 to 4. Ignoring.", this.uniformCount);
         }
     }
 
@@ -299,7 +298,7 @@ public class ShaderUniform
                 break;
 
             default:
-                LOGGER.warn("Uniform.upload called, but count value ({}) is not in the range of 1 to 4. Ignoring.", (int)this.uniformCount);
+                LOGGER.warn("Uniform.upload called, but count value ({}) is not in the range of 1 to 4. Ignoring.", this.uniformCount);
         }
     }
 

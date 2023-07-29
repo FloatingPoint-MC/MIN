@@ -10,11 +10,11 @@ import net.minecraft.client.settings.GameSettings;
 
 public class GuiOtherSettingsOF extends GuiScreen implements GuiYesNoCallback
 {
-    private GuiScreen prevScreen;
+    private final GuiScreen prevScreen;
     protected String title;
-    private GameSettings settings;
-    private static GameSettings.Options[] enumOptions = new GameSettings.Options[] {GameSettings.Options.LAGOMETER, GameSettings.Options.PROFILER, GameSettings.Options.SHOW_FPS, GameSettings.Options.ADVANCED_TOOLTIPS, GameSettings.Options.WEATHER, GameSettings.Options.TIME, GameSettings.Options.USE_FULLSCREEN, GameSettings.Options.FULLSCREEN_MODE, GameSettings.Options.ANAGLYPH, GameSettings.Options.AUTOSAVE_TICKS, GameSettings.Options.SCREENSHOT_SIZE, GameSettings.Options.SHOW_GL_ERRORS};
-    private TooltipManager tooltipManager = new TooltipManager(this, new TooltipProviderOptions());
+    private final GameSettings settings;
+    private static final GameSettings.Options[] enumOptions = new GameSettings.Options[] {GameSettings.Options.LAGOMETER, GameSettings.Options.PROFILER, GameSettings.Options.SHOW_FPS, GameSettings.Options.ADVANCED_TOOLTIPS, GameSettings.Options.WEATHER, GameSettings.Options.TIME, GameSettings.Options.USE_FULLSCREEN, GameSettings.Options.FULLSCREEN_MODE, GameSettings.Options.ANAGLYPH, GameSettings.Options.AUTOSAVE_TICKS, GameSettings.Options.SCREENSHOT_SIZE, GameSettings.Options.SHOW_GL_ERRORS};
+    private final TooltipManager tooltipManager = new TooltipManager(this, new TooltipProviderOptions());
 
     public GuiOtherSettingsOF(GuiScreen guiscreen, GameSettings gamesettings)
     {

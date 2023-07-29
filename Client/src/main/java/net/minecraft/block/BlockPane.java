@@ -49,22 +49,22 @@ public class BlockPane extends Block
 
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[0]);
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if (state.getValue(NORTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.NORTH)]);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if (state.getValue(SOUTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.SOUTH)]);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if (state.getValue(EAST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.EAST)]);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if (state.getValue(WEST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.WEST)]);
         }
@@ -89,22 +89,22 @@ public class BlockPane extends Block
     {
         int i = 0;
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if (state.getValue(NORTH).booleanValue())
         {
             i |= getBoundingBoxIndex(EnumFacing.NORTH);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if (state.getValue(EAST).booleanValue())
         {
             i |= getBoundingBoxIndex(EnumFacing.EAST);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if (state.getValue(SOUTH).booleanValue())
         {
             i |= getBoundingBoxIndex(EnumFacing.SOUTH);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if (state.getValue(WEST).booleanValue())
         {
             i |= getBoundingBoxIndex(EnumFacing.WEST);
         }
@@ -152,7 +152,7 @@ public class BlockPane extends Block
      */
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     public final boolean attachesTo(IBlockAccess p_193393_1_, IBlockState state, BlockPos pos, EnumFacing facing)
@@ -235,7 +235,7 @@ public class BlockPane extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, WEST, SOUTH});
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 
     /**

@@ -25,7 +25,7 @@ public class MapGenMineshaft extends MapGenStructure
     {
         for (Entry<String, String> entry : p_i2034_1_.entrySet())
         {
-            if (((String)entry.getKey()).equals("chance"))
+            if (entry.getKey().equals("chance"))
             {
                 this.chance = MathHelper.getDouble(entry.getValue(), this.chance);
             }
@@ -79,7 +79,7 @@ public class MapGenMineshaft extends MapGenStructure
         return new StructureMineshaftStart(this.world, this.rand, chunkX, chunkZ, mapgenmineshaft$type);
     }
 
-    public static enum Type
+    public enum Type
     {
         NORMAL,
         MESA;

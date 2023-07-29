@@ -13,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class BlockStateMapper
 {
-    private final Map<Block, IStateMapper> blockStateMap = Maps.<Block, IStateMapper>newIdentityHashMap();
-    private final Set<Block> setBuiltInBlocks = Sets.<Block>newIdentityHashSet();
+    private final Map<Block, IStateMapper> blockStateMap = Maps.newIdentityHashMap();
+    private final Set<Block> setBuiltInBlocks = Sets.newIdentityHashSet();
 
     public void registerBlockStateMapper(Block blockIn, IStateMapper stateMapper)
     {
@@ -28,7 +28,7 @@ public class BlockStateMapper
 
     public Map<IBlockState, ModelResourceLocation> putAllStateModelLocations()
     {
-        Map<IBlockState, ModelResourceLocation> map = Maps.<IBlockState, ModelResourceLocation>newIdentityHashMap();
+        Map<IBlockState, ModelResourceLocation> map = Maps.newIdentityHashMap();
 
         for (Block block : Block.REGISTRY)
         {
@@ -42,7 +42,7 @@ public class BlockStateMapper
     {
         if (this.setBuiltInBlocks.contains(blockIn))
         {
-            return Collections.<ResourceLocation>emptySet();
+            return Collections.emptySet();
         }
         else
         {
@@ -50,11 +50,11 @@ public class BlockStateMapper
 
             if (istatemapper == null)
             {
-                return Collections.<ResourceLocation>singleton(Block.REGISTRY.getNameForObject(blockIn));
+                return Collections.singleton(Block.REGISTRY.getNameForObject(blockIn));
             }
             else
             {
-                Set<ResourceLocation> set = Sets.<ResourceLocation>newHashSet();
+                Set<ResourceLocation> set = Sets.newHashSet();
 
                 for (ModelResourceLocation modelresourcelocation : istatemapper.putStateModelLocations(blockIn).values())
                 {
@@ -68,6 +68,6 @@ public class BlockStateMapper
 
     public Map<IBlockState, ModelResourceLocation> getVariants(Block blockIn)
     {
-        return this.setBuiltInBlocks.contains(blockIn) ? Collections.emptyMap() : ((IStateMapper)MoreObjects.firstNonNull(this.blockStateMap.get(blockIn), new DefaultStateMapper())).putStateModelLocations(blockIn);
+        return this.setBuiltInBlocks.contains(blockIn) ? Collections.emptyMap() : MoreObjects.firstNonNull(this.blockStateMap.get(blockIn), new DefaultStateMapper()).putStateModelLocations(blockIn);
     }
 }

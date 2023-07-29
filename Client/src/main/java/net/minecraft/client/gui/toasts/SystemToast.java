@@ -58,7 +58,7 @@ public class SystemToast implements IToast
 
     public static void addOrUpdate(GuiToast p_193657_0_, SystemToast.Type p_193657_1_, ITextComponent p_193657_2_, @Nullable ITextComponent p_193657_3_)
     {
-        SystemToast systemtoast = (SystemToast)p_193657_0_.getToast(SystemToast.class, p_193657_1_);
+        SystemToast systemtoast = p_193657_0_.getToast(SystemToast.class, p_193657_1_);
 
         if (systemtoast == null)
         {
@@ -70,9 +70,9 @@ public class SystemToast implements IToast
         }
     }
 
-    public static enum Type
+    public enum Type
     {
         TUTORIAL_HINT,
-        NARRATOR_TOGGLE;
+        NARRATOR_TOGGLE
     }
 }

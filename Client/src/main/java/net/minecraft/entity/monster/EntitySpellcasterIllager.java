@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public abstract class EntitySpellcasterIllager extends AbstractIllager
 {
-    private static final DataParameter<Byte> SPELL = EntityDataManager.<Byte>createKey(EntitySpellcasterIllager.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> SPELL = EntityDataManager.createKey(EntitySpellcasterIllager.class, DataSerializers.BYTE);
     protected int spellTicks;
     private EntitySpellcasterIllager.SpellType activeSpell = EntitySpellcasterIllager.SpellType.NONE;
 
@@ -55,7 +55,7 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
     {
         if (this.world.isRemote)
         {
-            return ((Byte)this.dataManager.get(SPELL)).byteValue() > 0;
+            return this.dataManager.get(SPELL).byteValue() > 0;
         }
         else
         {
@@ -71,7 +71,7 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
 
     protected EntitySpellcasterIllager.SpellType getSpellType()
     {
-        return !this.world.isRemote ? this.activeSpell : EntitySpellcasterIllager.SpellType.getFromId(((Byte)this.dataManager.get(SPELL)).byteValue());
+        return !this.world.isRemote ? this.activeSpell : EntitySpellcasterIllager.SpellType.getFromId(this.dataManager.get(SPELL).byteValue());
     }
 
     protected void updateAITasks()
@@ -214,7 +214,7 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
         protected abstract EntitySpellcasterIllager.SpellType getSpellType();
     }
 
-    public static enum SpellType
+    public enum SpellType
     {
         NONE(0, 0.0D, 0.0D, 0.0D),
         SUMMON_VEX(1, 0.7D, 0.7D, 0.8D),
@@ -226,7 +226,7 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
         private final int id;
         private final double[] particleSpeed;
 
-        private SpellType(int idIn, double xParticleSpeed, double yParticleSpeed, double zParticleSpeed)
+        SpellType(int idIn, double xParticleSpeed, double yParticleSpeed, double zParticleSpeed)
         {
             this.id = idIn;
             this.particleSpeed = new double[] {xParticleSpeed, yParticleSpeed, zParticleSpeed};

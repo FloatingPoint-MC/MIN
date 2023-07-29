@@ -106,9 +106,9 @@ public class EntityList
     private static final ResourceLocation PLAYER = new ResourceLocation("player");
     private static final Logger LOGGER = LogManager.getLogger();
     public static final RegistryNamespaced < ResourceLocation, Class <? extends Entity >> REGISTRY = new RegistryNamespaced < ResourceLocation, Class <? extends Entity >> ();
-    public static final Map<ResourceLocation, EntityList.EntityEggInfo> ENTITY_EGGS = Maps.<ResourceLocation, EntityList.EntityEggInfo>newLinkedHashMap();
-    public static final Set<ResourceLocation> KNOWN_TYPES = Sets.<ResourceLocation>newHashSet();
-    private static final List<String> OLD_NAMES = Lists.<String>newArrayList();
+    public static final Map<ResourceLocation, EntityList.EntityEggInfo> ENTITY_EGGS = Maps.newLinkedHashMap();
+    public static final Set<ResourceLocation> KNOWN_TYPES = Sets.newHashSet();
+    private static final List<String> OLD_NAMES = Lists.newArrayList();
 
     @Nullable
 
@@ -143,7 +143,7 @@ public class EntityList
     public static String getEntityString(Entity entityIn)
     {
         int i = REGISTRY.getIDForObject(entityIn.getClass());
-        return i == -1 ? null : (String)OLD_NAMES.get(i);
+        return i == -1 ? null : OLD_NAMES.get(i);
     }
 
     @Nullable
@@ -161,19 +161,19 @@ public class EntityList
     public static String getTranslationName(@Nullable ResourceLocation entityType)
     {
         int i = REGISTRY.getIDForObject(REGISTRY.getObject(entityType));
-        return i == -1 ? null : (String)OLD_NAMES.get(i);
+        return i == -1 ? null : OLD_NAMES.get(i);
     }
 
     @Nullable
     public static Class <? extends Entity > getClassFromID(int entityID)
     {
-        return (Class)REGISTRY.getObjectById(entityID);
+        return REGISTRY.getObjectById(entityID);
     }
 
     @Nullable
     public static Class <? extends Entity > getClassFromName(String p_192839_0_)
     {
-        return (Class)REGISTRY.getObject(new ResourceLocation(p_192839_0_));
+        return REGISTRY.getObject(new ResourceLocation(p_192839_0_));
     }
 
     @Nullable
@@ -243,7 +243,7 @@ public class EntityList
 
         if (entity == null)
         {
-            LOGGER.warn("Skipping Entity with id {}", (Object)resourcelocation);
+            LOGGER.warn("Skipping Entity with id {}", resourcelocation);
         }
         else
         {
@@ -278,7 +278,7 @@ public class EntityList
         }
         else
         {
-            return entityIn instanceof EntityLightningBolt ? LIGHTNING_BOLT.equals(entityName) : false;
+            return entityIn instanceof EntityLightningBolt && LIGHTNING_BOLT.equals(entityName);
         }
     }
 
@@ -299,10 +299,10 @@ public class EntityList
 
         for (ResourceLocation resourcelocation : getEntityNameList())
         {
-            stringbuilder.append((Object)resourcelocation).append(", ");
+            stringbuilder.append(resourcelocation).append(", ");
         }
 
-        stringbuilder.append((Object)PLAYER);
+        stringbuilder.append(PLAYER);
         return stringbuilder.toString();
     }
 

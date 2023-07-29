@@ -88,9 +88,9 @@ public class EntityAIVillagerInteract extends EntityAIWatchClosest2
                         float f = 0.3F;
                         float f1 = this.villager.rotationYawHead;
                         float f2 = this.villager.rotationPitch;
-                        entityitem.motionX = (double)(-MathHelper.sin(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F);
-                        entityitem.motionZ = (double)(MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F);
-                        entityitem.motionY = (double)(-MathHelper.sin(f2 * 0.017453292F) * 0.3F + 0.1F);
+                        entityitem.motionX = -MathHelper.sin(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F;
+                        entityitem.motionZ = MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F) * 0.3F;
+                        entityitem.motionY = -MathHelper.sin(f2 * 0.017453292F) * 0.3F + 0.1F;
                         entityitem.setDefaultPickupDelay();
                         this.villager.world.spawnEntity(entityitem);
                         break;

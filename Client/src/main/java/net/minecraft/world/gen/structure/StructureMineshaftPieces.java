@@ -303,7 +303,7 @@ public class StructureMineshaftPieces
             {
                 IBlockState iblockstate = Blocks.RAIL.getDefaultState().withProperty(BlockRail.SHAPE, randomIn.nextBoolean() ? BlockRailBase.EnumRailDirection.NORTH_SOUTH : BlockRailBase.EnumRailDirection.EAST_WEST);
                 this.setBlockState(worldIn, iblockstate, x, y, z, structurebb);
-                EntityMinecartChest entityminecartchest = new EntityMinecartChest(worldIn, (double)((float)blockpos.getX() + 0.5F), (double)((float)blockpos.getY() + 0.5F), (double)((float)blockpos.getZ() + 0.5F));
+                EntityMinecartChest entityminecartchest = new EntityMinecartChest(worldIn, (float)blockpos.getX() + 0.5F, (float)blockpos.getY() + 0.5F, (float)blockpos.getZ() + 0.5F);
                 entityminecartchest.setLootTable(loot, randomIn.nextLong());
                 worldIn.spawnEntity(entityminecartchest);
                 return true;
@@ -693,7 +693,7 @@ public class StructureMineshaftPieces
 
     public static class Room extends StructureMineshaftPieces.Peice
     {
-        private final List<StructureBoundingBox> connectedRooms = Lists.<StructureBoundingBox>newLinkedList();
+        private final List<StructureBoundingBox> connectedRooms = Lists.newLinkedList();
 
         public Room()
         {

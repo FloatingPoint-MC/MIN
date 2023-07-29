@@ -49,7 +49,7 @@ public class BlockTripWire extends Block
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return !((Boolean)state.getValue(ATTACHED)).booleanValue() ? TRIP_WRITE_ATTACHED_AABB : AABB;
+        return !state.getValue(ATTACHED).booleanValue() ? TRIP_WRITE_ATTACHED_AABB : AABB;
     }
 
     /**
@@ -177,7 +177,7 @@ public class BlockTripWire extends Block
     {
         if (!worldIn.isRemote)
         {
-            if (!((Boolean)state.getValue(POWERED)).booleanValue())
+            if (!state.getValue(POWERED).booleanValue())
             {
                 this.updateState(worldIn, pos);
             }
@@ -195,7 +195,7 @@ public class BlockTripWire extends Block
     {
         if (!worldIn.isRemote)
         {
-            if (((Boolean)worldIn.getBlockState(pos).getValue(POWERED)).booleanValue())
+            if (worldIn.getBlockState(pos).getValue(POWERED).booleanValue())
             {
                 this.updateState(worldIn, pos);
             }
@@ -205,9 +205,9 @@ public class BlockTripWire extends Block
     private void updateState(World worldIn, BlockPos pos)
     {
         IBlockState iblockstate = worldIn.getBlockState(pos);
-        boolean flag = ((Boolean)iblockstate.getValue(POWERED)).booleanValue();
+        boolean flag = iblockstate.getValue(POWERED).booleanValue();
         boolean flag1 = false;
-        List <? extends Entity > list = worldIn.getEntitiesWithinAABBExcludingEntity((Entity)null, iblockstate.getBoundingBox(worldIn, pos).offset(pos));
+        List <? extends Entity > list = worldIn.getEntitiesWithinAABBExcludingEntity(null, iblockstate.getBoundingBox(worldIn, pos).offset(pos));
 
         if (!list.isEmpty())
         {
@@ -266,17 +266,17 @@ public class BlockTripWire extends Block
     {
         int i = 0;
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if (state.getValue(POWERED).booleanValue())
         {
             i |= 1;
         }
 
-        if (((Boolean)state.getValue(ATTACHED)).booleanValue())
+        if (state.getValue(ATTACHED).booleanValue())
         {
             i |= 4;
         }
 
-        if (((Boolean)state.getValue(DISARMED)).booleanValue())
+        if (state.getValue(DISARMED).booleanValue())
         {
             i |= 8;
         }
@@ -330,7 +330,7 @@ public class BlockTripWire extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWERED, ATTACHED, DISARMED, NORTH, EAST, WEST, SOUTH});
+        return new BlockStateContainer(this, POWERED, ATTACHED, DISARMED, NORTH, EAST, WEST, SOUTH);
     }
 
     /**

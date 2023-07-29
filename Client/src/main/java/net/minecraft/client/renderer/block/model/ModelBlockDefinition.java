@@ -26,12 +26,12 @@ public class ModelBlockDefinition
 {
     @VisibleForTesting
     static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(ModelBlockDefinition.class, new ModelBlockDefinition.Deserializer()).registerTypeAdapter(Variant.class, new Variant.Deserializer()).registerTypeAdapter(VariantList.class, new VariantList.Deserializer()).registerTypeAdapter(Multipart.class, new Multipart.Deserializer()).registerTypeAdapter(Selector.class, new Selector.Deserializer()).create();
-    private final Map<String, VariantList> mapVariants = Maps.<String, VariantList>newHashMap();
+    private final Map<String, VariantList> mapVariants = Maps.newHashMap();
     private Multipart multipart;
 
     public static ModelBlockDefinition parseFromReader(Reader reader)
     {
-        return (ModelBlockDefinition)JsonUtils.fromJson(GSON, reader, ModelBlockDefinition.class);
+        return JsonUtils.fromJson(GSON, reader, ModelBlockDefinition.class);
     }
 
     public ModelBlockDefinition(Map<String, VariantList> variants, Multipart multipartIn)
@@ -149,7 +149,7 @@ public class ModelBlockDefinition
 
         protected Map<String, VariantList> parseMapVariants(JsonDeserializationContext deserializationContext, JsonObject object)
         {
-            Map<String, VariantList> map = Maps.<String, VariantList>newHashMap();
+            Map<String, VariantList> map = Maps.newHashMap();
 
             if (object.has("variants"))
             {
@@ -157,7 +157,7 @@ public class ModelBlockDefinition
 
                 for (Entry<String, JsonElement> entry : jsonobject.entrySet())
                 {
-                    map.put(entry.getKey(), (VariantList)deserializationContext.deserialize(entry.getValue(), VariantList.class));
+                    map.put(entry.getKey(), deserializationContext.deserialize(entry.getValue(), VariantList.class));
                 }
             }
 
@@ -174,7 +174,7 @@ public class ModelBlockDefinition
             else
             {
                 JsonArray jsonarray = JsonUtils.getJsonArray(object, "multipart");
-                return (Multipart)deserializationContext.deserialize(jsonarray, Multipart.class);
+                return deserializationContext.deserialize(jsonarray, Multipart.class);
             }
         }
     }

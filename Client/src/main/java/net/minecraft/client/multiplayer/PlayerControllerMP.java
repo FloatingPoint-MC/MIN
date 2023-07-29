@@ -43,7 +43,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class PlayerControllerMP {
@@ -485,14 +484,13 @@ public class PlayerControllerMP {
     /**
      * Handles slot clicks, sends a packet to the server.
      */
-    public ItemStack windowClick(int windowId, int slotId, int mouseButton, ClickType type, EntityPlayer player) {
-        short short1 = player.openContainer.getNextTransactionID(player.inventory);
+    public void windowClick(int windowId, int slotId, int mouseButton, ClickType type, EntityPlayer player) {
+        short transactionID = player.openContainer.getNextTransactionID();
         ItemStack itemstack = player.openContainer.slotClick(slotId, mouseButton, type, player);
-        this.connection.sendPacket(new CPacketClickWindow(windowId, slotId, mouseButton, type, itemstack, short1));
-        return itemstack;
+        this.connection.sendPacket(new CPacketClickWindow(windowId, slotId, mouseButton, type, itemstack, transactionID));
     }
 
-    public void func_194338_a(int p_194338_1_, IRecipe p_194338_2_, boolean p_194338_3_, EntityPlayer p_194338_4_) {
+    public void placeRecipe(int p_194338_1_, IRecipe p_194338_2_, boolean p_194338_3_) {
         this.connection.sendPacket(new CPacketPlaceRecipe(p_194338_1_, p_194338_2_, p_194338_3_));
     }
 

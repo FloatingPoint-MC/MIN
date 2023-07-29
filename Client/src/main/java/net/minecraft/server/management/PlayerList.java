@@ -76,8 +76,8 @@ public abstract class PlayerList
 
     /** Reference to the MinecraftServer object. */
     private final MinecraftServer server;
-    private final List<EntityPlayerMP> playerEntityList = Lists.<EntityPlayerMP>newArrayList();
-    private final Map<UUID, EntityPlayerMP> uuidToPlayerMap = Maps.<UUID, EntityPlayerMP>newHashMap();
+    private final List<EntityPlayerMP> playerEntityList = Lists.newArrayList();
+    private final Map<UUID, EntityPlayerMP> uuidToPlayerMap = Maps.newHashMap();
     private final UserListBans bannedPlayers;
     private final UserListIPBans bannedIPs;
 
@@ -118,8 +118,8 @@ public abstract class PlayerList
         this.bannedIPs = new UserListIPBans(FILE_IPBANS);
         this.ops = new UserListOps(FILE_OPS);
         this.whiteListedPlayers = new UserListWhitelist(FILE_WHITELIST);
-        this.playerStatFiles = Maps.<UUID, StatisticsManagerServer>newHashMap();
-        this.advancements = Maps.<UUID, PlayerAdvancements>newHashMap();
+        this.playerStatFiles = Maps.newHashMap();
+        this.advancements = Maps.newHashMap();
         this.server = server;
         this.bannedPlayers.setLanServer(false);
         this.bannedIPs.setLanServer(false);
@@ -146,7 +146,7 @@ public abstract class PlayerList
         LOGGER.info("{}[{}] logged in with entity id {} at ({}, {}, {})", playerIn.getName(), s1, Integer.valueOf(playerIn.getEntityId()), Double.valueOf(playerIn.posX), Double.valueOf(playerIn.posY), Double.valueOf(playerIn.posZ));
         WorldServer worldserver = this.server.getWorld(playerIn.dimension);
         WorldInfo worldinfo = worldserver.getWorldInfo();
-        this.setPlayerGameTypeBasedOnOther(playerIn, (EntityPlayerMP)null, worldserver);
+        this.setPlayerGameTypeBasedOnOther(playerIn, null, worldserver);
         NetHandlerPlayServer nethandlerplayserver = new NetHandlerPlayServer(this.server, netManager, playerIn);
         nethandlerplayserver.sendPacket(new SPacketJoinGame(playerIn.getEntityId(), playerIn.interactionManager.getGameType(), worldinfo.isHardcoreModeEnabled(), worldserver.provider.getDimensionType().getId(), worldserver.getDifficulty(), this.getMaxPlayers(), worldinfo.getTerrainType(), worldserver.getGameRules().getBoolean("reducedDebugInfo")));
         nethandlerplayserver.sendPacket(new SPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(this.getServerInstance().getServerModName())));
@@ -162,11 +162,11 @@ public abstract class PlayerList
 
         if (playerIn.getName().equalsIgnoreCase(s))
         {
-            textcomponenttranslation = new TextComponentTranslation("multiplayer.player.joined", new Object[] {playerIn.getDisplayName()});
+            textcomponenttranslation = new TextComponentTranslation("multiplayer.player.joined", playerIn.getDisplayName());
         }
         else
         {
-            textcomponenttranslation = new TextComponentTranslation("multiplayer.player.joined.renamed", new Object[] {playerIn.getDisplayName(), s});
+            textcomponenttranslation = new TextComponentTranslation("multiplayer.player.joined.renamed", playerIn.getDisplayName(), s);
         }
 
         textcomponenttranslation.getStyle().setColor(TextFormatting.YELLOW);
@@ -228,7 +228,7 @@ public abstract class PlayerList
 
     protected void sendScoreboard(ServerScoreboard scoreboardIn, EntityPlayerMP playerIn)
     {
-        Set<ScoreObjective> set = Sets.<ScoreObjective>newHashSet();
+        Set<ScoreObjective> set = Sets.newHashSet();
 
         for (ScorePlayerTeam scoreplayerteam : scoreboardIn.getTeams())
         {
@@ -371,16 +371,16 @@ public abstract class PlayerList
     {
         this.playerEntityList.add(playerIn);
         this.uuidToPlayerMap.put(playerIn.getUniqueID(), playerIn);
-        this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, new EntityPlayerMP[] {playerIn}));
+        this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, playerIn));
         WorldServer worldserver = this.server.getWorld(playerIn.dimension);
 
         for (int i = 0; i < this.playerEntityList.size(); ++i)
         {
-            playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, new EntityPlayerMP[] {this.playerEntityList.get(i)}));
+            playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, this.playerEntityList.get(i)));
         }
 
         worldserver.spawnEntity(playerIn);
-        this.preparePlayer(playerIn, (WorldServer)null);
+        this.preparePlayer(playerIn, null);
     }
 
     /**
@@ -433,7 +433,7 @@ public abstract class PlayerList
             this.advancements.remove(uuid);
         }
 
-        this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.REMOVE_PLAYER, new EntityPlayerMP[] {playerIn}));
+        this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.REMOVE_PLAYER, playerIn));
     }
 
     /**
@@ -443,7 +443,7 @@ public abstract class PlayerList
     {
         if (this.bannedPlayers.isBanned(profile))
         {
-            UserListBansEntry userlistbansentry = (UserListBansEntry)this.bannedPlayers.getEntry(profile);
+            UserListBansEntry userlistbansentry = this.bannedPlayers.getEntry(profile);
             String s1 = "You are banned from this server!\nReason: " + userlistbansentry.getBanReason();
 
             if (userlistbansentry.getBanEndDate() != null)
@@ -481,7 +481,7 @@ public abstract class PlayerList
     public EntityPlayerMP createPlayerForUser(GameProfile profile)
     {
         UUID uuid = EntityPlayer.getUUID(profile);
-        List<EntityPlayerMP> list = Lists.<EntityPlayerMP>newArrayList();
+        List<EntityPlayerMP> list = Lists.newArrayList();
 
         for (EntityPlayerMP entityplayermp : this.playerEntityList) {
             if (entityplayermp.getUniqueID().equals(uuid)) {
@@ -498,7 +498,7 @@ public abstract class PlayerList
 
         for (EntityPlayerMP entityplayermp1 : list)
         {
-            entityplayermp1.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login", new Object[0]));
+            entityplayermp1.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login"));
         }
 
         PlayerInteractionManager playerinteractionmanager = new PlayerInteractionManager(this.server.getWorld(0));
@@ -543,7 +543,7 @@ public abstract class PlayerList
 
             if (blockpos1 != null)
             {
-                entityplayermp.setLocationAndAngles((double)((float)blockpos1.getX() + 0.5F), (double)((float)blockpos1.getY() + 0.1F), (double)((float)blockpos1.getZ() + 0.5F), 0.0F, 0.0F);
+                entityplayermp.setLocationAndAngles((float)blockpos1.getX() + 0.5F, (float)blockpos1.getY() + 0.1F, (float)blockpos1.getZ() + 0.5F, 0.0F, 0.0F);
                 entityplayermp.setSpawnPoint(blockpos, flag);
             }
             else
@@ -654,9 +654,9 @@ public abstract class PlayerList
                 blockpos = toWorldIn.getSpawnCoordinate();
             }
 
-            d0 = (double)blockpos.getX();
-            entityIn.posY = (double)blockpos.getY();
-            d1 = (double)blockpos.getZ();
+            d0 = blockpos.getX();
+            entityIn.posY = blockpos.getY();
+            d1 = blockpos.getZ();
             entityIn.setLocationAndAngles(d0, entityIn.posY, d1, 90.0F, 0.0F);
 
             if (entityIn.isEntityAlive())
@@ -670,8 +670,8 @@ public abstract class PlayerList
         if (lastDimension != 1)
         {
             oldWorldIn.profiler.startSection("placing");
-            d0 = (double)MathHelper.clamp((int)d0, -29999872, 29999872);
-            d1 = (double)MathHelper.clamp((int)d1, -29999872, 29999872);
+            d0 = MathHelper.clamp((int)d0, -29999872, 29999872);
+            d1 = MathHelper.clamp((int)d1, -29999872, 29999872);
 
             if (entityIn.isEntityAlive())
             {
@@ -775,11 +775,11 @@ public abstract class PlayerList
                 s = s + ", ";
             }
 
-            s = s + ((EntityPlayerMP)list.get(i)).getName();
+            s = s + list.get(i).getName();
 
             if (includeUUIDs)
             {
-                s = s + " (" + ((EntityPlayerMP)list.get(i)).getCachedUniqueIdString() + ")";
+                s = s + " (" + list.get(i).getCachedUniqueIdString() + ")";
             }
         }
 
@@ -795,7 +795,7 @@ public abstract class PlayerList
 
         for (int i = 0; i < this.playerEntityList.size(); ++i)
         {
-            astring[i] = ((EntityPlayerMP)this.playerEntityList.get(i)).getName();
+            astring[i] = this.playerEntityList.get(i).getName();
         }
 
         return astring;
@@ -807,7 +807,7 @@ public abstract class PlayerList
 
         for (int i = 0; i < this.playerEntityList.size(); ++i)
         {
-            agameprofile[i] = ((EntityPlayerMP)this.playerEntityList.get(i)).getGameProfile();
+            agameprofile[i] = this.playerEntityList.get(i).getGameProfile();
         }
 
         return agameprofile;
@@ -1012,7 +1012,7 @@ public abstract class PlayerList
 
     public List<EntityPlayerMP> getPlayersMatchingAddress(String address)
     {
-        List<EntityPlayerMP> list = Lists.<EntityPlayerMP>newArrayList();
+        List<EntityPlayerMP> list = Lists.newArrayList();
 
         for (EntityPlayerMP entityplayermp : this.playerEntityList)
         {
@@ -1080,7 +1080,7 @@ public abstract class PlayerList
     {
         for (int i = 0; i < this.playerEntityList.size(); ++i)
         {
-            (this.playerEntityList.get(i)).connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.server_shutdown", new Object[0]));
+            (this.playerEntityList.get(i)).connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.server_shutdown"));
         }
     }
 
@@ -1102,7 +1102,7 @@ public abstract class PlayerList
     public StatisticsManagerServer getPlayerStatsFile(EntityPlayer playerIn)
     {
         UUID uuid = playerIn.getUniqueID();
-        StatisticsManagerServer statisticsmanagerserver = uuid == null ? null : (StatisticsManagerServer)this.playerStatFiles.get(uuid);
+        StatisticsManagerServer statisticsmanagerserver = uuid == null ? null : this.playerStatFiles.get(uuid);
 
         if (statisticsmanagerserver == null)
         {

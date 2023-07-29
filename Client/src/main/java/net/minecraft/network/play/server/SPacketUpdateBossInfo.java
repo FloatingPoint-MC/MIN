@@ -43,15 +43,15 @@ public class SPacketUpdateBossInfo implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.uniqueId = buf.readUniqueId();
-        this.operation = (SPacketUpdateBossInfo.Operation)buf.readEnumValue(SPacketUpdateBossInfo.Operation.class);
+        this.operation = buf.readEnumValue(Operation.class);
 
         switch (this.operation)
         {
             case ADD:
                 this.name = buf.readTextComponent();
                 this.percent = buf.readFloat();
-                this.color = (BossInfo.Color)buf.readEnumValue(BossInfo.Color.class);
-                this.overlay = (BossInfo.Overlay)buf.readEnumValue(BossInfo.Overlay.class);
+                this.color = buf.readEnumValue(BossInfo.Color.class);
+                this.overlay = buf.readEnumValue(BossInfo.Overlay.class);
                 this.setFlags(buf.readUnsignedByte());
 
             case REMOVE:
@@ -67,8 +67,8 @@ public class SPacketUpdateBossInfo implements Packet<INetHandlerPlayClient>
                 break;
 
             case UPDATE_STYLE:
-                this.color = (BossInfo.Color)buf.readEnumValue(BossInfo.Color.class);
-                this.overlay = (BossInfo.Overlay)buf.readEnumValue(BossInfo.Overlay.class);
+                this.color = buf.readEnumValue(BossInfo.Color.class);
+                this.overlay = buf.readEnumValue(BossInfo.Overlay.class);
                 break;
 
             case UPDATE_PROPERTIES:
@@ -197,13 +197,13 @@ public class SPacketUpdateBossInfo implements Packet<INetHandlerPlayClient>
         return this.createFog;
     }
 
-    public static enum Operation
+    public enum Operation
     {
         ADD,
         REMOVE,
         UPDATE_PCT,
         UPDATE_NAME,
         UPDATE_STYLE,
-        UPDATE_PROPERTIES;
+        UPDATE_PROPERTIES
     }
 }

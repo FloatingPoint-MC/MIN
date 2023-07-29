@@ -44,7 +44,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
 {
     private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
     private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, 0)).setSaved(false);
-    private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.<Boolean>createKey(EntityWitch.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_DRINKING = EntityDataManager.createKey(EntityWitch.class, DataSerializers.BOOLEAN);
 
     /**
      * A timer that counts down until a witch finishes drinking a potion, at which time the held item (if it is a
@@ -70,7 +70,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
@@ -105,7 +105,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
 
     public boolean isDrinkingPotion()
     {
-        return ((Boolean)this.getDataManager().get(IS_DRINKING)).booleanValue();
+        return this.getDataManager().get(IS_DRINKING).booleanValue();
     }
 
     protected void applyEntityAttributes()
@@ -173,7 +173,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
                     this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), potiontype));
                     this.potionUseTimer = this.getHeldItemMainhand().getMaxItemUseDuration();
                     this.setDrinkingPotion(true);
-                    this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+                    this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_DRINK, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
                     IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
                     iattributeinstance.removeModifier(MODIFIER);
                     iattributeinstance.applyModifier(MODIFIER);
@@ -263,7 +263,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
             EntityPotion entitypotion = new EntityPotion(this.world, this, PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), potiontype));
             entitypotion.rotationPitch -= -20.0F;
             entitypotion.shoot(d1, d2 + (double)(f * 0.2F), d3, 0.75F, 8.0F);
-            this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+            this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
             this.world.spawnEntity(entitypotion);
         }
     }

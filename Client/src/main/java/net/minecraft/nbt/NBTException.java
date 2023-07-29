@@ -17,7 +17,7 @@ public class NBTException extends Exception
             stringbuilder.append("...");
         }
 
-        stringbuilder.append(json.substring(Math.max(0, i - 35), i));
+        stringbuilder.append(json, Math.max(0, i - 35), i);
         stringbuilder.append("<--[HERE]");
         return stringbuilder.toString();
     }

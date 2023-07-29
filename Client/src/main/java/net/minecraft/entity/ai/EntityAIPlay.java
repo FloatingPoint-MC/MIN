@@ -34,7 +34,7 @@ public class EntityAIPlay extends EntityAIBase
         }
         else
         {
-            List<EntityVillager> list = this.villager.world.<EntityVillager>getEntitiesWithinAABB(EntityVillager.class, this.villager.getEntityBoundingBox().grow(6.0D, 3.0D, 6.0D));
+            List<EntityVillager> list = this.villager.world.getEntitiesWithinAABB(EntityVillager.class, this.villager.getEntityBoundingBox().grow(6.0D, 3.0D, 6.0D));
             double d0 = Double.MAX_VALUE;
 
             for (EntityVillager entityvillager : list)
@@ -55,10 +55,7 @@ public class EntityAIPlay extends EntityAIBase
             {
                 Vec3d vec3d = RandomPositionGenerator.findRandomTarget(this.villager, 16, 3);
 
-                if (vec3d == null)
-                {
-                    return false;
-                }
+                return vec3d != null;
             }
 
             return true;

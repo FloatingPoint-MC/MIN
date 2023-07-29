@@ -16,7 +16,7 @@ import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 public class TileEntityDispenser extends TileEntityLockableLoot
 {
     private static final Random RNG = new Random();
-    private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(9, ItemStack.EMPTY);
 
     /**
      * Returns the number of slots in the inventory.
@@ -41,13 +41,13 @@ public class TileEntityDispenser extends TileEntityLockableLoot
 
     public int getDispenseSlot()
     {
-        this.fillWithLoot((EntityPlayer)null);
+        this.fillWithLoot(null);
         int i = -1;
         int j = 1;
 
         for (int k = 0; k < this.stacks.size(); ++k)
         {
-            if (!((ItemStack)this.stacks.get(k)).isEmpty() && RNG.nextInt(j++) == 0)
+            if (!this.stacks.get(k).isEmpty() && RNG.nextInt(j++) == 0)
             {
                 i = k;
             }
@@ -64,7 +64,7 @@ public class TileEntityDispenser extends TileEntityLockableLoot
     {
         for (int i = 0; i < this.stacks.size(); ++i)
         {
-            if (((ItemStack)this.stacks.get(i)).isEmpty())
+            if (this.stacks.get(i).isEmpty())
             {
                 this.setInventorySlotContents(i, stack);
                 return i;
@@ -116,13 +116,13 @@ public class TileEntityDispenser extends TileEntityLockableLoot
 
     public static void registerFixes(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDispenser.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDispenser.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.stacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         if (!this.checkLootAndRead(compound))
         {

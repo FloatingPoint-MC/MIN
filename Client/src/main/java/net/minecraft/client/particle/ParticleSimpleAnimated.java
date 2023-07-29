@@ -47,7 +47,7 @@ public class ParticleSimpleAnimated extends Particle
         float f1 = (float)((p_187146_1_ & 65280) >> 8) / 255.0F;
         float f2 = (float)((p_187146_1_ & 255) >> 0) / 255.0F;
         float f3 = 1.0F;
-        this.setRBGColorF(f * 1.0F, f1 * 1.0F, f2 * 1.0F);
+        this.setRBGColorF(f, f1, f2);
     }
 
     /**
@@ -90,11 +90,11 @@ public class ParticleSimpleAnimated extends Particle
         }
 
         this.setParticleTextureIndex(this.textureIdx + (this.numAgingFrames - 1 - this.particleAge * this.numAgingFrames / this.particleMaxAge));
-        this.motionY += (double)this.yAccel;
+        this.motionY += this.yAccel;
         this.move(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= (double)this.baseAirFriction;
-        this.motionY *= (double)this.baseAirFriction;
-        this.motionZ *= (double)this.baseAirFriction;
+        this.motionX *= this.baseAirFriction;
+        this.motionY *= this.baseAirFriction;
+        this.motionZ *= this.baseAirFriction;
 
         if (this.onGround)
         {

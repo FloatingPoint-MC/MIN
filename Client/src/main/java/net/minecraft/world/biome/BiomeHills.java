@@ -33,7 +33,7 @@ public class BiomeHills extends Biome
 
     public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
-        return (WorldGenAbstractTree)(rand.nextInt(3) > 0 ? this.spruceGenerator : super.getRandomTreeFeature(rand));
+        return rand.nextInt(3) > 0 ? this.spruceGenerator : super.getRandomTreeFeature(rand);
     }
 
     public void decorate(World worldIn, Random rand, BlockPos pos)
@@ -82,10 +82,10 @@ public class BiomeHills extends Biome
         this.generateBiomeTerrain(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
     }
 
-    public static enum Type
+    public enum Type
     {
         NORMAL,
         EXTRA_TREES,
-        MUTATED;
+        MUTATED
     }
 }

@@ -1,6 +1,7 @@
 package net.minecraft.util;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class IntHashMap<V>
 {
@@ -49,7 +50,7 @@ public class IntHashMap<V>
             }
         }
 
-        return (V)null;
+        return null;
     }
 
     /**
@@ -158,7 +159,7 @@ public class IntHashMap<V>
     public V removeObject(int o)
     {
         IntHashMap.Entry<V> entry = this.removeEntry(o);
-        return (V)(entry == null ? null : entry.valueEntry);
+        return entry == null ? null : entry.valueEntry;
     }
 
     @Nullable
@@ -265,10 +266,7 @@ public class IntHashMap<V>
                     Object object = this.getValue();
                     Object object1 = entry.getValue();
 
-                    if (object == object1 || object != null && object.equals(object1))
-                    {
-                        return true;
-                    }
+                    return Objects.equals(object, object1);
                 }
 
                 return false;

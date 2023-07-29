@@ -247,7 +247,7 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
 
         if (this.client.getSaveLoader().canLoadWorld(this.worldSummary.getFileName()))
         {
-            this.client.launchIntegratedServer(this.worldSummary.getFileName(), this.worldSummary.getDisplayName(), (WorldSettings)null);
+            this.client.launchIntegratedServer(this.worldSummary.getFileName(), this.worldSummary.getDisplayName(), null);
         }
     }
 

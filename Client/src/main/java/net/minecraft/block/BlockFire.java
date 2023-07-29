@@ -32,8 +32,8 @@ public class BlockFire extends Block
     public static final PropertyBool SOUTH = PropertyBool.create("south");
     public static final PropertyBool WEST = PropertyBool.create("west");
     public static final PropertyBool UPPER = PropertyBool.create("up");
-    private final Map<Block, Integer> encouragements = Maps.<Block, Integer>newIdentityHashMap();
-    private final Map<Block, Integer> flammabilities = Maps.<Block, Integer>newIdentityHashMap();
+    private final Map<Block, Integer> encouragements = Maps.newIdentityHashMap();
+    private final Map<Block, Integer> flammabilities = Maps.newIdentityHashMap();
 
     /**
      * Get the actual Block state of this Block at the given position. This applies properties not visible in the
@@ -159,7 +159,7 @@ public class BlockFire extends Block
                 flag = true;
             }
 
-            int i = ((Integer)state.getValue(AGE)).intValue();
+            int i = state.getValue(AGE).intValue();
 
             if (!flag && worldIn.isRaining() && this.canDie(worldIn, pos) && rand.nextFloat() < 0.2F + (float)i * 0.03F)
             {
@@ -406,7 +406,7 @@ public class BlockFire extends Block
     {
         if (rand.nextInt(24) == 0)
         {
-            worldIn.playSound((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+            worldIn.playSound((float)pos.getX() + 0.5F, (float)pos.getY() + 0.5F, (float)pos.getZ() + 0.5F, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
         }
 
         if (!worldIn.getBlockState(pos.down()).isTopSolid() && !Blocks.FIRE.canCatchFire(worldIn, pos.down()))
@@ -510,12 +510,12 @@ public class BlockFire extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return state.getValue(AGE).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, NORTH, EAST, SOUTH, WEST, UPPER});
+        return new BlockStateContainer(this, AGE, NORTH, EAST, SOUTH, WEST, UPPER);
     }
 
     /**

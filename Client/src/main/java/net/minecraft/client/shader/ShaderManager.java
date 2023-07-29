@@ -32,12 +32,12 @@ public class ShaderManager
     private static ShaderManager staticShaderManager;
     private static int currentProgram = -1;
     private static boolean lastCull = true;
-    private final Map<String, Object> shaderSamplers = Maps.<String, Object>newHashMap();
-    private final List<String> samplerNames = Lists.<String>newArrayList();
-    private final List<Integer> shaderSamplerLocations = Lists.<Integer>newArrayList();
-    private final List<ShaderUniform> shaderUniforms = Lists.<ShaderUniform>newArrayList();
-    private final List<Integer> shaderUniformLocations = Lists.<Integer>newArrayList();
-    private final Map<String, ShaderUniform> mappedShaderUniforms = Maps.<String, ShaderUniform>newHashMap();
+    private final Map<String, Object> shaderSamplers = Maps.newHashMap();
+    private final List<String> samplerNames = Lists.newArrayList();
+    private final List<Integer> shaderSamplerLocations = Lists.newArrayList();
+    private final List<ShaderUniform> shaderUniforms = Lists.newArrayList();
+    private final List<Integer> shaderUniformLocations = Lists.newArrayList();
+    private final Map<String, ShaderUniform> mappedShaderUniforms = Maps.newHashMap();
     private final int program;
     private final String programFilename;
     private final boolean useFaceCulling;
@@ -48,7 +48,7 @@ public class ShaderManager
     private final ShaderLoader vertexShaderLoader;
     private final ShaderLoader fragmentShaderLoader;
 
-    public ShaderManager(IResourceManager resourceManager, String programName) throws JsonException, IOException
+    public ShaderManager(IResourceManager resourceManager, String programName) throws IOException
     {
         JsonParser jsonparser = new JsonParser();
         ResourceLocation resourcelocation = new ResourceLocation("shaders/program/" + programName + ".json");
@@ -61,7 +61,7 @@ public class ShaderManager
             JsonObject jsonobject = jsonparser.parse(IOUtils.toString(iresource.getInputStream(), StandardCharsets.UTF_8)).getAsJsonObject();
             String s = JsonUtils.getString(jsonobject, "vertex");
             String s1 = JsonUtils.getString(jsonobject, "fragment");
-            JsonArray jsonarray = JsonUtils.getJsonArray(jsonobject, "samplers", (JsonArray)null);
+            JsonArray jsonarray = JsonUtils.getJsonArray(jsonobject, "samplers", null);
 
             if (jsonarray != null)
             {
@@ -84,13 +84,13 @@ public class ShaderManager
                 }
             }
 
-            JsonArray jsonarray1 = JsonUtils.getJsonArray(jsonobject, "attributes", (JsonArray)null);
+            JsonArray jsonarray1 = JsonUtils.getJsonArray(jsonobject, "attributes", null);
 
             if (jsonarray1 != null)
             {
                 int j = 0;
-                this.attribLocations = Lists.<Integer>newArrayListWithCapacity(jsonarray1.size());
-                this.attributes = Lists.<String>newArrayListWithCapacity(jsonarray1.size());
+                this.attribLocations = Lists.newArrayListWithCapacity(jsonarray1.size());
+                this.attributes = Lists.newArrayListWithCapacity(jsonarray1.size());
 
                 for (JsonElement jsonelement1 : jsonarray1)
                 {
@@ -114,7 +114,7 @@ public class ShaderManager
                 this.attributes = null;
             }
 
-            JsonArray jsonarray2 = JsonUtils.getJsonArray(jsonobject, "uniforms", (JsonArray)null);
+            JsonArray jsonarray2 = JsonUtils.getJsonArray(jsonobject, "uniforms", null);
 
             if (jsonarray2 != null)
             {
@@ -137,7 +137,7 @@ public class ShaderManager
                 }
             }
 
-            this.blendingMode = JsonBlendingMode.parseBlendNode(JsonUtils.getJsonObject(jsonobject, "blend", (JsonObject)null));
+            this.blendingMode = JsonBlendingMode.parseBlendNode(JsonUtils.getJsonObject(jsonobject, "blend", null));
             this.useFaceCulling = JsonUtils.getBoolean(jsonobject, "cull", true);
             this.vertexShaderLoader = ShaderLoader.loadShader(resourceManager, ShaderLoader.ShaderType.VERTEX, s);
             this.fragmentShaderLoader = ShaderLoader.loadShader(resourceManager, ShaderLoader.ShaderType.FRAGMENT, s1);
@@ -162,7 +162,7 @@ public class ShaderManager
         }
         finally
         {
-            IOUtils.closeQuietly((Closeable)iresource);
+            IOUtils.closeQuietly(iresource);
         }
 
         this.markDirty();
@@ -268,7 +268,7 @@ public class ShaderManager
     public ShaderUniform getShaderUniformOrDefault(String name)
     {
         ShaderUniform shaderuniform = this.getShaderUniform(name);
-        return (ShaderUniform)(shaderuniform == null ? DEFAULT_SHADER_UNIFORM : shaderuniform);
+        return shaderuniform == null ? DEFAULT_SHADER_UNIFORM : shaderuniform;
     }
 
     /**
@@ -305,7 +305,7 @@ public class ShaderManager
 
             if (l == -1)
             {
-                LOGGER.warn("Could not find uniform named {} in the specified shader program.", (Object)s1);
+                LOGGER.warn("Could not find uniform named {} in the specified shader program.", s1);
             }
             else
             {
@@ -323,7 +323,7 @@ public class ShaderManager
 
         if (!JsonUtils.isString(jsonobject, "file"))
         {
-            this.shaderSamplers.put(s, (Object)null);
+            this.shaderSamplers.put(s, null);
             this.samplerNames.add(s);
         }
         else
@@ -337,10 +337,7 @@ public class ShaderManager
      */
     public void addSamplerTexture(String name, Object samplerTexture)
     {
-        if (this.shaderSamplers.containsKey(name))
-        {
-            this.shaderSamplers.remove(name);
-        }
+        this.shaderSamplers.remove(name);
 
         this.shaderSamplers.put(name, samplerTexture);
         this.markDirty();

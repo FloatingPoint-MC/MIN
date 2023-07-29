@@ -42,12 +42,12 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
     public TileEntityShulkerBox()
     {
-        this((EnumDyeColor)null);
+        this(null);
     }
 
     public TileEntityShulkerBox(@Nullable EnumDyeColor colorIn)
     {
-        this.items = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+        this.items = NonNullList.withSize(27, ItemStack.EMPTY);
         this.animationStatus = TileEntityShulkerBox.AnimationStatus.CLOSED;
         this.color = colorIn;
     }
@@ -110,18 +110,18 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
     public AxisAlignedBB getBoundingBox(IBlockState p_190584_1_)
     {
-        return this.getBoundingBox((EnumFacing)p_190584_1_.getValue(BlockShulkerBox.FACING));
+        return this.getBoundingBox(p_190584_1_.getValue(BlockShulkerBox.FACING));
     }
 
     public AxisAlignedBB getBoundingBox(EnumFacing p_190587_1_)
     {
-        return Block.FULL_BLOCK_AABB.expand((double)(0.5F * this.getProgress(1.0F) * (float)p_190587_1_.getXOffset()), (double)(0.5F * this.getProgress(1.0F) * (float)p_190587_1_.getYOffset()), (double)(0.5F * this.getProgress(1.0F) * (float)p_190587_1_.getZOffset()));
+        return Block.FULL_BLOCK_AABB.expand(0.5F * this.getProgress(1.0F) * (float)p_190587_1_.getXOffset(), 0.5F * this.getProgress(1.0F) * (float)p_190587_1_.getYOffset(), 0.5F * this.getProgress(1.0F) * (float)p_190587_1_.getZOffset());
     }
 
     private AxisAlignedBB getTopBoundingBox(EnumFacing p_190588_1_)
     {
         EnumFacing enumfacing = p_190588_1_.getOpposite();
-        return this.getBoundingBox(p_190588_1_).contract((double)enumfacing.getXOffset(), (double)enumfacing.getYOffset(), (double)enumfacing.getZOffset());
+        return this.getBoundingBox(p_190588_1_).contract(enumfacing.getXOffset(), enumfacing.getYOffset(), enumfacing.getZOffset());
     }
 
     private void moveCollidedEntities()
@@ -130,9 +130,9 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
         if (iblockstate.getBlock() instanceof BlockShulkerBox)
         {
-            EnumFacing enumfacing = (EnumFacing)iblockstate.getValue(BlockShulkerBox.FACING);
+            EnumFacing enumfacing = iblockstate.getValue(BlockShulkerBox.FACING);
             AxisAlignedBB axisalignedbb = this.getTopBoundingBox(enumfacing).offset(this.pos);
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb);
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb);
 
             if (!list.isEmpty())
             {
@@ -253,7 +253,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
             if (this.openCount == 1)
             {
-                this.world.playSound((EntityPlayer)null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.world.playSound(null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
         }
     }
@@ -267,7 +267,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
             if (this.openCount <= 0)
             {
-                this.world.playSound((EntityPlayer)null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.world.playSound(null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
         }
     }
@@ -324,7 +324,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
     public static void registerFixesShulkerBox(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityShulkerBox.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityShulkerBox.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -341,7 +341,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
     public void loadFromNbt(NBTTagCompound compound)
     {
-        this.items = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         if (!this.checkLootAndRead(compound) && compound.hasKey("Items", 9))
         {
@@ -469,15 +469,14 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
     {
         for (int i = 0; i < SLOTS.length; SLOTS[i] = i++)
         {
-            ;
         }
     }
 
-    public static enum AnimationStatus
+    public enum AnimationStatus
     {
         CLOSED,
         OPENING,
         OPENED,
-        CLOSING;
+        CLOSING
     }
 }

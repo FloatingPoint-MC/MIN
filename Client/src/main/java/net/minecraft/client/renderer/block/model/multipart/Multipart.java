@@ -30,7 +30,7 @@ public class Multipart
 
     public Set<VariantList> getVariants()
     {
-        Set<VariantList> set = Sets.<VariantList>newHashSet();
+        Set<VariantList> set = Sets.newHashSet();
 
         for (Selector selector : this.selectors)
         {
@@ -91,11 +91,11 @@ public class Multipart
 
         private List<Selector> getSelectors(JsonDeserializationContext context, JsonArray elements)
         {
-            List<Selector> list = Lists.<Selector>newArrayList();
+            List<Selector> list = Lists.newArrayList();
 
             for (JsonElement jsonelement : elements)
             {
-                list.add((Selector)context.deserialize(jsonelement, Selector.class));
+                list.add(context.deserialize(jsonelement, Selector.class));
             }
 
             return list;

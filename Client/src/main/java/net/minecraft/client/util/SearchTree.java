@@ -17,8 +17,8 @@ public class SearchTree<T> implements ISearchTree<T>
     protected SuffixArray<T> byId = new SuffixArray<T>();
     private final Function<T, Iterable<String>> nameFunc;
     private final Function<T, Iterable<ResourceLocation>> idFunc;
-    private final List<T> contents = Lists.<T>newArrayList();
-    private Object2IntMap<T> numericContents = new Object2IntOpenHashMap<T>();
+    private final List<T> contents = Lists.newArrayList();
+    private final Object2IntMap<T> numericContents = new Object2IntOpenHashMap<T>();
 
     public SearchTree(Function<T, Iterable<String>> nameFuncIn, Function<T, Iterable<ResourceLocation>> idFuncIn)
     {
@@ -102,15 +102,15 @@ public class SearchTree<T> implements ISearchTree<T>
             this.leftItr = leftIn;
             this.rightItr = rightIn;
             this.numbers = numbersIn;
-            this.left = (T)(leftIn.hasNext() ? leftIn.next() : null);
-            this.right = (T)(rightIn.hasNext() ? rightIn.next() : null);
+            this.left = leftIn.hasNext() ? leftIn.next() : null;
+            this.right = rightIn.hasNext() ? rightIn.next() : null;
         }
 
         protected T computeNext()
         {
             if (this.left == null && this.right == null)
             {
-                return (T)this.endOfData();
+                return this.endOfData();
             }
             else
             {
@@ -133,16 +133,16 @@ public class SearchTree<T> implements ISearchTree<T>
                     i = Integer.compare(this.numbers.getInt(this.left), this.numbers.getInt(this.right));
                 }
 
-                T t = (T)(i <= 0 ? this.left : this.right);
+                T t = i <= 0 ? this.left : this.right;
 
                 if (i <= 0)
                 {
-                    this.left = (T)(this.leftItr.hasNext() ? this.leftItr.next() : null);
+                    this.left = this.leftItr.hasNext() ? this.leftItr.next() : null;
                 }
 
                 if (i >= 0)
                 {
-                    this.right = (T)(this.rightItr.hasNext() ? this.rightItr.next() : null);
+                    this.right = this.rightItr.hasNext() ? this.rightItr.next() : null;
                 }
 
                 return t;

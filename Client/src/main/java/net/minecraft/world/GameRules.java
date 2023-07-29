@@ -70,7 +70,7 @@ public class GameRules
     public boolean getBoolean(String name)
     {
         GameRules.Value gamerules$value = this.rules.get(name);
-        return gamerules$value != null ? gamerules$value.getBoolean() : false;
+        return gamerules$value != null && gamerules$value.getBoolean();
     }
 
     public int getInt(String name)
@@ -112,7 +112,7 @@ public class GameRules
     public String[] getRules()
     {
         Set<String> set = this.rules.keySet();
-        return (String[])set.toArray(new String[set.size()]);
+        return set.toArray(new String[set.size()]);
     }
 
     /**
@@ -171,7 +171,6 @@ public class GameRules
             }
             catch (NumberFormatException var4)
             {
-                ;
             }
 
             try
@@ -180,7 +179,6 @@ public class GameRules
             }
             catch (NumberFormatException var3)
             {
-                ;
             }
         }
 
@@ -205,11 +203,11 @@ public class GameRules
         }
     }
 
-    public static enum ValueType
+    public enum ValueType
     {
         ANY_VALUE,
         BOOLEAN_VALUE,
         NUMERICAL_VALUE,
-        FUNCTION;
+        FUNCTION
     }
 }

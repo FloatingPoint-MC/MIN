@@ -31,8 +31,8 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityZombieVillager extends EntityZombie
 {
-    private static final DataParameter<Boolean> CONVERTING = EntityDataManager.<Boolean>createKey(EntityZombieVillager.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> PROFESSION = EntityDataManager.<Integer>createKey(EntityZombieVillager.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> CONVERTING = EntityDataManager.createKey(EntityZombieVillager.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> PROFESSION = EntityDataManager.createKey(EntityZombieVillager.class, DataSerializers.VARINT);
 
     /**
      * Ticker used to determine the time remaining for this zombie to convert into a villager when cured.
@@ -64,7 +64,7 @@ public class EntityZombieVillager extends EntityZombie
 
     public int getProfession()
     {
-        return Math.max(((Integer)this.dataManager.get(PROFESSION)).intValue() % 6, 0);
+        return Math.max(this.dataManager.get(PROFESSION).intValue() % 6, 0);
     }
 
     public static void registerFixesZombieVillager(DataFixer fixer)
@@ -179,7 +179,7 @@ public class EntityZombieVillager extends EntityZombie
      */
     public boolean isConverting()
     {
-        return ((Boolean)this.getDataManager().get(CONVERTING)).booleanValue();
+        return this.getDataManager().get(CONVERTING).booleanValue();
     }
 
     /**
@@ -221,7 +221,7 @@ public class EntityZombieVillager extends EntityZombie
         EntityVillager entityvillager = new EntityVillager(this.world);
         entityvillager.copyLocationAndAnglesFrom(this);
         entityvillager.setProfession(this.getProfession());
-        entityvillager.finalizeMobSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData)null, false);
+        entityvillager.finalizeMobSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), null, false);
         entityvillager.setLookingForHome();
 
         if (this.isChild())
@@ -251,7 +251,7 @@ public class EntityZombieVillager extends EntityZombie
         }
 
         entityvillager.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 200, 0));
-        this.world.playEvent((EntityPlayer)null, 1027, new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ), 0);
+        this.world.playEvent(null, 1027, new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ), 0);
     }
 
     protected int getConversionProgress()

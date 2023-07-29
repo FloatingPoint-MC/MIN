@@ -57,13 +57,13 @@ public class CommandClearInventory extends CommandBase
             }
             catch (NBTException nbtexception)
             {
-                throw new CommandException("commands.clear.tagError", new Object[] {nbtexception.getMessage()});
+                throw new CommandException("commands.clear.tagError", nbtexception.getMessage());
             }
         }
 
         if (args.length >= 2 && item == null)
         {
-            throw new CommandException("commands.clear.failure", new Object[] {entityplayermp.getName()});
+            throw new CommandException("commands.clear.failure", entityplayermp.getName());
         }
         else
         {
@@ -79,17 +79,17 @@ public class CommandClearInventory extends CommandBase
 
             if (k == 0)
             {
-                throw new CommandException("commands.clear.failure", new Object[] {entityplayermp.getName()});
+                throw new CommandException("commands.clear.failure", entityplayermp.getName());
             }
             else
             {
                 if (j == 0)
                 {
-                    sender.sendMessage(new TextComponentTranslation("commands.clear.testing", new Object[] {entityplayermp.getName(), k}));
+                    sender.sendMessage(new TextComponentTranslation("commands.clear.testing", entityplayermp.getName(), k));
                 }
                 else
                 {
-                    notifyCommandListener(sender, this, "commands.clear.success", new Object[] {entityplayermp.getName(), k});
+                    notifyCommandListener(sender, this, "commands.clear.success", entityplayermp.getName(), k);
                 }
             }
         }

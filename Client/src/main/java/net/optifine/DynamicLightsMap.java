@@ -7,20 +7,20 @@ import java.util.List;
 
 public class DynamicLightsMap
 {
-    private Int2ObjectMap<DynamicLight> map = new Int2ObjectOpenHashMap<DynamicLight>();
-    private List<DynamicLight> list = new ArrayList<DynamicLight>();
+    private final Int2ObjectMap<DynamicLight> map = new Int2ObjectOpenHashMap<DynamicLight>();
+    private final List<DynamicLight> list = new ArrayList<DynamicLight>();
     private boolean dirty = false;
 
     public DynamicLight put(int id, DynamicLight dynamicLight)
     {
-        DynamicLight dynamiclight = (DynamicLight)this.map.put(id, dynamicLight);
+        DynamicLight dynamiclight = this.map.put(id, dynamicLight);
         this.setDirty();
         return dynamiclight;
     }
 
     public DynamicLight get(int id)
     {
-        return (DynamicLight)this.map.get(id);
+        return this.map.get(id);
     }
 
     public int size()
@@ -30,7 +30,7 @@ public class DynamicLightsMap
 
     public DynamicLight remove(int id)
     {
-        DynamicLight dynamiclight = (DynamicLight)this.map.remove(id);
+        DynamicLight dynamiclight = this.map.remove(id);
 
         if (dynamiclight != null)
         {

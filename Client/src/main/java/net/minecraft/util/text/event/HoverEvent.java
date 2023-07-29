@@ -50,17 +50,9 @@ public class HoverEvent
             {
                 if (this.value != null)
                 {
-                    if (!this.value.equals(hoverevent.value))
-                    {
-                        return false;
-                    }
+                    return this.value.equals(hoverevent.value);
                 }
-                else if (hoverevent.value != null)
-                {
-                    return false;
-                }
-
-                return true;
+                else return hoverevent.value == null;
             }
         }
         else
@@ -81,17 +73,17 @@ public class HoverEvent
         return i;
     }
 
-    public static enum Action
+    public enum Action
     {
         SHOW_TEXT("show_text", true),
         SHOW_ITEM("show_item", true),
         SHOW_ENTITY("show_entity", true);
 
-        private static final Map<String, HoverEvent.Action> NAME_MAPPING = Maps.<String, HoverEvent.Action>newHashMap();
+        private static final Map<String, HoverEvent.Action> NAME_MAPPING = Maps.newHashMap();
         private final boolean allowedInChat;
         private final String canonicalName;
 
-        private Action(String canonicalNameIn, boolean allowedInChatIn)
+        Action(String canonicalNameIn, boolean allowedInChatIn)
         {
             this.canonicalName = canonicalNameIn;
             this.allowedInChat = allowedInChatIn;

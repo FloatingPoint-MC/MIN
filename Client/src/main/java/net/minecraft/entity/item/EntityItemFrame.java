@@ -25,8 +25,8 @@ import net.minecraft.world.storage.MapData;
 
 public class EntityItemFrame extends EntityHanging
 {
-    private static final DataParameter<ItemStack> ITEM = EntityDataManager.<ItemStack>createKey(EntityItemFrame.class, DataSerializers.ITEM_STACK);
-    private static final DataParameter<Integer> ROTATION = EntityDataManager.<Integer>createKey(EntityItemFrame.class, DataSerializers.VARINT);
+    private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItemFrame.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<Integer> ROTATION = EntityDataManager.createKey(EntityItemFrame.class, DataSerializers.VARINT);
 
     /** Chance for this item frame's item to drop from the frame. */
     private float itemDropChance = 1.0F;
@@ -157,13 +157,13 @@ public class EntityItemFrame extends EntityHanging
                 mapdata.mapDecorations.remove("frame-" + this.getEntityId());
             }
 
-            stack.setItemFrame((EntityItemFrame)null);
+            stack.setItemFrame(null);
         }
     }
 
     public ItemStack getDisplayedItem()
     {
-        return (ItemStack)this.getDataManager().get(ITEM);
+        return this.getDataManager().get(ITEM);
     }
 
     public void setDisplayedItem(ItemStack stack)
@@ -212,7 +212,7 @@ public class EntityItemFrame extends EntityHanging
      */
     public int getRotation()
     {
-        return ((Integer)this.getDataManager().get(ROTATION)).intValue();
+        return this.getDataManager().get(ROTATION).intValue();
     }
 
     public void setItemRotation(int rotationIn)
@@ -232,7 +232,7 @@ public class EntityItemFrame extends EntityHanging
 
     public static void registerFixesItemFrame(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityItemFrame.class, new String[] {"Item"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityItemFrame.class, "Item"));
     }
 
     /**

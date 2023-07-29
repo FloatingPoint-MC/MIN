@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class TimedEvent
 {
-    private static Map<String, Long> mapEventTimes = new HashMap<String, Long>();
+    private static final Map<String, Long> mapEventTimes = new HashMap<String, Long>();
 
     public static boolean isActive(String name, long timeIntervalMs)
     {

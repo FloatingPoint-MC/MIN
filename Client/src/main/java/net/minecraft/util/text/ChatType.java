@@ -8,7 +8,7 @@ public enum ChatType
 
     private final byte id;
 
-    private ChatType(byte id)
+    ChatType(byte id)
     {
         this.id = id;
     }

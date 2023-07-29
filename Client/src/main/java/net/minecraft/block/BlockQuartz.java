@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class BlockQuartz extends Block
 {
-    public static final PropertyEnum<BlockQuartz.EnumType> VARIANT = PropertyEnum.<BlockQuartz.EnumType>create("variant", BlockQuartz.EnumType.class);
+    public static final PropertyEnum<BlockQuartz.EnumType> VARIANT = PropertyEnum.create("variant", BlockQuartz.EnumType.class);
 
     public BlockQuartz()
     {
@@ -59,13 +59,13 @@ public class BlockQuartz extends Block
      */
     public int damageDropped(IBlockState state)
     {
-        BlockQuartz.EnumType blockquartz$enumtype = (BlockQuartz.EnumType)state.getValue(VARIANT);
+        BlockQuartz.EnumType blockquartz$enumtype = state.getValue(VARIANT);
         return blockquartz$enumtype != BlockQuartz.EnumType.LINES_X && blockquartz$enumtype != BlockQuartz.EnumType.LINES_Z ? blockquartz$enumtype.getMetadata() : BlockQuartz.EnumType.LINES_Y.getMetadata();
     }
 
     protected ItemStack getSilkTouchDrop(IBlockState state)
     {
-        BlockQuartz.EnumType blockquartz$enumtype = (BlockQuartz.EnumType)state.getValue(VARIANT);
+        BlockQuartz.EnumType blockquartz$enumtype = state.getValue(VARIANT);
         return blockquartz$enumtype != BlockQuartz.EnumType.LINES_X && blockquartz$enumtype != BlockQuartz.EnumType.LINES_Z ? super.getSilkTouchDrop(state) : new ItemStack(Item.getItemFromBlock(this), 1, BlockQuartz.EnumType.LINES_Y.getMetadata());
     }
 
@@ -102,7 +102,7 @@ public class BlockQuartz extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((BlockQuartz.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     /**
@@ -117,7 +117,7 @@ public class BlockQuartz extends Block
         {
             case COUNTERCLOCKWISE_90:
             case CLOCKWISE_90:
-                switch ((BlockQuartz.EnumType)state.getValue(VARIANT))
+                switch (state.getValue(VARIANT))
                 {
                     case LINES_X:
                         return state.withProperty(VARIANT, BlockQuartz.EnumType.LINES_Z);
@@ -136,10 +136,10 @@ public class BlockQuartz extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
-    public static enum EnumType implements IStringSerializable
+    public enum EnumType implements IStringSerializable
     {
         DEFAULT(0, "default", "default"),
         CHISELED(1, "chiseled", "chiseled"),
@@ -152,7 +152,7 @@ public class BlockQuartz extends Block
         private final String serializedName;
         private final String translationKey;
 
-        private EnumType(int meta, String name, String unlocalizedName)
+        EnumType(int meta, String name, String unlocalizedName)
         {
             this.meta = meta;
             this.serializedName = name;

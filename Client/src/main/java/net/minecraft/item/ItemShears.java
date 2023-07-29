@@ -29,7 +29,7 @@ public class ItemShears extends Item
         }
 
         Block block = state.getBlock();
-        return state.getMaterial() != Material.LEAVES && block != Blocks.WEB && block != Blocks.TALLGRASS && block != Blocks.VINE && block != Blocks.TRIPWIRE && block != Blocks.WOOL ? super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving) : true;
+        return state.getMaterial() == Material.LEAVES || block == Blocks.WEB || block == Blocks.TALLGRASS || block == Blocks.VINE || block == Blocks.TRIPWIRE || block == Blocks.WOOL || super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
     }
 
     /**

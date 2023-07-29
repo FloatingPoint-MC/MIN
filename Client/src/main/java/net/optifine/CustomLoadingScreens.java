@@ -43,7 +43,7 @@ public class CustomLoadingScreens
         screensMinDimensionId = 0;
         Pair<CustomLoadingScreen[], Integer> pair = parseScreens();
         screens = pair.getLeft();
-        screensMinDimensionId = ((Integer)pair.getRight()).intValue();
+        screensMinDimensionId = pair.getRight().intValue();
     }
 
     private static Pair<CustomLoadingScreen[], Integer> parseScreens()
@@ -70,12 +70,12 @@ public class CustomLoadingScreens
         }
 
         Set<Integer> set = map.keySet();
-        Integer[] ainteger = (Integer[])set.toArray(new Integer[set.size()]);
-        Arrays.sort((Object[])ainteger);
+        Integer[] ainteger = set.toArray(new Integer[set.size()]);
+        Arrays.sort(ainteger);
 
         if (ainteger.length <= 0)
         {
-            return new ImmutablePair<CustomLoadingScreen[], Integer>((CustomLoadingScreen[]) null, Integer.valueOf(0));
+            return new ImmutablePair<CustomLoadingScreen[], Integer>(null, Integer.valueOf(0));
         }
         else
         {

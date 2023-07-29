@@ -4,5 +4,5 @@ public enum EnumActionResult
 {
     SUCCESS,
     PASS,
-    FAIL;
+    FAIL
 }

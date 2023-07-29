@@ -20,8 +20,8 @@ import net.minecraft.world.GameType;
 public class FindTreeStep implements ITutorialStep
 {
     private static final Set<Block> TREE_BLOCKS = Sets.newHashSet(Blocks.LOG, Blocks.LOG2, Blocks.LEAVES, Blocks.LEAVES2);
-    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.find_tree.title", new Object[0]);
-    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.find_tree.description", new Object[0]);
+    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.find_tree.title");
+    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.find_tree.description");
     private final Tutorial tutorial;
     private TutorialToast toast;
     private int timeWaiting;

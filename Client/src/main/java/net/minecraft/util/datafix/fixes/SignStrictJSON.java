@@ -82,7 +82,7 @@ public class SignStrictJSON implements IFixableData
             {
                 try
                 {
-                    itextcomponent = (ITextComponent)JsonUtils.gsonDeserialize(GSON_INSTANCE, s, ITextComponent.class, true);
+                    itextcomponent = JsonUtils.gsonDeserialize(GSON_INSTANCE, s, ITextComponent.class, true);
 
                     if (itextcomponent == null)
                     {
@@ -91,7 +91,6 @@ public class SignStrictJSON implements IFixableData
                 }
                 catch (JsonParseException var8)
                 {
-                    ;
                 }
 
                 if (itextcomponent == null)
@@ -102,7 +101,6 @@ public class SignStrictJSON implements IFixableData
                     }
                     catch (JsonParseException var7)
                     {
-                        ;
                     }
                 }
 
@@ -114,7 +112,6 @@ public class SignStrictJSON implements IFixableData
                     }
                     catch (JsonParseException var6)
                     {
-                        ;
                     }
                 }
 

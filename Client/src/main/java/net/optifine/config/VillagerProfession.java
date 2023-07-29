@@ -4,12 +4,12 @@ import net.optifine.Config;
 
 public class VillagerProfession
 {
-    private int profession;
+    private final int profession;
     private int[] careers;
 
     public VillagerProfession(int profession)
     {
-        this(profession, (int[])null);
+        this(profession, null);
     }
 
     public VillagerProfession(int profession, int career)
@@ -37,7 +37,7 @@ public class VillagerProfession
 
     private boolean hasCareer(int car)
     {
-        return this.careers == null ? false : Config.equalsOne(car, this.careers);
+        return this.careers != null && Config.equalsOne(car, this.careers);
     }
 
     public boolean addCareer(int car)
@@ -70,6 +70,6 @@ public class VillagerProfession
 
     public String toString()
     {
-        return this.careers == null ? "" + this.profession : "" + this.profession + ":" + Config.arrayToString(this.careers);
+        return this.careers == null ? String.valueOf(this.profession) : this.profession + ":" + Config.arrayToString(this.careers);
     }
 }

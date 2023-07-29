@@ -163,7 +163,7 @@ public class TextureAnimation
                 this.srcData = null;
             }
 
-            this.active = SmartAnimations.isActive() ? SmartAnimations.isTextureRendered(this.dstTextId) : true;
+            this.active = !SmartAnimations.isActive() || SmartAnimations.isTextureRendered(this.dstTextId);
 
             if (this.nextFrame())
             {
@@ -183,7 +183,7 @@ public class TextureAnimation
                                 if (this.interpolateSkip <= 1 || textureanimationframe.counter % this.interpolateSkip == 0)
                                 {
                                     TextureAnimationFrame textureanimationframe1 = this.getFrame(this.currentFrameIndex + 1);
-                                    double d0 = 1.0D * (double)textureanimationframe.counter / (double)textureanimationframe.duration;
+                                    double d0 = (double) textureanimationframe.counter / (double)textureanimationframe.duration;
                                     this.updateTextureInerpolate(textureanimationframe, textureanimationframe1, d0);
                                 }
                             }

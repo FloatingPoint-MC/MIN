@@ -17,9 +17,9 @@ public class GuiNewChat extends Gui
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private final Minecraft mc;
-    private final List<String> sentMessages = Lists.<String>newArrayList();
-    private final List<ChatLine> chatLines = Lists.<ChatLine>newArrayList();
-    private final List<ChatLine> drawnChatLines = Lists.<ChatLine>newArrayList();
+    private final List<String> sentMessages = Lists.newArrayList();
+    private final List<ChatLine> chatLines = Lists.newArrayList();
+    private final List<ChatLine> drawnChatLines = Lists.newArrayList();
     private int scrollPos;
     private boolean isScrolled;
 
@@ -38,12 +38,7 @@ public class GuiNewChat extends Gui
 
             if (j > 0)
             {
-                boolean flag = false;
-
-                if (this.getChatOpen())
-                {
-                    flag = true;
-                }
+                boolean flag = this.getChatOpen();
 
                 float f1 = this.getChatScale();
                 int k = MathHelper.ceil((float)this.getChatWidth() / f1);
@@ -81,7 +76,7 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 9;
-                                drawRect(-2, j2 - 9, 0 + k + 4, j2, l1 / 2 << 24);
+                                drawRect(-2, j2 - 9, k + 4, j2, l1 / 2 << 24);
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
                                 this.mc.fontRenderer.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
@@ -140,7 +135,7 @@ public class GuiNewChat extends Gui
     public void printChatMessageWithOptionalDeletion(ITextComponent chatComponent, int chatLineId)
     {
         this.setChatLine(chatComponent, chatLineId, this.mc.ingameGUI.getUpdateCounter(), false);
-        LOGGER.info("[CHAT] {}", (Object)chatComponent.getUnformattedText().replaceAll("\r", "\\\\r").replaceAll("\n", "\\\\n"));
+        LOGGER.info("[CHAT] {}", chatComponent.getUnformattedText().replaceAll("\r", "\\\\r").replaceAll("\n", "\\\\n"));
     }
 
     private void setChatLine(ITextComponent chatComponent, int chatLineId, int updateCounter, boolean displayOnly)
@@ -203,7 +198,7 @@ public class GuiNewChat extends Gui
      */
     public void addToSentMessages(String message)
     {
-        if (this.sentMessages.isEmpty() || !((String)this.sentMessages.get(this.sentMessages.size() - 1)).equals(message))
+        if (this.sentMessages.isEmpty() || !this.sentMessages.get(this.sentMessages.size() - 1).equals(message))
         {
             this.sentMessages.add(message);
         }

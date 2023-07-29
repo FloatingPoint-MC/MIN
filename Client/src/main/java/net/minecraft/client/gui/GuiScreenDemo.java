@@ -39,7 +39,7 @@ public class GuiScreenDemo extends GuiScreen
                 try
                 {
                     Class<?> oclass = Class.forName("java.awt.Desktop");
-                    Object object = oclass.getMethod("getDesktop").invoke((Object)null);
+                    Object object = oclass.getMethod("getDesktop").invoke(null);
                     oclass.getMethod("browse", URI.class).invoke(object, new URI("http://www.minecraft.net/store?source=demo"));
                 }
                 catch (Throwable throwable)
@@ -50,7 +50,7 @@ public class GuiScreenDemo extends GuiScreen
                 break;
 
             case 2:
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
                 this.mc.setIngameFocus();
         }
     }

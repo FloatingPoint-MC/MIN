@@ -117,11 +117,9 @@ public class CryptManager
         }
         catch (NoSuchAlgorithmException var3)
         {
-            ;
         }
         catch (InvalidKeySpecException var4)
         {
-            ;
         }
 
         LOGGER.error("Public key reconstitute failed!");

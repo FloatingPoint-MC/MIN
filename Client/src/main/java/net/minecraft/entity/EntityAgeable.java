@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityAgeable extends EntityCreature
 {
-    private static final DataParameter<Boolean> BABY = EntityDataManager.<Boolean>createKey(EntityAgeable.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BABY = EntityDataManager.createKey(EntityAgeable.class, DataSerializers.BOOLEAN);
     protected int growingAge;
     protected int forcedAge;
     protected int forcedAgeTimer;
@@ -38,7 +38,7 @@ public abstract class EntityAgeable extends EntityCreature
         {
             if (!this.world.isRemote)
             {
-                Class <? extends Entity > oclass = (Class)EntityList.REGISTRY.getObject(ItemMonsterPlacer.getNamedIdFrom(itemstack));
+                Class <? extends Entity > oclass = EntityList.REGISTRY.getObject(ItemMonsterPlacer.getNamedIdFrom(itemstack));
 
                 if (oclass != null && this.getClass() == oclass)
                 {
@@ -82,7 +82,7 @@ public abstract class EntityAgeable extends EntityCreature
         }
         else
         {
-            Class <? extends Entity > oclass = (Class)EntityList.REGISTRY.getObject(ItemMonsterPlacer.getNamedIdFrom(stack));
+            Class <? extends Entity > oclass = EntityList.REGISTRY.getObject(ItemMonsterPlacer.getNamedIdFrom(stack));
             return oclass != null && entityClass == oclass;
         }
     }
@@ -102,7 +102,7 @@ public abstract class EntityAgeable extends EntityCreature
     {
         if (this.world.isRemote)
         {
-            return ((Boolean)this.dataManager.get(BABY)).booleanValue() ? -1 : 1;
+            return this.dataManager.get(BABY).booleanValue() ? -1 : 1;
         }
         else
         {

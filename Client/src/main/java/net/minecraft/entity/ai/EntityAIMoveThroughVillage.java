@@ -20,7 +20,7 @@ public class EntityAIMoveThroughVillage extends EntityAIBase
     private Path path;
     private VillageDoorInfo doorInfo;
     private final boolean isNocturnal;
-    private final List<VillageDoorInfo> doorList = Lists.<VillageDoorInfo>newArrayList();
+    private final List<VillageDoorInfo> doorList = Lists.newArrayList();
 
     public EntityAIMoveThroughVillage(EntityCreature entityIn, double movementSpeedIn, boolean isNocturnalIn)
     {
@@ -76,7 +76,7 @@ public class EntityAIMoveThroughVillage extends EntityAIBase
                     }
                     else
                     {
-                        Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 10, 7, new Vec3d((double)this.doorInfo.getDoorBlockPos().getX(), (double)this.doorInfo.getDoorBlockPos().getY(), (double)this.doorInfo.getDoorBlockPos().getZ()));
+                        Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 10, 7, new Vec3d(this.doorInfo.getDoorBlockPos().getX(), this.doorInfo.getDoorBlockPos().getY(), this.doorInfo.getDoorBlockPos().getZ()));
 
                         if (vec3d == null)
                         {

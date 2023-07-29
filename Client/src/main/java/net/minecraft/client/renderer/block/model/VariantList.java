@@ -49,7 +49,7 @@ public class VariantList
     {
         public VariantList deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
         {
-            List<Variant> list = Lists.<Variant>newArrayList();
+            List<Variant> list = Lists.newArrayList();
 
             if (p_deserialize_1_.isJsonArray())
             {
@@ -62,12 +62,12 @@ public class VariantList
 
                 for (JsonElement jsonelement : jsonarray)
                 {
-                    list.add((Variant)p_deserialize_3_.deserialize(jsonelement, Variant.class));
+                    list.add(p_deserialize_3_.deserialize(jsonelement, Variant.class));
                 }
             }
             else
             {
-                list.add((Variant)p_deserialize_3_.deserialize(p_deserialize_1_, Variant.class));
+                list.add(p_deserialize_3_.deserialize(p_deserialize_1_, Variant.class));
             }
 
             return new VariantList(list);

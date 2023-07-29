@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class UsedTotemTrigger implements ICriterionTrigger<UsedTotemTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("used_totem");
-    private final Map<PlayerAdvancements, UsedTotemTrigger.Listeners> listeners = Maps.<PlayerAdvancements, UsedTotemTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, UsedTotemTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -95,7 +95,7 @@ public class UsedTotemTrigger implements ICriterionTrigger<UsedTotemTrigger.Inst
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<UsedTotemTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<UsedTotemTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<UsedTotemTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -123,11 +123,11 @@ public class UsedTotemTrigger implements ICriterionTrigger<UsedTotemTrigger.Inst
 
             for (ICriterionTrigger.Listener<UsedTotemTrigger.Instance> listener : this.listeners)
             {
-                if (((UsedTotemTrigger.Instance)listener.getCriterionInstance()).test(item))
+                if (listener.getCriterionInstance().test(item))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<UsedTotemTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

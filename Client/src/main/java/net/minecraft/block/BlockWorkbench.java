@@ -65,7 +65,7 @@ public class BlockWorkbench extends Block
 
         public ITextComponent getDisplayName()
         {
-            return new TextComponentTranslation(Blocks.CRAFTING_TABLE.getTranslationKey() + ".name", new Object[0]);
+            return new TextComponentTranslation(Blocks.CRAFTING_TABLE.getTranslationKey() + ".name");
         }
 
         public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)

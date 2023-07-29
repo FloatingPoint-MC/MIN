@@ -37,7 +37,7 @@ public class SPacketStatistics implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         int i = buf.readVarInt();
-        this.statisticMap = Maps.<StatBase, Integer>newHashMap();
+        this.statisticMap = Maps.newHashMap();
 
         for (int j = 0; j < i; ++j)
         {
@@ -61,7 +61,7 @@ public class SPacketStatistics implements Packet<INetHandlerPlayClient>
         for (Entry<StatBase, Integer> entry : this.statisticMap.entrySet())
         {
             buf.writeString((entry.getKey()).statId);
-            buf.writeVarInt(((Integer)entry.getValue()).intValue());
+            buf.writeVarInt(entry.getValue().intValue());
         }
     }
 

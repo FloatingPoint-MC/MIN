@@ -1,6 +1,8 @@
 package net.minecraft.world.chunk.storage;
 
 import com.google.common.collect.Maps;
+
+import javax.annotation.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -92,6 +94,7 @@ public class RegionFileCache
     /**
      * Gets an input stream for the chunk at the specified location.
      */
+    @Nullable
     public static DataInputStream getChunkInputStream(File worldDir, int chunkX, int chunkZ)
     {
         RegionFile regionfile = createOrLoadRegionFile(worldDir, chunkX, chunkZ);

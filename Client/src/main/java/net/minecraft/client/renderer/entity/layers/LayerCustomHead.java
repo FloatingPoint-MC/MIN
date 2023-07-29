@@ -85,7 +85,7 @@ public class LayerCustomHead implements LayerRenderer<EntityLivingBase>
 
                         if (!StringUtils.isBlank(s))
                         {
-                            gameprofile = TileEntitySkull.updateGameProfile(new GameProfile((UUID)null, s));
+                            gameprofile = TileEntitySkull.updateGameProfile(new GameProfile(null, s));
                             nbttagcompound.setTag("SkullOwner", NBTUtil.writeGameProfile(new NBTTagCompound(), gameprofile));
                         }
                     }

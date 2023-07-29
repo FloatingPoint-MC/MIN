@@ -28,11 +28,11 @@ public enum RenderEntityParameterFloat implements IExpressionFloat
     REVENGE_TIME("revenge_time"),
     SWING_PROGRESS("swing_progress");
 
-    private String name;
-    private RenderManager renderManager;
+    private final String name;
+    private final RenderManager renderManager;
     private static final RenderEntityParameterFloat[] VALUES = values();
 
-    private RenderEntityParameterFloat(String name)
+    RenderEntityParameterFloat(String name)
     {
         this.name = name;
         this.renderManager = Minecraft.getMinecraft().getRenderManager();

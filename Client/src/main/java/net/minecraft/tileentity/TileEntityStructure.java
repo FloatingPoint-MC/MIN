@@ -380,7 +380,7 @@ public class TileEntityStructure extends TileEntity
 
     private List<TileEntityStructure> getNearbyCornerBlocks(BlockPos p_184418_1_, BlockPos p_184418_2_)
     {
-        List<TileEntityStructure> list = Lists.<TileEntityStructure>newArrayList();
+        List<TileEntityStructure> list = Lists.newArrayList();
 
         for (BlockPos.MutableBlockPos blockpos$mutableblockpos : BlockPos.getAllInBoxMutable(p_184418_1_, p_184418_2_))
         {
@@ -406,7 +406,7 @@ public class TileEntityStructure extends TileEntity
 
         if (p_184416_2_.size() > 1)
         {
-            BlockPos blockpos = ((TileEntityStructure)p_184416_2_.get(0)).getPos();
+            BlockPos blockpos = p_184416_2_.get(0).getPos();
             structureboundingbox = new StructureBoundingBox(blockpos, blockpos);
         }
         else
@@ -553,7 +553,7 @@ public class TileEntityStructure extends TileEntity
                 }
                 else
                 {
-                    PlacementSettings placementsettings = (new PlacementSettings()).setMirror(this.mirror).setRotation(this.rotation).setIgnoreEntities(this.ignoreEntities).setChunk((ChunkPos)null).setReplacedBlock((Block)null).setIgnoreStructureBlock(false);
+                    PlacementSettings placementsettings = (new PlacementSettings()).setMirror(this.mirror).setRotation(this.rotation).setIgnoreEntities(this.ignoreEntities).setChunk(null).setReplacedBlock(null).setIgnoreStructureBlock(false);
 
                     if (this.integrity < 1.0F)
                     {
@@ -648,10 +648,10 @@ public class TileEntityStructure extends TileEntity
      */
     public ITextComponent getDisplayName()
     {
-        return new TextComponentTranslation("structure_block.hover." + this.mode.modeName, new Object[] {this.mode == TileEntityStructure.Mode.DATA ? this.metadata : this.name});
+        return new TextComponentTranslation("structure_block.hover." + this.mode.modeName, this.mode == Mode.DATA ? this.metadata : this.name);
     }
 
-    public static enum Mode implements IStringSerializable
+    public enum Mode implements IStringSerializable
     {
         SAVE("save", 0),
         LOAD("load", 1),
@@ -662,7 +662,7 @@ public class TileEntityStructure extends TileEntity
         private final String modeName;
         private final int modeId;
 
-        private Mode(String modeNameIn, int modeIdIn)
+        Mode(String modeNameIn, int modeIdIn)
         {
             this.modeName = modeNameIn;
             this.modeId = modeIdIn;

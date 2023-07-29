@@ -63,7 +63,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
                     String s1 = this.mc.getSession().getProfile().getId().toString().replace("-", "");
                     String s2 = this.mc.getSession().getToken();
                     Random random = new Random();
-                    Random random1 = new Random((long)System.identityHashCode(new Object()));
+                    Random random1 = new Random(System.identityHashCode(new Object()));
                     BigInteger biginteger = new BigInteger(128, random);
                     BigInteger biginteger1 = new BigInteger(128, random1);
                     BigInteger biginteger2 = biginteger.xor(biginteger1);
@@ -118,7 +118,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
     {
         this.message = msg;
         this.messageHideTimeMs = System.currentTimeMillis() + timeMs;
-        this.setLinkUrl((String)null);
+        this.setLinkUrl(null);
     }
 
     /**
@@ -136,7 +136,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
             if (System.currentTimeMillis() > this.messageHideTimeMs)
             {
                 this.message = null;
-                this.setLinkUrl((String)null);
+                this.setLinkUrl(null);
             }
         }
 

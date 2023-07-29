@@ -27,8 +27,8 @@ import net.minecraft.world.World;
 
 public class EntityMinecartCommandBlock extends EntityMinecart
 {
-    private static final DataParameter<String> COMMAND = EntityDataManager.<String>createKey(EntityMinecartCommandBlock.class, DataSerializers.STRING);
-    private static final DataParameter<ITextComponent> LAST_OUTPUT = EntityDataManager.<ITextComponent>createKey(EntityMinecartCommandBlock.class, DataSerializers.TEXT_COMPONENT);
+    private static final DataParameter<String> COMMAND = EntityDataManager.createKey(EntityMinecartCommandBlock.class, DataSerializers.STRING);
+    private static final DataParameter<ITextComponent> LAST_OUTPUT = EntityDataManager.createKey(EntityMinecartCommandBlock.class, DataSerializers.TEXT_COMPONENT);
     private final CommandBlockBaseLogic commandBlockLogic = new CommandBlockBaseLogic()
     {
         public void updateCommand()
@@ -166,16 +166,15 @@ public class EntityMinecartCommandBlock extends EntityMinecart
         {
             try
             {
-                this.commandBlockLogic.setLastOutput((ITextComponent)this.getDataManager().get(LAST_OUTPUT));
+                this.commandBlockLogic.setLastOutput(this.getDataManager().get(LAST_OUTPUT));
             }
             catch (Throwable var3)
             {
-                ;
             }
         }
         else if (COMMAND.equals(key))
         {
-            this.commandBlockLogic.setCommand((String)this.getDataManager().get(COMMAND));
+            this.commandBlockLogic.setCommand(this.getDataManager().get(COMMAND));
         }
     }
 

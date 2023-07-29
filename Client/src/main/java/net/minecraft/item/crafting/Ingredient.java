@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 
 public class Ingredient implements Predicate<ItemStack>
 {
-    public static final Ingredient EMPTY = new Ingredient(new ItemStack[0])
+    public static final Ingredient EMPTY = new Ingredient()
     {
         public boolean apply(@Nullable ItemStack p_apply_1_)
         {
@@ -92,14 +92,9 @@ public class Ingredient implements Predicate<ItemStack>
 
     public static Ingredient fromStacks(ItemStack... stacks)
     {
-        if (stacks.length > 0)
-        {
-            for (ItemStack itemstack : stacks)
-            {
-                if (!itemstack.isEmpty())
-                {
-                    return new Ingredient(stacks);
-                }
+        for (ItemStack itemstack : stacks) {
+            if (!itemstack.isEmpty()) {
+                return new Ingredient(stacks);
             }
         }
 

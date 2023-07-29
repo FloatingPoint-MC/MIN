@@ -43,22 +43,22 @@ public class CommandEffect extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.effect.usage", new Object[0]);
+            throw new WrongUsageException("commands.effect.usage");
         }
         else
         {
-            EntityLivingBase entitylivingbase = (EntityLivingBase)getEntity(server, sender, args[0], EntityLivingBase.class);
+            EntityLivingBase entitylivingbase = getEntity(server, sender, args[0], EntityLivingBase.class);
 
             if ("clear".equals(args[1]))
             {
                 if (entitylivingbase.getActivePotionEffects().isEmpty())
                 {
-                    throw new CommandException("commands.effect.failure.notActive.all", new Object[] {entitylivingbase.getName()});
+                    throw new CommandException("commands.effect.failure.notActive.all", entitylivingbase.getName());
                 }
                 else
                 {
                     entitylivingbase.clearActivePotions();
-                    notifyCommandListener(sender, this, "commands.effect.success.removed.all", new Object[] {entitylivingbase.getName()});
+                    notifyCommandListener(sender, this, "commands.effect.success.removed.all", entitylivingbase.getName());
                 }
             }
             else
@@ -76,7 +76,7 @@ public class CommandEffect extends CommandBase
 
                 if (potion == null)
                 {
-                    throw new NumberInvalidException("commands.effect.notFound", new Object[] {args[1]});
+                    throw new NumberInvalidException("commands.effect.notFound", args[1]);
                 }
                 else
                 {
@@ -107,27 +107,22 @@ public class CommandEffect extends CommandBase
                         k = parseInt(args[3], 0, 255);
                     }
 
-                    boolean flag = true;
-
-                    if (args.length >= 5 && "true".equalsIgnoreCase(args[4]))
-                    {
-                        flag = false;
-                    }
+                    boolean flag = args.length < 5 || !"true".equalsIgnoreCase(args[4]);
 
                     if (j > 0)
                     {
                         PotionEffect potioneffect = new PotionEffect(potion, i, k, false, flag);
                         entitylivingbase.addPotionEffect(potioneffect);
-                        notifyCommandListener(sender, this, "commands.effect.success", new Object[] {new TextComponentTranslation(potioneffect.getEffectName(), new Object[0]), Potion.getIdFromPotion(potion), k, entitylivingbase.getName(), j});
+                        notifyCommandListener(sender, this, "commands.effect.success", new TextComponentTranslation(potioneffect.getEffectName()), Potion.getIdFromPotion(potion), k, entitylivingbase.getName(), j);
                     }
                     else if (entitylivingbase.isPotionActive(potion))
                     {
                         entitylivingbase.removePotionEffect(potion);
-                        notifyCommandListener(sender, this, "commands.effect.success.removed", new Object[] {new TextComponentTranslation(potion.getName(), new Object[0]), entitylivingbase.getName()});
+                        notifyCommandListener(sender, this, "commands.effect.success.removed", new TextComponentTranslation(potion.getName()), entitylivingbase.getName());
                     }
                     else
                     {
-                        throw new CommandException("commands.effect.failure.notActive", new Object[] {new TextComponentTranslation(potion.getName(), new Object[0]), entitylivingbase.getName()});
+                        throw new CommandException("commands.effect.failure.notActive", new TextComponentTranslation(potion.getName()), entitylivingbase.getName());
                     }
                 }
             }
@@ -146,7 +141,7 @@ public class CommandEffect extends CommandBase
         }
         else
         {
-            return args.length == 5 ? getListOfStringsMatchingLastWord(args, new String[] {"true", "false"}) : Collections.emptyList();
+            return args.length == 5 ? getListOfStringsMatchingLastWord(args, "true", "false") : Collections.emptyList();
         }
     }
 

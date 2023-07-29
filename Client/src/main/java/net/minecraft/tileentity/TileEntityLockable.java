@@ -67,6 +67,6 @@ public abstract class TileEntityLockable extends TileEntity implements ILockable
      */
     public ITextComponent getDisplayName()
     {
-        return (ITextComponent)(this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
     }
 }

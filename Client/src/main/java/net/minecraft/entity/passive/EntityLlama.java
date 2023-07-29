@@ -49,9 +49,9 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 {
-    private static final DataParameter<Integer> DATA_STRENGTH_ID = EntityDataManager.<Integer>createKey(EntityLlama.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.<Integer>createKey(EntityLlama.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> DATA_VARIANT_ID = EntityDataManager.<Integer>createKey(EntityLlama.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> DATA_STRENGTH_ID = EntityDataManager.createKey(EntityLlama.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> DATA_COLOR_ID = EntityDataManager.createKey(EntityLlama.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> DATA_VARIANT_ID = EntityDataManager.createKey(EntityLlama.class, DataSerializers.VARINT);
     private boolean didSpit;
     @Nullable
     private EntityLlama caravanHead;
@@ -77,7 +77,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
     public int getStrength()
     {
-        return ((Integer)this.dataManager.get(DATA_STRENGTH_ID)).intValue();
+        return this.dataManager.get(DATA_STRENGTH_ID).intValue();
     }
 
     /**
@@ -144,7 +144,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
     public int getVariant()
     {
-        return MathHelper.clamp(((Integer)this.dataManager.get(DATA_VARIANT_ID)).intValue(), 0, 3);
+        return MathHelper.clamp(this.dataManager.get(DATA_VARIANT_ID).intValue(), 0, 3);
     }
 
     public void setVariant(int variantIn)
@@ -242,7 +242,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
         if (flag && !this.isSilent())
         {
-            this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_LLAMA_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_LLAMA_EAT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
         }
 
         return flag;
@@ -403,14 +403,14 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
         }
         else
         {
-            this.setColor((EnumDyeColor)null);
+            this.setColor(null);
         }
     }
 
     @Nullable
     public EnumDyeColor getColor()
     {
-        int i = ((Integer)this.dataManager.get(DATA_COLOR_ID)).intValue();
+        int i = this.dataManager.get(DATA_COLOR_ID).intValue();
         return i == -1 ? null : EnumDyeColor.byMetadata(i);
     }
 
@@ -452,7 +452,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
         double d2 = target.posZ - this.posZ;
         float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         entityllamaspit.shoot(d0, d1 + (double)f, d2, 1.5F, 10.0F);
-        this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_LLAMA_SPIT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_LLAMA_SPIT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
         this.world.spawnEntity(entityllamaspit);
         this.didSpit = true;
     }
@@ -487,7 +487,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
             if (iblockstate.getMaterial() != Material.AIR && !this.isSilent())
             {
                 SoundType soundtype = block.getSoundType();
-                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+                this.world.playSound(null, this.posX, this.posY, this.posZ, soundtype.getStepSound(), this.getSoundCategory(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
             }
         }
     }
@@ -558,18 +558,18 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
     {
         public AIDefendTarget(EntityLlama llama)
         {
-            super(llama, EntityWolf.class, 16, false, true, (Predicate)null);
+            super(llama, EntityWolf.class, 16, false, true, null);
         }
 
         public boolean shouldExecute()
         {
-            if (super.shouldExecute() && this.targetEntity != null && !((EntityWolf)this.targetEntity).isTamed())
+            if (super.shouldExecute() && this.targetEntity != null && !this.targetEntity.isTamed())
             {
                 return true;
             }
             else
             {
-                this.taskOwner.setAttackTarget((EntityLivingBase)null);
+                this.taskOwner.setAttackTarget(null);
                 return false;
             }
         }

@@ -61,14 +61,14 @@ public class Sound implements ISoundEventAccessor<Sound>
         return this.streaming;
     }
 
-    public static enum Type
+    public enum Type
     {
         FILE("file"),
         SOUND_EVENT("event");
 
         private final String name;
 
-        private Type(String nameIn)
+        Type(String nameIn)
         {
             this.name = nameIn;
         }

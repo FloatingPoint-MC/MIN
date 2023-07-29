@@ -57,7 +57,7 @@ public class BlockDaylightDetector extends BlockContainer
      */
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return ((Integer)blockState.getValue(POWER)).intValue();
+        return blockState.getValue(POWER).intValue();
     }
 
     public void updatePower(World worldIn, BlockPos pos)
@@ -82,7 +82,7 @@ public class BlockDaylightDetector extends BlockContainer
 
             i = MathHelper.clamp(i, 0, 15);
 
-            if (((Integer)iblockstate.getValue(POWER)).intValue() != i)
+            if (iblockstate.getValue(POWER).intValue() != i)
             {
                 worldIn.setBlockState(pos, iblockstate.withProperty(POWER, Integer.valueOf(i)), 3);
             }
@@ -192,12 +192,12 @@ public class BlockDaylightDetector extends BlockContainer
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return state.getValue(POWER).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
+        return new BlockStateContainer(this, POWER);
     }
 
     /**

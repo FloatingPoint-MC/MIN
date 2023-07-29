@@ -61,13 +61,13 @@ public class BlockChorusPlant extends Block
     {
         state = state.getActualState(source, pos);
         float f = 0.1875F;
-        float f1 = ((Boolean)state.getValue(WEST)).booleanValue() ? 0.0F : 0.1875F;
-        float f2 = ((Boolean)state.getValue(DOWN)).booleanValue() ? 0.0F : 0.1875F;
-        float f3 = ((Boolean)state.getValue(NORTH)).booleanValue() ? 0.0F : 0.1875F;
-        float f4 = ((Boolean)state.getValue(EAST)).booleanValue() ? 1.0F : 0.8125F;
-        float f5 = ((Boolean)state.getValue(UP)).booleanValue() ? 1.0F : 0.8125F;
-        float f6 = ((Boolean)state.getValue(SOUTH)).booleanValue() ? 1.0F : 0.8125F;
-        return new AxisAlignedBB((double)f1, (double)f2, (double)f3, (double)f4, (double)f5, (double)f6);
+        float f1 = state.getValue(WEST).booleanValue() ? 0.0F : 0.1875F;
+        float f2 = state.getValue(DOWN).booleanValue() ? 0.0F : 0.1875F;
+        float f3 = state.getValue(NORTH).booleanValue() ? 0.0F : 0.1875F;
+        float f4 = state.getValue(EAST).booleanValue() ? 1.0F : 0.8125F;
+        float f5 = state.getValue(UP).booleanValue() ? 1.0F : 0.8125F;
+        float f6 = state.getValue(SOUTH).booleanValue() ? 1.0F : 0.8125F;
+        return new AxisAlignedBB(f1, f2, f3, f4, f5, f6);
     }
 
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
@@ -81,32 +81,32 @@ public class BlockChorusPlant extends Block
         float f1 = 0.8125F;
         addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.8125D, 0.8125D));
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if (state.getValue(WEST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.0D, 0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.8125D));
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if (state.getValue(EAST).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.8125D, 0.1875D, 0.1875D, 1.0D, 0.8125D, 0.8125D));
         }
 
-        if (((Boolean)state.getValue(UP)).booleanValue())
+        if (state.getValue(UP).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.1875D, 0.8125D, 0.1875D, 0.8125D, 1.0D, 0.8125D));
         }
 
-        if (((Boolean)state.getValue(DOWN)).booleanValue())
+        if (state.getValue(DOWN).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.1875D, 0.8125D));
         }
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if (state.getValue(NORTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.1875D, 0.1875D, 0.0D, 0.8125D, 0.8125D, 0.1875D));
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if (state.getValue(SOUTH).booleanValue())
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.1875D, 0.1875D, 0.8125D, 0.8125D, 0.8125D, 1.0D));
         }
@@ -166,7 +166,7 @@ public class BlockChorusPlant extends Block
      */
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canSurviveAt(worldIn, pos) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canSurviveAt(worldIn, pos);
     }
 
     /**
@@ -233,7 +233,7 @@ public class BlockChorusPlant extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, SOUTH, WEST, UP, DOWN});
+        return new BlockStateContainer(this, NORTH, EAST, SOUTH, WEST, UP, DOWN);
     }
 
     /**

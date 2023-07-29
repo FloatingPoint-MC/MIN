@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class BlockHugeMushroom extends Block
 {
-    public static final PropertyEnum<BlockHugeMushroom.EnumType> VARIANT = PropertyEnum.<BlockHugeMushroom.EnumType>create("variant", BlockHugeMushroom.EnumType.class);
+    public static final PropertyEnum<BlockHugeMushroom.EnumType> VARIANT = PropertyEnum.create("variant", BlockHugeMushroom.EnumType.class);
     private final Block smallBlock;
 
     public BlockHugeMushroom(Material materialIn, MapColor color, Block smallBlockIn)
@@ -45,7 +45,7 @@ public class BlockHugeMushroom extends Block
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        switch ((BlockHugeMushroom.EnumType)state.getValue(VARIANT))
+        switch (state.getValue(VARIANT))
         {
             case ALL_STEM:
                 return MapColor.CLOTH;
@@ -96,7 +96,7 @@ public class BlockHugeMushroom extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((BlockHugeMushroom.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     /**
@@ -110,7 +110,7 @@ public class BlockHugeMushroom extends Block
         switch (rot)
         {
             case CLOCKWISE_180:
-                switch ((BlockHugeMushroom.EnumType)state.getValue(VARIANT))
+                switch (state.getValue(VARIANT))
                 {
                     case STEM:
                         break;
@@ -144,7 +144,7 @@ public class BlockHugeMushroom extends Block
                 }
 
             case COUNTERCLOCKWISE_90:
-                switch ((BlockHugeMushroom.EnumType)state.getValue(VARIANT))
+                switch (state.getValue(VARIANT))
                 {
                     case STEM:
                         break;
@@ -178,7 +178,7 @@ public class BlockHugeMushroom extends Block
                 }
 
             case CLOCKWISE_90:
-                switch ((BlockHugeMushroom.EnumType)state.getValue(VARIANT))
+                switch (state.getValue(VARIANT))
                 {
                     case STEM:
                         break;
@@ -225,7 +225,7 @@ public class BlockHugeMushroom extends Block
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        BlockHugeMushroom.EnumType blockhugemushroom$enumtype = (BlockHugeMushroom.EnumType)state.getValue(VARIANT);
+        BlockHugeMushroom.EnumType blockhugemushroom$enumtype = state.getValue(VARIANT);
 
         switch (mirrorIn)
         {
@@ -289,10 +289,10 @@ public class BlockHugeMushroom extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
-    public static enum EnumType implements IStringSerializable
+    public enum EnumType implements IStringSerializable
     {
         NORTH_WEST(1, "north_west"),
         NORTH(2, "north"),
@@ -312,7 +312,7 @@ public class BlockHugeMushroom extends Block
         private final int meta;
         private final String name;
 
-        private EnumType(int meta, String name)
+        EnumType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;

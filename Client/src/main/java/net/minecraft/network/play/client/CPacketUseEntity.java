@@ -48,16 +48,16 @@ public class CPacketUseEntity implements Packet<INetHandlerPlayServer>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.entityId = buf.readVarInt();
-        this.action = (CPacketUseEntity.Action)buf.readEnumValue(CPacketUseEntity.Action.class);
+        this.action = buf.readEnumValue(Action.class);
 
         if (this.action == CPacketUseEntity.Action.INTERACT_AT)
         {
-            this.hitVec = new Vec3d((double)buf.readFloat(), (double)buf.readFloat(), (double)buf.readFloat());
+            this.hitVec = new Vec3d(buf.readFloat(), buf.readFloat(), buf.readFloat());
         }
 
         if (this.action == CPacketUseEntity.Action.INTERACT || this.action == CPacketUseEntity.Action.INTERACT_AT)
         {
-            this.hand = (EnumHand)buf.readEnumValue(EnumHand.class);
+            this.hand = buf.readEnumValue(EnumHand.class);
         }
     }
 
@@ -111,10 +111,10 @@ public class CPacketUseEntity implements Packet<INetHandlerPlayServer>
         return this.hitVec;
     }
 
-    public static enum Action
+    public enum Action
     {
         INTERACT,
         ATTACK,
-        INTERACT_AT;
+        INTERACT_AT
     }
 }

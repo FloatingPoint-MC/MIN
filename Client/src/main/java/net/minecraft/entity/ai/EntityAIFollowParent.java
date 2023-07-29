@@ -28,7 +28,7 @@ public class EntityAIFollowParent extends EntityAIBase
         }
         else
         {
-            List<EntityAnimal> list = this.childAnimal.world.<EntityAnimal>getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getEntityBoundingBox().grow(8.0D, 4.0D, 8.0D));
+            List<EntityAnimal> list = this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getEntityBoundingBox().grow(8.0D, 4.0D, 8.0D));
             EntityAnimal entityanimal = null;
             double d0 = Double.MAX_VALUE;
 

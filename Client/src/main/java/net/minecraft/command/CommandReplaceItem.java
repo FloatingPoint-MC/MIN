@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class CommandReplaceItem extends CommandBase
 {
-    private static final Map<String, Integer> SHORTCUTS = Maps.<String, Integer>newHashMap();
+    private static final Map<String, Integer> SHORTCUTS = Maps.newHashMap();
 
     /**
      * Gets the name of the command
@@ -55,7 +55,7 @@ public class CommandReplaceItem extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.replaceitem.usage", new Object[0]);
+            throw new WrongUsageException("commands.replaceitem.usage");
         }
         else
         {
@@ -69,7 +69,7 @@ public class CommandReplaceItem extends CommandBase
             {
                 if (!"block".equals(args[0]))
                 {
-                    throw new WrongUsageException("commands.replaceitem.usage", new Object[0]);
+                    throw new WrongUsageException("commands.replaceitem.usage");
                 }
 
                 flag = true;
@@ -81,7 +81,7 @@ public class CommandReplaceItem extends CommandBase
             {
                 if (args.length < 6)
                 {
-                    throw new WrongUsageException("commands.replaceitem.block.usage", new Object[0]);
+                    throw new WrongUsageException("commands.replaceitem.block.usage");
                 }
 
                 i = 4;
@@ -90,7 +90,7 @@ public class CommandReplaceItem extends CommandBase
             {
                 if (args.length < 4)
                 {
-                    throw new WrongUsageException("commands.replaceitem.entity.usage", new Object[0]);
+                    throw new WrongUsageException("commands.replaceitem.entity.usage");
                 }
 
                 i = 2;
@@ -129,7 +129,7 @@ public class CommandReplaceItem extends CommandBase
                 }
                 catch (NBTException nbtexception)
                 {
-                    throw new CommandException("commands.replaceitem.tagError", new Object[] {nbtexception.getMessage()});
+                    throw new CommandException("commands.replaceitem.tagError", nbtexception.getMessage());
                 }
             }
 
@@ -142,7 +142,7 @@ public class CommandReplaceItem extends CommandBase
 
                 if (tileentity == null || !(tileentity instanceof IInventory))
                 {
-                    throw new CommandException("commands.replaceitem.noContainer", new Object[] {blockpos.getX(), blockpos.getY(), blockpos.getZ()});
+                    throw new CommandException("commands.replaceitem.noContainer", blockpos.getX(), blockpos.getY(), blockpos.getZ());
                 }
 
                 IInventory iinventory = (IInventory)tileentity;
@@ -164,7 +164,7 @@ public class CommandReplaceItem extends CommandBase
 
                 if (!entity.replaceItemInInventory(j, itemstack))
                 {
-                    throw new CommandException("commands.replaceitem.failed", new Object[] {s, k, itemstack.isEmpty() ? "Air" : itemstack.getTextComponent()});
+                    throw new CommandException("commands.replaceitem.failed", s, k, itemstack.isEmpty() ? "Air" : itemstack.getTextComponent());
                 }
 
                 if (entity instanceof EntityPlayer)
@@ -174,7 +174,7 @@ public class CommandReplaceItem extends CommandBase
             }
 
             sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, k);
-            notifyCommandListener(sender, this, "commands.replaceitem.success", new Object[] {s, k, itemstack.isEmpty() ? "Air" : itemstack.getTextComponent()});
+            notifyCommandListener(sender, this, "commands.replaceitem.success", s, k, itemstack.isEmpty() ? "Air" : itemstack.getTextComponent());
         }
     }
 
@@ -182,11 +182,11 @@ public class CommandReplaceItem extends CommandBase
     {
         if (!SHORTCUTS.containsKey(shortcut))
         {
-            throw new CommandException("commands.generic.parameter.invalid", new Object[] {shortcut});
+            throw new CommandException("commands.generic.parameter.invalid", shortcut);
         }
         else
         {
-            return ((Integer)SHORTCUTS.get(shortcut)).intValue();
+            return SHORTCUTS.get(shortcut).intValue();
         }
     }
 
@@ -194,7 +194,7 @@ public class CommandReplaceItem extends CommandBase
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"entity", "block"});
+            return getListOfStringsMatchingLastWord(args, "entity", "block");
         }
         else if (args.length == 2 && "entity".equals(args[0]))
         {

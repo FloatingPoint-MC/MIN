@@ -34,7 +34,7 @@ public class CPacketEntityAction implements Packet<INetHandlerPlayServer>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.entityID = buf.readVarInt();
-        this.action = (CPacketEntityAction.Action)buf.readEnumValue(CPacketEntityAction.Action.class);
+        this.action = buf.readEnumValue(Action.class);
         this.auxData = buf.readVarInt();
     }
 
@@ -66,7 +66,7 @@ public class CPacketEntityAction implements Packet<INetHandlerPlayServer>
         return this.auxData;
     }
 
-    public static enum Action
+    public enum Action
     {
         START_SNEAKING,
         STOP_SNEAKING,
@@ -76,6 +76,6 @@ public class CPacketEntityAction implements Packet<INetHandlerPlayServer>
         START_RIDING_JUMP,
         STOP_RIDING_JUMP,
         OPEN_INVENTORY,
-        START_FALL_FLYING;
+        START_FALL_FLYING
     }
 }

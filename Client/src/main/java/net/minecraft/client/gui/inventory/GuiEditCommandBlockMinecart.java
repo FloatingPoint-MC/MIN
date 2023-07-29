@@ -90,7 +90,7 @@ public class GuiEditCommandBlockMinecart extends GuiScreen implements ITabComple
             if (button.id == 1)
             {
                 this.commandBlockLogic.setTrackOutput(this.trackOutput);
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
             else if (button.id == 0)
             {
@@ -103,10 +103,10 @@ public class GuiEditCommandBlockMinecart extends GuiScreen implements ITabComple
 
                 if (!this.commandBlockLogic.shouldTrackOutput())
                 {
-                    this.commandBlockLogic.setLastOutput((ITextComponent)null);
+                    this.commandBlockLogic.setLastOutput(null);
                 }
 
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
             else if (button.id == 4)
             {

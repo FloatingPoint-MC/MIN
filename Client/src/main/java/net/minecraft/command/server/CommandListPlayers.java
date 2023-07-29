@@ -40,7 +40,7 @@ public class CommandListPlayers extends CommandBase
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         int i = server.getCurrentPlayerCount();
-        sender.sendMessage(new TextComponentTranslation("commands.players.list", new Object[] {i, server.getMaxPlayers()}));
+        sender.sendMessage(new TextComponentTranslation("commands.players.list", i, server.getMaxPlayers()));
         sender.sendMessage(new TextComponentString(server.getPlayerList().getFormattedListOfPlayers(args.length > 0 && "uuids".equalsIgnoreCase(args[0]))));
         sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, i);
     }

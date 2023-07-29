@@ -33,13 +33,13 @@ public class MultipartBakedModel implements IBakedModel
 
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
     {
-        List<BakedQuad> list = Lists.<BakedQuad>newArrayList();
+        List<BakedQuad> list = Lists.newArrayList();
 
         if (state != null)
         {
             for (Entry<Predicate<IBlockState>, IBakedModel> entry : this.selectors.entrySet())
             {
-                if (((Predicate)entry.getKey()).apply(state))
+                if (entry.getKey().apply(state))
                 {
                     list.addAll((entry.getValue()).getQuads(state, side, rand++));
                 }
@@ -81,7 +81,7 @@ public class MultipartBakedModel implements IBakedModel
 
     public static class Builder
     {
-        private final Map<Predicate<IBlockState>, IBakedModel> builderSelectors = Maps.<Predicate<IBlockState>, IBakedModel>newLinkedHashMap();
+        private final Map<Predicate<IBlockState>, IBakedModel> builderSelectors = Maps.newLinkedHashMap();
 
         public void putModel(Predicate<IBlockState> predicate, IBakedModel model)
         {

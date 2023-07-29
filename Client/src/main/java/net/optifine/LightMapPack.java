@@ -5,9 +5,9 @@ import net.minecraft.world.World;
 
 public class LightMapPack
 {
-    private LightMap lightMap;
-    private LightMap lightMapRain;
-    private LightMap lightMapThunder;
+    private final LightMap lightMap;
+    private final LightMap lightMapRain;
+    private final LightMap lightMapThunder;
     private int[] colorBuffer1 = new int[0];
     private int[] colorBuffer2 = new int[0];
 
@@ -97,7 +97,7 @@ public class LightMapPack
                     }
                     else
                     {
-                        return i == 3 ? this.blend(aint[0], afloat[0], aint[1], afloat[1], aint[2], afloat[2]) : true;
+                        return i != 3 || this.blend(aint[0], afloat[0], aint[1], afloat[1], aint[2], afloat[2]);
                     }
                 }
             }

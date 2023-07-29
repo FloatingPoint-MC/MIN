@@ -137,7 +137,7 @@ public class GuiBeacon extends GuiContainer
         if (button.id == -2)
         {
             this.mc.player.connection.sendPacket(new CPacketCloseWindow(this.mc.player.openContainer.windowId));
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
         else if (button.id == -1)
         {
@@ -147,7 +147,7 @@ public class GuiBeacon extends GuiContainer
             packetbuffer.writeInt(this.tileBeacon.getField(2));
             this.mc.getConnection().sendPacket(new CPacketCustomPayload("MC|Beacon", packetbuffer));
             this.mc.player.connection.sendPacket(new CPacketCloseWindow(this.mc.player.openContainer.windowId));
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
         else if (button instanceof GuiBeacon.PowerButton)
         {
@@ -255,7 +255,7 @@ public class GuiBeacon extends GuiContainer
                 }
                 else if (this.selected)
                 {
-                    j += this.width * 1;
+                    j += this.width;
                 }
                 else if (this.hovered)
                 {

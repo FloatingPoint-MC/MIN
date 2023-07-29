@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL12;
 
 public class CustomTextureRaw implements ICustomTexture
 {
-    private TextureType type;
-    private int textureUnit;
+    private final TextureType type;
+    private final int textureUnit;
     private int textureId;
 
     public CustomTextureRaw(TextureType type, InternalFormat internalFormat, int width, int height, int depth, PixelFormat pixelFormat, PixelType pixelType, ByteBuffer data, int textureUnit, boolean blur, boolean clamp)

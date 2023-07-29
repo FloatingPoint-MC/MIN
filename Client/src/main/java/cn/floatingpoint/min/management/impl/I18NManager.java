@@ -49,35 +49,33 @@ public class I18NManager implements Manager {
             }
             loaded++;
         }
-        if (loaded == 0) {
-            try {
-                // 英语
-                InputStream resourceAsStream = this.getClass().getResourceAsStream("/assets/minecraft/min/translations/English.json");
-                InputStreamReader in = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
-                BufferedReader reader = new BufferedReader(in);
-                StringBuilder sb = new StringBuilder();
-                String s1;
-                while ((s1 = reader.readLine()) != null) {
-                    sb.append(s1).append(System.lineSeparator());
-                }
-                Managers.fileManager.save("translations/English.json", sb.toString(), false);
-                translations.put("English", new JSONObject(Managers.fileManager.readAsString("translations/English.json")).toMap());
-                translationKeys.add("English");
-
-                // 中文
-                resourceAsStream = this.getClass().getResourceAsStream("/assets/minecraft/min/translations/zh-cn.json");
-                in = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
-                reader = new BufferedReader(in);
-                sb = new StringBuilder();
-                while ((s1 = reader.readLine()) != null) {
-                    sb.append(s1).append(System.lineSeparator());
-                }
-                Managers.fileManager.save("translations/zh-cn.json", sb.toString(), false);
-                translations.put("简体中文", new JSONObject(Managers.fileManager.readAsString("translations/zh-cn.json")).toMap());
-                translationKeys.add("简体中文");
-            } catch (Exception ignore) {
-                ignore.printStackTrace();
+        try {
+            // 英语
+            InputStream resourceAsStream = this.getClass().getResourceAsStream("/assets/minecraft/min/translations/English.json");
+            InputStreamReader in = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
+            BufferedReader reader = new BufferedReader(in);
+            StringBuilder sb = new StringBuilder();
+            String s1;
+            while ((s1 = reader.readLine()) != null) {
+                sb.append(s1).append(System.lineSeparator());
             }
+            Managers.fileManager.save("translations/English.json", sb.toString(), false);
+            translations.put("English", new JSONObject(Managers.fileManager.readAsString("translations/English.json")).toMap());
+            translationKeys.add("English");
+
+            // 中文
+            resourceAsStream = this.getClass().getResourceAsStream("/assets/minecraft/min/translations/zh-cn.json");
+            in = new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8);
+            reader = new BufferedReader(in);
+            sb = new StringBuilder();
+            while ((s1 = reader.readLine()) != null) {
+                sb.append(s1).append(System.lineSeparator());
+            }
+            Managers.fileManager.save("translations/zh-cn.json", sb.toString(), false);
+            translations.put("简体中文", new JSONObject(Managers.fileManager.readAsString("translations/zh-cn.json")).toMap());
+            translationKeys.add("简体中文");
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
         }
     }
 

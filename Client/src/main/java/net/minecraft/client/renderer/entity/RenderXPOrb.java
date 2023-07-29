@@ -35,9 +35,9 @@ public class RenderXPOrb extends Render<EntityXPOrb>
             this.bindEntityTexture(entity);
             RenderHelper.enableStandardItemLighting();
             int i = entity.getTextureByXP();
-            float f = (float)(i % 4 * 16 + 0) / 64.0F;
+            float f = (float)(i % 4 * 16) / 64.0F;
             float f1 = (float)(i % 4 * 16 + 16) / 64.0F;
-            float f2 = (float)(i / 4 * 16 + 0) / 64.0F;
+            float f2 = (float)(i / 4 * 16) / 64.0F;
             float f3 = (float)(i / 4 * 16 + 16) / 64.0F;
             float f4 = 1.0F;
             float f5 = 0.5F;
@@ -82,10 +82,10 @@ public class RenderXPOrb extends Render<EntityXPOrb>
                 }
             }
 
-            bufferbuilder.pos(-0.5D, -0.25D, 0.0D).tex((double)f, (double)f3).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
-            bufferbuilder.pos(0.5D, -0.25D, 0.0D).tex((double)f1, (double)f3).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
-            bufferbuilder.pos(0.5D, 0.75D, 0.0D).tex((double)f1, (double)f2).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
-            bufferbuilder.pos(-0.5D, 0.75D, 0.0D).tex((double)f, (double)f2).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
+            bufferbuilder.pos(-0.5D, -0.25D, 0.0D).tex(f, f3).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
+            bufferbuilder.pos(0.5D, -0.25D, 0.0D).tex(f1, f3).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
+            bufferbuilder.pos(0.5D, 0.75D, 0.0D).tex(f1, f2).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
+            bufferbuilder.pos(-0.5D, 0.75D, 0.0D).tex(f, f2).color(k1, l1, i2, 128).normal(0.0F, 1.0F, 0.0F).endVertex();
             tessellator.draw();
             GlStateManager.disableBlend();
             GlStateManager.disableRescaleNormal();

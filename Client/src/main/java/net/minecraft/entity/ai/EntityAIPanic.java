@@ -41,9 +41,9 @@ public class EntityAIPanic extends EntityAIBase
 
                 if (blockpos != null)
                 {
-                    this.randPosX = (double)blockpos.getX();
-                    this.randPosY = (double)blockpos.getY();
-                    this.randPosZ = (double)blockpos.getZ();
+                    this.randPosX = blockpos.getX();
+                    this.randPosY = blockpos.getY();
+                    this.randPosZ = blockpos.getZ();
                     return true;
                 }
             }

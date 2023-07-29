@@ -250,7 +250,7 @@ public class DataSerializers
         }
         public EnumFacing read(PacketBuffer buf) throws IOException
         {
-            return (EnumFacing)buf.readEnumValue(EnumFacing.class);
+            return buf.readEnumValue(EnumFacing.class);
         }
         public DataParameter<EnumFacing> createKey(int id)
         {
@@ -313,7 +313,7 @@ public class DataSerializers
     @Nullable
     public static DataSerializer<?> getSerializer(int id)
     {
-        return (DataSerializer)REGISTRY.get(id);
+        return REGISTRY.get(id);
     }
 
     public static int getSerializerId(DataSerializer<?> serializer)

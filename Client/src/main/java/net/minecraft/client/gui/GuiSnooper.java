@@ -13,8 +13,8 @@ public class GuiSnooper extends GuiScreen
 
     /** Reference to the GameSettings object. */
     private final GameSettings game_settings_2;
-    private final java.util.List<String> keys = Lists.<String>newArrayList();
-    private final java.util.List<String> values = Lists.<String>newArrayList();
+    private final java.util.List<String> keys = Lists.newArrayList();
+    private final java.util.List<String> values = Lists.newArrayList();
     private String title;
     private String[] desc;
     private GuiSnooper.List list;
@@ -34,14 +34,14 @@ public class GuiSnooper extends GuiScreen
     {
         this.title = I18n.format("options.snooper.title");
         String s = I18n.format("options.snooper.desc");
-        java.util.List<String> list = Lists.<String>newArrayList();
+        java.util.List<String> list = Lists.newArrayList();
 
         for (String s1 : this.fontRenderer.listFormattedStringToWidth(s, this.width - 30))
         {
             list.add(s1);
         }
 
-        this.desc = (String[])list.toArray(new String[list.size()]);
+        this.desc = list.toArray(new String[list.size()]);
         this.keys.clear();
         this.values.clear();
         this.toggleButton = this.addButton(new GuiButton(1, this.width / 2 - 152, this.height - 30, 150, 20, this.game_settings_2.getKeyBinding(GameSettings.Options.SNOOPER_ENABLED)));
@@ -50,7 +50,7 @@ public class GuiSnooper extends GuiScreen
 
         for (Entry<String, String> entry : (new TreeMap<String, String>(this.mc.getPlayerUsageSnooper().getCurrentStats())).entrySet())
         {
-            this.keys.add((flag ? "C " : "") + (String)entry.getKey());
+            this.keys.add((flag ? "C " : "") + entry.getKey());
             this.values.add(this.fontRenderer.trimStringToWidth(entry.getValue(), this.width - 220));
         }
 
@@ -58,7 +58,7 @@ public class GuiSnooper extends GuiScreen
         {
             for (Entry<String, String> entry1 : (new TreeMap<String, String>(this.mc.getIntegratedServer().getPlayerUsageSnooper().getCurrentStats())).entrySet())
             {
-                this.keys.add("S " + (String)entry1.getKey());
+                this.keys.add("S " + entry1.getKey());
                 this.values.add(this.fontRenderer.trimStringToWidth(entry1.getValue(), this.width - 220));
             }
         }

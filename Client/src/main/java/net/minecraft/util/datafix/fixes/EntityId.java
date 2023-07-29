@@ -7,7 +7,7 @@ import net.minecraft.util.datafix.IFixableData;
 
 public class EntityId implements IFixableData
 {
-    private static final Map<String, String> OLD_TO_NEW_ID_MAP = Maps.<String, String>newHashMap();
+    private static final Map<String, String> OLD_TO_NEW_ID_MAP = Maps.newHashMap();
 
     public int getFixVersion()
     {

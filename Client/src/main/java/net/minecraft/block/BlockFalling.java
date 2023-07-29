@@ -61,7 +61,7 @@ public class BlockFalling extends Block
             {
                 if (!worldIn.isRemote)
                 {
-                    EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, worldIn.getBlockState(pos));
+                    EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double)pos.getX() + 0.5D, pos.getY(), (double)pos.getZ() + 0.5D, worldIn.getBlockState(pos));
                     this.onStartFalling(entityfallingblock);
                     worldIn.spawnEntity(entityfallingblock);
                 }
@@ -73,7 +73,6 @@ public class BlockFalling extends Block
 
                 for (blockpos = pos.down(); canFallThrough(worldIn.getBlockState(blockpos)) && blockpos.getY() > 0; blockpos = blockpos.down())
                 {
-                    ;
                 }
 
                 if (blockpos.getY() > 0)
@@ -124,9 +123,9 @@ public class BlockFalling extends Block
 
             if (canFallThrough(worldIn.getBlockState(blockpos)))
             {
-                double d0 = (double)((float)pos.getX() + rand.nextFloat());
+                double d0 = (float)pos.getX() + rand.nextFloat();
                 double d1 = (double)pos.getY() - 0.05D;
-                double d2 = (double)((float)pos.getZ() + rand.nextFloat());
+                double d2 = (float)pos.getZ() + rand.nextFloat();
                 worldIn.spawnParticle(EnumParticleTypes.FALLING_DUST, d0, d1, d2, 0.0D, 0.0D, 0.0D, Block.getStateId(stateIn));
             }
         }

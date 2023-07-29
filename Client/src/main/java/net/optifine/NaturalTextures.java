@@ -94,7 +94,7 @@ public class NaturalTextures
                                     {
                                         while (arraylist.size() <= j)
                                         {
-                                            arraylist.add((Object)null);
+                                            arraylist.add(null);
                                         }
 
                                         arraylist.set(j, naturalproperties);
@@ -111,7 +111,6 @@ public class NaturalTextures
             catch (FileNotFoundException var17)
             {
                 Config.warn("NaturalTextures: configuration \"" + s + "\" not found");
-                return;
             }
             catch (Exception exception)
             {

@@ -11,7 +11,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public class InventoryCraftResult implements IInventory
 {
-    private final NonNullList<ItemStack> stackResult = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> stackResult = NonNullList.withSize(1, ItemStack.EMPTY);
     private IRecipe recipeUsed;
 
     /**
@@ -125,7 +125,7 @@ public class InventoryCraftResult implements IInventory
      */
     public ITextComponent getDisplayName()
     {
-        return (ITextComponent)(this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
     }
 
     /**

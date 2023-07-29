@@ -38,12 +38,9 @@ public class RenderGuardian extends RenderLiving<EntityGuardian>
                 if (entitylivingbase != null)
                 {
                     Vec3d vec3d = this.getPosition(entitylivingbase, (double)entitylivingbase.height * 0.5D, 1.0F);
-                    Vec3d vec3d1 = this.getPosition(livingEntity, (double)livingEntity.getEyeHeight(), 1.0F);
+                    Vec3d vec3d1 = this.getPosition(livingEntity, livingEntity.getEyeHeight(), 1.0F);
 
-                    if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z)))
-                    {
-                        return true;
-                    }
+                    return camera.isBoundingBoxInFrustum(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
                 }
             }
 
@@ -88,7 +85,7 @@ public class RenderGuardian extends RenderLiving<EntityGuardian>
             GlStateManager.pushMatrix();
             GlStateManager.translate((float)x, (float)y + f4, (float)z);
             Vec3d vec3d = this.getPosition(entitylivingbase, (double)entitylivingbase.height * 0.5D, partialTicks);
-            Vec3d vec3d1 = this.getPosition(entity, (double)f4, partialTicks);
+            Vec3d vec3d1 = this.getPosition(entity, f4, partialTicks);
             Vec3d vec3d2 = vec3d.subtract(vec3d1);
             double d0 = vec3d2.length() + 1.0D;
             vec3d2 = vec3d2.normalize();
@@ -123,7 +120,7 @@ public class RenderGuardian extends RenderLiving<EntityGuardian>
             double d19 = 0.0D + Math.sin(d1 + (Math.PI * 3D / 2D)) * 0.2D;
             double d20 = 0.0D;
             double d21 = 0.4999D;
-            double d22 = (double)(-1.0F + f3);
+            double d22 = -1.0F + f3;
             double d23 = d0 * 2.5D + d22;
             bufferbuilder.pos(d12, d0, d13).tex(0.4999D, d23).color(j, k, l, 255).endVertex();
             bufferbuilder.pos(d12, 0.0D, d13).tex(0.4999D, d22).color(j, k, l, 255).endVertex();

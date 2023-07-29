@@ -19,7 +19,7 @@ import org.apache.commons.io.IOUtils;
 
 public class TemplateManager
 {
-    private final Map<String, Template> templates = Maps.<String, Template>newHashMap();
+    private final Map<String, Template> templates = Maps.newHashMap();
 
     /**
      * the folder in the assets folder where the structure templates are found.
@@ -66,7 +66,7 @@ public class TemplateManager
                 this.readTemplate(templatePath);
             }
 
-            return this.templates.containsKey(s) ? (Template)this.templates.get(s) : null;
+            return this.templates.containsKey(s) ? this.templates.get(s) : null;
         }
     }
 

@@ -33,10 +33,10 @@ import java.util.List;
 
 public class EntityBoat extends Entity
 {
-    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.<Integer>createKey(EntityBoat.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.<Integer>createKey(EntityBoat.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.<Float>createKey(EntityBoat.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> BOAT_TYPE = EntityDataManager.<Integer>createKey(EntityBoat.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityBoat.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.createKey(EntityBoat.class, DataSerializers.VARINT);
+    private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.createKey(EntityBoat.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> BOAT_TYPE = EntityDataManager.createKey(EntityBoat.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean>[] DATA_ID_PADDLE = new DataParameter[] {EntityDataManager.createKey(EntityBoat.class, DataSerializers.BOOLEAN), EntityDataManager.createKey(EntityBoat.class, DataSerializers.BOOLEAN)};
     private final float[] paddlePositions;
 
@@ -260,8 +260,8 @@ public class EntityBoat extends Entity
         this.lerpX = x;
         this.lerpY = y;
         this.lerpZ = z;
-        this.lerpYaw = (double)yaw;
-        this.lerpPitch = (double)pitch;
+        this.lerpYaw = yaw;
+        this.lerpPitch = pitch;
         this.lerpSteps = 10;
     }
 
@@ -349,7 +349,7 @@ public class EntityBoat extends Entity
                         Vec3d vec3d = this.getLook(1.0F);
                         double d0 = i == 1 ? -vec3d.z : vec3d.z;
                         double d1 = i == 1 ? vec3d.x : -vec3d.x;
-                        this.world.playSound((EntityPlayer)null, this.posX + d0, this.posY, this.posZ + d1, soundevent, this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat());
+                        this.world.playSound(null, this.posX + d0, this.posY, this.posZ + d1, soundevent, this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat());
                     }
                 }
 
@@ -430,7 +430,7 @@ public class EntityBoat extends Entity
 
     public float getRowingTime(int side, float limbSwing)
     {
-        return this.getPaddleState(side) ? (float)MathHelper.clampedLerp((double)this.paddlePositions[side] - 0.39269909262657166D, (double)this.paddlePositions[side], (double)limbSwing) : 0.0F;
+        return this.getPaddleState(side) ? (float)MathHelper.clampedLerp((double)this.paddlePositions[side] - 0.39269909262657166D, this.paddlePositions[side], limbSwing) : 0.0F;
     }
 
     /**
@@ -540,7 +540,7 @@ public class EntityBoat extends Entity
         int l = MathHelper.ceil(axisalignedbb1.maxY) + 1;
         int i1 = MathHelper.floor(axisalignedbb1.minZ) - 1;
         int j1 = MathHelper.ceil(axisalignedbb1.maxZ) + 1;
-        List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
+        List<AxisAlignedBB> list = Lists.newArrayList();
         float f = 0.0F;
         int k1 = 0;
         BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
@@ -611,7 +611,7 @@ public class EntityBoat extends Entity
                         if (iblockstate.getMaterial() == Material.WATER)
                         {
                             float f = BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos);
-                            this.waterLevel = Math.max((double)f, this.waterLevel);
+                            this.waterLevel = Math.max(f, this.waterLevel);
                             flag |= axisalignedbb.minY < (double)f;
                         }
                     }
@@ -657,7 +657,7 @@ public class EntityBoat extends Entity
 
                         if (iblockstate.getMaterial() == Material.WATER && d0 < (double)BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos))
                         {
-                            if (((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() != 0)
+                            if (iblockstate.getValue(BlockLiquid.LEVEL).intValue() != 0)
                             {
                                 Status entityboat$status = Status.UNDER_FLOWING_WATER;
                                 return entityboat$status;
@@ -726,8 +726,8 @@ public class EntityBoat extends Entity
                 }
             }
 
-            this.motionX *= (double)this.momentum;
-            this.motionZ *= (double)this.momentum;
+            this.motionX *= this.momentum;
+            this.motionZ *= this.momentum;
             this.deltaRotation *= this.momentum;
             this.motionY += d1;
 
@@ -774,8 +774,8 @@ public class EntityBoat extends Entity
                 f -= 0.005F;
             }
 
-            this.motionX += (double)(MathHelper.sin(-this.rotationYaw * 0.017453292F) * f);
-            this.motionZ += (double)(MathHelper.cos(this.rotationYaw * 0.017453292F) * f);
+            this.motionX += MathHelper.sin(-this.rotationYaw * 0.017453292F) * f;
+            this.motionZ += MathHelper.cos(this.rotationYaw * 0.017453292F) * f;
             this.setPaddleState(this.rightInputDown && !this.leftInputDown || this.forwardInputDown, this.leftInputDown && !this.rightInputDown || this.forwardInputDown);
         }
     }
@@ -806,7 +806,7 @@ public class EntityBoat extends Entity
                 }
             }
 
-            Vec3d vec3d = (new Vec3d((double)f, 0.0D, 0.0D)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float)Math.PI / 2F));
+            Vec3d vec3d = (new Vec3d(f, 0.0D, 0.0D)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float)Math.PI / 2F));
             passenger.setPosition(this.posX + vec3d.x, this.posY + (double)f1, this.posZ + vec3d.z);
             passenger.rotationYaw += this.deltaRotation;
             passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
@@ -926,7 +926,7 @@ public class EntityBoat extends Entity
 
     public boolean getPaddleState(int side)
     {
-        return ((Boolean)this.dataManager.get(DATA_ID_PADDLE[side])).booleanValue() && this.getControllingPassenger() != null;
+        return this.dataManager.get(DATA_ID_PADDLE[side]).booleanValue() && this.getControllingPassenger() != null;
     }
 
     /**
@@ -942,7 +942,7 @@ public class EntityBoat extends Entity
      */
     public float getDamageTaken()
     {
-        return ((Float)this.dataManager.get(DAMAGE_TAKEN)).floatValue();
+        return this.dataManager.get(DAMAGE_TAKEN).floatValue();
     }
 
     /**
@@ -958,7 +958,7 @@ public class EntityBoat extends Entity
      */
     public int getTimeSinceHit()
     {
-        return ((Integer)this.dataManager.get(TIME_SINCE_HIT)).intValue();
+        return this.dataManager.get(TIME_SINCE_HIT).intValue();
     }
 
     /**
@@ -974,7 +974,7 @@ public class EntityBoat extends Entity
      */
     public int getForwardDirection()
     {
-        return ((Integer)this.dataManager.get(FORWARD_DIRECTION)).intValue();
+        return this.dataManager.get(FORWARD_DIRECTION).intValue();
     }
 
     public void setBoatType(Type boatType)
@@ -984,7 +984,7 @@ public class EntityBoat extends Entity
 
     public Type getBoatType()
     {
-        return Type.byId(((Integer)this.dataManager.get(BOAT_TYPE)).intValue());
+        return Type.byId(this.dataManager.get(BOAT_TYPE).intValue());
     }
 
     protected boolean canFitPassenger(Entity passenger)
@@ -1001,7 +1001,7 @@ public class EntityBoat extends Entity
     public Entity getControllingPassenger()
     {
         List<Entity> list = this.getPassengers();
-        return list.isEmpty() ? null : (Entity)list.get(0);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     public void updateInputs(boolean p_184442_1_, boolean p_184442_2_, boolean p_184442_3_, boolean p_184442_4_)
@@ -1012,16 +1012,16 @@ public class EntityBoat extends Entity
         this.backInputDown = p_184442_4_;
     }
 
-    public static enum Status
+    public enum Status
     {
         IN_WATER,
         UNDER_WATER,
         UNDER_FLOWING_WATER,
         ON_LAND,
-        IN_AIR;
+        IN_AIR
     }
 
-    public static enum Type
+    public enum Type
     {
         OAK(BlockPlanks.EnumType.OAK.getMetadata(), "oak"),
         SPRUCE(BlockPlanks.EnumType.SPRUCE.getMetadata(), "spruce"),
@@ -1033,7 +1033,7 @@ public class EntityBoat extends Entity
         private final String name;
         private final int metadata;
 
-        private Type(int metadataIn, String nameIn)
+        Type(int metadataIn, String nameIn)
         {
             this.name = nameIn;
             this.metadata = metadataIn;

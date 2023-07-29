@@ -35,12 +35,12 @@ public class CommandReload extends CommandBase
     {
         if (args.length > 0)
         {
-            throw new WrongUsageException("commands.reload.usage", new Object[0]);
+            throw new WrongUsageException("commands.reload.usage");
         }
         else
         {
             server.reload();
-            notifyCommandListener(sender, this, "commands.reload.success", new Object[0]);
+            notifyCommandListener(sender, this, "commands.reload.success");
         }
     }
 }

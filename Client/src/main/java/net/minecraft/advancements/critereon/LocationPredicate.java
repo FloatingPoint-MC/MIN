@@ -13,7 +13,7 @@ import net.minecraft.world.biome.Biome;
 
 public class LocationPredicate
 {
-    public static LocationPredicate ANY = new LocationPredicate(MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, (Biome)null, (String)null, (DimensionType)null);
+    public static LocationPredicate ANY = new LocationPredicate(MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, null, null, null);
     private final MinMaxBounds x;
     private final MinMaxBounds y;
     private final MinMaxBounds z;
@@ -59,7 +59,7 @@ public class LocationPredicate
         }
         else
         {
-            BlockPos blockpos = new BlockPos((double)x, (double)y, (double)z);
+            BlockPos blockpos = new BlockPos(x, y, z);
 
             if (this.biome != null && this.biome != world.getBiome(blockpos))
             {

@@ -18,13 +18,13 @@ public class AnimationMetadataSectionSerializer extends BaseMetadataSectionSeria
 {
     public AnimationMetadataSection deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
     {
-        List<AnimationFrame> list = Lists.<AnimationFrame>newArrayList();
+        List<AnimationFrame> list = Lists.newArrayList();
         JsonObject jsonobject = JsonUtils.getJsonObject(p_deserialize_1_, "metadata section");
         int i = JsonUtils.getInt(jsonobject, "frametime", 1);
 
         if (i != 1)
         {
-            Validate.inclusiveBetween(1L, 2147483647L, (long)i, "Invalid default frame time");
+            Validate.inclusiveBetween(1L, 2147483647L, i, "Invalid default frame time");
         }
 
         if (jsonobject.has("frames"))
@@ -55,12 +55,12 @@ public class AnimationMetadataSectionSerializer extends BaseMetadataSectionSeria
 
         if (k != -1)
         {
-            Validate.inclusiveBetween(1L, 2147483647L, (long)k, "Invalid width");
+            Validate.inclusiveBetween(1L, 2147483647L, k, "Invalid width");
         }
 
         if (l != -1)
         {
-            Validate.inclusiveBetween(1L, 2147483647L, (long)l, "Invalid height");
+            Validate.inclusiveBetween(1L, 2147483647L, l, "Invalid height");
         }
 
         boolean flag = JsonUtils.getBoolean(jsonobject, "interpolate", false);
@@ -80,11 +80,11 @@ public class AnimationMetadataSectionSerializer extends BaseMetadataSectionSeria
 
             if (jsonobject.has("time"))
             {
-                Validate.inclusiveBetween(1L, 2147483647L, (long)i, "Invalid frame time");
+                Validate.inclusiveBetween(1L, 2147483647L, i, "Invalid frame time");
             }
 
             int j = JsonUtils.getInt(jsonobject, "index");
-            Validate.inclusiveBetween(0L, 2147483647L, (long)j, "Invalid frame index");
+            Validate.inclusiveBetween(0L, 2147483647L, j, "Invalid frame index");
             return new AnimationFrame(j, i);
         }
         else

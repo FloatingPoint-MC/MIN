@@ -323,7 +323,7 @@ public class Blocks
         }
         else
         {
-            CACHE = Sets.<Block>newHashSet();
+            CACHE = Sets.newHashSet();
             AIR = getRegisteredBlock("air");
             STONE = getRegisteredBlock("stone");
             GRASS = (BlockGrass)getRegisteredBlock("grass");

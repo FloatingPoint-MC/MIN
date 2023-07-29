@@ -53,14 +53,7 @@ public class ShieldRecipes
                 }
             }
 
-            if (!itemstack.isEmpty() && !itemstack1.isEmpty())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !itemstack.isEmpty() && !itemstack1.isEmpty();
         }
 
         public ItemStack getCraftingResult(InventoryCrafting inv)
@@ -106,7 +99,7 @@ public class ShieldRecipes
 
         public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
         {
-            NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+            NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
             for (int i = 0; i < nonnulllist.size(); ++i)
             {

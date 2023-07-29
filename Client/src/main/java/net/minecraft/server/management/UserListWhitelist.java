@@ -23,7 +23,7 @@ public class UserListWhitelist extends UserList<GameProfile, UserListWhitelistEn
 
         for (UserListWhitelistEntry userlistwhitelistentry : this.getValues().values())
         {
-            astring[i++] = ((GameProfile)userlistwhitelistentry.getValue()).getName();
+            astring[i++] = userlistwhitelistentry.getValue().getName();
         }
 
         return astring;
@@ -44,9 +44,9 @@ public class UserListWhitelist extends UserList<GameProfile, UserListWhitelistEn
     {
         for (UserListWhitelistEntry userlistwhitelistentry : this.getValues().values())
         {
-            if (profileName.equalsIgnoreCase(((GameProfile)userlistwhitelistentry.getValue()).getName()))
+            if (profileName.equalsIgnoreCase(userlistwhitelistentry.getValue().getName()))
             {
-                return (GameProfile)userlistwhitelistentry.getValue();
+                return userlistwhitelistentry.getValue();
             }
         }
 

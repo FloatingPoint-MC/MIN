@@ -90,7 +90,7 @@ public abstract class BlockContainer extends Block implements ITileEntityProvide
         }
         else
         {
-            super.harvestBlock(worldIn, player, pos, state, (TileEntity)null, stack);
+            super.harvestBlock(worldIn, player, pos, state, null, stack);
         }
     }
 
@@ -105,6 +105,6 @@ public abstract class BlockContainer extends Block implements ITileEntityProvide
     {
         super.eventReceived(state, worldIn, pos, id, param);
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 }

@@ -27,7 +27,7 @@ public class EntityPainting extends EntityHanging
     public EntityPainting(World worldIn, BlockPos pos, EnumFacing facing)
     {
         super(worldIn, pos);
-        List<EntityPainting.EnumArt> list = Lists.<EntityPainting.EnumArt>newArrayList();
+        List<EntityPainting.EnumArt> list = Lists.newArrayList();
         int i = 0;
 
         for (EntityPainting.EnumArt entitypainting$enumart : EntityPainting.EnumArt.values())
@@ -167,10 +167,10 @@ public class EntityPainting extends EntityHanging
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
     {
         BlockPos blockpos = this.hangingPosition.add(x - this.posX, y - this.posY, z - this.posZ);
-        this.setPosition((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
+        this.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
     }
 
-    public static enum EnumArt
+    public enum EnumArt
     {
         KEBAB("Kebab", 16, 16, 0, 0),
         AZTEC("Aztec", 16, 16, 16, 0),
@@ -206,7 +206,7 @@ public class EntityPainting extends EntityHanging
         public final int offsetX;
         public final int offsetY;
 
-        private EnumArt(String titleIn, int width, int height, int textureU, int textureV)
+        EnumArt(String titleIn, int width, int height, int textureU, int textureV)
         {
             this.title = titleIn;
             this.sizeX = width;

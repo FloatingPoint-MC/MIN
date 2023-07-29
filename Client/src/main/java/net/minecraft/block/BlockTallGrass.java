@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 public class BlockTallGrass extends BlockBush implements IGrowable
 {
-    public static final PropertyEnum<BlockTallGrass.EnumType> TYPE = PropertyEnum.<BlockTallGrass.EnumType>create("type", BlockTallGrass.EnumType.class);
+    public static final PropertyEnum<BlockTallGrass.EnumType> TYPE = PropertyEnum.create("type", BlockTallGrass.EnumType.class);
     protected static final AxisAlignedBB TALL_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
     protected BlockTallGrass()
@@ -80,7 +80,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
         if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
         {
             player.addStat(StatList.getBlockStats(this));
-            spawnAsEntity(worldIn, pos, new ItemStack(Blocks.TALLGRASS, 1, ((BlockTallGrass.EnumType)state.getValue(TYPE)).getMeta()));
+            spawnAsEntity(worldIn, pos, new ItemStack(Blocks.TALLGRASS, 1, state.getValue(TYPE).getMeta()));
         }
         else
         {
@@ -145,12 +145,12 @@ public class BlockTallGrass extends BlockBush implements IGrowable
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((BlockTallGrass.EnumType)state.getValue(TYPE)).getMeta();
+        return state.getValue(TYPE).getMeta();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {TYPE});
+        return new BlockStateContainer(this, TYPE);
     }
 
     /**
@@ -161,7 +161,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
         return Block.EnumOffsetType.XYZ;
     }
 
-    public static enum EnumType implements IStringSerializable
+    public enum EnumType implements IStringSerializable
     {
         DEAD_BUSH(0, "dead_bush"),
         GRASS(1, "tall_grass"),
@@ -171,7 +171,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
         private final int meta;
         private final String name;
 
-        private EnumType(int meta, String name)
+        EnumType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;

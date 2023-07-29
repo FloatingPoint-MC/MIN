@@ -25,7 +25,7 @@ public class LanguageMap
 
     /** Is the private singleton instance of StringTranslate. */
     private static final LanguageMap instance = new LanguageMap();
-    private final Map<String, String> languageList = Maps.<String, String>newHashMap();
+    private final Map<String, String> languageList = Maps.newHashMap();
 
     /**
      * The time, in milliseconds since epoch, that this instance was last updated
@@ -42,7 +42,7 @@ public class LanguageMap
             {
                 if (!s.isEmpty() && s.charAt(0) != '#')
                 {
-                    String[] astring = (String[])Iterables.toArray(EQUAL_SIGN_SPLITTER.split(s), String.class);
+                    String[] astring = Iterables.toArray(EQUAL_SIGN_SPLITTER.split(s), String.class);
 
                     if (astring != null && astring.length == 2)
                     {
@@ -57,7 +57,6 @@ public class LanguageMap
         }
         catch (IOException var7)
         {
-            ;
         }
     }
 

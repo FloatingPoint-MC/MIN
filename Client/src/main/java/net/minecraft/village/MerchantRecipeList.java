@@ -29,14 +29,14 @@ public class MerchantRecipeList extends ArrayList<MerchantRecipe>
     {
         if (index > 0 && index < this.size())
         {
-            MerchantRecipe merchantrecipe1 = (MerchantRecipe)this.get(index);
+            MerchantRecipe merchantrecipe1 = this.get(index);
             return !this.areItemStacksExactlyEqual(stack0, merchantrecipe1.getItemToBuy()) || (!stack1.isEmpty() || merchantrecipe1.hasSecondItemToBuy()) && (!merchantrecipe1.hasSecondItemToBuy() || !this.areItemStacksExactlyEqual(stack1, merchantrecipe1.getSecondItemToBuy())) || stack0.getCount() < merchantrecipe1.getItemToBuy().getCount() || merchantrecipe1.hasSecondItemToBuy() && stack1.getCount() < merchantrecipe1.getSecondItemToBuy().getCount() ? null : merchantrecipe1;
         }
         else
         {
             for (int i = 0; i < this.size(); ++i)
             {
-                MerchantRecipe merchantrecipe = (MerchantRecipe)this.get(i);
+                MerchantRecipe merchantrecipe = this.get(i);
 
                 if (this.areItemStacksExactlyEqual(stack0, merchantrecipe.getItemToBuy()) && stack0.getCount() >= merchantrecipe.getItemToBuy().getCount() && (!merchantrecipe.hasSecondItemToBuy() && stack1.isEmpty() || merchantrecipe.hasSecondItemToBuy() && this.areItemStacksExactlyEqual(stack1, merchantrecipe.getSecondItemToBuy()) && stack1.getCount() >= merchantrecipe.getSecondItemToBuy().getCount()))
                 {
@@ -59,7 +59,7 @@ public class MerchantRecipeList extends ArrayList<MerchantRecipe>
 
         for (int i = 0; i < this.size(); ++i)
         {
-            MerchantRecipe merchantrecipe = (MerchantRecipe)this.get(i);
+            MerchantRecipe merchantrecipe = this.get(i);
             buffer.writeItemStack(merchantrecipe.getItemToBuy());
             buffer.writeItemStack(merchantrecipe.getItemToSell());
             ItemStack itemstack = merchantrecipe.getSecondItemToBuy();
@@ -126,7 +126,7 @@ public class MerchantRecipeList extends ArrayList<MerchantRecipe>
 
         for (int i = 0; i < this.size(); ++i)
         {
-            MerchantRecipe merchantrecipe = (MerchantRecipe)this.get(i);
+            MerchantRecipe merchantrecipe = this.get(i);
             nbttaglist.appendTag(merchantrecipe.writeToTags());
         }
 

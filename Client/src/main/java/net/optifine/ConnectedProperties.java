@@ -200,7 +200,7 @@ public class ConnectedProperties
 
                     if (map.containsKey(Integer.valueOf(k)))
                     {
-                        aint[k] = ((Integer)map.get(Integer.valueOf(k))).intValue();
+                        aint[k] = map.get(Integer.valueOf(k)).intValue();
                     }
                 }
 
@@ -1176,7 +1176,7 @@ public class ConnectedProperties
 
                 if (skipTiles && s3.endsWith("<skip>.png"))
                 {
-                    list.add((Object)null);
+                    list.add(null);
                 }
                 else if (defaultTiles && s3.endsWith("<default>.png"))
                 {
@@ -1235,7 +1235,7 @@ public class ConnectedProperties
 
     public String toString()
     {
-        return "CTM name: " + this.name + ", basePath: " + this.basePath + ", matchBlocks: " + Config.arrayToString((Object[])this.matchBlocks) + ", matchTiles: " + Config.arrayToString((Object[])this.matchTiles);
+        return "CTM name: " + this.name + ", basePath: " + this.basePath + ", matchBlocks: " + Config.arrayToString(this.matchBlocks) + ", matchTiles: " + Config.arrayToString(this.matchTiles);
     }
 
     public boolean matchesBiome(Biome biome)

@@ -20,7 +20,7 @@ public class BuiltInModel implements IBakedModel
 
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
     {
-        return Collections.<BakedQuad>emptyList();
+        return Collections.emptyList();
     }
 
     public boolean isAmbientOcclusion()

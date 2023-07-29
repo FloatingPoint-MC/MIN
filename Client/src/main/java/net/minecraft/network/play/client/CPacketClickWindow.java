@@ -58,7 +58,7 @@ public class CPacketClickWindow implements Packet<INetHandlerPlayServer>
         this.slotId = buf.readShort();
         this.packedClickData = buf.readByte();
         this.actionNumber = buf.readShort();
-        this.mode = (ClickType)buf.readEnumValue(ClickType.class);
+        this.mode = buf.readEnumValue(ClickType.class);
         this.clickedItem = buf.readItemStack();
     }
 

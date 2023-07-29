@@ -47,11 +47,11 @@ public class CommandSaveOn extends CommandBase
 
         if (flag)
         {
-            notifyCommandListener(sender, this, "commands.save.enabled", new Object[0]);
+            notifyCommandListener(sender, this, "commands.save.enabled");
         }
         else
         {
-            throw new CommandException("commands.save-on.alreadyOn", new Object[0]);
+            throw new CommandException("commands.save-on.alreadyOn");
         }
     }
 }

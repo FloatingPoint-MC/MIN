@@ -16,8 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 public class FactoryBlockPattern
 {
     private static final Joiner COMMA_JOIN = Joiner.on(",");
-    private final List<String[]> depth = Lists.<String[]>newArrayList();
-    private final Map<Character, Predicate<BlockWorldState>> symbolMap = Maps.<Character, Predicate<BlockWorldState>>newHashMap();
+    private final List<String[]> depth = Lists.newArrayList();
+    private final Map<Character, Predicate<BlockWorldState>> symbolMap = Maps.newHashMap();
     private int aisleHeight;
     private int rowWidth;
 
@@ -32,7 +32,7 @@ public class FactoryBlockPattern
      */
     public FactoryBlockPattern aisle(String... aisle)
     {
-        if (!ArrayUtils.isEmpty((Object[])aisle) && !StringUtils.isEmpty(aisle[0]))
+        if (!ArrayUtils.isEmpty(aisle) && !StringUtils.isEmpty(aisle[0]))
         {
             if (this.depth.isEmpty())
             {
@@ -91,7 +91,7 @@ public class FactoryBlockPattern
     private Predicate<BlockWorldState>[][][] makePredicateArray()
     {
         this.checkMissingPredicates();
-        Predicate<BlockWorldState>[][][] predicate = (Predicate[][][])((Predicate[][][])Array.newInstance(Predicate.class, this.depth.size(), this.aisleHeight, this.rowWidth));
+        Predicate<BlockWorldState>[][][] predicate = (Predicate[][][]) Array.newInstance(Predicate.class, this.depth.size(), this.aisleHeight, this.rowWidth);
 
         for (int i = 0; i < this.depth.size(); ++i)
         {
@@ -109,7 +109,7 @@ public class FactoryBlockPattern
 
     private void checkMissingPredicates()
     {
-        List<Character> list = Lists.<Character>newArrayList();
+        List<Character> list = Lists.newArrayList();
 
         for (Entry<Character, Predicate<BlockWorldState>> entry : this.symbolMap.entrySet())
         {

@@ -2,8 +2,8 @@ package net.optifine.config;
 
 public class RangeInt
 {
-    private int min;
-    private int max;
+    private final int min;
+    private final int max;
 
     public RangeInt(int min, int max)
     {

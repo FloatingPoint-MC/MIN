@@ -2,6 +2,7 @@ package net.minecraft.pathfinding;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 
 public class PathWorldListener implements IWorldEventListener
 {
-    private final List<PathNavigate> navigations = Lists.<PathNavigate>newArrayList();
+    private final List<PathNavigate> navigations = Lists.newArrayList();
 
     public void notifyBlockUpdate(World worldIn, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
     {
@@ -52,7 +53,7 @@ public class PathWorldListener implements IWorldEventListener
     {
         AxisAlignedBB axisalignedbb = oldState.getCollisionBoundingBox(worldIn, pos);
         AxisAlignedBB axisalignedbb1 = newState.getCollisionBoundingBox(worldIn, pos);
-        return axisalignedbb != axisalignedbb1 && (axisalignedbb == null || !axisalignedbb.equals(axisalignedbb1));
+        return !Objects.equals(axisalignedbb, axisalignedbb1);
     }
 
     public void notifyLightSet(BlockPos pos)

@@ -38,8 +38,8 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityGuardian extends EntityMob
 {
-    private static final DataParameter<Boolean> MOVING = EntityDataManager.<Boolean>createKey(EntityGuardian.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.<Integer>createKey(EntityGuardian.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> MOVING = EntityDataManager.createKey(EntityGuardian.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager.createKey(EntityGuardian.class, DataSerializers.VARINT);
     protected float clientSideTailAnimation;
     protected float clientSideTailAnimationO;
     protected float clientSideTailAnimationSpeed;
@@ -106,7 +106,7 @@ public class EntityGuardian extends EntityMob
 
     public boolean isMoving()
     {
-        return ((Boolean)this.dataManager.get(MOVING)).booleanValue();
+        return this.dataManager.get(MOVING).booleanValue();
     }
 
     private void setMoving(boolean moving)
@@ -126,7 +126,7 @@ public class EntityGuardian extends EntityMob
 
     public boolean hasTargetedEntity()
     {
-        return ((Integer)this.dataManager.get(TARGET_ENTITY)).intValue() != 0;
+        return this.dataManager.get(TARGET_ENTITY).intValue() != 0;
     }
 
     @Nullable
@@ -144,7 +144,7 @@ public class EntityGuardian extends EntityMob
             }
             else
             {
-                Entity entity = this.world.getEntityByID(((Integer)this.dataManager.get(TARGET_ENTITY)).intValue());
+                Entity entity = this.world.getEntityByID(this.dataManager.get(TARGET_ENTITY).intValue());
 
                 if (entity instanceof EntityLivingBase)
                 {
@@ -292,7 +292,7 @@ public class EntityGuardian extends EntityMob
                 {
                     this.getLookHelper().setLookPositionWithEntity(entitylivingbase, 90.0F, 90.0F);
                     this.getLookHelper().onUpdateLook();
-                    double d5 = (double)this.getAttackAnimationScale(0.0F);
+                    double d5 = this.getAttackAnimationScale(0.0F);
                     double d0 = entitylivingbase.posX - this.posX;
                     double d1 = entitylivingbase.posY + (double)(entitylivingbase.height * 0.5F) - (this.posY + (double)this.getEyeHeight());
                     double d2 = entitylivingbase.posZ - this.posZ;
@@ -318,8 +318,8 @@ public class EntityGuardian extends EntityMob
         else if (this.onGround)
         {
             this.motionY += 0.5D;
-            this.motionX += (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F);
-            this.motionZ += (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F);
+            this.motionX += (this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F;
+            this.motionZ += (this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F;
             this.rotationYaw = this.rand.nextFloat() * 360.0F;
             this.onGround = false;
             this.isAirBorne = true;
@@ -471,7 +471,7 @@ public class EntityGuardian extends EntityMob
         public void resetTask()
         {
             this.guardian.setTargetedEntity(0);
-            this.guardian.setAttackTarget((EntityLivingBase)null);
+            this.guardian.setAttackTarget(null);
             this.guardian.wander.makeUpdate();
         }
 
@@ -483,7 +483,7 @@ public class EntityGuardian extends EntityMob
 
             if (!this.guardian.canEntityBeSeen(entitylivingbase))
             {
-                this.guardian.setAttackTarget((EntityLivingBase)null);
+                this.guardian.setAttackTarget(null);
             }
             else
             {
@@ -510,7 +510,7 @@ public class EntityGuardian extends EntityMob
 
                     entitylivingbase.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.guardian, this.guardian), f);
                     entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this.guardian), (float)this.guardian.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-                    this.guardian.setAttackTarget((EntityLivingBase)null);
+                    this.guardian.setAttackTarget(null);
                 }
 
                 super.updateTask();
@@ -535,7 +535,7 @@ public class EntityGuardian extends EntityMob
                 double d0 = this.posX - this.entityGuardian.posX;
                 double d1 = this.posY - this.entityGuardian.posY;
                 double d2 = this.posZ - this.entityGuardian.posZ;
-                double d3 = (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                 d1 = d1 / d3;
                 float f = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
                 this.entityGuardian.rotationYaw = this.limitAngle(this.entityGuardian.rotationYaw, f, 90.0F);
@@ -543,8 +543,8 @@ public class EntityGuardian extends EntityMob
                 float f1 = (float)(this.speed * this.entityGuardian.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
                 this.entityGuardian.setAIMoveSpeed(this.entityGuardian.getAIMoveSpeed() + (f1 - this.entityGuardian.getAIMoveSpeed()) * 0.125F);
                 double d4 = Math.sin((double)(this.entityGuardian.ticksExisted + this.entityGuardian.getEntityId()) * 0.5D) * 0.05D;
-                double d5 = Math.cos((double)(this.entityGuardian.rotationYaw * 0.017453292F));
-                double d6 = Math.sin((double)(this.entityGuardian.rotationYaw * 0.017453292F));
+                double d5 = Math.cos(this.entityGuardian.rotationYaw * 0.017453292F);
+                double d6 = Math.sin(this.entityGuardian.rotationYaw * 0.017453292F);
                 this.entityGuardian.motionX += d4 * d5;
                 this.entityGuardian.motionZ += d4 * d6;
                 d4 = Math.sin((double)(this.entityGuardian.ticksExisted + this.entityGuardian.getEntityId()) * 0.75D) * 0.05D;

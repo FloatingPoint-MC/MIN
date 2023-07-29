@@ -21,13 +21,13 @@ public class NettyPacketDecoder extends ByteToMessageDecoder
         this.direction = direction;
     }
 
-    protected void decode(ChannelHandlerContext p_decode_1_, ByteBuf p_decode_2_, List<Object> p_decode_3_) throws IOException, InstantiationException, IllegalAccessException, Exception
+    protected void decode(ChannelHandlerContext p_decode_1_, ByteBuf p_decode_2_, List<Object> p_decode_3_) throws Exception
     {
         if (p_decode_2_.readableBytes() != 0)
         {
             PacketBuffer packetbuffer = new PacketBuffer(p_decode_2_);
             int i = packetbuffer.readVarInt();
-            Packet<?> packet = ((EnumConnectionState)p_decode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get()).getPacket(this.direction, i);
+            Packet<?> packet = p_decode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get().getPacket(this.direction, i);
 
             if (packet == null)
             {
@@ -39,7 +39,7 @@ public class NettyPacketDecoder extends ByteToMessageDecoder
 
                 if (packetbuffer.readableBytes() > 0)
                 {
-                    throw new IOException("Packet " + ((EnumConnectionState)p_decode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get()).getId() + "/" + i + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetbuffer.readableBytes() + " bytes extra whilst reading packet " + i);
+                    throw new IOException("Packet " + p_decode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get().getId() + "/" + i + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetbuffer.readableBytes() + " bytes extra whilst reading packet " + i);
                 }
                 else
                 {

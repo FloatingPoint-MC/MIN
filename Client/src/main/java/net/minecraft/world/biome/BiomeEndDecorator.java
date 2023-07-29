@@ -17,7 +17,7 @@ import net.minecraft.world.gen.feature.WorldGenSpikes;
 
 public class BiomeEndDecorator extends BiomeDecorator
 {
-    private static final LoadingCache<Long, WorldGenSpikes.EndSpike[]> SPIKE_CACHE = CacheBuilder.newBuilder().expireAfterWrite(5L, TimeUnit.MINUTES).<Long, WorldGenSpikes.EndSpike[]>build(new BiomeEndDecorator.SpikeCacheLoader());
+    private static final LoadingCache<Long, WorldGenSpikes.EndSpike[]> SPIKE_CACHE = CacheBuilder.newBuilder().expireAfterWrite(5L, TimeUnit.MINUTES).build(new BiomeEndDecorator.SpikeCacheLoader());
     private final WorldGenSpikes spikeGen = new WorldGenSpikes();
 
     protected void genDecorations(Biome biomeIn, World worldIn, Random random)
@@ -58,7 +58,7 @@ public class BiomeEndDecorator extends BiomeDecorator
             {
                 int j = (int)(42.0D * Math.cos(2.0D * (-Math.PI + (Math.PI / 10D) * (double)i)));
                 int k = (int)(42.0D * Math.sin(2.0D * (-Math.PI + (Math.PI / 10D) * (double)i)));
-                int l = ((Integer)list.get(i)).intValue();
+                int l = list.get(i).intValue();
                 int i1 = 2 + l / 3;
                 int j1 = 76 + l * 3;
                 boolean flag = l == 1 || l == 2;

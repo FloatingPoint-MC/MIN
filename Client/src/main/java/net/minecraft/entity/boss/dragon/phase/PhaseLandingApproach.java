@@ -73,7 +73,7 @@ public class PhaseLandingApproach extends PhaseBase
             }
             else
             {
-                j = this.dragon.getNearestPpIdx(40.0D, (double)blockpos.getY(), 0.0D);
+                j = this.dragon.getNearestPpIdx(40.0D, blockpos.getY(), 0.0D);
             }
 
             PathPoint pathpoint = new PathPoint(blockpos.getX(), blockpos.getY(), blockpos.getZ());

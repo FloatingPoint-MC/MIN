@@ -81,7 +81,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
 
         if (this.connectionTimer++ == 600)
         {
-            this.disconnect(new TextComponentTranslation("multiplayer.disconnect.slow_login", new Object[0]));
+            this.disconnect(new TextComponentTranslation("multiplayer.disconnect.slow_login"));
         }
     }
 
@@ -95,7 +95,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
         }
         catch (Exception exception)
         {
-            LOGGER.error("Error whilst disconnecting player", (Throwable)exception);
+            LOGGER.error("Error whilst disconnecting player", exception);
         }
     }
 
@@ -110,7 +110,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
 
         if (s != null)
         {
-            this.disconnect(new TextComponentTranslation(s, new Object[0]));
+            this.disconnect(new TextComponentTranslation(s));
         }
         else
         {
@@ -152,7 +152,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
 
     public String getConnectionInfo()
     {
-        return this.loginGameProfile != null ? this.loginGameProfile + " (" + this.networkManager.getRemoteAddress() + ")" : String.valueOf((Object)this.networkManager.getRemoteAddress());
+        return this.loginGameProfile != null ? this.loginGameProfile + " (" + this.networkManager.getRemoteAddress() + ")" : String.valueOf(this.networkManager.getRemoteAddress());
     }
 
     public void processLoginStart(CPacketLoginStart packetIn)
@@ -194,7 +194,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
                     try
                     {
                         String s = (new BigInteger(CryptManager.getServerIdHash("", NetHandlerLoginServer.this.server.getKeyPair().getPublic(), NetHandlerLoginServer.this.secretKey))).toString(16);
-                        NetHandlerLoginServer.this.loginGameProfile = NetHandlerLoginServer.this.server.getMinecraftSessionService().hasJoinedServer(new GameProfile((UUID)null, gameprofile.getName()), s, this.getAddress());
+                        NetHandlerLoginServer.this.loginGameProfile = NetHandlerLoginServer.this.server.getMinecraftSessionService().hasJoinedServer(new GameProfile(null, gameprofile.getName()), s, this.getAddress());
 
                         if (NetHandlerLoginServer.this.loginGameProfile != null)
                         {
@@ -209,8 +209,8 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
                         }
                         else
                         {
-                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.unverified_username", new Object[0]));
-                            NetHandlerLoginServer.LOGGER.error("Username '{}' tried to join with an invalid session", (Object)gameprofile.getName());
+                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.unverified_username"));
+                            NetHandlerLoginServer.LOGGER.error("Username '{}' tried to join with an invalid session", gameprofile.getName());
                         }
                     }
                     catch (AuthenticationUnavailableException var3)
@@ -223,7 +223,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
                         }
                         else
                         {
-                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.authservers_down", new Object[0]));
+                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.authservers_down"));
                             NetHandlerLoginServer.LOGGER.error("Couldn't verify username because servers are unavailable");
                         }
                     }
@@ -244,13 +244,13 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
         return new GameProfile(uuid, original.getName());
     }
 
-    static enum LoginState
+    enum LoginState
     {
         HELLO,
         KEY,
         AUTHENTICATING,
         READY_TO_ACCEPT,
         DELAY_ACCEPT,
-        ACCEPTED;
+        ACCEPTED
     }
 }

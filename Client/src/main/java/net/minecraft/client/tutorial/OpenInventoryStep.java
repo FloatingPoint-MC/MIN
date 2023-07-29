@@ -7,8 +7,8 @@ import net.minecraft.world.GameType;
 
 public class OpenInventoryStep implements ITutorialStep
 {
-    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.open_inventory.title", new Object[0]);
-    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.open_inventory.description", new Object[] {Tutorial.createKeybindComponent("inventory")});
+    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.open_inventory.title");
+    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.open_inventory.description", Tutorial.createKeybindComponent("inventory"));
     private final Tutorial tutorial;
     private TutorialToast toast;
     private int timeWaiting;

@@ -37,7 +37,6 @@ public class ShaderPackZip implements IShaderPack
             }
             catch (Exception var2)
             {
-                ;
             }
 
             this.packZipFile = null;

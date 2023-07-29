@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public abstract class BlockWoodSlab extends BlockSlab
 {
-    public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.<BlockPlanks.EnumType>create("variant", BlockPlanks.EnumType.class);
+    public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class);
 
     public BlockWoodSlab()
     {
@@ -41,7 +41,7 @@ public abstract class BlockWoodSlab extends BlockSlab
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMapColor();
+        return state.getValue(VARIANT).getMapColor();
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class BlockWoodSlab extends BlockSlab
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(Blocks.WOODEN_SLAB, 1, ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata());
+        return new ItemStack(Blocks.WOODEN_SLAB, 1, state.getValue(VARIANT).getMetadata());
     }
 
     /**
@@ -107,7 +107,7 @@ public abstract class BlockWoodSlab extends BlockSlab
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
+        i = i | state.getValue(VARIANT).getMetadata();
 
         if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
         {
@@ -119,7 +119,7 @@ public abstract class BlockWoodSlab extends BlockSlab
 
     protected BlockStateContainer createBlockState()
     {
-        return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {VARIANT}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
 
     /**
@@ -128,6 +128,6 @@ public abstract class BlockWoodSlab extends BlockSlab
      */
     public int damageDropped(IBlockState state)
     {
-        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 }

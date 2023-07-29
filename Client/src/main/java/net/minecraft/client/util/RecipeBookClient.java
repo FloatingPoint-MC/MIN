@@ -17,8 +17,8 @@ import net.minecraft.stats.RecipeBook;
 
 public class RecipeBookClient extends RecipeBook
 {
-    public static final Map<CreativeTabs, List<RecipeList>> RECIPES_BY_TAB = Maps.<CreativeTabs, List<RecipeList>>newHashMap();
-    public static final List<RecipeList> ALL_RECIPES = Lists.<RecipeList>newArrayList();
+    public static final Map<CreativeTabs, List<RecipeList>> RECIPES_BY_TAB = Maps.newHashMap();
+    public static final List<RecipeList> ALL_RECIPES = Lists.newArrayList();
 
     private static RecipeList newRecipeList(CreativeTabs srcTab)
     {
@@ -51,7 +51,7 @@ public class RecipeBookClient extends RecipeBook
 
     static
     {
-        Table<CreativeTabs, String, RecipeList> table = HashBasedTable.<CreativeTabs, String, RecipeList>create();
+        Table<CreativeTabs, String, RecipeList> table = HashBasedTable.create();
 
         for (IRecipe irecipe : CraftingManager.REGISTRY)
         {

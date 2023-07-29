@@ -18,7 +18,7 @@ public class GuiUtilRenderComponents
     {
         int i = 0;
         ITextComponent itextcomponent = new TextComponentString("");
-        List<ITextComponent> list = Lists.<ITextComponent>newArrayList();
+        List<ITextComponent> list = Lists.newArrayList();
         List<ITextComponent> list1 = Lists.newArrayList(textComponent);
 
         for (int j = 0; j < list1.size(); ++j)

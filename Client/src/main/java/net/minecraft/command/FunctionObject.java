@@ -26,7 +26,7 @@ public class FunctionObject
      */
     public static FunctionObject create(FunctionManager functionManagerIn, List<String> commands)
     {
-        List<FunctionObject.Entry> list = Lists.<FunctionObject.Entry>newArrayListWithCapacity(commands.size());
+        List<FunctionObject.Entry> list = Lists.newArrayListWithCapacity(commands.size());
 
         for (String s : commands)
         {
@@ -56,7 +56,7 @@ public class FunctionObject
             }
         }
 
-        return new FunctionObject((FunctionObject.Entry[])list.toArray(new FunctionObject.Entry[list.size()]));
+        return new FunctionObject(list.toArray(new Entry[list.size()]));
     }
 
     public static class CacheableFunction
@@ -96,7 +96,7 @@ public class FunctionObject
 
         public String toString()
         {
-            return String.valueOf((Object)this.id);
+            return String.valueOf(this.id);
         }
     }
 

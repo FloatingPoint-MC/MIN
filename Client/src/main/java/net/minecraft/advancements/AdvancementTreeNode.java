@@ -10,7 +10,7 @@ public class AdvancementTreeNode
     private final AdvancementTreeNode parent;
     private final AdvancementTreeNode sibling;
     private final int index;
-    private final List<AdvancementTreeNode> children = Lists.<AdvancementTreeNode>newArrayList();
+    private final List<AdvancementTreeNode> children = Lists.newArrayList();
     private AdvancementTreeNode ancestor;
     private AdvancementTreeNode thread;
     private int x;
@@ -152,7 +152,7 @@ public class AdvancementTreeNode
         }
         else
         {
-            return !this.children.isEmpty() ? (AdvancementTreeNode)this.children.get(0) : null;
+            return !this.children.isEmpty() ? this.children.get(0) : null;
         }
     }
 
@@ -165,7 +165,7 @@ public class AdvancementTreeNode
         }
         else
         {
-            return !this.children.isEmpty() ? (AdvancementTreeNode)this.children.get(this.children.size() - 1) : null;
+            return !this.children.isEmpty() ? this.children.get(this.children.size() - 1) : null;
         }
     }
 
@@ -271,7 +271,7 @@ public class AdvancementTreeNode
         }
         else
         {
-            AdvancementTreeNode advancementtreenode = new AdvancementTreeNode(root, (AdvancementTreeNode)null, (AdvancementTreeNode)null, 1, 0);
+            AdvancementTreeNode advancementtreenode = new AdvancementTreeNode(root, null, null, 1, 0);
             advancementtreenode.firstWalk();
             float f = advancementtreenode.secondWalk(0.0F, 0, advancementtreenode.y);
 

@@ -21,7 +21,7 @@ public class ClientAdvancementManager
     private static final Logger LOGGER = LogManager.getLogger();
     private final Minecraft mc;
     private final AdvancementList advancementList = new AdvancementList();
-    private final Map<Advancement, AdvancementProgress> advancementToProgress = Maps.<Advancement, AdvancementProgress>newHashMap();
+    private final Map<Advancement, AdvancementProgress> advancementToProgress = Maps.newHashMap();
     @Nullable
     private ClientAdvancementManager.IListener listener;
     @Nullable

@@ -139,7 +139,7 @@ public class PlacementSettings
         {
             int i = seed.getX();
             int j = seed.getZ();
-            return new Random((long)(i * i * 4987142 + i * 5947611) + (long)(j * j) * 4392871L + (long)(j * 389711) ^ 987234911L);
+            return new Random((long) i * i * 4987142 + i * 5947611L + (long) j * j * 4392871L + (j * 389711L) ^ 987234911L);
         }
     }
 

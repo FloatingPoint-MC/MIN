@@ -58,7 +58,7 @@ public class CommandDebug extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.debug.usage", new Object[0]);
+            throw new WrongUsageException("commands.debug.usage");
         }
         else
         {
@@ -66,10 +66,10 @@ public class CommandDebug extends CommandBase
             {
                 if (args.length != 1)
                 {
-                    throw new WrongUsageException("commands.debug.usage", new Object[0]);
+                    throw new WrongUsageException("commands.debug.usage");
                 }
 
-                notifyCommandListener(sender, this, "commands.debug.start", new Object[0]);
+                notifyCommandListener(sender, this, "commands.debug.start");
                 server.enableProfiling();
                 this.profileStartTime = MinecraftServer.getCurrentTimeMillis();
                 this.profileStartTick = server.getTickCounter();
@@ -78,17 +78,17 @@ public class CommandDebug extends CommandBase
             {
                 if (!"stop".equals(args[0]))
                 {
-                    throw new WrongUsageException("commands.debug.usage", new Object[0]);
+                    throw new WrongUsageException("commands.debug.usage");
                 }
 
                 if (args.length != 1)
                 {
-                    throw new WrongUsageException("commands.debug.usage", new Object[0]);
+                    throw new WrongUsageException("commands.debug.usage");
                 }
 
                 if (!server.profiler.profilingEnabled)
                 {
-                    throw new CommandException("commands.debug.notStarted", new Object[0]);
+                    throw new CommandException("commands.debug.notStarted");
                 }
 
                 long i = MinecraftServer.getCurrentTimeMillis();
@@ -97,7 +97,7 @@ public class CommandDebug extends CommandBase
                 int l = j - this.profileStartTick;
                 this.saveProfilerResults(k, l, server);
                 server.profiler.profilingEnabled = false;
-                notifyCommandListener(sender, this, "commands.debug.stop", new Object[] {String.format("%.2f", (float)k / 1000.0F), l});
+                notifyCommandListener(sender, this, "commands.debug.stop", String.format("%.2f", (float)k / 1000.0F), l);
             }
         }
     }
@@ -132,7 +132,7 @@ public class CommandDebug extends CommandBase
         stringbuilder.append("\n\n");
         stringbuilder.append("Time span: ").append(timeSpan).append(" ms\n");
         stringbuilder.append("Tick span: ").append(tickSpan).append(" ticks\n");
-        stringbuilder.append("// This is approximately ").append(String.format("%.2f", (float)tickSpan / ((float)timeSpan / 1000.0F))).append(" ticks per second. It should be ").append((int)20).append(" ticks per second\n\n");
+        stringbuilder.append("// This is approximately ").append(String.format("%.2f", (float)tickSpan / ((float)timeSpan / 1000.0F))).append(" ticks per second. It should be ").append(20).append(" ticks per second\n\n");
         stringbuilder.append("--- BEGIN PROFILE DUMP ---\n\n");
         this.appendProfilerResults(0, "root", stringbuilder, server);
         stringbuilder.append("--- END PROFILE DUMP ---\n\n");
@@ -165,7 +165,7 @@ public class CommandDebug extends CommandBase
                     }
                     catch (Exception exception)
                     {
-                        builder.append("[[ EXCEPTION ").append((Object)exception).append(" ]]");
+                        builder.append("[[ EXCEPTION ").append(exception).append(" ]]");
                     }
                 }
             }
@@ -191,6 +191,6 @@ public class CommandDebug extends CommandBase
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"start", "stop"}) : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "start", "stop") : Collections.emptyList();
     }
 }

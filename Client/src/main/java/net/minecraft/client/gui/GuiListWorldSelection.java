@@ -16,7 +16,7 @@ public class GuiListWorldSelection extends GuiListExtended
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private final GuiWorldSelection worldSelection;
-    private final List<GuiListWorldSelectionEntry> entries = Lists.<GuiListWorldSelectionEntry>newArrayList();
+    private final List<GuiListWorldSelectionEntry> entries = Lists.newArrayList();
 
     /** Index to the currently selected world */
     private int selectedIdx = -1;
@@ -39,7 +39,7 @@ public class GuiListWorldSelection extends GuiListExtended
         }
         catch (AnvilConverterException anvilconverterexception)
         {
-            LOGGER.error("Couldn't load level list", (Throwable)anvilconverterexception);
+            LOGGER.error("Couldn't load level list", anvilconverterexception);
             this.mc.displayGuiScreen(new GuiErrorScreen(I18n.format("selectWorld.unable_to_load"), anvilconverterexception.getMessage()));
             return;
         }

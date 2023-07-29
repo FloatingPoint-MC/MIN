@@ -54,7 +54,7 @@ public abstract class EntityFireball extends Entity
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
         this.setPosition(x, y, z);
-        double d0 = (double)MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
         this.accelerationZ = accelZ / d0 * 0.1D;
@@ -73,7 +73,7 @@ public abstract class EntityFireball extends Entity
         accelX = accelX + this.rand.nextGaussian() * 0.4D;
         accelY = accelY + this.rand.nextGaussian() * 0.4D;
         accelZ = accelZ + this.rand.nextGaussian() * 0.4D;
-        double d0 = (double)MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
         this.accelerationZ = accelZ / d0 * 0.1D;
@@ -121,9 +121,9 @@ public abstract class EntityFireball extends Entity
             this.motionX += this.accelerationX;
             this.motionY += this.accelerationY;
             this.motionZ += this.accelerationZ;
-            this.motionX *= (double)f;
-            this.motionY *= (double)f;
-            this.motionZ *= (double)f;
+            this.motionX *= f;
+            this.motionY *= f;
+            this.motionZ *= f;
             this.world.spawnParticle(this.getParticleType(), this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
             this.setPosition(this.posX, this.posY, this.posZ);
         }
@@ -165,8 +165,8 @@ public abstract class EntityFireball extends Entity
      */
     public void writeEntityToNBT(NBTTagCompound compound)
     {
-        compound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
-        compound.setTag("power", this.newDoubleNBTList(new double[] {this.accelerationX, this.accelerationY, this.accelerationZ}));
+        compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
+        compound.setTag("power", this.newDoubleNBTList(this.accelerationX, this.accelerationY, this.accelerationZ));
         compound.setInteger("life", this.ticksAlive);
     }
 

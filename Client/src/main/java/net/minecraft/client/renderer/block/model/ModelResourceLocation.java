@@ -37,7 +37,7 @@ public class ModelResourceLocation extends ResourceLocation
 
         if (i >= 0)
         {
-            astring[2] = pathIn.substring(i + 1, pathIn.length());
+            astring[2] = pathIn.substring(i + 1);
 
             if (i > 1)
             {

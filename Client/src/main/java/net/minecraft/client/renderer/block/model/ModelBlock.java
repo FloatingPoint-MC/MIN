@@ -45,7 +45,7 @@ public class ModelBlock
 
     public static ModelBlock deserialize(Reader readerIn)
     {
-        return (ModelBlock)JsonUtils.gsonDeserialize(SERIALIZER, readerIn, ModelBlock.class, false);
+        return JsonUtils.gsonDeserialize(SERIALIZER, readerIn, ModelBlock.class, false);
     }
 
     public static ModelBlock deserialize(String jsonString)
@@ -99,7 +99,7 @@ public class ModelBlock
 
     public Collection<ResourceLocation> getOverrideLocations()
     {
-        Set<ResourceLocation> set = Sets.<ResourceLocation>newHashSet();
+        Set<ResourceLocation> set = Sets.newHashSet();
 
         for (ItemOverride itemoverride : this.overrides)
         {
@@ -219,7 +219,6 @@ public class ModelBlock
             }
             catch (NullPointerException var5)
             {
-                ;
             }
         }
     }
@@ -249,7 +248,7 @@ public class ModelBlock
             if (jsonobject.has("display"))
             {
                 JsonObject jsonobject1 = JsonUtils.getJsonObject(jsonobject, "display");
-                itemcameratransforms = (ItemCameraTransforms)p_deserialize_3_.deserialize(jsonobject1, ItemCameraTransforms.class);
+                itemcameratransforms = p_deserialize_3_.deserialize(jsonobject1, ItemCameraTransforms.class);
             }
 
             List<ItemOverride> list1 = this.getItemOverrides(p_deserialize_3_, jsonobject);
@@ -259,13 +258,13 @@ public class ModelBlock
 
         protected List<ItemOverride> getItemOverrides(JsonDeserializationContext deserializationContext, JsonObject object)
         {
-            List<ItemOverride> list = Lists.<ItemOverride>newArrayList();
+            List<ItemOverride> list = Lists.newArrayList();
 
             if (object.has("overrides"))
             {
                 for (JsonElement jsonelement : JsonUtils.getJsonArray(object, "overrides"))
                 {
-                    list.add((ItemOverride)deserializationContext.deserialize(jsonelement, ItemOverride.class));
+                    list.add(deserializationContext.deserialize(jsonelement, ItemOverride.class));
                 }
             }
 
@@ -274,7 +273,7 @@ public class ModelBlock
 
         private Map<String, String> getTextures(JsonObject object)
         {
-            Map<String, String> map = Maps.<String, String>newHashMap();
+            Map<String, String> map = Maps.newHashMap();
 
             if (object.has("textures"))
             {
@@ -282,7 +281,7 @@ public class ModelBlock
 
                 for (Entry<String, JsonElement> entry : jsonobject.entrySet())
                 {
-                    map.put(entry.getKey(), ((JsonElement)entry.getValue()).getAsString());
+                    map.put(entry.getKey(), entry.getValue().getAsString());
                 }
             }
 
@@ -301,13 +300,13 @@ public class ModelBlock
 
         protected List<BlockPart> getModelElements(JsonDeserializationContext deserializationContext, JsonObject object)
         {
-            List<BlockPart> list = Lists.<BlockPart>newArrayList();
+            List<BlockPart> list = Lists.newArrayList();
 
             if (object.has("elements"))
             {
                 for (JsonElement jsonelement : JsonUtils.getJsonArray(object, "elements"))
                 {
-                    list.add((BlockPart)deserializationContext.deserialize(jsonelement, BlockPart.class));
+                    list.add(deserializationContext.deserialize(jsonelement, BlockPart.class));
                 }
             }
 

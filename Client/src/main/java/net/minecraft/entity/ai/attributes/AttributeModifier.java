@@ -30,7 +30,7 @@ public class AttributeModifier
         this.amount = amountIn;
         this.operation = operationIn;
         Validate.notEmpty(nameIn, "Modifier name cannot be empty");
-        Validate.inclusiveBetween(0L, 2L, (long)operationIn, "Invalid operation");
+        Validate.inclusiveBetween(0L, 2L, operationIn, "Invalid operation");
     }
 
     public UUID getID()
@@ -82,17 +82,9 @@ public class AttributeModifier
 
             if (this.id != null)
             {
-                if (!this.id.equals(attributemodifier.id))
-                {
-                    return false;
-                }
+                return this.id.equals(attributemodifier.id);
             }
-            else if (attributemodifier.id != null)
-            {
-                return false;
-            }
-
-            return true;
+            else return attributemodifier.id == null;
         }
         else
         {

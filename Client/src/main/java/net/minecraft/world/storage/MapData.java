@@ -30,9 +30,9 @@ public class MapData extends WorldSavedData
      * << 4 | brightness flag)
      */
     public byte[] colors = new byte[16384];
-    public List<MapData.MapInfo> playersArrayList = Lists.<MapData.MapInfo>newArrayList();
-    private final Map<EntityPlayer, MapData.MapInfo> playersHashMap = Maps.<EntityPlayer, MapData.MapInfo>newHashMap();
-    public Map<String, MapDecoration> mapDecorations = Maps.<String, MapDecoration>newLinkedHashMap();
+    public List<MapData.MapInfo> playersArrayList = Lists.newArrayList();
+    private final Map<EntityPlayer, MapData.MapInfo> playersHashMap = Maps.newHashMap();
+    public Map<String, MapDecoration> mapDecorations = Maps.newLinkedHashMap();
 
     public MapData(String mapname)
     {
@@ -142,7 +142,7 @@ public class MapData extends WorldSavedData
             {
                 if (!mapStack.isOnItemFrame() && mapdata$mapinfo1.player.dimension == this.dimension && this.trackingPosition)
                 {
-                    this.updateDecorations(MapDecoration.Type.PLAYER, mapdata$mapinfo1.player.world, mapdata$mapinfo1.player.getName(), mapdata$mapinfo1.player.posX, mapdata$mapinfo1.player.posZ, (double)mapdata$mapinfo1.player.rotationYaw);
+                    this.updateDecorations(MapDecoration.Type.PLAYER, mapdata$mapinfo1.player.world, mapdata$mapinfo1.player.getName(), mapdata$mapinfo1.player.posX, mapdata$mapinfo1.player.posZ, mapdata$mapinfo1.player.rotationYaw);
                 }
             }
             else
@@ -156,7 +156,7 @@ public class MapData extends WorldSavedData
         {
             EntityItemFrame entityitemframe = mapStack.getItemFrame();
             BlockPos blockpos = entityitemframe.getHangingPosition();
-            this.updateDecorations(MapDecoration.Type.FRAME, player.world, "frame-" + entityitemframe.getEntityId(), (double)blockpos.getX(), (double)blockpos.getZ(), (double)(entityitemframe.facingDirection.getHorizontalIndex() * 90));
+            this.updateDecorations(MapDecoration.Type.FRAME, player.world, "frame-" + entityitemframe.getEntityId(), blockpos.getX(), blockpos.getZ(), entityitemframe.facingDirection.getHorizontalIndex() * 90);
         }
 
         if (mapStack.hasTagCompound() && mapStack.getTagCompound().hasKey("Decorations", 9))
@@ -192,8 +192,8 @@ public class MapData extends WorldSavedData
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         nbttagcompound.setByte("type", type.getIcon());
         nbttagcompound.setString("id", decorationName);
-        nbttagcompound.setDouble("x", (double)target.getX());
-        nbttagcompound.setDouble("z", (double)target.getZ());
+        nbttagcompound.setDouble("x", target.getX());
+        nbttagcompound.setDouble("z", target.getZ());
         nbttagcompound.setDouble("rot", 180.0D);
         nbttaglist.appendTag(nbttagcompound);
 

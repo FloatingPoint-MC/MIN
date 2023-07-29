@@ -16,13 +16,13 @@ public class GuiLabel extends Gui
     public int id;
     private boolean centered;
     public boolean visible = true;
-    private boolean labelBgEnabled;
+    private final boolean labelBgEnabled;
     private final int textColor;
-    private int backColor;
-    private int ulColor;
-    private int brColor;
+    private final int backColor;
+    private final int ulColor;
+    private final int brColor;
     private final FontRenderer fontRenderer;
-    private int border;
+    private final int border;
 
     public GuiLabel(FontRenderer fontRendererObj, int labelId, int xIn, int yIn, int widthIn, int heightIn, int colorIn)
     {
@@ -32,7 +32,7 @@ public class GuiLabel extends Gui
         this.y = yIn;
         this.width = widthIn;
         this.height = heightIn;
-        this.labels = Lists.<String>newArrayList();
+        this.labels = Lists.newArrayList();
         this.centered = false;
         this.labelBgEnabled = false;
         this.textColor = colorIn;

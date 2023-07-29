@@ -32,9 +32,9 @@ public class PhaseSittingScanning extends PhaseSittingBase
             else
             {
                 Vec3d vec3d = (new Vec3d(entitylivingbase.posX - this.dragon.posX, 0.0D, entitylivingbase.posZ - this.dragon.posZ)).normalize();
-                Vec3d vec3d1 = (new Vec3d((double)MathHelper.sin(this.dragon.rotationYaw * 0.017453292F), 0.0D, (double)(-MathHelper.cos(this.dragon.rotationYaw * 0.017453292F)))).normalize();
+                Vec3d vec3d1 = (new Vec3d(MathHelper.sin(this.dragon.rotationYaw * 0.017453292F), 0.0D, -MathHelper.cos(this.dragon.rotationYaw * 0.017453292F))).normalize();
                 float f = (float)vec3d1.dotProduct(vec3d);
-                float f1 = (float)(Math.acos((double)f) * (180D / Math.PI)) + 0.5F;
+                float f1 = (float)(Math.acos(f) * (180D / Math.PI)) + 0.5F;
 
                 if (f1 < 0.0F || f1 > 10.0F)
                 {
@@ -63,7 +63,7 @@ public class PhaseSittingScanning extends PhaseSittingBase
             if (entitylivingbase != null)
             {
                 this.dragon.getPhaseManager().setPhase(PhaseList.CHARGING_PLAYER);
-                ((PhaseChargingPlayer)this.dragon.getPhaseManager().getPhase(PhaseList.CHARGING_PLAYER)).setTarget(new Vec3d(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ));
+                this.dragon.getPhaseManager().getPhase(PhaseList.CHARGING_PLAYER).setTarget(new Vec3d(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ));
             }
         }
     }

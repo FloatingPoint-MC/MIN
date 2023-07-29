@@ -161,7 +161,7 @@ public class EmptyChunk extends Chunk
 
     public Random getRandomWithSeed(long seed)
     {
-        return new Random(this.getWorld().getSeed() + (long)(this.x * this.x * 4987142) + (long)(this.x * 5947611) + (long)(this.z * this.z) * 4392871L + (long)(this.z * 389711) ^ seed);
+        return new Random(this.getWorld().getSeed() + ((long) this.x * this.x * 4987142) + (this.x * 5947611L) + (long) this.z * this.z * 4392871L + (this.z * 389711L) ^ seed);
     }
 
     public boolean isEmpty()

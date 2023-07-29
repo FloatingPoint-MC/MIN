@@ -52,7 +52,7 @@ public class ClientManager implements Manager {
             }
             int version = jsonObject.getInt("Config-Version");
             if (version != FileManager.VERSION) {
-                if (version == 1) {
+                if (version == 1 || version == 2) {
 
                 } else {
                     return;

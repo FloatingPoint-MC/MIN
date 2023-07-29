@@ -44,8 +44,8 @@ public class DebugRendererWater implements DebugRenderer.IDebugRenderer
 
             if (iblockstate.getBlock() == Blocks.WATER || iblockstate.getBlock() == Blocks.FLOWING_WATER)
             {
-                double d0 = (double)BlockLiquid.getLiquidHeight(iblockstate, world, blockpos1);
-                RenderGlobal.renderFilledBox((new AxisAlignedBB((double)((float)blockpos1.getX() + 0.01F), (double)((float)blockpos1.getY() + 0.01F), (double)((float)blockpos1.getZ() + 0.01F), (double)((float)blockpos1.getX() + 0.99F), d0, (double)((float)blockpos1.getZ() + 0.99F))).offset(-this.xo, -this.yo, -this.zo), 1.0F, 1.0F, 1.0F, 0.2F);
+                double d0 = BlockLiquid.getLiquidHeight(iblockstate, world, blockpos1);
+                RenderGlobal.renderFilledBox((new AxisAlignedBB((float)blockpos1.getX() + 0.01F, (float)blockpos1.getY() + 0.01F, (float)blockpos1.getZ() + 0.01F, (float)blockpos1.getX() + 0.99F, d0, (float)blockpos1.getZ() + 0.99F)).offset(-this.xo, -this.yo, -this.zo), 1.0F, 1.0F, 1.0F, 0.2F);
             }
         }
 
@@ -55,7 +55,7 @@ public class DebugRendererWater implements DebugRenderer.IDebugRenderer
 
             if (iblockstate1.getBlock() == Blocks.WATER || iblockstate1.getBlock() == Blocks.FLOWING_WATER)
             {
-                Integer integer = (Integer)iblockstate1.getValue(BlockLiquid.LEVEL);
+                Integer integer = iblockstate1.getValue(BlockLiquid.LEVEL);
                 double d1 = integer.intValue() > 7 ? 0.9D : 1.0D - 0.11D * (double)integer.intValue();
                 String s = iblockstate1.getBlock() == Blocks.FLOWING_WATER ? "f" : "s";
                 DebugRenderer.renderDebugText(s + " " + integer, (double)blockpos2.getX() + 0.5D, (double)blockpos2.getY() + d1, (double)blockpos2.getZ() + 0.5D, partialTicks, -16777216);

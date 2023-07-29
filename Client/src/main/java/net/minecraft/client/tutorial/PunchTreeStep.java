@@ -18,8 +18,8 @@ import net.minecraft.world.GameType;
 public class PunchTreeStep implements ITutorialStep
 {
     private static final Set<Block> LOG_BLOCKS = Sets.newHashSet(Blocks.LOG, Blocks.LOG2);
-    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.punch_tree.title", new Object[0]);
-    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.punch_tree.description", new Object[] {Tutorial.createKeybindComponent("attack")});
+    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.punch_tree.title");
+    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.punch_tree.description", Tutorial.createKeybindComponent("attack"));
     private final Tutorial tutorial;
     private TutorialToast toast;
     private int timeWaiting;

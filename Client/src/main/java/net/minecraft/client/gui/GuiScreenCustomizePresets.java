@@ -14,7 +14,7 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiScreenCustomizePresets extends GuiScreen
 {
-    private static final List<GuiScreenCustomizePresets.Info> PRESETS = Lists.<GuiScreenCustomizePresets.Info>newArrayList();
+    private static final List<GuiScreenCustomizePresets.Info> PRESETS = Lists.newArrayList();
     private GuiScreenCustomizePresets.ListPreset list;
     private GuiButton select;
     private GuiTextField export;
@@ -219,10 +219,10 @@ public class GuiScreenCustomizePresets extends GuiScreen
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuffer();
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos((double)(i + 0), (double)(p_178051_2_ + 32), 0.0D).tex(0.0D, 1.0D).endVertex();
-            bufferbuilder.pos((double)(i + 32), (double)(p_178051_2_ + 32), 0.0D).tex(1.0D, 1.0D).endVertex();
-            bufferbuilder.pos((double)(i + 32), (double)(p_178051_2_ + 0), 0.0D).tex(1.0D, 0.0D).endVertex();
-            bufferbuilder.pos((double)(i + 0), (double)(p_178051_2_ + 0), 0.0D).tex(0.0D, 0.0D).endVertex();
+            bufferbuilder.pos(i, p_178051_2_ + 32, 0.0D).tex(0.0D, 1.0D).endVertex();
+            bufferbuilder.pos(i + 32, p_178051_2_ + 32, 0.0D).tex(1.0D, 1.0D).endVertex();
+            bufferbuilder.pos(i + 32, p_178051_2_, 0.0D).tex(1.0D, 0.0D).endVertex();
+            bufferbuilder.pos(i, p_178051_2_, 0.0D).tex(0.0D, 0.0D).endVertex();
             tessellator.draw();
         }
 

@@ -21,7 +21,7 @@ public class LanServerDetector
 
     public static class LanServerList
     {
-        private final List<LanServerInfo> listOfLanServers = Lists.<LanServerInfo>newArrayList();
+        private final List<LanServerInfo> listOfLanServers = Lists.newArrayList();
         boolean wasUpdated;
 
         public synchronized boolean getWasUpdated()
@@ -36,7 +36,7 @@ public class LanServerDetector
 
         public synchronized List<LanServerInfo> getLanServers()
         {
-            return Collections.<LanServerInfo>unmodifiableList(this.listOfLanServers);
+            return Collections.unmodifiableList(this.listOfLanServers);
         }
 
         public synchronized void addServer(String pingResponse, InetAddress ipAddress)
@@ -103,7 +103,7 @@ public class LanServerDetector
                 }
                 catch (IOException ioexception)
                 {
-                    LanServerDetector.LOGGER.error("Couldn't ping server", (Throwable)ioexception);
+                    LanServerDetector.LOGGER.error("Couldn't ping server", ioexception);
                     break;
                 }
 
@@ -118,7 +118,6 @@ public class LanServerDetector
             }
             catch (IOException var4)
             {
-                ;
             }
 
             this.socket.close();

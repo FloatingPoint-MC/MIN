@@ -66,7 +66,7 @@ public class ParticleItemPickup extends Particle
 
         if (Config.isShaders())
         {
-            Shaders.setEntityId((Entity)null);
+            Shaders.setEntityId(null);
             Shaders.useProgram(program);
         }
     }

@@ -250,7 +250,7 @@ public class IntegratedServer extends MinecraftServer {
                 return;
             }
 
-            this.ticksSaveLast = (long) i;
+            this.ticksSaveLast = i;
         }
 
         super.saveAllWorlds(isSilent);
@@ -339,22 +339,21 @@ public class IntegratedServer extends MinecraftServer {
             try {
                 i = HttpUtil.getSuitableLanPort();
             } catch (IOException var5) {
-                ;
             }
 
             if (i <= 0) {
                 i = 25564;
             }
 
-            this.getNetworkSystem().addEndpoint((InetAddress) null, i);
-            LOGGER.info("Started on {}", (int) i);
+            this.getNetworkSystem().addEndpoint(null, i);
+            LOGGER.info("Started on {}", i);
             this.isPublic = true;
-            this.lanServerPing = new ThreadLanServerPing(this.getMOTD(), i + "");
+            this.lanServerPing = new ThreadLanServerPing(this.getMOTD(), String.valueOf(i));
             this.lanServerPing.start();
             this.getPlayerList().setGameType(type);
             this.getPlayerList().setCommandsAllowedForAll(allowCheats);
             this.mc.player.setPermissionLevel(allowCheats ? 4 : 0);
-            return i + "";
+            return String.valueOf(i);
         } catch (IOException var61) {
             return null;
         }
@@ -411,7 +410,7 @@ public class IntegratedServer extends MinecraftServer {
     }
 
     private void onTick() {
-        for (WorldServer worldserver : Arrays.asList(this.worlds)) {
+        for (WorldServer worldserver : this.worlds) {
             this.onTick(worldserver);
         }
     }

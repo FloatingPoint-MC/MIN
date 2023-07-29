@@ -18,7 +18,7 @@ import net.minecraft.util.Util;
 
 public class DefaultResourcePack implements IResourcePack
 {
-    public static final Set<String> DEFAULT_RESOURCE_DOMAINS = ImmutableSet.<String>of("minecraft", "realms");
+    public static final Set<String> DEFAULT_RESOURCE_DOMAINS = ImmutableSet.of("minecraft", "realms");
     private final ResourceIndex resourceIndex;
     private static final boolean ON_WINDOWS = Util.getOSType() == Util.EnumOS.WINDOWS;
 
@@ -51,8 +51,7 @@ public class DefaultResourcePack implements IResourcePack
     }
 
     @Nullable
-    public InputStream getInputStreamAssets(ResourceLocation location) throws IOException, FileNotFoundException
-    {
+    public InputStream getInputStreamAssets(ResourceLocation location) throws IOException {
         File file1 = this.resourceIndex.getFile(location);
         return file1 != null && file1.isFile() ? new FileInputStream(file1) : null;
     }
@@ -85,15 +84,15 @@ public class DefaultResourcePack implements IResourcePack
         try
         {
             InputStream inputstream = new FileInputStream(this.resourceIndex.getPackMcmeta());
-            return (T)AbstractResourcePack.readMetadata(metadataSerializer, inputstream, metadataSectionName);
+            return AbstractResourcePack.readMetadata(metadataSerializer, inputstream, metadataSectionName);
         }
         catch (RuntimeException var4)
         {
-            return (T)(null);
+            return null;
         }
         catch (FileNotFoundException var51)
         {
-            return (T)(null);
+            return null;
         }
     }
 

@@ -14,7 +14,7 @@ import net.minecraft.world.biome.Biome;
 
 public class MapGenNetherBridge extends MapGenStructure
 {
-    private final List<Biome.SpawnListEntry> spawnList = Lists.<Biome.SpawnListEntry>newArrayList();
+    private final List<Biome.SpawnListEntry> spawnList = Lists.newArrayList();
 
     public MapGenNetherBridge()
     {

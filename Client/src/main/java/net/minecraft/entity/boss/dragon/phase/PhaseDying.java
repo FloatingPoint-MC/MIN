@@ -43,7 +43,7 @@ public class PhaseDying extends PhaseBase
         if (this.targetLocation == null)
         {
             BlockPos blockpos = this.dragon.world.getHeight(WorldGenEndPodium.END_PODIUM_LOCATION);
-            this.targetLocation = new Vec3d((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
+            this.targetLocation = new Vec3d(blockpos.getX(), blockpos.getY(), blockpos.getZ());
         }
 
         double d0 = this.targetLocation.squareDistanceTo(this.dragon.posX, this.dragon.posY, this.dragon.posZ);

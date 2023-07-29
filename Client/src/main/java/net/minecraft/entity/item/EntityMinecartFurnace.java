@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public class EntityMinecartFurnace extends EntityMinecart
 {
-    private static final DataParameter<Boolean> POWERED = EntityDataManager.<Boolean>createKey(EntityMinecartFurnace.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(EntityMinecartFurnace.class, DataSerializers.BOOLEAN);
     private int fuel;
     public double pushX;
     public double pushZ;
@@ -103,7 +103,7 @@ public class EntityMinecartFurnace extends EntityMinecart
 
         if (d0 > 1.0E-4D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001D)
         {
-            d0 = (double)MathHelper.sqrt(d0);
+            d0 = MathHelper.sqrt(d0);
             this.pushX /= d0;
             this.pushZ /= d0;
 
@@ -127,15 +127,15 @@ public class EntityMinecartFurnace extends EntityMinecart
 
         if (d0 > 1.0E-4D)
         {
-            d0 = (double)MathHelper.sqrt(d0);
+            d0 = MathHelper.sqrt(d0);
             this.pushX /= d0;
             this.pushZ /= d0;
             double d1 = 1.0D;
             this.motionX *= 0.800000011920929D;
             this.motionY *= 0.0D;
             this.motionZ *= 0.800000011920929D;
-            this.motionX += this.pushX * 1.0D;
-            this.motionZ += this.pushZ * 1.0D;
+            this.motionX += this.pushX;
+            this.motionZ += this.pushZ;
         }
         else
         {
@@ -190,7 +190,7 @@ public class EntityMinecartFurnace extends EntityMinecart
 
     protected boolean isMinecartPowered()
     {
-        return ((Boolean)this.dataManager.get(POWERED)).booleanValue();
+        return this.dataManager.get(POWERED).booleanValue();
     }
 
     protected void setMinecartPowered(boolean p_94107_1_)

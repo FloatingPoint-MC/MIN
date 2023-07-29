@@ -88,11 +88,11 @@ public class AdvancementManager
     {
         if (this.advancementsDir == null)
         {
-            return Maps.<ResourceLocation, Advancement.Builder>newHashMap();
+            return Maps.newHashMap();
         }
         else
         {
-            Map<ResourceLocation, Advancement.Builder> map = Maps.<ResourceLocation, Advancement.Builder>newHashMap();
+            Map<ResourceLocation, Advancement.Builder> map = Maps.newHashMap();
             this.advancementsDir.mkdirs();
 
             for (File file1 : FileUtils.listFiles(this.advancementsDir, new String[] {"json"}, true))
@@ -106,7 +106,7 @@ public class AdvancementManager
 
                     try
                     {
-                        Advancement.Builder advancement$builder = (Advancement.Builder)JsonUtils.gsonDeserialize(GSON, FileUtils.readFileToString(file1, StandardCharsets.UTF_8), Advancement.Builder.class);
+                        Advancement.Builder advancement$builder = JsonUtils.gsonDeserialize(GSON, FileUtils.readFileToString(file1, StandardCharsets.UTF_8), Advancement.Builder.class);
 
                         if (advancement$builder == null)
                         {
@@ -119,12 +119,12 @@ public class AdvancementManager
                     }
                     catch (IllegalArgumentException | JsonParseException jsonparseexception)
                     {
-                        LOGGER.error("Parsing error loading custom advancement " + resourcelocation, (Throwable)jsonparseexception);
+                        LOGGER.error("Parsing error loading custom advancement " + resourcelocation, jsonparseexception);
                         this.hasErrored = true;
                     }
                     catch (IOException ioexception)
                     {
-                        LOGGER.error("Couldn't read custom advancement " + resourcelocation + " from " + file1, (Throwable)ioexception);
+                        LOGGER.error("Couldn't read custom advancement " + resourcelocation + " from " + file1, ioexception);
                         this.hasErrored = true;
                     }
                 }
@@ -182,22 +182,22 @@ public class AdvancementManager
                             try
                             {
                                 bufferedreader = Files.newBufferedReader(path1);
-                                Advancement.Builder advancement$builder = (Advancement.Builder)JsonUtils.fromJson(GSON, bufferedreader, Advancement.Builder.class);
+                                Advancement.Builder advancement$builder = JsonUtils.fromJson(GSON, bufferedreader, Advancement.Builder.class);
                                 map.put(resourcelocation, advancement$builder);
                             }
                             catch (JsonParseException jsonparseexception)
                             {
-                                LOGGER.error("Parsing error loading built-in advancement " + resourcelocation, (Throwable)jsonparseexception);
+                                LOGGER.error("Parsing error loading built-in advancement " + resourcelocation, jsonparseexception);
                                 this.hasErrored = true;
                             }
                             catch (IOException ioexception)
                             {
-                                LOGGER.error("Couldn't read advancement " + resourcelocation + " from " + path1, (Throwable)ioexception);
+                                LOGGER.error("Couldn't read advancement " + resourcelocation + " from " + path1, ioexception);
                                 this.hasErrored = true;
                             }
                             finally
                             {
-                                IOUtils.closeQuietly((Reader)bufferedreader);
+                                IOUtils.closeQuietly(bufferedreader);
                             }
                         }
                     }
@@ -211,13 +211,12 @@ public class AdvancementManager
         }
         catch (IOException | URISyntaxException urisyntaxexception)
         {
-            LOGGER.error("Couldn't get a list of all built-in advancement files", (Throwable)urisyntaxexception);
+            LOGGER.error("Couldn't get a list of all built-in advancement files", urisyntaxexception);
             this.hasErrored = true;
-            return;
         }
         finally
         {
-            IOUtils.closeQuietly((Closeable)filesystem);
+            IOUtils.closeQuietly(filesystem);
         }
     }
 

@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class EntityWitherSkull extends EntityFireball
 {
-    private static final DataParameter<Boolean> INVULNERABLE = EntityDataManager.<Boolean>createKey(EntityWitherSkull.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> INVULNERABLE = EntityDataManager.createKey(EntityWitherSkull.class, DataSerializers.BOOLEAN);
 
     public EntityWitherSkull(World worldIn)
     {
@@ -155,7 +155,7 @@ public class EntityWitherSkull extends EntityFireball
      */
     public boolean isInvulnerable()
     {
-        return ((Boolean)this.dataManager.get(INVULNERABLE)).booleanValue();
+        return this.dataManager.get(INVULNERABLE).booleanValue();
     }
 
     /**

@@ -21,9 +21,9 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Joiner JOINER_RESOURCE_PACKS = Joiner.on(", ");
-    private final Map<String, FallbackResourceManager> domainResourceManagers = Maps.<String, FallbackResourceManager>newHashMap();
-    private final List<IResourceManagerReloadListener> reloadListeners = Lists.<IResourceManagerReloadListener>newArrayList();
-    private final Set<String> setResourceDomains = Sets.<String>newLinkedHashSet();
+    private final Map<String, FallbackResourceManager> domainResourceManagers = Maps.newHashMap();
+    private final List<IResourceManagerReloadListener> reloadListeners = Lists.newArrayList();
+    private final Set<String> setResourceDomains = Sets.newLinkedHashSet();
     private final MetadataSerializer rmMetadataSerializer;
 
     public SimpleReloadableResourceManager(MetadataSerializer rmMetadataSerializerIn)
@@ -93,7 +93,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
     public void reloadResources(List<IResourcePack> resourcesPacksList)
     {
         this.clearResources();
-        LOGGER.info("Reloading ResourceManager: {}", (Object)JOINER_RESOURCE_PACKS.join(Iterables.transform(resourcesPacksList, new Function<IResourcePack, String>()
+        LOGGER.info("Reloading ResourceManager: {}", JOINER_RESOURCE_PACKS.join(Iterables.transform(resourcesPacksList, new Function<IResourcePack, String>()
         {
             public String apply(@Nullable IResourcePack p_apply_1_)
             {

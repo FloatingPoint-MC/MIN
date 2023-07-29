@@ -46,7 +46,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntitySheep extends EntityAnimal
 {
-    private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.<Byte>createKey(EntitySheep.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> DYE_COLOR = EntityDataManager.createKey(EntitySheep.class, DataSerializers.BYTE);
 
     /**
      * Internal crafting inventory used to check the result of mixing dyes corresponding to the fleece color when
@@ -256,9 +256,9 @@ public class EntitySheep extends EntityAnimal
                 for (int j = 0; j < i; ++j)
                 {
                     EntityItem entityitem = this.entityDropItem(new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 1, this.getFleeceColor().getMetadata()), 1.0F);
-                    entityitem.motionY += (double)(this.rand.nextFloat() * 0.05F);
-                    entityitem.motionX += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-                    entityitem.motionZ += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
+                    entityitem.motionY += this.rand.nextFloat() * 0.05F;
+                    entityitem.motionX += (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F;
+                    entityitem.motionZ += (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F;
                 }
             }
 
@@ -319,7 +319,7 @@ public class EntitySheep extends EntityAnimal
      */
     public EnumDyeColor getFleeceColor()
     {
-        return EnumDyeColor.byMetadata(((Byte)this.dataManager.get(DYE_COLOR)).byteValue() & 15);
+        return EnumDyeColor.byMetadata(this.dataManager.get(DYE_COLOR).byteValue() & 15);
     }
 
     /**
@@ -327,7 +327,7 @@ public class EntitySheep extends EntityAnimal
      */
     public void setFleeceColor(EnumDyeColor color)
     {
-        byte b0 = ((Byte)this.dataManager.get(DYE_COLOR)).byteValue();
+        byte b0 = this.dataManager.get(DYE_COLOR).byteValue();
         this.dataManager.set(DYE_COLOR, Byte.valueOf((byte)(b0 & 240 | color.getMetadata() & 15)));
     }
 
@@ -336,7 +336,7 @@ public class EntitySheep extends EntityAnimal
      */
     public boolean getSheared()
     {
-        return (((Byte)this.dataManager.get(DYE_COLOR)).byteValue() & 16) != 0;
+        return (this.dataManager.get(DYE_COLOR).byteValue() & 16) != 0;
     }
 
     /**
@@ -344,7 +344,7 @@ public class EntitySheep extends EntityAnimal
      */
     public void setSheared(boolean sheared)
     {
-        byte b0 = ((Byte)this.dataManager.get(DYE_COLOR)).byteValue();
+        byte b0 = this.dataManager.get(DYE_COLOR).byteValue();
 
         if (sheared)
         {
@@ -439,7 +439,7 @@ public class EntitySheep extends EntityAnimal
         int j = ((EntitySheep)mother).getFleeceColor().getDyeDamage();
         this.inventoryCrafting.getStackInSlot(0).setItemDamage(i);
         this.inventoryCrafting.getStackInSlot(1).setItemDamage(j);
-        ItemStack itemstack = CraftingManager.findMatchingResult(this.inventoryCrafting, ((EntitySheep)father).world);
+        ItemStack itemstack = CraftingManager.findMatchingResult(this.inventoryCrafting, father.world);
         int k;
 
         if (itemstack.getItem() == Items.DYE)

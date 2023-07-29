@@ -32,7 +32,7 @@ public class EntityAIFollowGolem extends EntityAIBase
         }
         else
         {
-            List<EntityIronGolem> list = this.villager.world.<EntityIronGolem>getEntitiesWithinAABB(EntityIronGolem.class, this.villager.getEntityBoundingBox().grow(6.0D, 2.0D, 6.0D));
+            List<EntityIronGolem> list = this.villager.world.getEntitiesWithinAABB(EntityIronGolem.class, this.villager.getEntityBoundingBox().grow(6.0D, 2.0D, 6.0D));
 
             if (list.isEmpty())
             {

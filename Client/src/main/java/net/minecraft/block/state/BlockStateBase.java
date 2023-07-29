@@ -26,7 +26,7 @@ public abstract class BlockStateBase implements IBlockState
             }
             else
             {
-                IProperty<?> iproperty = (IProperty)p_apply_1_.getKey();
+                IProperty<?> iproperty = p_apply_1_.getKey();
                 return iproperty.getName() + "=" + this.getPropertyName(iproperty, p_apply_1_.getValue());
             }
         }

@@ -40,7 +40,7 @@ public class ItemKnowledgeBook extends Item
             if (!worldIn.isRemote)
             {
                 NBTTagList nbttaglist = nbttagcompound.getTagList("Recipes", 8);
-                List<IRecipe> list = Lists.<IRecipe>newArrayList();
+                List<IRecipe> list = Lists.newArrayList();
 
                 for (int i = 0; i < nbttaglist.tagCount(); ++i)
                 {

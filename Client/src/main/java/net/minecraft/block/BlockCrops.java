@@ -25,7 +25,7 @@ public class BlockCrops extends BlockBush implements IGrowable
     {
         this.setDefaultState(this.blockState.getBaseState().withProperty(this.getAgeProperty(), Integer.valueOf(0)));
         this.setTickRandomly(true);
-        this.setCreativeTab((CreativeTabs)null);
+        this.setCreativeTab(null);
         this.setHardness(0.0F);
         this.setSoundType(SoundType.PLANT);
         this.disableStats();
@@ -37,7 +37,7 @@ public class BlockCrops extends BlockBush implements IGrowable
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return CROPS_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
+        return CROPS_AABB[state.getValue(this.getAgeProperty()).intValue()];
     }
 
     /**
@@ -60,7 +60,7 @@ public class BlockCrops extends BlockBush implements IGrowable
 
     protected int getAge(IBlockState state)
     {
-        return ((Integer)state.getValue(this.getAgeProperty())).intValue();
+        return state.getValue(this.getAgeProperty()).intValue();
     }
 
     public IBlockState withAge(int age)
@@ -70,7 +70,7 @@ public class BlockCrops extends BlockBush implements IGrowable
 
     public boolean isMaxAge(IBlockState state)
     {
-        return ((Integer)state.getValue(this.getAgeProperty())).intValue() >= this.getMaxAge();
+        return state.getValue(this.getAgeProperty()).intValue() >= this.getMaxAge();
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
@@ -127,7 +127,7 @@ public class BlockCrops extends BlockBush implements IGrowable
                 {
                     f1 = 1.0F;
 
-                    if (((Integer)iblockstate.getValue(BlockFarmland.MOISTURE)).intValue() > 0)
+                    if (iblockstate.getValue(BlockFarmland.MOISTURE).intValue() > 0)
                     {
                         f1 = 3.0F;
                     }
@@ -256,6 +256,6 @@ public class BlockCrops extends BlockBush implements IGrowable
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 }

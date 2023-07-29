@@ -2,7 +2,7 @@ package net.optifine.expr;
 
 public class ConstantFloat implements IExpressionFloat
 {
-    private float value;
+    private final float value;
 
     public ConstantFloat(float value)
     {
@@ -16,6 +16,6 @@ public class ConstantFloat implements IExpressionFloat
 
     public String toString()
     {
-        return "" + this.value;
+        return String.valueOf(this.value);
     }
 }

@@ -85,12 +85,10 @@ public class LegacyPingHandler extends ChannelInboundHandlerAdapter
 
                 bytebuf.release();
                 flag = false;
-                return;
             }
         }
         catch (RuntimeException var21)
         {
-            return;
         }
         finally
         {

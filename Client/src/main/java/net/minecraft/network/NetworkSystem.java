@@ -70,8 +70,8 @@ public class NetworkSystem
 
     /** True if this NetworkSystem has never had his endpoints terminated */
     public volatile boolean isAlive;
-    private final List<ChannelFuture> endpoints = Collections.<ChannelFuture>synchronizedList(Lists.newArrayList());
-    private final List<NetworkManager> networkManagers = Collections.<NetworkManager>synchronizedList(Lists.newArrayList());
+    private final List<ChannelFuture> endpoints = Collections.synchronizedList(Lists.newArrayList());
+    private final List<NetworkManager> networkManagers = Collections.synchronizedList(Lists.newArrayList());
 
     public NetworkSystem(MinecraftServer server)
     {
@@ -102,7 +102,7 @@ public class NetworkSystem
                 LOGGER.info("Using default channel type");
             }
 
-            this.endpoints.add(((ServerBootstrap)((ServerBootstrap)(new ServerBootstrap()).channel(oclass)).childHandler(new ChannelInitializer<Channel>()
+            this.endpoints.add((new ServerBootstrap()).channel(oclass).childHandler(new ChannelInitializer<Channel>()
             {
                 protected void initChannel(Channel p_initChannel_1_) throws Exception
                 {
@@ -112,7 +112,6 @@ public class NetworkSystem
                     }
                     catch (ChannelException var3)
                     {
-                        ;
                     }
 
                     p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("legacy_query", new LegacyPingHandler(NetworkSystem.this)).addLast("splitter", new NettyVarint21FrameDecoder()).addLast("decoder", new NettyPacketDecoder(EnumPacketDirection.SERVERBOUND)).addLast("prepender", new NettyVarint21FrameEncoder()).addLast("encoder", new NettyPacketEncoder(EnumPacketDirection.CLIENTBOUND));
@@ -121,7 +120,7 @@ public class NetworkSystem
                     p_initChannel_1_.pipeline().addLast("packet_handler", networkmanager);
                     networkmanager.setNetHandler(new NetHandlerHandshakeTCP(NetworkSystem.this.server, networkmanager));
                 }
-            }).group(lazyloadbase.getValue()).localAddress(address, port)).bind().syncUninterruptibly());
+            }).group(lazyloadbase.getValue()).localAddress(address, port).bind().syncUninterruptibly());
         }
     }
 
@@ -134,7 +133,7 @@ public class NetworkSystem
 
         synchronized (this.endpoints)
         {
-            channelfuture = ((ServerBootstrap)((ServerBootstrap)(new ServerBootstrap()).channel(LocalServerChannel.class)).childHandler(new ChannelInitializer<Channel>()
+            channelfuture = (new ServerBootstrap()).channel(LocalServerChannel.class).childHandler(new ChannelInitializer<Channel>()
             {
                 protected void initChannel(Channel p_initChannel_1_) throws Exception
                 {
@@ -143,7 +142,7 @@ public class NetworkSystem
                     NetworkSystem.this.networkManagers.add(networkmanager);
                     p_initChannel_1_.pipeline().addLast("packet_handler", networkmanager);
                 }
-            }).group(SERVER_NIO_EVENTLOOP.getValue()).localAddress(LocalAddress.ANY)).bind().syncUninterruptibly();
+            }).group(SERVER_NIO_EVENTLOOP.getValue()).localAddress(LocalAddress.ANY).bind().syncUninterruptibly();
             this.endpoints.add(channelfuture);
         }
 

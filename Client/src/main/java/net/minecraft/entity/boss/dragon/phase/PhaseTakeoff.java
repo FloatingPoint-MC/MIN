@@ -74,7 +74,7 @@ public class PhaseTakeoff extends PhaseBase
             j = j + 12;
         }
 
-        this.currentPath = this.dragon.findPath(i, j, (PathPoint)null);
+        this.currentPath = this.dragon.findPath(i, j, null);
 
         if (this.currentPath != null)
         {

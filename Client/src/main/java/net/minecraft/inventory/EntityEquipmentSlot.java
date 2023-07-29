@@ -14,7 +14,7 @@ public enum EntityEquipmentSlot
     private final int slotIndex;
     private final String name;
 
-    private EntityEquipmentSlot(EntityEquipmentSlot.Type slotTypeIn, int indexIn, int slotIndexIn, String nameIn)
+    EntityEquipmentSlot(EntityEquipmentSlot.Type slotTypeIn, int indexIn, int slotIndexIn, String nameIn)
     {
         this.slotType = slotTypeIn;
         this.index = indexIn;
@@ -58,8 +58,8 @@ public enum EntityEquipmentSlot
         throw new IllegalArgumentException("Invalid slot '" + targetName + "'");
     }
 
-    public static enum Type {
+    public enum Type {
         HAND,
-        ARMOR;
+        ARMOR
     }
 }

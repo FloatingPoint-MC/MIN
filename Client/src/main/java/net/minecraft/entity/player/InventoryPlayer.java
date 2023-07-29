@@ -842,7 +842,7 @@ public class InventoryPlayer implements IInventory
      */
     public ITextComponent getDisplayName()
     {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
     }
 
     /**

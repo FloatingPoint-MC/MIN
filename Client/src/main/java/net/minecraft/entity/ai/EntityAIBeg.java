@@ -28,8 +28,8 @@ public class EntityAIBeg extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-        this.player = this.world.getClosestPlayerToEntity(this.wolf, (double)this.minPlayerDistance);
-        return this.player == null ? false : this.hasTemptationItemInHand(this.player);
+        this.player = this.world.getClosestPlayerToEntity(this.wolf, this.minPlayerDistance);
+        return this.player != null && this.hasTemptationItemInHand(this.player);
     }
 
     /**

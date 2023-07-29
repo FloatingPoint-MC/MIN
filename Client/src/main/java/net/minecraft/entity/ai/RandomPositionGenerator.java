@@ -24,13 +24,13 @@ public class RandomPositionGenerator
      */
     public static Vec3d findRandomTarget(EntityCreature entitycreatureIn, int xz, int y)
     {
-        return findRandomTargetBlock(entitycreatureIn, xz, y, (Vec3d)null);
+        return findRandomTargetBlock(entitycreatureIn, xz, y, null);
     }
 
     @Nullable
     public static Vec3d getLandPos(EntityCreature p_191377_0_, int p_191377_1_, int p_191377_2_)
     {
-        return generateRandomPos(p_191377_0_, p_191377_1_, p_191377_2_, (Vec3d)null, false);
+        return generateRandomPos(p_191377_0_, p_191377_1_, p_191377_2_, null, false);
     }
 
     @Nullable
@@ -75,8 +75,8 @@ public class RandomPositionGenerator
 
         if (p_191379_0_.hasHome())
         {
-            double d0 = p_191379_0_.getHomePosition().distanceSq((double)MathHelper.floor(p_191379_0_.posX), (double)MathHelper.floor(p_191379_0_.posY), (double)MathHelper.floor(p_191379_0_.posZ)) + 4.0D;
-            double d1 = (double)(p_191379_0_.getMaximumHomeDistance() + (float)p_191379_1_);
+            double d0 = p_191379_0_.getHomePosition().distanceSq(MathHelper.floor(p_191379_0_.posX), MathHelper.floor(p_191379_0_.posY), MathHelper.floor(p_191379_0_.posZ)) + 4.0D;
+            double d1 = p_191379_0_.getMaximumHomeDistance() + (float)p_191379_1_;
             flag = d0 < d1 * d1;
         }
         else
@@ -171,7 +171,6 @@ public class RandomPositionGenerator
 
             for (blockpos = p_191378_0_.up(); blockpos.getY() < p_191378_1_.world.getHeight() && p_191378_1_.world.getBlockState(blockpos).getMaterial().isSolid(); blockpos = blockpos.up())
             {
-                ;
             }
 
             return blockpos;

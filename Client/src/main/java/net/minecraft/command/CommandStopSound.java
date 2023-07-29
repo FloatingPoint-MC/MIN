@@ -57,7 +57,7 @@ public class CommandStopSound extends CommandBase
 
                 if (soundcategory == null)
                 {
-                    throw new CommandException("commands.stopsound.unknownSoundSource", new Object[] {s2});
+                    throw new CommandException("commands.stopsound.unknownSoundSource", s2);
                 }
 
                 s = soundcategory.getName();
@@ -75,20 +75,20 @@ public class CommandStopSound extends CommandBase
 
             if (s.isEmpty() && s1.isEmpty())
             {
-                notifyCommandListener(sender, this, "commands.stopsound.success.all", new Object[] {entityplayermp.getName()});
+                notifyCommandListener(sender, this, "commands.stopsound.success.all", entityplayermp.getName());
             }
             else if (s1.isEmpty())
             {
-                notifyCommandListener(sender, this, "commands.stopsound.success.soundSource", new Object[] {s, entityplayermp.getName()});
+                notifyCommandListener(sender, this, "commands.stopsound.success.soundSource", s, entityplayermp.getName());
             }
             else
             {
-                notifyCommandListener(sender, this, "commands.stopsound.success.individualSound", new Object[] {s1, s, entityplayermp.getName()});
+                notifyCommandListener(sender, this, "commands.stopsound.success.individualSound", s1, s, entityplayermp.getName());
             }
         }
         else
         {
-            throw new WrongUsageException(this.getUsage(sender), new Object[0]);
+            throw new WrongUsageException(this.getUsage(sender));
         }
     }
 

@@ -39,7 +39,7 @@ public class SPacketCustomSound implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.soundName = buf.readString(256);
-        this.category = (SoundCategory)buf.readEnumValue(SoundCategory.class);
+        this.category = buf.readEnumValue(SoundCategory.class);
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
@@ -73,17 +73,17 @@ public class SPacketCustomSound implements Packet<INetHandlerPlayClient>
 
     public double getX()
     {
-        return (double)((float)this.x / 8.0F);
+        return (float)this.x / 8.0F;
     }
 
     public double getY()
     {
-        return (double)((float)this.y / 8.0F);
+        return (float)this.y / 8.0F;
     }
 
     public double getZ()
     {
-        return (double)((float)this.z / 8.0F);
+        return (float)this.z / 8.0F;
     }
 
     public float getVolume()

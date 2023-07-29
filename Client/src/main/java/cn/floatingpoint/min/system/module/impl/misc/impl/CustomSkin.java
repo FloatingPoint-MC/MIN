@@ -11,8 +11,6 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.UUID;
 
 /**
@@ -46,7 +44,7 @@ public class CustomSkin extends MiscModule {
         if (mc.player != null && mc.player.connection != null) {
             NetworkPlayerInfo info = mc.player.connection.getPlayerInfo(mc.player.getUniqueID());
             if (info != null) {
-                if (timer.isDelayComplete(10000L)) {
+                if (timer.isDelayComplete(3000L)) {
                     if (!cacheUsername.equals(username.getValue())) {
                         info.setPlayerTexturesLoaded(false);
                         cacheUsername = username.getValue();
@@ -90,8 +88,7 @@ public class CustomSkin extends MiscModule {
                                     }
                                 }, false);
                             }
-                        } catch (IOException | URISyntaxException e) {
-                            throw new RuntimeException(e);
+                        } catch (Exception ignored) {
                         }
                     });
                 }

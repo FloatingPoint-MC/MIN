@@ -48,7 +48,7 @@ public class MultiPartEntityPart extends Entity
      */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        return this.isEntityInvulnerable(source) ? false : this.parent.attackEntityFromPart(this, source, amount);
+        return !this.isEntityInvulnerable(source) && this.parent.attackEntityFromPart(this, source, amount);
     }
 
     /**

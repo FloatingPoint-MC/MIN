@@ -124,8 +124,8 @@ public class GuiScreenBook extends GuiScreen
 
         int i = (this.width - 192) / 2;
         int j = 2;
-        this.buttonNextPage = (GuiScreenBook.NextPageButton)this.addButton(new GuiScreenBook.NextPageButton(1, i + 120, 156, true));
-        this.buttonPreviousPage = (GuiScreenBook.NextPageButton)this.addButton(new GuiScreenBook.NextPageButton(2, i + 38, 156, false));
+        this.buttonNextPage = this.addButton(new NextPageButton(1, i + 120, 156, true));
+        this.buttonPreviousPage = this.addButton(new NextPageButton(2, i + 38, 156, false));
         this.updateButtons();
     }
 
@@ -205,7 +205,7 @@ public class GuiScreenBook extends GuiScreen
         {
             if (button.id == 0)
             {
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
                 this.sendBookToServer(false);
             }
             else if (button.id == 3 && this.bookIsUnsigned)
@@ -238,7 +238,7 @@ public class GuiScreenBook extends GuiScreen
             else if (button.id == 5 && this.bookGettingSigned)
             {
                 this.sendBookToServer(true);
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
             else if (button.id == 4 && this.bookGettingSigned)
             {
@@ -338,7 +338,7 @@ public class GuiScreenBook extends GuiScreen
                 if (!this.bookTitle.isEmpty())
                 {
                     this.sendBookToServer(true);
-                    this.mc.displayGuiScreen((GuiScreen)null);
+                    this.mc.displayGuiScreen(null);
                 }
 
                 return;
@@ -346,7 +346,7 @@ public class GuiScreenBook extends GuiScreen
             default:
                 if (this.bookTitle.length() < 16 && ChatAllowedCharacters.isAllowedCharacter(typedChar))
                 {
-                    this.bookTitle = this.bookTitle + Character.toString(typedChar);
+                    this.bookTitle = this.bookTitle + typedChar;
                     this.updateButtons();
                     this.bookIsModified = true;
                 }
@@ -380,7 +380,7 @@ public class GuiScreenBook extends GuiScreen
     {
         String s = this.pageGetCurrent();
         String s1 = s + p_146459_1_;
-        int i = this.fontRenderer.getWordWrappedHeight(s1 + "" + TextFormatting.BLACK + "_", 118);
+        int i = this.fontRenderer.getWordWrappedHeight(s1 + TextFormatting.BLACK + "_", 118);
 
         if (i <= 128 && s1.length() < 256)
         {
@@ -407,11 +407,11 @@ public class GuiScreenBook extends GuiScreen
             {
                 if (this.updateCount / 6 % 2 == 0)
                 {
-                    s = s + "" + TextFormatting.BLACK + "_";
+                    s = s + TextFormatting.BLACK + "_";
                 }
                 else
                 {
-                    s = s + "" + TextFormatting.GRAY + "_";
+                    s = s + TextFormatting.GRAY + "_";
                 }
             }
 
@@ -444,11 +444,11 @@ public class GuiScreenBook extends GuiScreen
                 }
                 else if (this.updateCount / 6 % 2 == 0)
                 {
-                    s5 = s5 + "" + TextFormatting.BLACK + "_";
+                    s5 = s5 + TextFormatting.BLACK + "_";
                 }
                 else
                 {
-                    s5 = s5 + "" + TextFormatting.GRAY + "_";
+                    s5 = s5 + TextFormatting.GRAY + "_";
                 }
             }
             else if (this.cachedPage != this.currPage)
@@ -549,7 +549,6 @@ public class GuiScreenBook extends GuiScreen
             }
             catch (Throwable var5)
             {
-                ;
             }
 
             return false;
@@ -560,7 +559,7 @@ public class GuiScreenBook extends GuiScreen
 
             if (flag && clickevent.getAction() == ClickEvent.Action.RUN_COMMAND)
             {
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
 
             return flag;

@@ -33,7 +33,7 @@ public class LootTable
 
     public List<ItemStack> generateLootForPools(Random rand, LootContext context)
     {
-        List<ItemStack> list = Lists.<ItemStack>newArrayList();
+        List<ItemStack> list = Lists.newArrayList();
 
         if (context.addLootTable(this))
         {
@@ -68,11 +68,11 @@ public class LootTable
 
             if (itemstack.isEmpty())
             {
-                inventory.setInventorySlotContents(((Integer)list1.remove(list1.size() - 1)).intValue(), ItemStack.EMPTY);
+                inventory.setInventorySlotContents(list1.remove(list1.size() - 1).intValue(), ItemStack.EMPTY);
             }
             else
             {
-                inventory.setInventorySlotContents(((Integer)list1.remove(list1.size() - 1)).intValue(), itemstack);
+                inventory.setInventorySlotContents(list1.remove(list1.size() - 1).intValue(), itemstack);
             }
         }
     }
@@ -82,7 +82,7 @@ public class LootTable
      */
     private void shuffleItems(List<ItemStack> stacks, int p_186463_2_, Random rand)
     {
-        List<ItemStack> list = Lists.<ItemStack>newArrayList();
+        List<ItemStack> list = Lists.newArrayList();
         Iterator<ItemStack> iterator = stacks.iterator();
 
         while (iterator.hasNext())
@@ -133,7 +133,7 @@ public class LootTable
 
     private List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand)
     {
-        List<Integer> list = Lists.<Integer>newArrayList();
+        List<Integer> list = Lists.newArrayList();
 
         for (int i = 0; i < inventory.getSizeInventory(); ++i)
         {
@@ -152,7 +152,7 @@ public class LootTable
         public LootTable deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
         {
             JsonObject jsonobject = JsonUtils.getJsonObject(p_deserialize_1_, "loot table");
-            LootPool[] alootpool = (LootPool[])JsonUtils.deserializeClass(jsonobject, "pools", new LootPool[0], p_deserialize_3_, LootPool[].class);
+            LootPool[] alootpool = JsonUtils.deserializeClass(jsonobject, "pools", new LootPool[0], p_deserialize_3_, LootPool[].class);
             return new LootTable(alootpool);
         }
 

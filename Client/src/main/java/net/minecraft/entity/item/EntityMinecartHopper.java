@@ -171,11 +171,11 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
         }
         else
         {
-            List<EntityItem> list = this.world.<EntityItem>getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().grow(0.25D, 0.0D, 0.25D), EntitySelectors.IS_ALIVE);
+            List<EntityItem> list = this.world.getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().grow(0.25D, 0.0D, 0.25D), EntitySelectors.IS_ALIVE);
 
             if (!list.isEmpty())
             {
-                TileEntityHopper.putDropInInventoryAllSlots((IInventory)null, this, list.get(0));
+                TileEntityHopper.putDropInInventoryAllSlots(null, this, list.get(0));
             }
 
             return false;
@@ -214,7 +214,7 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
     {
         super.readEntityFromNBT(compound);
         this.transferTicker = compound.getInteger("TransferCooldown");
-        this.isBlocked = compound.hasKey("Enabled") ? compound.getBoolean("Enabled") : true;
+        this.isBlocked = !compound.hasKey("Enabled") || compound.getBoolean("Enabled");
     }
 
     /**

@@ -84,7 +84,7 @@ public class LootEntryItem extends LootEntry
 
         if (object.has("functions"))
         {
-            alootfunction = (LootFunction[])JsonUtils.deserializeClass(object, "functions", deserializationContext, LootFunction[].class);
+            alootfunction = JsonUtils.deserializeClass(object, "functions", deserializationContext, LootFunction[].class);
         }
         else
         {

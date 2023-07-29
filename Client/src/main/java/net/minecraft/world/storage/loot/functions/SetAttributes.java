@@ -44,7 +44,7 @@ public class SetAttributes extends LootFunction
             }
 
             EntityEquipmentSlot entityequipmentslot = setattributes$modifier.slots[rand.nextInt(setattributes$modifier.slots.length)];
-            stack.addAttributeModifier(setattributes$modifier.attributeName, new AttributeModifier(uuid, setattributes$modifier.modifierName, (double)setattributes$modifier.amount.generateFloat(rand), setattributes$modifier.operation), entityequipmentslot);
+            stack.addAttributeModifier(setattributes$modifier.attributeName, new AttributeModifier(uuid, setattributes$modifier.modifierName, setattributes$modifier.amount.generateFloat(rand), setattributes$modifier.operation), entityequipmentslot);
         }
 
         return stack;
@@ -107,7 +107,7 @@ public class SetAttributes extends LootFunction
             String s = JsonUtils.getString(jsonObj, "name");
             String s1 = JsonUtils.getString(jsonObj, "attribute");
             int i = getOperationFromInt(JsonUtils.getString(jsonObj, "operation"));
-            RandomValueRange randomvaluerange = (RandomValueRange)JsonUtils.deserializeClass(jsonObj, "amount", context, RandomValueRange.class);
+            RandomValueRange randomvaluerange = JsonUtils.deserializeClass(jsonObj, "amount", context, RandomValueRange.class);
             UUID uuid = null;
             EntityEquipmentSlot[] aentityequipmentslot;
 

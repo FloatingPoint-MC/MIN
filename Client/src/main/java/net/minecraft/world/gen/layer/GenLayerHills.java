@@ -31,14 +31,14 @@ public class GenLayerHills extends GenLayer
         {
             for (int j = 0; j < areaWidth; ++j)
             {
-                this.initChunkSeed((long)(j + areaX), (long)(i + areaY));
+                this.initChunkSeed(j + areaX, i + areaY);
                 int k = aint[j + 1 + (i + 1) * (areaWidth + 2)];
                 int l = aint1[j + 1 + (i + 1) * (areaWidth + 2)];
                 boolean flag = (l - 2) % 29 == 0;
 
                 if (k > 255)
                 {
-                    LOGGER.debug("old! {}", (int)k);
+                    LOGGER.debug("old! {}", k);
                 }
 
                 Biome biome = Biome.getBiomeForId(k);
@@ -148,9 +148,9 @@ public class GenLayerHills extends GenLayer
                     }
                     else
                     {
-                        int k2 = aint[j + 1 + (i + 0) * (areaWidth + 2)];
+                        int k2 = aint[j + 1 + (i) * (areaWidth + 2)];
                         int j1 = aint[j + 2 + (i + 1) * (areaWidth + 2)];
-                        int k1 = aint[j + 0 + (i + 1) * (areaWidth + 2)];
+                        int k1 = aint[j + (i + 1) * (areaWidth + 2)];
                         int l1 = aint[j + 1 + (i + 2) * (areaWidth + 2)];
                         int i2 = 0;
 

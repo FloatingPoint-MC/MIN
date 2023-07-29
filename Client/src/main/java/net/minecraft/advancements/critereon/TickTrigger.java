@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 public class TickTrigger implements ICriterionTrigger<TickTrigger.Instance>
 {
     public static final ResourceLocation ID = new ResourceLocation("tick");
-    private final Map<PlayerAdvancements, TickTrigger.Listeners> listeners = Maps.<PlayerAdvancements, TickTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, TickTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -84,7 +84,7 @@ public class TickTrigger implements ICriterionTrigger<TickTrigger.Instance>
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<TickTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<TickTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<TickTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {

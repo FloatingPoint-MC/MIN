@@ -14,7 +14,7 @@ public enum GameType
     String name;
     String shortName;
 
-    private GameType(int idIn, String nameIn, String shortNameIn)
+    GameType(int idIn, String nameIn, String shortNameIn)
     {
         this.id = idIn;
         this.name = nameIn;

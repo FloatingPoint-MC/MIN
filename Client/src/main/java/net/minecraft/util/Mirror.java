@@ -9,7 +9,7 @@ public enum Mirror
     private final String name;
     private static final String[] mirrorNames = new String[values().length];
 
-    private Mirror(String nameIn)
+    Mirror(String nameIn)
     {
         this.name = nameIn;
     }

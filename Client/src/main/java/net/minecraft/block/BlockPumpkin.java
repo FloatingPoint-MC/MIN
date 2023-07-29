@@ -153,7 +153,7 @@ public class BlockPumpkin extends BlockHorizontal
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -163,7 +163,7 @@ public class BlockPumpkin extends BlockHorizontal
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     /**
@@ -188,12 +188,12 @@ public class BlockPumpkin extends BlockHorizontal
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     protected BlockPattern getSnowmanBasePattern()

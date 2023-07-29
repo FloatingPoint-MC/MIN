@@ -29,7 +29,6 @@ public class ZombieProfToType implements IFixableData
                     }
                     catch (RuntimeException var4)
                     {
-                        ;
                     }
                 }
 

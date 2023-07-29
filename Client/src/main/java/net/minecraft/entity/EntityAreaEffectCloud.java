@@ -26,12 +26,12 @@ import net.minecraft.world.WorldServer;
 
 public class EntityAreaEffectCloud extends Entity
 {
-    private static final DataParameter<Float> RADIUS = EntityDataManager.<Float>createKey(EntityAreaEffectCloud.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> COLOR = EntityDataManager.<Integer>createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> IGNORE_RADIUS = EntityDataManager.<Boolean>createKey(EntityAreaEffectCloud.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> PARTICLE = EntityDataManager.<Integer>createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> PARTICLE_PARAM_1 = EntityDataManager.<Integer>createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> PARTICLE_PARAM_2 = EntityDataManager.<Integer>createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
+    private static final DataParameter<Float> RADIUS = EntityDataManager.createKey(EntityAreaEffectCloud.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IGNORE_RADIUS = EntityDataManager.createKey(EntityAreaEffectCloud.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> PARTICLE = EntityDataManager.createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> PARTICLE_PARAM_1 = EntityDataManager.createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> PARTICLE_PARAM_2 = EntityDataManager.createKey(EntityAreaEffectCloud.class, DataSerializers.VARINT);
     private PotionType potion;
     private final List<PotionEffect> effects;
     private final Map<Entity, Integer> reapplicationDelayMap;
@@ -49,8 +49,8 @@ public class EntityAreaEffectCloud extends Entity
     {
         super(worldIn);
         this.potion = PotionTypes.EMPTY;
-        this.effects = Lists.<PotionEffect>newArrayList();
-        this.reapplicationDelayMap = Maps.<Entity, Integer>newHashMap();
+        this.effects = Lists.newArrayList();
+        this.reapplicationDelayMap = Maps.newHashMap();
         this.duration = 600;
         this.waitTime = 20;
         this.reapplicationDelay = 20;
@@ -91,7 +91,7 @@ public class EntityAreaEffectCloud extends Entity
 
     public float getRadius()
     {
-        return ((Float)this.getDataManager().get(RADIUS)).floatValue();
+        return this.getDataManager().get(RADIUS).floatValue();
     }
 
     public void setPotion(PotionType potionIn)
@@ -128,7 +128,7 @@ public class EntityAreaEffectCloud extends Entity
 
     public int getColor()
     {
-        return ((Integer)this.getDataManager().get(COLOR)).intValue();
+        return this.getDataManager().get(COLOR).intValue();
     }
 
     public void setColor(int colorIn)
@@ -139,7 +139,7 @@ public class EntityAreaEffectCloud extends Entity
 
     public EnumParticleTypes getParticle()
     {
-        return EnumParticleTypes.getParticleFromId(((Integer)this.getDataManager().get(PARTICLE)).intValue());
+        return EnumParticleTypes.getParticleFromId(this.getDataManager().get(PARTICLE).intValue());
     }
 
     public void setParticle(EnumParticleTypes particleIn)
@@ -149,7 +149,7 @@ public class EntityAreaEffectCloud extends Entity
 
     public int getParticleParam1()
     {
-        return ((Integer)this.getDataManager().get(PARTICLE_PARAM_1)).intValue();
+        return this.getDataManager().get(PARTICLE_PARAM_1).intValue();
     }
 
     public void setParticleParam1(int particleParam)
@@ -159,7 +159,7 @@ public class EntityAreaEffectCloud extends Entity
 
     public int getParticleParam2()
     {
-        return ((Integer)this.getDataManager().get(PARTICLE_PARAM_2)).intValue();
+        return this.getDataManager().get(PARTICLE_PARAM_2).intValue();
     }
 
     public void setParticleParam2(int particleParam)
@@ -180,7 +180,7 @@ public class EntityAreaEffectCloud extends Entity
      */
     public boolean shouldIgnoreRadius()
     {
-        return ((Boolean)this.getDataManager().get(IGNORE_RADIUS)).booleanValue();
+        return this.getDataManager().get(IGNORE_RADIUS).booleanValue();
     }
 
     public int getDuration()
@@ -234,7 +234,7 @@ public class EntityAreaEffectCloud extends Entity
                             int k = j >> 16 & 255;
                             int l = j >> 8 & 255;
                             int i1 = j & 255;
-                            this.world.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), this.posX + (double)f3, this.posY, this.posZ + (double)f4, (double)((float)k / 255.0F), (double)((float)l / 255.0F), (double)((float)i1 / 255.0F));
+                            this.world.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), this.posX + (double)f3, this.posY, this.posZ + (double)f4, (float)k / 255.0F, (float)l / 255.0F, (float)i1 / 255.0F);
                         }
                         else
                         {
@@ -260,7 +260,7 @@ public class EntityAreaEffectCloud extends Entity
                         int i2 = l1 >> 16 & 255;
                         int j2 = l1 >> 8 & 255;
                         int j1 = l1 & 255;
-                        this.world.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), this.posX + (double)f8, this.posY, this.posZ + (double)f9, (double)((float)i2 / 255.0F), (double)((float)j2 / 255.0F), (double)((float)j1 / 255.0F));
+                        this.world.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), this.posX + (double)f8, this.posY, this.posZ + (double)f9, (float)i2 / 255.0F, (float)j2 / 255.0F, (float)j1 / 255.0F);
                     }
                     else
                     {
@@ -308,9 +308,9 @@ public class EntityAreaEffectCloud extends Entity
 
                 while (iterator.hasNext())
                 {
-                    Entry<Entity, Integer> entry = (Entry)iterator.next();
+                    Entry<Entity, Integer> entry = iterator.next();
 
-                    if (this.ticksExisted >= ((Integer)entry.getValue()).intValue())
+                    if (this.ticksExisted >= entry.getValue().intValue())
                     {
                         iterator.remove();
                     }
@@ -331,7 +331,7 @@ public class EntityAreaEffectCloud extends Entity
                 }
                 else
                 {
-                    List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
+                    List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
 
                     if (!list.isEmpty())
                     {
@@ -511,7 +511,7 @@ public class EntityAreaEffectCloud extends Entity
 
         if (this.potion != PotionTypes.EMPTY && this.potion != null)
         {
-            compound.setString("Potion", ((ResourceLocation)PotionType.REGISTRY.getNameForObject(this.potion)).toString());
+            compound.setString("Potion", PotionType.REGISTRY.getNameForObject(this.potion).toString());
         }
 
         if (!this.effects.isEmpty())

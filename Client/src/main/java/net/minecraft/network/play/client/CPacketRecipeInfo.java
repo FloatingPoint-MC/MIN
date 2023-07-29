@@ -36,7 +36,7 @@ public class CPacketRecipeInfo implements Packet<INetHandlerPlayServer>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.purpose = (CPacketRecipeInfo.Purpose)buf.readEnumValue(CPacketRecipeInfo.Purpose.class);
+        this.purpose = buf.readEnumValue(Purpose.class);
 
         if (this.purpose == CPacketRecipeInfo.Purpose.SHOWN)
         {
@@ -95,9 +95,9 @@ public class CPacketRecipeInfo implements Packet<INetHandlerPlayServer>
         return this.filteringCraftable;
     }
 
-    public static enum Purpose
+    public enum Purpose
     {
         SHOWN,
-        SETTINGS;
+        SETTINGS
     }
 }

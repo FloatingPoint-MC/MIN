@@ -54,7 +54,7 @@ public class BlockChorusFlower extends Block
 
             if (worldIn.isAirBlock(blockpos) && blockpos.getY() < 256)
             {
-                int i = ((Integer)state.getValue(AGE)).intValue();
+                int i = state.getValue(AGE).intValue();
 
                 if (i < 5 && rand.nextInt(1) == 0)
                 {
@@ -105,7 +105,7 @@ public class BlockChorusFlower extends Block
                         flag = true;
                     }
 
-                    if (flag && areAllNeighborsEmpty(worldIn, blockpos, (EnumFacing)null) && worldIn.isAirBlock(pos.up(2)))
+                    if (flag && areAllNeighborsEmpty(worldIn, blockpos, null) && worldIn.isAirBlock(pos.up(2)))
                     {
                         worldIn.setBlockState(pos, Blocks.CHORUS_PLANT.getDefaultState(), 2);
                         this.placeGrownFlower(worldIn, blockpos, i);
@@ -289,12 +289,12 @@ public class BlockChorusFlower extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return state.getValue(AGE).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
     public static void generatePlant(World worldIn, BlockPos pos, Random rand, int p_185603_3_)
@@ -316,7 +316,7 @@ public class BlockChorusFlower extends Block
         {
             BlockPos blockpos = p_185601_1_.up(j + 1);
 
-            if (!areAllNeighborsEmpty(worldIn, blockpos, (EnumFacing)null))
+            if (!areAllNeighborsEmpty(worldIn, blockpos, null))
             {
                 return;
             }

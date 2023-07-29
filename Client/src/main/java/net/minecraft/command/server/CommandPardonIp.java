@@ -58,16 +58,16 @@ public class CommandPardonIp extends CommandBase
             if (matcher.matches())
             {
                 server.getPlayerList().getBannedIPs().removeEntry(args[0]);
-                notifyCommandListener(sender, this, "commands.unbanip.success", new Object[] {args[0]});
+                notifyCommandListener(sender, this, "commands.unbanip.success", args[0]);
             }
             else
             {
-                throw new SyntaxErrorException("commands.unbanip.invalid", new Object[0]);
+                throw new SyntaxErrorException("commands.unbanip.invalid");
             }
         }
         else
         {
-            throw new WrongUsageException("commands.unbanip.usage", new Object[0]);
+            throw new WrongUsageException("commands.unbanip.usage");
         }
     }
 

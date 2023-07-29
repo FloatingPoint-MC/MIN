@@ -34,13 +34,13 @@ public class NetHandlerHandshakeTCP implements INetHandlerHandshakeServer
 
                 if (packetIn.getProtocolVersion() > 340)
                 {
-                    ITextComponent itextcomponent = new TextComponentTranslation("multiplayer.disconnect.outdated_server", new Object[] {"1.12.2"});
+                    ITextComponent itextcomponent = new TextComponentTranslation("multiplayer.disconnect.outdated_server", "1.12.2");
                     this.networkManager.sendPacket(new SPacketDisconnect(itextcomponent));
                     this.networkManager.closeChannel(itextcomponent);
                 }
                 else if (packetIn.getProtocolVersion() < 340)
                 {
-                    ITextComponent itextcomponent1 = new TextComponentTranslation("multiplayer.disconnect.outdated_client", new Object[] {"1.12.2"});
+                    ITextComponent itextcomponent1 = new TextComponentTranslation("multiplayer.disconnect.outdated_client", "1.12.2");
                     this.networkManager.sendPacket(new SPacketDisconnect(itextcomponent1));
                     this.networkManager.closeChannel(itextcomponent1);
                 }

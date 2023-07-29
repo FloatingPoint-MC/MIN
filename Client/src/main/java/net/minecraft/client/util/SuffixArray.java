@@ -29,7 +29,7 @@ public class SuffixArray<T>
      */
     private static final boolean DEBUG_PRINT_ARRAY = Boolean.parseBoolean(System.getProperty("SuffixArray.printArray", "false"));
     private static final Logger LOGGER = LogManager.getLogger();
-    protected final List<T> list = Lists.<T>newArrayList();
+    protected final List<T> list = Lists.newArrayList();
     private final IntList chars = new IntArrayList();
     private final IntList wordStarts = new IntArrayList();
     private IntList suffixToT = new IntArrayList();
@@ -163,7 +163,7 @@ public class SuffixArray<T>
                 stringbuilder.append('^');
             }
 
-            int l2 = ((Integer)this.chars.get(j2 + k2)).intValue();
+            int l2 = this.chars.get(j2 + k2).intValue();
 
             if (l2 == -1)
             {
@@ -268,7 +268,7 @@ public class SuffixArray<T>
 
             int[] aint4 = intset.toIntArray();
             java.util.Arrays.sort(aint4);
-            Set<T> set = Sets.<T>newLinkedHashSet();
+            Set<T> set = Sets.newLinkedHashSet();
 
             for (int l3 : aint4)
             {
@@ -279,7 +279,7 @@ public class SuffixArray<T>
         }
         else
         {
-            return Collections.<T>emptyList();
+            return Collections.emptyList();
         }
     }
 }

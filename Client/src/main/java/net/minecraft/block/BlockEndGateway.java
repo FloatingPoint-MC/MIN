@@ -95,9 +95,9 @@ public class BlockEndGateway extends BlockContainer
 
             for (int j = 0; j < i; ++j)
             {
-                double d0 = (double)((float)pos.getX() + rand.nextFloat());
-                double d1 = (double)((float)pos.getY() + rand.nextFloat());
-                double d2 = (double)((float)pos.getZ() + rand.nextFloat());
+                double d0 = (float)pos.getX() + rand.nextFloat();
+                double d1 = (float)pos.getY() + rand.nextFloat();
+                double d2 = (float)pos.getZ() + rand.nextFloat();
                 double d3 = ((double)rand.nextFloat() - 0.5D) * 0.5D;
                 double d4 = ((double)rand.nextFloat() - 0.5D) * 0.5D;
                 double d5 = ((double)rand.nextFloat() - 0.5D) * 0.5D;
@@ -106,12 +106,12 @@ public class BlockEndGateway extends BlockContainer
                 if (rand.nextBoolean())
                 {
                     d2 = (double)pos.getZ() + 0.5D + 0.25D * (double)k;
-                    d5 = (double)(rand.nextFloat() * 2.0F * (float)k);
+                    d5 = rand.nextFloat() * 2.0F * (float)k;
                 }
                 else
                 {
                     d0 = (double)pos.getX() + 0.5D + 0.25D * (double)k;
-                    d3 = (double)(rand.nextFloat() * 2.0F * (float)k);
+                    d3 = rand.nextFloat() * 2.0F * (float)k;
                 }
 
                 worldIn.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);

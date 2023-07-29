@@ -564,9 +564,9 @@ public class ComponentScatteredFeaturePieces
 
                 for (int k = 0; k < 4; ++k)
                 {
-                    this.setBlockState(worldIn, iblockstate, 5, 0 - k, 6 + k, structureBoundingBoxIn);
-                    this.setBlockState(worldIn, iblockstate, 6, 0 - k, 6 + k, structureBoundingBoxIn);
-                    this.fillWithAir(worldIn, structureBoundingBoxIn, 5, 0 - k, 7 + k, 6, 0 - k, 9 + k);
+                    this.setBlockState(worldIn, iblockstate, 5, -k, 6 + k, structureBoundingBoxIn);
+                    this.setBlockState(worldIn, iblockstate, 6, -k, 6 + k, structureBoundingBoxIn);
+                    this.fillWithAir(worldIn, structureBoundingBoxIn, 5, -k, 7 + k, 6, -k, 9 + k);
                 }
 
                 this.fillWithAir(worldIn, structureBoundingBoxIn, 1, -3, 12, 10, -1, 13);
@@ -771,8 +771,8 @@ public class ComponentScatteredFeaturePieces
                         this.hasWitch = true;
                         EntityWitch entitywitch = new EntityWitch(worldIn);
                         entitywitch.enablePersistence();
-                        entitywitch.setLocationAndAngles((double)l + 0.5D, (double)i1, (double)k + 0.5D, 0.0F, 0.0F);
-                        entitywitch.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(l, i1, k)), (IEntityLivingData)null);
+                        entitywitch.setLocationAndAngles((double)l + 0.5D, i1, (double)k + 0.5D, 0.0F, 0.0F);
+                        entitywitch.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(l, i1, k)), null);
                         worldIn.spawnEntity(entitywitch);
                     }
                 }

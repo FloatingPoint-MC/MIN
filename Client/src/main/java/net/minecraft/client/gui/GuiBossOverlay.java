@@ -13,7 +13,7 @@ public class GuiBossOverlay extends Gui
 {
     private static final ResourceLocation GUI_BARS_TEXTURES = new ResourceLocation("textures/gui/bars.png");
     private final Minecraft client;
-    private final Map<UUID, BossInfoClient> mapBossInfos = Maps.<UUID, BossInfoClient>newLinkedHashMap();
+    private final Map<UUID, BossInfoClient> mapBossInfos = Maps.newLinkedHashMap();
 
     public GuiBossOverlay(Minecraft clientIn)
     {
@@ -80,7 +80,7 @@ public class GuiBossOverlay extends Gui
         }
         else
         {
-            ((BossInfoClient)this.mapBossInfos.get(packetIn.getUniqueId())).updateFromPacket(packetIn);
+            this.mapBossInfos.get(packetIn.getUniqueId()).updateFromPacket(packetIn);
         }
     }
 

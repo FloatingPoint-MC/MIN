@@ -40,8 +40,8 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityPig extends EntityAnimal
 {
-    private static final DataParameter<Boolean> SADDLED = EntityDataManager.<Boolean>createKey(EntityPig.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> BOOST_TIME = EntityDataManager.<Integer>createKey(EntityPig.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(EntityPig.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BOOST_TIME = EntityDataManager.createKey(EntityPig.class, DataSerializers.VARINT);
     private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Items.CARROT, Items.POTATO, Items.BEETROOT);
     private boolean boosting;
     private int boostTime;
@@ -81,7 +81,7 @@ public class EntityPig extends EntityAnimal
      */
     public Entity getControllingPassenger()
     {
-        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
     /**
@@ -109,7 +109,7 @@ public class EntityPig extends EntityAnimal
         {
             this.boosting = true;
             this.boostTime = 0;
-            this.totalBoostTime = ((Integer)this.dataManager.get(BOOST_TIME)).intValue();
+            this.totalBoostTime = this.dataManager.get(BOOST_TIME).intValue();
         }
 
         super.notifyDataManagerChange(key);
@@ -228,7 +228,7 @@ public class EntityPig extends EntityAnimal
      */
     public boolean getSaddled()
     {
-        return ((Boolean)this.dataManager.get(SADDLED)).booleanValue();
+        return this.dataManager.get(SADDLED).booleanValue();
     }
 
     /**
@@ -271,7 +271,7 @@ public class EntityPig extends EntityAnimal
 
     public void travel(float strafe, float vertical, float forward)
     {
-        Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+        Entity entity = this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
 
         if (this.isBeingRidden() && this.canBeSteered())
         {

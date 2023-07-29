@@ -48,7 +48,7 @@ public class CommandTitle extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.title.usage", new Object[0]);
+            throw new WrongUsageException("commands.title.usage");
         }
         else
         {
@@ -56,12 +56,12 @@ public class CommandTitle extends CommandBase
             {
                 if ("title".equals(args[1]) || "subtitle".equals(args[1]) || "actionbar".equals(args[1]))
                 {
-                    throw new WrongUsageException("commands.title.usage.title", new Object[0]);
+                    throw new WrongUsageException("commands.title.usage.title");
                 }
 
                 if ("times".equals(args[1]))
                 {
-                    throw new WrongUsageException("commands.title.usage.times", new Object[0]);
+                    throw new WrongUsageException("commands.title.usage.times");
                 }
             }
 
@@ -74,7 +74,7 @@ public class CommandTitle extends CommandBase
                 {
                     if (args.length != 5)
                     {
-                        throw new WrongUsageException("commands.title.usage", new Object[0]);
+                        throw new WrongUsageException("commands.title.usage");
                     }
                     else
                     {
@@ -83,12 +83,12 @@ public class CommandTitle extends CommandBase
                         int k = parseInt(args[4]);
                         SPacketTitle spackettitle2 = new SPacketTitle(i, j, k);
                         entityplayermp.connection.sendPacket(spackettitle2);
-                        notifyCommandListener(sender, this, "commands.title.success", new Object[0]);
+                        notifyCommandListener(sender, this, "commands.title.success");
                     }
                 }
                 else if (args.length < 3)
                 {
-                    throw new WrongUsageException("commands.title.usage", new Object[0]);
+                    throw new WrongUsageException("commands.title.usage");
                 }
                 else
                 {
@@ -106,18 +106,18 @@ public class CommandTitle extends CommandBase
 
                     SPacketTitle spackettitle1 = new SPacketTitle(spackettitle$type, TextComponentUtils.processComponent(sender, itextcomponent, entityplayermp));
                     entityplayermp.connection.sendPacket(spackettitle1);
-                    notifyCommandListener(sender, this, "commands.title.success", new Object[0]);
+                    notifyCommandListener(sender, this, "commands.title.success");
                 }
             }
             else if (args.length != 2)
             {
-                throw new WrongUsageException("commands.title.usage", new Object[0]);
+                throw new WrongUsageException("commands.title.usage");
             }
             else
             {
-                SPacketTitle spackettitle = new SPacketTitle(spackettitle$type, (ITextComponent)null);
+                SPacketTitle spackettitle = new SPacketTitle(spackettitle$type, null);
                 entityplayermp.connection.sendPacket(spackettitle);
-                notifyCommandListener(sender, this, "commands.title.success", new Object[0]);
+                notifyCommandListener(sender, this, "commands.title.success");
             }
         }
     }

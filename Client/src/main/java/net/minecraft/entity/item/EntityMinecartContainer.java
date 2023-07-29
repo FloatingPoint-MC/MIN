@@ -26,7 +26,7 @@ import net.minecraft.world.storage.loot.LootTable;
 
 public abstract class EntityMinecartContainer extends EntityMinecart implements ILockableContainer, ILootContainer
 {
-    private NonNullList<ItemStack> minecartContainerItems = NonNullList.<ItemStack>withSize(36, ItemStack.EMPTY);
+    private NonNullList<ItemStack> minecartContainerItems = NonNullList.withSize(36, ItemStack.EMPTY);
 
     /**
      * When set to true, the minecart will drop all items when setDead() is called. When false (such as when travelling
@@ -74,7 +74,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public ItemStack getStackInSlot(int index)
     {
-        this.addLoot((EntityPlayer)null);
+        this.addLoot(null);
         return this.minecartContainerItems.get(index);
     }
 
@@ -83,7 +83,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public ItemStack decrStackSize(int index, int count)
     {
-        this.addLoot((EntityPlayer)null);
+        this.addLoot(null);
         return ItemStackHelper.getAndSplit(this.minecartContainerItems, index, count);
     }
 
@@ -92,7 +92,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public ItemStack removeStackFromSlot(int index)
     {
-        this.addLoot((EntityPlayer)null);
+        this.addLoot(null);
         ItemStack itemstack = this.minecartContainerItems.get(index);
 
         if (itemstack.isEmpty())
@@ -111,7 +111,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
      */
     public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.addLoot((EntityPlayer)null);
+        this.addLoot(null);
         this.minecartContainerItems.set(index, stack);
 
         if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
@@ -199,7 +199,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
     public static void addDataFixers(DataFixer p_190574_0_, Class<?> p_190574_1_)
     {
         EntityMinecart.registerFixesMinecart(p_190574_0_, p_190574_1_);
-        p_190574_0_.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(p_190574_1_, new String[] {"Items"}));
+        p_190574_0_.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(p_190574_1_, "Items"));
     }
 
     /**
@@ -230,7 +230,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
     protected void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.minecartContainerItems = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.minecartContainerItems = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         if (compound.hasKey("LootTable", 8))
         {
@@ -263,9 +263,9 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
             f += (float)i * 0.001F;
         }
 
-        this.motionX *= (double)f;
+        this.motionX *= f;
         this.motionY *= 0.0D;
-        this.motionZ *= (double)f;
+        this.motionZ *= f;
     }
 
     public int getField(int id)
@@ -329,7 +329,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
 
     public void clear()
     {
-        this.addLoot((EntityPlayer)null);
+        this.addLoot(null);
         this.minecartContainerItems.clear();
     }
 

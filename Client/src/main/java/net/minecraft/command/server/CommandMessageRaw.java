@@ -47,7 +47,7 @@ public class CommandMessageRaw extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.tellraw.usage", new Object[0]);
+            throw new WrongUsageException("commands.tellraw.usage");
         }
         else
         {

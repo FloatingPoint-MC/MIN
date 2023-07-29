@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 public abstract class StateMapperBase implements IStateMapper
 {
-    protected Map<IBlockState, ModelResourceLocation> mapStateModelLocations = Maps.<IBlockState, ModelResourceLocation>newLinkedHashMap();
+    protected Map<IBlockState, ModelResourceLocation> mapStateModelLocations = Maps.newLinkedHashMap();
 
     public String getPropertyString(Map < IProperty<?>, Comparable<? >> values)
     {
@@ -24,7 +24,7 @@ public abstract class StateMapperBase implements IStateMapper
                 stringbuilder.append(",");
             }
 
-            IProperty<?> iproperty = (IProperty)entry.getKey();
+            IProperty<?> iproperty = entry.getKey();
             stringbuilder.append(iproperty.getName());
             stringbuilder.append("=");
             stringbuilder.append(this.getPropertyName(iproperty, entry.getValue()));

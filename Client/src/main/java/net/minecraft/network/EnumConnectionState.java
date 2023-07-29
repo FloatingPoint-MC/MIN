@@ -272,11 +272,11 @@ public enum EnumConnectionState
     };
 
     private static final EnumConnectionState[] STATES_BY_ID = new EnumConnectionState[4];
-    private static final Map < Class <? extends Packet<? >> , EnumConnectionState > STATES_BY_CLASS = Maps. < Class <? extends Packet<? >> , EnumConnectionState > newHashMap();
+    private static final Map < Class <? extends Packet<? >> , EnumConnectionState > STATES_BY_CLASS = Maps.newHashMap();
     private final int id;
     private final Map < EnumPacketDirection, BiMap < Integer, Class <? extends Packet<? >>> > directionMaps;
 
-    private EnumConnectionState(int protocolId)
+    EnumConnectionState(int protocolId)
     {
         this.directionMaps = Maps.newEnumMap(EnumPacketDirection.class);
         this.id = protocolId;
@@ -284,11 +284,11 @@ public enum EnumConnectionState
 
     protected EnumConnectionState registerPacket(EnumPacketDirection direction, Class <? extends Packet<? >> packetClass)
     {
-        BiMap < Integer, Class <? extends Packet<? >>> bimap = (BiMap)this.directionMaps.get(direction);
+        BiMap < Integer, Class <? extends Packet<? >>> bimap = this.directionMaps.get(direction);
 
         if (bimap == null)
         {
-            bimap = HashBiMap. < Integer, Class <? extends Packet<? >>> create();
+            bimap = HashBiMap.create();
             this.directionMaps.put(direction, bimap);
         }
 
@@ -312,7 +312,7 @@ public enum EnumConnectionState
     @Nullable
     public Packet<?> getPacket(EnumPacketDirection direction, int packetId) throws InstantiationException, IllegalAccessException {
         Class <? extends Packet<? >> oclass = (Class)((BiMap)this.directionMaps.get(direction)).get(Integer.valueOf(packetId));
-        return oclass == null ? null : (Packet)oclass.newInstance();
+        return oclass == null ? null : oclass.newInstance();
     }
 
     public int getId()
@@ -337,7 +337,7 @@ public enum EnumConnectionState
 
             if (i < -1 || i > 2)
             {
-                throw new Error("Invalid protocol ID " + Integer.toString(i));
+                throw new Error("Invalid protocol ID " + i);
             }
 
             STATES_BY_ID[i - -1] = enumconnectionstate;

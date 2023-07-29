@@ -45,7 +45,7 @@ public class ItemSnow extends ItemBlock
 
             if (block == this.block)
             {
-                int i = ((Integer)iblockstate.getValue(BlockSnow.LAYERS)).intValue();
+                int i = iblockstate.getValue(BlockSnow.LAYERS).intValue();
 
                 if (i < 8)
                 {

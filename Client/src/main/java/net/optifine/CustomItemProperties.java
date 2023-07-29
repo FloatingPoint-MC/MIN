@@ -407,7 +407,7 @@ public class CustomItemProperties {
     }
 
     private RangeListInt parseRangeListInt(String str) {
-        return this.parseRangeListInt(str, (IParserInt) null);
+        return this.parseRangeListInt(str, null);
     }
 
     private RangeListInt parseRangeListInt(String str, IParserInt parser) {
@@ -821,7 +821,7 @@ public class CustomItemProperties {
     }
 
     public String toString() {
-        return "" + this.basePath + "/" + this.name + ", type: " + this.type + ", items: [" + Config.arrayToString(this.items) + "], textture: " + this.texture;
+        return this.basePath + "/" + this.name + ", type: " + this.type + ", items: [" + Config.arrayToString(this.items) + "], textture: " + this.texture;
     }
 
     public float getTextureWidth(TextureManager textureManager) {

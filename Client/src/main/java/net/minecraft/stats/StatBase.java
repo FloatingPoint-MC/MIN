@@ -25,7 +25,7 @@ public class StatBase
     {
         public String format(int number)
         {
-            return StatBase.numberFormat.format((long)number);
+            return StatBase.numberFormat.format(number);
         }
     };
     private static final DecimalFormat decimalFormat = new DecimalFormat("########0.00");

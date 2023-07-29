@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockCarpet extends Block
 {
-    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.<EnumDyeColor>create("color", EnumDyeColor.class);
+    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
     protected static final AxisAlignedBB CARPET_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
 
     protected BlockCarpet()
@@ -46,7 +46,7 @@ public class BlockCarpet extends Block
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return MapColor.getBlockColor((EnumDyeColor)state.getValue(COLOR));
+        return MapColor.getBlockColor(state.getValue(COLOR));
     }
 
     /**
@@ -115,7 +115,7 @@ public class BlockCarpet extends Block
         }
         else
         {
-            return blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? true : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+            return blockAccess.getBlockState(pos.offset(side)).getBlock() == this || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
         }
     }
 
@@ -125,7 +125,7 @@ public class BlockCarpet extends Block
      */
     public int damageDropped(IBlockState state)
     {
-        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     /**
@@ -152,12 +152,12 @@ public class BlockCarpet extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {COLOR});
+        return new BlockStateContainer(this, COLOR);
     }
 
     /**

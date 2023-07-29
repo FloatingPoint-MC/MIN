@@ -39,7 +39,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityIronGolem extends EntityGolem
 {
-    protected static final DataParameter<Byte> PLAYER_CREATED = EntityDataManager.<Byte>createKey(EntityIronGolem.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> PLAYER_CREATED = EntityDataManager.createKey(EntityIronGolem.class, DataSerializers.BYTE);
 
     /** deincrements, and a distance-to-home check is done at 0 */
     private int homeCheckTimer;
@@ -65,7 +65,7 @@ public class EntityIronGolem extends EntityGolem
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIDefendVillage(this));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, false, true, new Predicate<EntityLiving>()
         {
             public boolean apply(@Nullable EntityLiving p_apply_1_)
@@ -171,7 +171,7 @@ public class EntityIronGolem extends EntityGolem
         }
         else
         {
-            return cls == EntityCreeper.class ? false : super.canAttackClass(cls);
+            return cls != EntityCreeper.class && super.canAttackClass(cls);
         }
     }
 
@@ -290,12 +290,12 @@ public class EntityIronGolem extends EntityGolem
 
     public boolean isPlayerCreated()
     {
-        return (((Byte)this.dataManager.get(PLAYER_CREATED)).byteValue() & 1) != 0;
+        return (this.dataManager.get(PLAYER_CREATED).byteValue() & 1) != 0;
     }
 
     public void setPlayerCreated(boolean playerCreated)
     {
-        byte b0 = ((Byte)this.dataManager.get(PLAYER_CREATED)).byteValue();
+        byte b0 = this.dataManager.get(PLAYER_CREATED).byteValue();
 
         if (playerCreated)
         {

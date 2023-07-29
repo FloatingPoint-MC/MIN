@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 public class EntityPredicate
 {
     /** The predicate that matches any entity. */
-    public static final EntityPredicate ANY = new EntityPredicate((ResourceLocation)null, DistancePredicate.ANY, LocationPredicate.ANY, MobEffectsPredicate.ANY, NBTPredicate.ANY);
+    public static final EntityPredicate ANY = new EntityPredicate(null, DistancePredicate.ANY, LocationPredicate.ANY, MobEffectsPredicate.ANY, NBTPredicate.ANY);
     private final ResourceLocation type;
     private final DistancePredicate distance;
     private final LocationPredicate location;

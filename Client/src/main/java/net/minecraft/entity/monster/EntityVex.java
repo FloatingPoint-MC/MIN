@@ -36,7 +36,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityVex extends EntityMob
 {
-    protected static final DataParameter<Byte> VEX_FLAGS = EntityDataManager.<Byte>createKey(EntityVex.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> VEX_FLAGS = EntityDataManager.createKey(EntityVex.class, DataSerializers.BYTE);
     private EntityLiving owner;
     @Nullable
     private BlockPos boundOrigin;
@@ -86,7 +86,7 @@ public class EntityVex extends EntityMob
         this.tasks.addTask(8, new EntityVex.AIMoveRandom());
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityVex.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityVex.class));
         this.targetTasks.addTask(2, new EntityVex.AICopyOwnerTarget(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
@@ -165,13 +165,13 @@ public class EntityVex extends EntityMob
 
     private boolean getVexFlag(int mask)
     {
-        int i = ((Byte)this.dataManager.get(VEX_FLAGS)).byteValue();
+        int i = this.dataManager.get(VEX_FLAGS).byteValue();
         return (i & mask) != 0;
     }
 
     private void setVexFlag(int mask, boolean value)
     {
-        int i = ((Byte)this.dataManager.get(VEX_FLAGS)).byteValue();
+        int i = this.dataManager.get(VEX_FLAGS).byteValue();
 
         if (value)
         {
@@ -366,7 +366,7 @@ public class EntityVex extends EntityMob
                 double d1 = this.posY - EntityVex.this.posY;
                 double d2 = this.posZ - EntityVex.this.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = (double)MathHelper.sqrt(d3);
+                d3 = MathHelper.sqrt(d3);
 
                 if (d3 < EntityVex.this.getEntityBoundingBox().getAverageEdgeLength())
                 {

@@ -32,12 +32,12 @@ public class WorldGenMinable extends WorldGenerator
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
         float f = rand.nextFloat() * (float)Math.PI;
-        double d0 = (double)((float)(position.getX() + 8) + MathHelper.sin(f) * (float)this.numberOfBlocks / 8.0F);
-        double d1 = (double)((float)(position.getX() + 8) - MathHelper.sin(f) * (float)this.numberOfBlocks / 8.0F);
-        double d2 = (double)((float)(position.getZ() + 8) + MathHelper.cos(f) * (float)this.numberOfBlocks / 8.0F);
-        double d3 = (double)((float)(position.getZ() + 8) - MathHelper.cos(f) * (float)this.numberOfBlocks / 8.0F);
-        double d4 = (double)(position.getY() + rand.nextInt(3) - 2);
-        double d5 = (double)(position.getY() + rand.nextInt(3) - 2);
+        double d0 = (float)(position.getX() + 8) + MathHelper.sin(f) * (float)this.numberOfBlocks / 8.0F;
+        double d1 = (float)(position.getX() + 8) - MathHelper.sin(f) * (float)this.numberOfBlocks / 8.0F;
+        double d2 = (float)(position.getZ() + 8) + MathHelper.cos(f) * (float)this.numberOfBlocks / 8.0F;
+        double d3 = (float)(position.getZ() + 8) - MathHelper.cos(f) * (float)this.numberOfBlocks / 8.0F;
+        double d4 = position.getY() + rand.nextInt(3) - 2;
+        double d5 = position.getY() + rand.nextInt(3) - 2;
 
         for (int i = 0; i < this.numberOfBlocks; ++i)
         {
@@ -100,7 +100,7 @@ public class WorldGenMinable extends WorldGenerator
         {
             if (p_apply_1_ != null && p_apply_1_.getBlock() == Blocks.STONE)
             {
-                BlockStone.EnumType blockstone$enumtype = (BlockStone.EnumType)p_apply_1_.getValue(BlockStone.VARIANT);
+                BlockStone.EnumType blockstone$enumtype = p_apply_1_.getValue(BlockStone.VARIANT);
                 return blockstone$enumtype.isNatural();
             }
             else

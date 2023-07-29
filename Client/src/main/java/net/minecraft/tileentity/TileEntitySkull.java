@@ -71,7 +71,7 @@ public class TileEntitySkull extends TileEntity implements ITickable
 
                 if (!StringUtils.isNullOrEmpty(s))
                 {
-                    this.playerProfile = new GameProfile((UUID)null, s);
+                    this.playerProfile = new GameProfile(null, s);
                     this.updatePlayerProfile();
                 }
             }

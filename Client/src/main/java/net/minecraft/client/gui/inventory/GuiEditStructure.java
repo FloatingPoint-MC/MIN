@@ -57,7 +57,7 @@ public class GuiEditStructure extends GuiScreen
     private GuiButton mirrorButton;
     private GuiButton showAirButton;
     private GuiButton showBoundingBoxButton;
-    private final List<GuiTextField> tabOrder = Lists.<GuiTextField>newArrayList();
+    private final List<GuiTextField> tabOrder = Lists.newArrayList();
     private final DecimalFormat decimalFormat = new DecimalFormat("0.0###");
 
     public GuiEditStructure(TileEntityStructure p_i47142_1_)
@@ -137,7 +137,7 @@ public class GuiEditStructure extends GuiScreen
         this.tabOrder.add(this.sizeZEdit);
         this.integrityEdit = new GuiTextField(15, this.fontRenderer, this.width / 2 - 152, 120, 80, 20);
         this.integrityEdit.setMaxStringLength(15);
-        this.integrityEdit.setText(this.decimalFormat.format((double)this.tileStructure.getIntegrity()));
+        this.integrityEdit.setText(this.decimalFormat.format(this.tileStructure.getIntegrity()));
         this.tabOrder.add(this.integrityEdit);
         this.seedEdit = new GuiTextField(16, this.fontRenderer, this.width / 2 - 72, 120, 80, 20);
         this.seedEdit.setMaxStringLength(31);
@@ -184,13 +184,13 @@ public class GuiEditStructure extends GuiScreen
                 this.tileStructure.setIgnoresEntities(this.ignoreEntities);
                 this.tileStructure.setShowAir(this.showAir);
                 this.tileStructure.setShowBoundingBox(this.showBoundingBox);
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
             else if (button.id == 0)
             {
                 if (this.sendToServer(1))
                 {
-                    this.mc.displayGuiScreen((GuiScreen)null);
+                    this.mc.displayGuiScreen(null);
                 }
             }
             else if (button.id == 9)
@@ -198,7 +198,7 @@ public class GuiEditStructure extends GuiScreen
                 if (this.tileStructure.getMode() == TileEntityStructure.Mode.SAVE)
                 {
                     this.sendToServer(2);
-                    this.mc.displayGuiScreen((GuiScreen)null);
+                    this.mc.displayGuiScreen(null);
                 }
             }
             else if (button.id == 10)
@@ -206,7 +206,7 @@ public class GuiEditStructure extends GuiScreen
                 if (this.tileStructure.getMode() == TileEntityStructure.Mode.LOAD)
                 {
                     this.sendToServer(3);
-                    this.mc.displayGuiScreen((GuiScreen)null);
+                    this.mc.displayGuiScreen(null);
                 }
             }
             else if (button.id == 11)
@@ -239,7 +239,7 @@ public class GuiEditStructure extends GuiScreen
                 if (this.tileStructure.getMode() == TileEntityStructure.Mode.SAVE)
                 {
                     this.sendToServer(4);
-                    this.mc.displayGuiScreen((GuiScreen)null);
+                    this.mc.displayGuiScreen(null);
                 }
             }
             else if (button.id == 20)
@@ -477,7 +477,7 @@ public class GuiEditStructure extends GuiScreen
         }
         catch (Exception exception)
         {
-            LOGGER.warn("Could not send structure block info", (Throwable)exception);
+            LOGGER.warn("Could not send structure block info", exception);
             return false;
         }
     }

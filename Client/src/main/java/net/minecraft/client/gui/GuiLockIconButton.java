@@ -66,7 +66,7 @@ public class GuiLockIconButton extends GuiButton
         }
     }
 
-    static enum Icon
+    enum Icon
     {
         LOCKED(0, 146),
         LOCKED_HOVER(0, 166),
@@ -78,7 +78,7 @@ public class GuiLockIconButton extends GuiButton
         private final int x;
         private final int y;
 
-        private Icon(int xIn, int yIn)
+        Icon(int xIn, int yIn)
         {
             this.x = xIn;
             this.y = yIn;

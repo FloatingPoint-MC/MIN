@@ -42,7 +42,7 @@ public class EnchantmentDurability extends Enchantment
      */
     public boolean canApply(ItemStack stack)
     {
-        return stack.isItemStackDamageable() ? true : super.canApply(stack);
+        return stack.isItemStackDamageable() || super.canApply(stack);
     }
 
     /**

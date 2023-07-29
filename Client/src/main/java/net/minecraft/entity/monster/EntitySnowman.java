@@ -33,7 +33,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 {
-    private static final DataParameter<Byte> PUMPKIN_EQUIPPED = EntityDataManager.<Byte>createKey(EntitySnowman.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> PUMPKIN_EQUIPPED = EntityDataManager.createKey(EntitySnowman.class, DataSerializers.BYTE);
 
     public EntitySnowman(World worldIn)
     {
@@ -176,12 +176,12 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
 
     public boolean isPumpkinEquipped()
     {
-        return (((Byte)this.dataManager.get(PUMPKIN_EQUIPPED)).byteValue() & 16) != 0;
+        return (this.dataManager.get(PUMPKIN_EQUIPPED).byteValue() & 16) != 0;
     }
 
     public void setPumpkinEquipped(boolean pumpkinEquipped)
     {
-        byte b0 = ((Byte)this.dataManager.get(PUMPKIN_EQUIPPED)).byteValue();
+        byte b0 = this.dataManager.get(PUMPKIN_EQUIPPED).byteValue();
 
         if (pumpkinEquipped)
         {

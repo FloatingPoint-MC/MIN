@@ -58,17 +58,17 @@ public enum ShaderParameterFloat
     SHADOW_MODEL_VIEW(Shaders.uniform_shadowModelView, new String[]{"0", "1", "2", "3"}, new String[]{"0", "1", "2", "3"}),
     SHADOW_MODEL_VIEW_INVERSE(Shaders.uniform_shadowModelViewInverse, new String[]{"0", "1", "2", "3"}, new String[]{"0", "1", "2", "3"});
 
-    private String name;
+    private final String name;
     private ShaderUniformBase uniform;
     private String[] indexNames1;
     private String[] indexNames2;
 
-    private ShaderParameterFloat(String name)
+    ShaderParameterFloat(String name)
     {
         this.name = name;
     }
 
-    private ShaderParameterFloat(ShaderUniformBase uniform)
+    ShaderParameterFloat(ShaderUniformBase uniform)
     {
         this.name = uniform.getName();
         this.uniform = uniform;
@@ -79,7 +79,7 @@ public enum ShaderParameterFloat
         }
     }
 
-    private ShaderParameterFloat(ShaderUniformBase uniform, String[] indexNames1)
+    ShaderParameterFloat(ShaderUniformBase uniform, String[] indexNames1)
     {
         this.name = uniform.getName();
         this.uniform = uniform;
@@ -91,7 +91,7 @@ public enum ShaderParameterFloat
         }
     }
 
-    private ShaderParameterFloat(ShaderUniformBase uniform, String[] indexNames1, String[] indexNames2)
+    ShaderParameterFloat(ShaderUniformBase uniform, String[] indexNames1, String[] indexNames2)
     {
         this.name = uniform.getName();
         this.uniform = uniform;

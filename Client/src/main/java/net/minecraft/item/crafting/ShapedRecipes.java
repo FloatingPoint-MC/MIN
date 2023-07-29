@@ -61,7 +61,7 @@ public class ShapedRecipes implements IRecipe
 
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i)
         {
@@ -183,7 +183,7 @@ public class ShapedRecipes implements IRecipe
 
     private static NonNullList<Ingredient> deserializeIngredients(String[] pattern, Map<String, Ingredient> keys, int patternWidth, int patternHeight)
     {
-        NonNullList<Ingredient> nonnulllist = NonNullList.<Ingredient>withSize(patternWidth * patternHeight, Ingredient.EMPTY);
+        NonNullList<Ingredient> nonnulllist = NonNullList.withSize(patternWidth * patternHeight, Ingredient.EMPTY);
         Set<String> set = Sets.newHashSet(keys.keySet());
         set.remove(" ");
 
@@ -267,7 +267,6 @@ public class ShapedRecipes implements IRecipe
 
         for (i = 0; i < str.length() && str.charAt(i) == ' '; ++i)
         {
-            ;
         }
 
         return i;
@@ -279,7 +278,6 @@ public class ShapedRecipes implements IRecipe
 
         for (i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i)
         {
-            ;
         }
 
         return i;
@@ -322,13 +320,13 @@ public class ShapedRecipes implements IRecipe
 
     private static Map<String, Ingredient> deserializeKey(JsonObject json)
     {
-        Map<String, Ingredient> map = Maps.<String, Ingredient>newHashMap();
+        Map<String, Ingredient> map = Maps.newHashMap();
 
         for (Entry<String, JsonElement> entry : json.entrySet())
         {
-            if (((String)entry.getKey()).length() != 1)
+            if (entry.getKey().length() != 1)
             {
-                throw new JsonSyntaxException("Invalid key entry: '" + (String)entry.getKey() + "' is an invalid symbol (must be 1 character only).");
+                throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey() + "' is an invalid symbol (must be 1 character only).");
             }
 
             if (" ".equals(entry.getKey()))

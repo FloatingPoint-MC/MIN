@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 public class PlayerHurtEntityTrigger implements ICriterionTrigger<PlayerHurtEntityTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("player_hurt_entity");
-    private final Map<PlayerAdvancements, PlayerHurtEntityTrigger.Listeners> listeners = Maps.<PlayerAdvancements, PlayerHurtEntityTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, PlayerHurtEntityTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -106,7 +106,7 @@ public class PlayerHurtEntityTrigger implements ICriterionTrigger<PlayerHurtEnti
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<PlayerHurtEntityTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<PlayerHurtEntityTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<PlayerHurtEntityTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -134,11 +134,11 @@ public class PlayerHurtEntityTrigger implements ICriterionTrigger<PlayerHurtEnti
 
             for (ICriterionTrigger.Listener<PlayerHurtEntityTrigger.Instance> listener : this.listeners)
             {
-                if (((PlayerHurtEntityTrigger.Instance)listener.getCriterionInstance()).test(player, entity, source, dealt, taken, blocked))
+                if (listener.getCriterionInstance().test(player, entity, source, dealt, taken, blocked))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<PlayerHurtEntityTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

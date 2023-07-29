@@ -86,7 +86,7 @@ public class NBTTagFloat extends NBTPrimitive
 
     public double getDouble()
     {
-        return (double)this.data;
+        return this.data;
     }
 
     public float getFloat()

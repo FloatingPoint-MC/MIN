@@ -60,7 +60,7 @@ public abstract class AbstractResourcePack implements IResourcePack
 
     public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer metadataSerializer, String metadataSectionName) throws IOException
     {
-        return (T)readMetadata(metadataSerializer, this.getInputStreamByName("pack.mcmeta"), metadataSectionName);
+        return readMetadata(metadataSerializer, this.getInputStreamByName("pack.mcmeta"), metadataSectionName);
     }
 
     static <T extends IMetadataSection> T readMetadata(MetadataSerializer metadataSerializer, InputStream p_110596_1_, String sectionName)
@@ -79,10 +79,10 @@ public abstract class AbstractResourcePack implements IResourcePack
         }
         finally
         {
-            IOUtils.closeQuietly((Reader)bufferedreader);
+            IOUtils.closeQuietly(bufferedreader);
         }
 
-        return (T)metadataSerializer.parseMetadataSection(sectionName, jsonobject);
+        return metadataSerializer.parseMetadataSection(sectionName, jsonobject);
     }
 
     public BufferedImage getPackImage() throws IOException

@@ -46,7 +46,7 @@ public class CommandServerKick extends CommandBase
 
             if (entityplayermp == null)
             {
-                throw new PlayerNotFoundException("commands.generic.player.notFound", new Object[] {args[0]});
+                throw new PlayerNotFoundException("commands.generic.player.notFound", args[0]);
             }
             else
             {
@@ -54,18 +54,18 @@ public class CommandServerKick extends CommandBase
                 {
                     ITextComponent itextcomponent = getChatComponentFromNthArg(sender, args, 1);
                     entityplayermp.connection.disconnect(itextcomponent);
-                    notifyCommandListener(sender, this, "commands.kick.success.reason", new Object[] {entityplayermp.getName(), itextcomponent.getUnformattedText()});
+                    notifyCommandListener(sender, this, "commands.kick.success.reason", entityplayermp.getName(), itextcomponent.getUnformattedText());
                 }
                 else
                 {
-                    entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.kicked", new Object[0]));
-                    notifyCommandListener(sender, this, "commands.kick.success", new Object[] {entityplayermp.getName()});
+                    entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.kicked"));
+                    notifyCommandListener(sender, this, "commands.kick.success", entityplayermp.getName());
                 }
             }
         }
         else
         {
-            throw new WrongUsageException("commands.kick.usage", new Object[0]);
+            throw new WrongUsageException("commands.kick.usage");
         }
     }
 

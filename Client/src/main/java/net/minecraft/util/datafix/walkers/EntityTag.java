@@ -39,7 +39,7 @@ public class EntityTag implements IDataWalker
 
             if (s1 == null)
             {
-                LOGGER.warn("Unable to resolve Entity for ItemInstance: {}", (Object)s);
+                LOGGER.warn("Unable to resolve Entity for ItemInstance: {}", s);
                 flag = false;
             }
             else

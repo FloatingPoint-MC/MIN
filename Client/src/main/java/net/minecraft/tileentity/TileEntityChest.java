@@ -25,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class TileEntityChest extends TileEntityLockableLoot implements ITickable
 {
-    private NonNullList<ItemStack> chestContents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+    private NonNullList<ItemStack> chestContents = NonNullList.withSize(27, ItemStack.EMPTY);
 
     /** Determines if the check for adjacent chests has taken place. */
     public boolean adjacentChestChecked;
@@ -127,13 +127,13 @@ public class TileEntityChest extends TileEntityLockableLoot implements ITickable
 
     public static void registerFixesChest(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityChest.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityChest.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.chestContents = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         if (!this.checkLootAndRead(compound))
         {
@@ -285,7 +285,7 @@ public class TileEntityChest extends TileEntityLockableLoot implements ITickable
             this.numPlayersUsing = 0;
             float f = 5.0F;
 
-            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double)((float)i - 5.0F), (double)((float)j - 5.0F), (double)((float)k - 5.0F), (double)((float)(i + 1) + 5.0F), (double)((float)(j + 1) + 5.0F), (double)((float)(k + 1) + 5.0F))))
+            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((float)i - 5.0F, (float)j - 5.0F, (float)k - 5.0F, (float)(i + 1) + 5.0F, (float)(j + 1) + 5.0F, (float)(k + 1) + 5.0F)))
             {
                 if (entityplayer.openContainer instanceof ContainerChest)
                 {
@@ -317,7 +317,7 @@ public class TileEntityChest extends TileEntityLockableLoot implements ITickable
                 d1 += 0.5D;
             }
 
-            this.world.playSound((EntityPlayer)null, d1, (double)j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            this.world.playSound(null, d1, (double)j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
@@ -355,7 +355,7 @@ public class TileEntityChest extends TileEntityLockableLoot implements ITickable
                     d3 += 0.5D;
                 }
 
-                this.world.playSound((EntityPlayer)null, d3, (double)j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.world.playSound(null, d3, (double)j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)

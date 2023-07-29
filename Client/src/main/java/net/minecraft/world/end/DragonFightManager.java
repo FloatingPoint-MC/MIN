@@ -51,10 +51,10 @@ import org.apache.logging.log4j.Logger;
 public class DragonFightManager
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Predicate<EntityPlayerMP> VALID_PLAYER = Predicates.<EntityPlayerMP> and (EntitySelectors.IS_ALIVE, EntitySelectors.withinRange(0.0D, 128.0D, 0.0D, 192.0D));
-    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentTranslation("entity.EnderDragon.name", new Object[0]), BossInfo.Color.PINK, BossInfo.Overlay.PROGRESS)).setPlayEndBossMusic(true).setCreateFog(true);
+    private static final Predicate<EntityPlayerMP> VALID_PLAYER = Predicates.and (EntitySelectors.IS_ALIVE, EntitySelectors.withinRange(0.0D, 128.0D, 0.0D, 192.0D));
+    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentTranslation("entity.EnderDragon.name"), BossInfo.Color.PINK, BossInfo.Overlay.PROGRESS)).setPlayEndBossMusic(true).setCreateFog(true);
     private final WorldServer world;
-    private final List<Integer> gateways = Lists.<Integer>newArrayList();
+    private final List<Integer> gateways = Lists.newArrayList();
     private final BlockPattern portalPattern;
     private int ticksSinceDragonSeen;
     private int aliveCrystals;
@@ -188,7 +188,7 @@ public class DragonFightManager
                 {
                     EntityDragon entitydragon = list.get(0);
                     this.dragonUniqueId = entitydragon.getUniqueID();
-                    LOGGER.info("Found that there's a dragon still alive ({})", (Object)entitydragon);
+                    LOGGER.info("Found that there's a dragon still alive ({})", entitydragon);
                     this.dragonKilled = false;
 
                     if (!flag)
@@ -231,7 +231,7 @@ public class DragonFightManager
                     else
                     {
                         LOGGER.debug("Haven't seen our dragon, but found another one to use.");
-                        this.dragonUniqueId = ((EntityDragon)list1.get(0)).getUniqueID();
+                        this.dragonUniqueId = list1.get(0).getUniqueID();
                     }
 
                     this.ticksSinceDragonSeen = 0;
@@ -359,7 +359,7 @@ public class DragonFightManager
 
     private void updatePlayers()
     {
-        Set<EntityPlayerMP> set = Sets.<EntityPlayerMP>newHashSet();
+        Set<EntityPlayerMP> set = Sets.newHashSet();
 
         for (EntityPlayerMP entityplayermp : this.world.getPlayers(EntityPlayerMP.class, VALID_PLAYER))
         {
@@ -386,7 +386,7 @@ public class DragonFightManager
             this.aliveCrystals += this.world.getEntitiesWithinAABB(EntityEnderCrystal.class, worldgenspikes$endspike.getTopBoundingBox()).size();
         }
 
-        LOGGER.debug("Found {} end crystals still alive", (int)this.aliveCrystals);
+        LOGGER.debug("Found {} end crystals still alive", this.aliveCrystals);
     }
 
     public void processDragonDeath(EntityDragon dragon)
@@ -412,7 +412,7 @@ public class DragonFightManager
     {
         if (!this.gateways.isEmpty())
         {
-            int i = ((Integer)this.gateways.remove(this.gateways.size() - 1)).intValue();
+            int i = this.gateways.remove(this.gateways.size() - 1).intValue();
             int j = (int)(96.0D * Math.cos(2.0D * (-Math.PI + 0.15707963267948966D * (double)i)));
             int k = (int)(96.0D * Math.sin(2.0D * (-Math.PI + 0.15707963267948966D * (double)i)));
             this.generateGateway(new BlockPos(j, 75, k));
@@ -433,7 +433,6 @@ public class DragonFightManager
         {
             for (this.exitPortalLocation = this.world.getTopSolidOrLiquidBlock(WorldGenEndPodium.END_PODIUM_LOCATION).down(); this.world.getBlockState(this.exitPortalLocation).getBlock() == Blocks.BEDROCK && this.exitPortalLocation.getY() > this.world.getSeaLevel(); this.exitPortalLocation = this.exitPortalLocation.down())
             {
-                ;
             }
         }
 
@@ -521,7 +520,7 @@ public class DragonFightManager
                 blockpos = this.exitPortalLocation;
             }
 
-            List<EntityEnderCrystal> list1 = Lists.<EntityEnderCrystal>newArrayList();
+            List<EntityEnderCrystal> list1 = Lists.newArrayList();
             BlockPos blockpos1 = blockpos.up(1);
 
             for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
@@ -578,7 +577,7 @@ public class DragonFightManager
             for (EntityEnderCrystal entityendercrystal : this.world.getEntitiesWithinAABB(EntityEnderCrystal.class, worldgenspikes$endspike.getTopBoundingBox()))
             {
                 entityendercrystal.setEntityInvulnerable(false);
-                entityendercrystal.setBeamTarget((BlockPos)null);
+                entityendercrystal.setBeamTarget(null);
             }
         }
     }

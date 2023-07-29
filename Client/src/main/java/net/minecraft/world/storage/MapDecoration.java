@@ -5,9 +5,9 @@ import net.minecraft.util.math.MathHelper;
 public class MapDecoration
 {
     private final MapDecoration.Type type;
-    private byte x;
-    private byte y;
-    private byte rotation;
+    private final byte x;
+    private final byte y;
+    private final byte rotation;
 
     public MapDecoration(MapDecoration.Type typeIn, byte xIn, byte yIn, byte rotationIn)
     {
@@ -89,7 +89,7 @@ public class MapDecoration
         return i;
     }
 
-    public static enum Type
+    public enum Type
     {
         PLAYER(false),
         FRAME(true),
@@ -106,12 +106,12 @@ public class MapDecoration
         private final boolean renderedOnFrame;
         private final int mapColor;
 
-        private Type(boolean p_i47343_3_)
+        Type(boolean p_i47343_3_)
         {
             this(p_i47343_3_, -1);
         }
 
-        private Type(boolean p_i47344_3_, int p_i47344_4_)
+        Type(boolean p_i47344_3_, int p_i47344_4_)
         {
             this.icon = (byte)this.ordinal();
             this.renderedOnFrame = p_i47344_3_;

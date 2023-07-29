@@ -110,6 +110,6 @@ public class BiomePlains extends Biome
 
     public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
-        return (WorldGenAbstractTree)(rand.nextInt(3) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE);
+        return rand.nextInt(3) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE;
     }
 }

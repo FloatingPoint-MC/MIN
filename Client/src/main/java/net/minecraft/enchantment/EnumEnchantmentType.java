@@ -96,7 +96,7 @@ public enum EnumEnchantmentType
         }
     };
 
-    private EnumEnchantmentType()
+    EnumEnchantmentType()
     {
     }
 

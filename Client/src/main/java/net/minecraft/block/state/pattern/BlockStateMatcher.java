@@ -20,7 +20,7 @@ public class BlockStateMatcher implements Predicate<IBlockState>
         }
     };
     private final BlockStateContainer blockstate;
-    private final Map < IProperty<?>, Predicate<? >> propertyPredicates = Maps. < IProperty<?>, Predicate<? >> newHashMap();
+    private final Map < IProperty<?>, Predicate<? >> propertyPredicates = Maps.newHashMap();
 
     private BlockStateMatcher(BlockStateContainer blockStateIn)
     {

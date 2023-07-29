@@ -3,6 +3,7 @@ package net.minecraft.scoreboard;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,7 +17,7 @@ import net.minecraft.server.MinecraftServer;
 public class ServerScoreboard extends Scoreboard
 {
     private final MinecraftServer server;
-    private final Set<ScoreObjective> addedObjectives = Sets.<ScoreObjective>newHashSet();
+    private final Set<ScoreObjective> addedObjectives = Sets.newHashSet();
     private Runnable[] dirtyRunnables = new Runnable[0];
 
     public ServerScoreboard(MinecraftServer mcServer)
@@ -93,7 +94,7 @@ public class ServerScoreboard extends Scoreboard
         if (super.addPlayerToTeam(player, newTeam))
         {
             ScorePlayerTeam scoreplayerteam = this.getTeam(newTeam);
-            this.server.getPlayerList().sendPacketToAllPlayers(new SPacketTeams(scoreplayerteam, Arrays.asList(player), 3));
+            this.server.getPlayerList().sendPacketToAllPlayers(new SPacketTeams(scoreplayerteam, Collections.singletonList(player), 3));
             this.markSaveDataDirty();
             return true;
         }
@@ -110,7 +111,7 @@ public class ServerScoreboard extends Scoreboard
     public void removePlayerFromTeam(String username, ScorePlayerTeam playerTeam)
     {
         super.removePlayerFromTeam(username, playerTeam);
-        this.server.getPlayerList().sendPacketToAllPlayers(new SPacketTeams(playerTeam, Arrays.asList(username), 4));
+        this.server.getPlayerList().sendPacketToAllPlayers(new SPacketTeams(playerTeam, Collections.singletonList(username), 4));
         this.markSaveDataDirty();
     }
 
@@ -176,7 +177,7 @@ public class ServerScoreboard extends Scoreboard
 
     public void addDirtyRunnable(Runnable runnable)
     {
-        this.dirtyRunnables = (Runnable[])Arrays.copyOf(this.dirtyRunnables, this.dirtyRunnables.length + 1);
+        this.dirtyRunnables = Arrays.copyOf(this.dirtyRunnables, this.dirtyRunnables.length + 1);
         this.dirtyRunnables[this.dirtyRunnables.length - 1] = runnable;
     }
 
@@ -190,7 +191,7 @@ public class ServerScoreboard extends Scoreboard
 
     public List < Packet<? >> getCreatePackets(ScoreObjective objective)
     {
-        List < Packet<? >> list = Lists. < Packet<? >> newArrayList();
+        List < Packet<? >> list = Lists.newArrayList();
         list.add(new SPacketScoreboardObjective(objective, 0));
 
         for (int i = 0; i < 19; ++i)
@@ -226,7 +227,7 @@ public class ServerScoreboard extends Scoreboard
 
     public List < Packet<? >> getDestroyPackets(ScoreObjective p_96548_1_)
     {
-        List < Packet<? >> list = Lists. < Packet<? >> newArrayList();
+        List < Packet<? >> list = Lists.newArrayList();
         list.add(new SPacketScoreboardObjective(p_96548_1_, 1));
 
         for (int i = 0; i < 19; ++i)

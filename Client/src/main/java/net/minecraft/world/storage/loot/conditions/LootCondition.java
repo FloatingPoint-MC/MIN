@@ -11,7 +11,7 @@ public interface LootCondition
 {
     boolean testCondition(Random rand, LootContext context);
 
-    public abstract static class Serializer<T extends LootCondition>
+    abstract class Serializer<T extends LootCondition>
     {
         private final ResourceLocation lootTableLocation;
         private final Class<T> conditionClass;

@@ -17,9 +17,9 @@ import net.minecraft.util.math.MathHelper;
 public class DebugRendererPathfinding implements DebugRenderer.IDebugRenderer
 {
     private final Minecraft minecraft;
-    private final Map<Integer, Path> pathMap = Maps.<Integer, Path>newHashMap();
-    private final Map<Integer, Float> pathMaxDistance = Maps.<Integer, Float>newHashMap();
-    private final Map<Integer, Long> creationMap = Maps.<Integer, Long>newHashMap();
+    private final Map<Integer, Path> pathMap = Maps.newHashMap();
+    private final Map<Integer, Float> pathMaxDistance = Maps.newHashMap();
+    private final Map<Integer, Long> creationMap = Maps.newHashMap();
     private EntityPlayer player;
     private double xo;
     private double yo;
@@ -56,13 +56,13 @@ public class DebugRendererPathfinding implements DebugRenderer.IDebugRenderer
             for (Integer integer : this.pathMap.keySet())
             {
                 Path path = this.pathMap.get(integer);
-                float f = ((Float)this.pathMaxDistance.get(integer)).floatValue();
+                float f = this.pathMaxDistance.get(integer).floatValue();
                 this.renderPathLine(partialTicks, path);
                 PathPoint pathpoint = path.getTarget();
 
                 if (this.addDistanceToPlayer(pathpoint) <= 40.0F)
                 {
-                    RenderGlobal.renderFilledBox((new AxisAlignedBB((double)((float)pathpoint.x + 0.25F), (double)((float)pathpoint.y + 0.25F), (double)pathpoint.z + 0.25D, (double)((float)pathpoint.x + 0.75F), (double)((float)pathpoint.y + 0.75F), (double)((float)pathpoint.z + 0.75F))).offset(-this.xo, -this.yo, -this.zo), 0.0F, 1.0F, 0.0F, 0.5F);
+                    RenderGlobal.renderFilledBox((new AxisAlignedBB((float)pathpoint.x + 0.25F, (float)pathpoint.y + 0.25F, (double)pathpoint.z + 0.25D, (float)pathpoint.x + 0.75F, (float)pathpoint.y + 0.75F, (float)pathpoint.z + 0.75F)).offset(-this.xo, -this.yo, -this.zo), 0.0F, 1.0F, 0.0F, 0.5F);
 
                     for (int j = 0; j < path.getCurrentPathLength(); ++j)
                     {
@@ -72,7 +72,7 @@ public class DebugRendererPathfinding implements DebugRenderer.IDebugRenderer
                         {
                             float f1 = j == path.getCurrentPathIndex() ? 1.0F : 0.0F;
                             float f2 = j == path.getCurrentPathIndex() ? 0.0F : 1.0F;
-                            RenderGlobal.renderFilledBox((new AxisAlignedBB((double)((float)pathpoint1.x + 0.5F - f), (double)((float)pathpoint1.y + 0.01F * (float)j), (double)((float)pathpoint1.z + 0.5F - f), (double)((float)pathpoint1.x + 0.5F + f), (double)((float)pathpoint1.y + 0.25F + 0.01F * (float)j), (double)((float)pathpoint1.z + 0.5F + f))).offset(-this.xo, -this.yo, -this.zo), f1, 0.0F, f2, 0.5F);
+                            RenderGlobal.renderFilledBox((new AxisAlignedBB((float)pathpoint1.x + 0.5F - f, (float)pathpoint1.y + 0.01F * (float)j, (float)pathpoint1.z + 0.5F - f, (float)pathpoint1.x + 0.5F + f, (float)pathpoint1.y + 0.25F + 0.01F * (float)j, (float)pathpoint1.z + 0.5F + f)).offset(-this.xo, -this.yo, -this.zo), f1, 0.0F, f2, 0.5F);
                         }
                     }
                 }
@@ -112,9 +112,9 @@ public class DebugRendererPathfinding implements DebugRenderer.IDebugRenderer
                 }
             }
 
-            for (Integer integer2 : (Integer[])this.creationMap.keySet().toArray(new Integer[0]))
+            for (Integer integer2 : this.creationMap.keySet().toArray(new Integer[0]))
             {
-                if (i - ((Long)this.creationMap.get(integer2)).longValue() > 20000L)
+                if (i - this.creationMap.get(integer2).longValue() > 20000L)
                 {
                     this.pathMap.remove(integer2);
                     this.creationMap.remove(integer2);

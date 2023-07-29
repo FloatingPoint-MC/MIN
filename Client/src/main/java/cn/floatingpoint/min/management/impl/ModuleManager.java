@@ -54,6 +54,7 @@ public class ModuleManager implements Manager {
         renderModules.put("AttackIndicator", new AttackIndicator());
         renderModules.put("BlockOverlay", new BlockOverlay());
         renderModules.put("BoundingBox", new BoundingBox());
+        renderModules.put("ChatBar", new ChatBar());
         renderModules.put("CleanView", new CleanView());
         renderModules.put("ClickGUI", new ClickGUI());
         renderModules.put("FireFilter", new FireFilter());

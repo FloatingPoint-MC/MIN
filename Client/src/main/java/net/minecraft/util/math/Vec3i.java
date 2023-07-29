@@ -110,9 +110,9 @@ public class Vec3i implements Comparable<Vec3i>
 
     public double getDistance(int xIn, int yIn, int zIn)
     {
-        double d0 = (double)(this.getX() - xIn);
-        double d1 = (double)(this.getY() - yIn);
-        double d2 = (double)(this.getZ() - zIn);
+        double d0 = this.getX() - xIn;
+        double d1 = this.getY() - yIn;
+        double d2 = this.getZ() - zIn;
         return Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
@@ -143,7 +143,7 @@ public class Vec3i implements Comparable<Vec3i>
      */
     public double distanceSq(Vec3i to)
     {
-        return this.distanceSq((double)to.getX(), (double)to.getY(), (double)to.getZ());
+        return this.distanceSq(to.getX(), to.getY(), to.getZ());
     }
 
     public String toString()

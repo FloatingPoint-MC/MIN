@@ -18,14 +18,14 @@ default Object getType()
         return NO_TOKEN;
     }
 
-    public static enum Visibility
+    enum Visibility
     {
         SHOW(SoundEvents.UI_TOAST_IN),
         HIDE(SoundEvents.UI_TOAST_OUT);
 
         private final SoundEvent sound;
 
-        private Visibility(SoundEvent soundIn)
+        Visibility(SoundEvent soundIn)
         {
             this.sound = soundIn;
         }

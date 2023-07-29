@@ -25,7 +25,7 @@ public class WeightedBakedModel implements IBakedModel
 
     private IBakedModel getRandomModel(long p_188627_1_)
     {
-        return ((WeightedBakedModel.WeightedModel)WeightedRandom.getRandomItem(this.models, Math.abs((int)p_188627_1_ >> 16) % this.totalWeight)).model;
+        return WeightedRandom.getRandomItem(this.models, Math.abs((int)p_188627_1_ >> 16) % this.totalWeight).model;
     }
 
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
@@ -65,7 +65,7 @@ public class WeightedBakedModel implements IBakedModel
 
     public static class Builder
     {
-        private final List<WeightedBakedModel.WeightedModel> listItems = Lists.<WeightedBakedModel.WeightedModel>newArrayList();
+        private final List<WeightedBakedModel.WeightedModel> listItems = Lists.newArrayList();
 
         public WeightedBakedModel.Builder add(IBakedModel model, int weight)
         {

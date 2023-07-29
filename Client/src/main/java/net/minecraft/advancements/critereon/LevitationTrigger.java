@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3d;
 public class LevitationTrigger implements ICriterionTrigger<LevitationTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("levitation");
-    private final Map<PlayerAdvancements, LevitationTrigger.Listeners> listeners = Maps.<PlayerAdvancements, LevitationTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, LevitationTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -105,7 +105,7 @@ public class LevitationTrigger implements ICriterionTrigger<LevitationTrigger.In
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<LevitationTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<LevitationTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<LevitationTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -133,11 +133,11 @@ public class LevitationTrigger implements ICriterionTrigger<LevitationTrigger.In
 
             for (ICriterionTrigger.Listener<LevitationTrigger.Instance> listener : this.listeners)
             {
-                if (((LevitationTrigger.Instance)listener.getCriterionInstance()).test(player, startPos, durationIn))
+                if (listener.getCriterionInstance().test(player, startPos, durationIn))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<LevitationTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

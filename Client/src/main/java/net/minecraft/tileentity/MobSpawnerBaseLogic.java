@@ -22,7 +22,7 @@ public abstract class MobSpawnerBaseLogic
 {
     /** The delay to spawn. */
     private int spawnDelay = 20;
-    private final List<WeightedSpawnerEntity> potentialSpawns = Lists.<WeightedSpawnerEntity>newArrayList();
+    private final List<WeightedSpawnerEntity> potentialSpawns = Lists.newArrayList();
     private WeightedSpawnerEntity spawnData = new WeightedSpawnerEntity();
 
     /** The rotation of the mob inside the mob spawner */
@@ -65,7 +65,7 @@ public abstract class MobSpawnerBaseLogic
     private boolean isActivated()
     {
         BlockPos blockpos = this.getSpawnerPosition();
-        return this.getSpawnerWorld().isAnyPlayerWithinRangeAt((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, (double)this.activatingRangeFromPlayer);
+        return this.getSpawnerWorld().isAnyPlayerWithinRangeAt((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, this.activatingRangeFromPlayer);
     }
 
     public void updateSpawner()
@@ -80,9 +80,9 @@ public abstract class MobSpawnerBaseLogic
 
             if (this.getSpawnerWorld().isRemote)
             {
-                double d3 = (double)((float)blockpos.getX() + this.getSpawnerWorld().rand.nextFloat());
-                double d4 = (double)((float)blockpos.getY() + this.getSpawnerWorld().rand.nextFloat());
-                double d5 = (double)((float)blockpos.getZ() + this.getSpawnerWorld().rand.nextFloat());
+                double d3 = (float)blockpos.getX() + this.getSpawnerWorld().rand.nextFloat();
+                double d4 = (float)blockpos.getY() + this.getSpawnerWorld().rand.nextFloat();
+                double d5 = (float)blockpos.getZ() + this.getSpawnerWorld().rand.nextFloat();
                 this.getSpawnerWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d3, d4, d5, 0.0D, 0.0D, 0.0D);
                 this.getSpawnerWorld().spawnParticle(EnumParticleTypes.FLAME, d3, d4, d5, 0.0D, 0.0D, 0.0D);
 
@@ -125,7 +125,7 @@ public abstract class MobSpawnerBaseLogic
                         return;
                     }
 
-                    int k = world.getEntitiesWithinAABB(entity.getClass(), (new AxisAlignedBB((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), (double)(blockpos.getX() + 1), (double)(blockpos.getY() + 1), (double)(blockpos.getZ() + 1))).grow((double)this.spawnRange)).size();
+                    int k = world.getEntitiesWithinAABB(entity.getClass(), (new AxisAlignedBB(blockpos.getX(), blockpos.getY(), blockpos.getZ(), blockpos.getX() + 1, blockpos.getY() + 1, blockpos.getZ() + 1)).grow(this.spawnRange)).size();
 
                     if (k >= this.maxNearbyEntities)
                     {
@@ -140,7 +140,7 @@ public abstract class MobSpawnerBaseLogic
                     {
                         if (this.spawnData.getNbt().getSize() == 1 && this.spawnData.getNbt().hasKey("id", 8) && entity instanceof EntityLiving)
                         {
-                            ((EntityLiving)entity).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), (IEntityLivingData)null);
+                            ((EntityLiving)entity).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
                         }
 
                         AnvilChunkLoader.spawnEntity(entity, world);
@@ -177,7 +177,7 @@ public abstract class MobSpawnerBaseLogic
 
         if (!this.potentialSpawns.isEmpty())
         {
-            this.setNextSpawnData((WeightedSpawnerEntity)WeightedRandom.getRandomItem(this.getSpawnerWorld().rand, this.potentialSpawns));
+            this.setNextSpawnData(WeightedRandom.getRandomItem(this.getSpawnerWorld().rand, this.potentialSpawns));
         }
 
         this.broadcastEvent(1);
@@ -204,7 +204,7 @@ public abstract class MobSpawnerBaseLogic
         }
         else if (!this.potentialSpawns.isEmpty())
         {
-            this.setNextSpawnData((WeightedSpawnerEntity)WeightedRandom.getRandomItem(this.getSpawnerWorld().rand, this.potentialSpawns));
+            this.setNextSpawnData(WeightedRandom.getRandomItem(this.getSpawnerWorld().rand, this.potentialSpawns));
         }
 
         if (nbt.hasKey("MinSpawnDelay", 99))
@@ -276,7 +276,7 @@ public abstract class MobSpawnerBaseLogic
 
             if (this.spawnData.getNbt().getSize() == 1 && this.spawnData.getNbt().hasKey("id", 8) && this.cachedEntity instanceof EntityLiving)
             {
-                ((EntityLiving)this.cachedEntity).onInitialSpawn(this.getSpawnerWorld().getDifficultyForLocation(new BlockPos(this.cachedEntity)), (IEntityLivingData)null);
+                ((EntityLiving)this.cachedEntity).onInitialSpawn(this.getSpawnerWorld().getDifficultyForLocation(new BlockPos(this.cachedEntity)), null);
             }
         }
 

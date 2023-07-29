@@ -31,7 +31,7 @@ public class UserList<K, V extends UserListEntry<K>>
     protected static final Logger LOGGER = LogManager.getLogger();
     protected final Gson gson;
     private final File saveFile;
-    private final Map<String, V> values = Maps.<String, V>newHashMap();
+    private final Map<String, V> values = Maps.newHashMap();
     private boolean lanServer = true;
     private static final ParameterizedType USER_LIST_ENTRY_TYPE = new ParameterizedType()
     {
@@ -80,14 +80,14 @@ public class UserList<K, V extends UserListEntry<K>>
         }
         catch (IOException ioexception)
         {
-            LOGGER.warn("Could not save the list after adding a user.", (Throwable)ioexception);
+            LOGGER.warn("Could not save the list after adding a user.", ioexception);
         }
     }
 
     public V getEntry(K obj)
     {
         this.removeExpired();
-        return (V)(this.values.get(this.getObjectKey(obj)));
+        return this.values.get(this.getObjectKey(obj));
     }
 
     public void removeEntry(K entry)
@@ -100,13 +100,13 @@ public class UserList<K, V extends UserListEntry<K>>
         }
         catch (IOException ioexception)
         {
-            LOGGER.warn("Could not save the list after removing a user.", (Throwable)ioexception);
+            LOGGER.warn("Could not save the list after removing a user.", ioexception);
         }
     }
 
     public String[] getKeys()
     {
-        return (String[])this.values.keySet().toArray(new String[this.values.size()]);
+        return this.values.keySet().toArray(new String[this.values.size()]);
     }
 
     /**
@@ -127,7 +127,7 @@ public class UserList<K, V extends UserListEntry<K>>
      */
     private void removeExpired()
     {
-        List<K> list = Lists.<K>newArrayList();
+        List<K> list = Lists.newArrayList();
 
         for (V v : this.values.values())
         {
@@ -166,7 +166,7 @@ public class UserList<K, V extends UserListEntry<K>>
         }
         finally
         {
-            IOUtils.closeQuietly((Writer)bufferedwriter);
+            IOUtils.closeQuietly(bufferedwriter);
         }
     }
 

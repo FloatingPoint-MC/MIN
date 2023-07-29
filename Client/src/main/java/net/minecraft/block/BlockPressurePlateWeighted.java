@@ -48,17 +48,17 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
 
     protected void playClickOnSound(World worldIn, BlockPos color)
     {
-        worldIn.playSound((EntityPlayer)null, color, SoundEvents.BLOCK_METAL_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.90000004F);
+        worldIn.playSound(null, color, SoundEvents.BLOCK_METAL_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.90000004F);
     }
 
     protected void playClickOffSound(World worldIn, BlockPos pos)
     {
-        worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_METAL_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.75F);
+        worldIn.playSound(null, pos, SoundEvents.BLOCK_METAL_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.75F);
     }
 
     protected int getRedstoneStrength(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return state.getValue(POWER).intValue();
     }
 
     protected IBlockState setRedstoneStrength(IBlockState state, int strength)
@@ -87,11 +87,11 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return state.getValue(POWER).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
+        return new BlockStateContainer(this, POWER);
     }
 }

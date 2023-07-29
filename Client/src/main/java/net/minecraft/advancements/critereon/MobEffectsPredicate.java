@@ -34,13 +34,13 @@ public class MobEffectsPredicate
         }
         else
         {
-            return entityIn instanceof EntityLivingBase ? this.test(((EntityLivingBase)entityIn).getActivePotionMap()) : false;
+            return entityIn instanceof EntityLivingBase && this.test(((EntityLivingBase) entityIn).getActivePotionMap());
         }
     }
 
     public boolean test(EntityLivingBase entityIn)
     {
-        return this == ANY ? true : this.test(entityIn.getActivePotionMap());
+        return this == ANY || this.test(entityIn.getActivePotionMap());
     }
 
     public boolean test(Map<Potion, PotionEffect> potions)
@@ -55,7 +55,7 @@ public class MobEffectsPredicate
             {
                 PotionEffect potioneffect = potions.get(entry.getKey());
 
-                if (!((MobEffectsPredicate.InstancePredicate)entry.getValue()).test(potioneffect))
+                if (!entry.getValue().test(potioneffect))
                 {
                     return false;
                 }
@@ -70,7 +70,7 @@ public class MobEffectsPredicate
         if (element != null && !element.isJsonNull())
         {
             JsonObject jsonobject = JsonUtils.getJsonObject(element, "effects");
-            Map<Potion, MobEffectsPredicate.InstancePredicate> map = Maps.<Potion, MobEffectsPredicate.InstancePredicate>newHashMap();
+            Map<Potion, MobEffectsPredicate.InstancePredicate> map = Maps.newHashMap();
 
             for (Entry<String, JsonElement> entry : jsonobject.entrySet())
             {

@@ -83,7 +83,7 @@ public class RecipeTippedArrow implements IRecipe
 
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
-        return NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
     }
 
     /**

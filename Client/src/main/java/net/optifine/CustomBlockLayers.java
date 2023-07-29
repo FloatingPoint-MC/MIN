@@ -65,7 +65,7 @@ public class CustomBlockLayers
 
         if (!list.isEmpty())
         {
-            renderLayers = (BlockRenderLayer[])list.toArray(new BlockRenderLayer[list.size()]);
+            renderLayers = list.toArray(new BlockRenderLayer[list.size()]);
             active = true;
         }
     }
@@ -100,7 +100,7 @@ public class CustomBlockLayers
                     {
                         while (listLayers.size() < j + 1)
                         {
-                            listLayers.add((BlockRenderLayer) null);
+                            listLayers.add(null);
                         }
 
                         if (listLayers.get(j) != null)

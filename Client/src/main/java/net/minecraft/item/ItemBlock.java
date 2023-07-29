@@ -47,7 +47,7 @@ public class ItemBlock extends Item
 
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.block, pos, false, facing, (Entity)null))
+        if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.block, pos, false, facing, null))
         {
             int i = this.getMetadata(itemstack.getMetadata());
             IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player);
@@ -136,7 +136,7 @@ public class ItemBlock extends Item
             pos = pos.offset(side);
         }
 
-        return worldIn.mayPlace(this.block, pos, false, side, (Entity)null);
+        return worldIn.mayPlace(this.block, pos, false, side, null);
     }
 
     /**

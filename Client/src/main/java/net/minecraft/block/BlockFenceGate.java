@@ -47,13 +47,13 @@ public class BlockFenceGate extends BlockHorizontal
     {
         state = this.getActualState(state, source, pos);
 
-        if (((Boolean)state.getValue(IN_WALL)).booleanValue())
+        if (state.getValue(IN_WALL).booleanValue())
         {
-            return ((EnumFacing)state.getValue(FACING)).getAxis() == EnumFacing.Axis.X ? AABB_HITBOX_XAXIS_INWALL : AABB_HITBOX_ZAXIS_INWALL;
+            return state.getValue(FACING).getAxis() == EnumFacing.Axis.X ? AABB_HITBOX_XAXIS_INWALL : AABB_HITBOX_ZAXIS_INWALL;
         }
         else
         {
-            return ((EnumFacing)state.getValue(FACING)).getAxis() == EnumFacing.Axis.X ? AABB_HITBOX_XAXIS : AABB_HITBOX_ZAXIS;
+            return state.getValue(FACING).getAxis() == EnumFacing.Axis.X ? AABB_HITBOX_XAXIS : AABB_HITBOX_ZAXIS;
         }
     }
 
@@ -63,7 +63,7 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        EnumFacing.Axis enumfacing$axis = ((EnumFacing)state.getValue(FACING)).getAxis();
+        EnumFacing.Axis enumfacing$axis = state.getValue(FACING).getAxis();
 
         if (enumfacing$axis == EnumFacing.Axis.Z && (worldIn.getBlockState(pos.west()).getBlock() == Blocks.COBBLESTONE_WALL || worldIn.getBlockState(pos.east()).getBlock() == Blocks.COBBLESTONE_WALL) || enumfacing$axis == EnumFacing.Axis.X && (worldIn.getBlockState(pos.north()).getBlock() == Blocks.COBBLESTONE_WALL || worldIn.getBlockState(pos.south()).getBlock() == Blocks.COBBLESTONE_WALL))
         {
@@ -81,7 +81,7 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -91,7 +91,7 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     /**
@@ -99,7 +99,7 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getMaterial().isSolid() ? super.canPlaceBlockAt(worldIn, pos) : false;
+        return worldIn.getBlockState(pos.down()).getMaterial().isSolid() && super.canPlaceBlockAt(worldIn, pos);
     }
 
     @Nullable
@@ -110,13 +110,13 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        if (((Boolean)blockState.getValue(OPEN)).booleanValue())
+        if (blockState.getValue(OPEN).booleanValue())
         {
             return NULL_AABB;
         }
         else
         {
-            return ((EnumFacing)blockState.getValue(FACING)).getAxis() == EnumFacing.Axis.Z ? AABB_COLLISION_BOX_ZAXIS : AABB_COLLISION_BOX_XAXIS;
+            return blockState.getValue(FACING).getAxis() == EnumFacing.Axis.Z ? AABB_COLLISION_BOX_ZAXIS : AABB_COLLISION_BOX_XAXIS;
         }
     }
 
@@ -142,7 +142,7 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        return ((Boolean)worldIn.getBlockState(pos).getValue(OPEN)).booleanValue();
+        return worldIn.getBlockState(pos).getValue(OPEN).booleanValue();
     }
 
     /**
@@ -160,14 +160,14 @@ public class BlockFenceGate extends BlockHorizontal
      */
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (((Boolean)state.getValue(OPEN)).booleanValue())
+        if (state.getValue(OPEN).booleanValue())
         {
             state = state.withProperty(OPEN, Boolean.valueOf(false));
             worldIn.setBlockState(pos, state, 10);
         }
         else
         {
-            EnumFacing enumfacing = EnumFacing.fromAngle((double)playerIn.rotationYaw);
+            EnumFacing enumfacing = EnumFacing.fromAngle(playerIn.rotationYaw);
 
             if (state.getValue(FACING) == enumfacing.getOpposite())
             {
@@ -178,7 +178,7 @@ public class BlockFenceGate extends BlockHorizontal
             worldIn.setBlockState(pos, state, 10);
         }
 
-        worldIn.playEvent(playerIn, ((Boolean)state.getValue(OPEN)).booleanValue() ? 1008 : 1014, pos, 0);
+        worldIn.playEvent(playerIn, state.getValue(OPEN).booleanValue() ? 1008 : 1014, pos, 0);
         return true;
     }
 
@@ -193,13 +193,13 @@ public class BlockFenceGate extends BlockHorizontal
         {
             boolean flag = worldIn.isBlockPowered(pos);
 
-            if (((Boolean)state.getValue(POWERED)).booleanValue() != flag)
+            if (state.getValue(POWERED).booleanValue() != flag)
             {
                 worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)).withProperty(OPEN, Boolean.valueOf(flag)), 2);
 
-                if (((Boolean)state.getValue(OPEN)).booleanValue() != flag)
+                if (state.getValue(OPEN).booleanValue() != flag)
                 {
-                    worldIn.playEvent((EntityPlayer)null, flag ? 1008 : 1014, pos, 0);
+                    worldIn.playEvent(null, flag ? 1008 : 1014, pos, 0);
                 }
             }
         }
@@ -228,14 +228,14 @@ public class BlockFenceGate extends BlockHorizontal
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        i = i | state.getValue(FACING).getHorizontalIndex();
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if (state.getValue(POWERED).booleanValue())
         {
             i |= 8;
         }
 
-        if (((Boolean)state.getValue(OPEN)).booleanValue())
+        if (state.getValue(OPEN).booleanValue())
         {
             i |= 4;
         }
@@ -245,7 +245,7 @@ public class BlockFenceGate extends BlockHorizontal
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, OPEN, POWERED, IN_WALL});
+        return new BlockStateContainer(this, FACING, OPEN, POWERED, IN_WALL);
     }
 
     /**
@@ -263,7 +263,7 @@ public class BlockFenceGate extends BlockHorizontal
     {
         if (face != EnumFacing.UP && face != EnumFacing.DOWN)
         {
-            return ((EnumFacing)state.getValue(FACING)).getAxis() == face.rotateY().getAxis() ? BlockFaceShape.MIDDLE_POLE : BlockFaceShape.UNDEFINED;
+            return state.getValue(FACING).getAxis() == face.rotateY().getAxis() ? BlockFaceShape.MIDDLE_POLE : BlockFaceShape.UNDEFINED;
         }
         else
         {

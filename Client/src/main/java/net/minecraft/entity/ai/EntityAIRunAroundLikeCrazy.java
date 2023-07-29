@@ -70,7 +70,7 @@ public class EntityAIRunAroundLikeCrazy extends EntityAIBase
     {
         if (!this.horseHost.isTame() && this.horseHost.getRNG().nextInt(50) == 0)
         {
-            Entity entity = (Entity)this.horseHost.getPassengers().get(0);
+            Entity entity = this.horseHost.getPassengers().get(0);
 
             if (entity == null)
             {

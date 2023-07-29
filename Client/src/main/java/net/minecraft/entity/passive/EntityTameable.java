@@ -22,8 +22,8 @@ import net.minecraft.world.World;
 
 public abstract class EntityTameable extends EntityAnimal implements IEntityOwnable
 {
-    protected static final DataParameter<Byte> TAMED = EntityDataManager.<Byte>createKey(EntityTameable.class, DataSerializers.BYTE);
-    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<Byte> TAMED = EntityDataManager.createKey(EntityTameable.class, DataSerializers.BYTE);
+    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     protected EntityAISit aiSit;
 
     public EntityTameable(World worldIn)
@@ -144,12 +144,12 @@ public abstract class EntityTameable extends EntityAnimal implements IEntityOwna
 
     public boolean isTamed()
     {
-        return (((Byte)this.dataManager.get(TAMED)).byteValue() & 4) != 0;
+        return (this.dataManager.get(TAMED).byteValue() & 4) != 0;
     }
 
     public void setTamed(boolean tamed)
     {
-        byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+        byte b0 = this.dataManager.get(TAMED).byteValue();
 
         if (tamed)
         {
@@ -169,12 +169,12 @@ public abstract class EntityTameable extends EntityAnimal implements IEntityOwna
 
     public boolean isSitting()
     {
-        return (((Byte)this.dataManager.get(TAMED)).byteValue() & 1) != 0;
+        return (this.dataManager.get(TAMED).byteValue() & 1) != 0;
     }
 
     public void setSitting(boolean sitting)
     {
-        byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+        byte b0 = this.dataManager.get(TAMED).byteValue();
 
         if (sitting)
         {

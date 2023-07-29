@@ -47,7 +47,7 @@ public class BlockStandingSign extends BlockSign
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(ROTATION)).intValue();
+        return state.getValue(ROTATION).intValue();
     }
 
     /**
@@ -58,7 +58,7 @@ public class BlockStandingSign extends BlockSign
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(ROTATION, Integer.valueOf(rot.rotate(((Integer)state.getValue(ROTATION)).intValue(), 16)));
+        return state.withProperty(ROTATION, Integer.valueOf(rot.rotate(state.getValue(ROTATION).intValue(), 16)));
     }
 
     /**
@@ -68,11 +68,11 @@ public class BlockStandingSign extends BlockSign
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withProperty(ROTATION, Integer.valueOf(mirrorIn.mirrorRotation(((Integer)state.getValue(ROTATION)).intValue(), 16)));
+        return state.withProperty(ROTATION, Integer.valueOf(mirrorIn.mirrorRotation(state.getValue(ROTATION).intValue(), 16)));
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {ROTATION});
+        return new BlockStateContainer(this, ROTATION);
     }
 }

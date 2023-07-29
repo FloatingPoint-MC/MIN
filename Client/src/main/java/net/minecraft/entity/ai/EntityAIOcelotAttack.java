@@ -70,7 +70,7 @@ public class EntityAIOcelotAttack extends EntityAIBase
     public void updateTask()
     {
         this.entity.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
-        double d0 = (double)(this.entity.width * 2.0F * this.entity.width * 2.0F);
+        double d0 = this.entity.width * 2.0F * this.entity.width * 2.0F;
         double d1 = this.entity.getDistanceSq(this.target.posX, this.target.getEntityBoundingBox().minY, this.target.posZ);
         double d2 = 0.8D;
 

@@ -89,7 +89,7 @@ public class TileEntitySign extends TileEntity
 
             try
             {
-                this.signText[i] = TextComponentUtils.processComponent(icommandsender, itextcomponent, (Entity)null);
+                this.signText[i] = TextComponentUtils.processComponent(icommandsender, itextcomponent, null);
             }
             catch (CommandException var7)
             {

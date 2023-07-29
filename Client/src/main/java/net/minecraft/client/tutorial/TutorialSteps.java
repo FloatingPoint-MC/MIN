@@ -14,7 +14,7 @@ public enum TutorialSteps
     private final String name;
     private final Function < Tutorial, ? extends ITutorialStep > tutorial;
 
-    private <T extends ITutorialStep> TutorialSteps(String nameIn, Function<Tutorial, T> constructor)
+    <T extends ITutorialStep> TutorialSteps(String nameIn, Function<Tutorial, T> constructor)
     {
         this.name = nameIn;
         this.tutorial = constructor;

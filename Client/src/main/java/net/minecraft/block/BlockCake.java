@@ -38,7 +38,7 @@ public class BlockCake extends Block
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return CAKE_AABB[((Integer)state.getValue(BITES)).intValue()];
+        return CAKE_AABB[state.getValue(BITES).intValue()];
     }
 
     /**
@@ -84,7 +84,7 @@ public class BlockCake extends Block
         {
             player.addStat(StatList.CAKE_SLICES_EATEN);
             player.getFoodStats().addStats(2, 0.1F);
-            int i = ((Integer)state.getValue(BITES)).intValue();
+            int i = state.getValue(BITES).intValue();
 
             if (i < 6)
             {
@@ -104,7 +104,7 @@ public class BlockCake extends Block
      */
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
     /**
@@ -168,12 +168,12 @@ public class BlockCake extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(BITES)).intValue();
+        return state.getValue(BITES).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {BITES});
+        return new BlockStateContainer(this, BITES);
     }
 
     /**
@@ -182,7 +182,7 @@ public class BlockCake extends Block
      */
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        return (7 - ((Integer)blockState.getValue(BITES)).intValue()) * 2;
+        return (7 - blockState.getValue(BITES).intValue()) * 2;
     }
 
     /**

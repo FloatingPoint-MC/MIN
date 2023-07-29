@@ -11,7 +11,7 @@ import net.minecraft.stats.RecipeBook;
 
 public class RecipeList
 {
-    private List<IRecipe> recipes = Lists.<IRecipe>newArrayList();
+    private final List<IRecipe> recipes = Lists.newArrayList();
     private final BitSet craftable = new BitSet();
 
     /** Tracks which recipes can fit in the current container */
@@ -46,7 +46,7 @@ public class RecipeList
             IRecipe irecipe = this.recipes.get(i);
             boolean flag = irecipe.canFit(width, height) && book.isUnlocked(irecipe);
             this.canFit.set(i, flag);
-            this.craftable.set(i, flag && handler.canCraft(irecipe, (IntList)null));
+            this.craftable.set(i, flag && handler.canCraft(irecipe, null));
         }
     }
 
@@ -72,7 +72,7 @@ public class RecipeList
 
     public List<IRecipe> getRecipes(boolean onlyCraftable)
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (int i = this.inBook.nextSetBit(0); i >= 0; i = this.inBook.nextSetBit(i + 1))
         {
@@ -87,7 +87,7 @@ public class RecipeList
 
     public List<IRecipe> getDisplayRecipes(boolean onlyCraftable)
     {
-        List<IRecipe> list = Lists.<IRecipe>newArrayList();
+        List<IRecipe> list = Lists.newArrayList();
 
         for (int i = this.inBook.nextSetBit(0); i >= 0; i = this.inBook.nextSetBit(i + 1))
         {
@@ -106,7 +106,7 @@ public class RecipeList
 
         if (this.singleResultItem)
         {
-            ItemStack itemstack = ((IRecipe)this.recipes.get(0)).getRecipeOutput();
+            ItemStack itemstack = this.recipes.get(0).getRecipeOutput();
             ItemStack itemstack1 = recipe.getRecipeOutput();
             this.singleResultItem = ItemStack.areItemsEqual(itemstack, itemstack1) && ItemStack.areItemStackTagsEqual(itemstack, itemstack1);
         }

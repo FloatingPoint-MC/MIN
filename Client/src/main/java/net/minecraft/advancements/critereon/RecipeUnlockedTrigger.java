@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 public class RecipeUnlockedTrigger implements ICriterionTrigger<RecipeUnlockedTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("recipe_unlocked");
-    private final Map<PlayerAdvancements, RecipeUnlockedTrigger.Listeners> listeners = Maps.<PlayerAdvancements, RecipeUnlockedTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, RecipeUnlockedTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -107,7 +107,7 @@ public class RecipeUnlockedTrigger implements ICriterionTrigger<RecipeUnlockedTr
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<RecipeUnlockedTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<RecipeUnlockedTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<RecipeUnlockedTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -135,11 +135,11 @@ public class RecipeUnlockedTrigger implements ICriterionTrigger<RecipeUnlockedTr
 
             for (ICriterionTrigger.Listener<RecipeUnlockedTrigger.Instance> listener : this.listeners)
             {
-                if (((RecipeUnlockedTrigger.Instance)listener.getCriterionInstance()).test(recipe))
+                if (listener.getCriterionInstance().test(recipe))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<RecipeUnlockedTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

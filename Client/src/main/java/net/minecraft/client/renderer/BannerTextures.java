@@ -24,7 +24,7 @@ public class BannerTextures
 
     public static class Cache
     {
-        private final Map<String, BannerTextures.CacheEntry> cacheMap = Maps.<String, BannerTextures.CacheEntry>newLinkedHashMap();
+        private final Map<String, BannerTextures.CacheEntry> cacheMap = Maps.newLinkedHashMap();
         private final ResourceLocation cacheResourceLocation;
         private final String cacheResourceBase;
         private final String cacheId;
@@ -55,7 +55,7 @@ public class BannerTextures
                         return BannerTextures.BANNER_BASE_TEXTURE;
                     }
 
-                    List<String> list = Lists.<String>newArrayList();
+                    List<String> list = Lists.newArrayList();
 
                     for (BannerPattern bannerpattern : patternList)
                     {

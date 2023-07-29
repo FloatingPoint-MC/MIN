@@ -59,9 +59,9 @@ public class EntityEnderEye extends Entity
 
     public void moveTowards(BlockPos pos)
     {
-        double d0 = (double)pos.getX();
+        double d0 = pos.getX();
         int i = pos.getY();
-        double d1 = (double)pos.getZ();
+        double d1 = pos.getZ();
         double d2 = d0 - this.posX;
         double d3 = d1 - this.posZ;
         float f = MathHelper.sqrt(d2 * d2 + d3 * d3);
@@ -75,7 +75,7 @@ public class EntityEnderEye extends Entity
         else
         {
             this.targetX = d0;
-            this.targetY = (double)i;
+            this.targetY = i;
             this.targetZ = d1;
         }
 
@@ -96,7 +96,7 @@ public class EntityEnderEye extends Entity
         {
             float f = MathHelper.sqrt(x * x + z * z);
             this.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
-            this.rotationPitch = (float)(MathHelper.atan2(y, (double)f) * (180D / Math.PI));
+            this.rotationPitch = (float)(MathHelper.atan2(y, f) * (180D / Math.PI));
             this.prevRotationYaw = this.rotationYaw;
             this.prevRotationPitch = this.rotationPitch;
         }
@@ -117,9 +117,8 @@ public class EntityEnderEye extends Entity
         float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
-        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -154,8 +153,8 @@ public class EntityEnderEye extends Entity
                 this.motionY *= 0.8D;
             }
 
-            this.motionX = Math.cos((double)f2) * d2;
-            this.motionZ = Math.sin((double)f2) * d2;
+            this.motionX = Math.cos(f2) * d2;
+            this.motionZ = Math.sin(f2) * d2;
 
             if (this.posY < this.targetY)
             {

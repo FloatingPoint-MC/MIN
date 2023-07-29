@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BlockDirt extends Block
 {
-    public static final PropertyEnum<BlockDirt.DirtType> VARIANT = PropertyEnum.<BlockDirt.DirtType>create("variant", BlockDirt.DirtType.class);
+    public static final PropertyEnum<BlockDirt.DirtType> VARIANT = PropertyEnum.create("variant", BlockDirt.DirtType.class);
     public static final PropertyBool SNOWY = PropertyBool.create("snowy");
 
     protected BlockDirt()
@@ -35,7 +35,7 @@ public class BlockDirt extends Block
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return ((BlockDirt.DirtType)state.getValue(VARIANT)).getColor();
+        return state.getValue(VARIANT).getColor();
     }
 
     /**
@@ -65,7 +65,7 @@ public class BlockDirt extends Block
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(this, 1, ((BlockDirt.DirtType)state.getValue(VARIANT)).getMetadata());
+        return new ItemStack(this, 1, state.getValue(VARIANT).getMetadata());
     }
 
     /**
@@ -81,12 +81,12 @@ public class BlockDirt extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((BlockDirt.DirtType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT, SNOWY});
+        return new BlockStateContainer(this, VARIANT, SNOWY);
     }
 
     /**
@@ -95,7 +95,7 @@ public class BlockDirt extends Block
      */
     public int damageDropped(IBlockState state)
     {
-        BlockDirt.DirtType blockdirt$dirttype = (BlockDirt.DirtType)state.getValue(VARIANT);
+        BlockDirt.DirtType blockdirt$dirttype = state.getValue(VARIANT);
 
         if (blockdirt$dirttype == BlockDirt.DirtType.PODZOL)
         {
@@ -105,7 +105,7 @@ public class BlockDirt extends Block
         return blockdirt$dirttype.getMetadata();
     }
 
-    public static enum DirtType implements IStringSerializable
+    public enum DirtType implements IStringSerializable
     {
         DIRT(0, "dirt", "default", MapColor.DIRT),
         COARSE_DIRT(1, "coarse_dirt", "coarse", MapColor.DIRT),
@@ -117,12 +117,12 @@ public class BlockDirt extends Block
         private final String translationKey;
         private final MapColor color;
 
-        private DirtType(int metadataIn, String nameIn, MapColor color)
+        DirtType(int metadataIn, String nameIn, MapColor color)
         {
             this(metadataIn, nameIn, nameIn, color);
         }
 
-        private DirtType(int metadataIn, String nameIn, String unlocalizedNameIn, MapColor color)
+        DirtType(int metadataIn, String nameIn, String unlocalizedNameIn, MapColor color)
         {
             this.metadata = metadataIn;
             this.name = nameIn;

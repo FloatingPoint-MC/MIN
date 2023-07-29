@@ -7,7 +7,7 @@ import net.minecraft.client.settings.GameSettings;
 
 public class GuiOptionsRowList extends GuiListExtended
 {
-    private final List<GuiOptionsRowList.Row> options = Lists.<GuiOptionsRowList.Row>newArrayList();
+    private final List<GuiOptionsRowList.Row> options = Lists.newArrayList();
 
     public GuiOptionsRowList(Minecraft mcIn, int p_i45015_2_, int p_i45015_3_, int p_i45015_4_, int p_i45015_5_, int p_i45015_6_, GameSettings.Options... p_i45015_7_)
     {
@@ -33,7 +33,7 @@ public class GuiOptionsRowList extends GuiListExtended
         else
         {
             int i = options.getOrdinal();
-            return (GuiButton)(options.isFloat() ? new GuiOptionSlider(i, p_148182_2_, p_148182_3_, options) : new GuiOptionButton(i, p_148182_2_, p_148182_3_, options, mcIn.gameSettings.getKeyBinding(options)));
+            return options.isFloat() ? new GuiOptionSlider(i, p_148182_2_, p_148182_3_, options) : new GuiOptionButton(i, p_148182_2_, p_148182_3_, options, mcIn.gameSettings.getKeyBinding(options));
         }
     }
 

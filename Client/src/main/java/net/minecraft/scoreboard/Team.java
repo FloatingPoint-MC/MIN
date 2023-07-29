@@ -66,20 +66,20 @@ public abstract class Team
      */
     public abstract Team.CollisionRule getCollisionRule();
 
-    public static enum CollisionRule
+    public enum CollisionRule
     {
         ALWAYS("always", 0),
         NEVER("never", 1),
         HIDE_FOR_OTHER_TEAMS("pushOtherTeams", 2),
         HIDE_FOR_OWN_TEAM("pushOwnTeam", 3);
 
-        private static final Map<String, Team.CollisionRule> nameMap = Maps.<String, Team.CollisionRule>newHashMap();
+        private static final Map<String, Team.CollisionRule> nameMap = Maps.newHashMap();
         public final String name;
         public final int id;
 
         public static String[] getNames()
         {
-            return (String[])nameMap.keySet().toArray(new String[nameMap.size()]);
+            return nameMap.keySet().toArray(new String[nameMap.size()]);
         }
 
         @Nullable
@@ -88,7 +88,7 @@ public abstract class Team
             return nameMap.get(nameIn);
         }
 
-        private CollisionRule(String nameIn, int idIn)
+        CollisionRule(String nameIn, int idIn)
         {
             this.name = nameIn;
             this.id = idIn;
@@ -102,20 +102,20 @@ public abstract class Team
         }
     }
 
-    public static enum EnumVisible
+    public enum EnumVisible
     {
         ALWAYS("always", 0),
         NEVER("never", 1),
         HIDE_FOR_OTHER_TEAMS("hideForOtherTeams", 2),
         HIDE_FOR_OWN_TEAM("hideForOwnTeam", 3);
 
-        private static final Map<String, Team.EnumVisible> nameMap = Maps.<String, Team.EnumVisible>newHashMap();
+        private static final Map<String, Team.EnumVisible> nameMap = Maps.newHashMap();
         public final String internalName;
         public final int id;
 
         public static String[] getNames()
         {
-            return (String[])nameMap.keySet().toArray(new String[nameMap.size()]);
+            return nameMap.keySet().toArray(new String[nameMap.size()]);
         }
 
         @Nullable
@@ -124,7 +124,7 @@ public abstract class Team
             return nameMap.get(nameIn);
         }
 
-        private EnumVisible(String nameIn, int idIn)
+        EnumVisible(String nameIn, int idIn)
         {
             this.internalName = nameIn;
             this.id = idIn;

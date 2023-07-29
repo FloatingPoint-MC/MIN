@@ -32,7 +32,7 @@ public class BiomeSavanna extends Biome
 
     public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
-        return (WorldGenAbstractTree)(rand.nextInt(5) > 0 ? SAVANNA_TREE : TREE_FEATURE);
+        return rand.nextInt(5) > 0 ? SAVANNA_TREE : TREE_FEATURE;
     }
 
     public void decorate(World worldIn, Random rand, BlockPos pos)

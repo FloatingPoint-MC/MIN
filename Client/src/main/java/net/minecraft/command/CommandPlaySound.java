@@ -44,7 +44,7 @@ public class CommandPlaySound extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException(this.getUsage(sender), new Object[0]);
+            throw new WrongUsageException(this.getUsage(sender));
         }
         else
         {
@@ -55,7 +55,7 @@ public class CommandPlaySound extends CommandBase
 
             if (soundcategory == null)
             {
-                throw new CommandException("commands.playsound.unknownSoundSource", new Object[] {s1});
+                throw new CommandException("commands.playsound.unknownSoundSource", s1);
             }
             else
             {
@@ -74,7 +74,7 @@ public class CommandPlaySound extends CommandBase
                 {
                     if (d5 <= 0.0D)
                     {
-                        throw new CommandException("commands.playsound.playerTooFar", new Object[] {entityplayermp.getName()});
+                        throw new CommandException("commands.playsound.playerTooFar", entityplayermp.getName());
                     }
 
                     double d8 = d0 - entityplayermp.posX;
@@ -93,7 +93,7 @@ public class CommandPlaySound extends CommandBase
                 }
 
                 entityplayermp.connection.sendPacket(new SPacketCustomSound(s, soundcategory, d0, d1, d2, (float)d3, (float)d4));
-                notifyCommandListener(sender, this, "commands.playsound.success", new Object[] {s, entityplayermp.getName()});
+                notifyCommandListener(sender, this, "commands.playsound.success", s, entityplayermp.getName());
             }
         }
     }

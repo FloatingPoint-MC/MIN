@@ -252,19 +252,19 @@ public class ShadersRender
             int i = 0;
             i = entityRenderer.frameCount;
             entityRenderer.frameCount = i + 1;
-            renderglobal.setupTerrain(entity, (double)partialTicks, frustum, i, minecraft.player.isSpectator());
+            renderglobal.setupTerrain(entity, partialTicks, frustum, i, minecraft.player.isSpectator());
             minecraft.profiler.endStartSection("shadow updatechunks");
             minecraft.profiler.endStartSection("shadow terrain");
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
             GlStateManager.disableAlpha();
-            renderglobal.renderBlockLayer(BlockRenderLayer.SOLID, (double)partialTicks, 2, entity);
+            renderglobal.renderBlockLayer(BlockRenderLayer.SOLID, partialTicks, 2, entity);
             Shaders.checkGLError("shadow terrain solid");
             GlStateManager.enableAlpha();
-            renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, (double)partialTicks, 2, entity);
+            renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, partialTicks, 2, entity);
             Shaders.checkGLError("shadow terrain cutoutmipped");
             minecraft.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
-            renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT, (double)partialTicks, 2, entity);
+            renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT, partialTicks, 2, entity);
             Shaders.checkGLError("shadow terrain cutout");
             minecraft.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
             GlStateManager.shadeModel(7424);
@@ -305,7 +305,7 @@ public class ShadersRender
             if (Shaders.isRenderShadowTranslucent())
             {
                 minecraft.profiler.endStartSection("shadow translucent");
-                renderglobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, (double)partialTicks, 2, entity);
+                renderglobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, partialTicks, 2, entity);
                 Shaders.checkGLError("shadow translucent");
             }
 
@@ -496,50 +496,50 @@ public class ShadersRender
 
             if (te.shouldRenderFace(EnumFacing.SOUTH))
             {
-                bufferbuilder.pos(x, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
             }
 
             if (te.shouldRenderFace(EnumFacing.NORTH))
             {
-                bufferbuilder.pos(x, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y, z).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y, z).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y, z).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y, z).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
             }
 
             if (te.shouldRenderFace(EnumFacing.EAST))
             {
-                bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y, z).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y, z).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
             }
 
             if (te.shouldRenderFace(EnumFacing.WEST))
             {
-                bufferbuilder.pos(x, y, z).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y, z).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y + 1.0D, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y + 1.0D, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
             }
 
             if (te.shouldRenderFace(EnumFacing.DOWN))
             {
-                bufferbuilder.pos(x, y, z).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y, z).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y, z).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y, z).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
             }
 
             if (te.shouldRenderFace(EnumFacing.UP))
             {
-                bufferbuilder.pos(x, y + (double)offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y + (double)offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x + 1.0D, y + (double)offset, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-                bufferbuilder.pos(x, y + (double)offset, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y + (double)offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y + (double)offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x + 1.0D, y + (double)offset, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+                bufferbuilder.pos(x, y + (double)offset, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
             }
 
             tessellator.draw();

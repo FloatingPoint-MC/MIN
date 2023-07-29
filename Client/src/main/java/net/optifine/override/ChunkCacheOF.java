@@ -144,7 +144,7 @@ public class ChunkCacheOF implements IBlockAccess
             this.blockStates = (IBlockState[])cacheBlockStates.allocate(this.arraySize);
         }
 
-        Arrays.fill(this.blockStates, (Object)null);
+        Arrays.fill(this.blockStates, null);
     }
 
     public void renderFinish()

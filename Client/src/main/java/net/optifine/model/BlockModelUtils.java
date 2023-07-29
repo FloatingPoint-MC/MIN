@@ -59,8 +59,8 @@ public class BlockModelUtils
     public static IBakedModel joinModelsCube(IBakedModel modelBase, IBakedModel modelAdd)
     {
         List<BakedQuad> list = new ArrayList<BakedQuad>();
-        list.addAll(modelBase.getQuads((IBlockState)null, (EnumFacing)null, 0L));
-        list.addAll(modelAdd.getQuads((IBlockState)null, (EnumFacing)null, 0L));
+        list.addAll(modelBase.getQuads(null, null, 0L));
+        list.addAll(modelAdd.getQuads(null, null, 0L));
         EnumFacing[] aenumfacing = EnumFacing.VALUES;
         Map<EnumFacing, List<BakedQuad>> map = new HashMap<EnumFacing, List<BakedQuad>>();
 
@@ -68,8 +68,8 @@ public class BlockModelUtils
         {
             EnumFacing enumfacing = aenumfacing[i];
             List list1 = new ArrayList();
-            list1.addAll(modelBase.getQuads((IBlockState)null, enumfacing, 0L));
-            list1.addAll(modelAdd.getQuads((IBlockState)null, enumfacing, 0L));
+            list1.addAll(modelBase.getQuads(null, enumfacing, 0L));
+            list1.addAll(modelAdd.getQuads(null, enumfacing, 0L));
             map.put(enumfacing, list1);
         }
 
@@ -128,11 +128,11 @@ public class BlockModelUtils
                     for (int i = 0; i < aenumfacing.length; ++i)
                     {
                         EnumFacing enumfacing = aenumfacing[i];
-                        List<BakedQuad> list = ibakedmodel1.getQuads((IBlockState)null, enumfacing, 0L);
+                        List<BakedQuad> list = ibakedmodel1.getQuads(null, enumfacing, 0L);
                         replaceTexture(list, spriteOld, spriteNew);
                     }
 
-                    List<BakedQuad> list1 = ibakedmodel1.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+                    List<BakedQuad> list1 = ibakedmodel1.getQuads(null, null, 0L);
                     replaceTexture(list1, spriteOld, spriteNew);
                     return ibakedmodel1;
                 }
@@ -189,7 +189,7 @@ public class BlockModelUtils
     {
         int i = pos.getX();
         int j = pos.getZ();
-        long k = (long)(i * 3129871) ^ (long)j * 116129781L;
+        long k = (i * 3129871L) ^ (long)j * 116129781L;
         k = k * k * 42317861L + k * 11L;
         double d0 = ((double)((float)(k >> 16 & 15L) / 15.0F) - 0.5D) * 0.5D;
         double d1 = ((double)((float)(k >> 24 & 15L) / 15.0F) - 0.5D) * 0.5D;

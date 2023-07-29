@@ -201,11 +201,11 @@ public class ModelParrot extends ModelBase
         }
     }
 
-    static enum State
+    enum State
     {
         FLYING,
         STANDING,
         SITTING,
-        PARTY;
+        PARTY
     }
 }

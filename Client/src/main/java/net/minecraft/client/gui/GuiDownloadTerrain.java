@@ -6,7 +6,7 @@ import net.optifine.CustomLoadingScreens;
 
 public class GuiDownloadTerrain extends GuiScreen
 {
-    private CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
+    private final CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
 
     /**
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the

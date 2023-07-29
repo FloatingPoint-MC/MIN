@@ -64,7 +64,7 @@ public class BlockDragonEgg extends Block
 
             if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
             {
-                worldIn.spawnEntity(new EntityFallingBlock(worldIn, (double)((float)pos.getX() + 0.5F), (double)pos.getY(), (double)((float)pos.getZ() + 0.5F), this.getDefaultState()));
+                worldIn.spawnEntity(new EntityFallingBlock(worldIn, (float)pos.getX() + 0.5F, pos.getY(), (float)pos.getZ() + 0.5F, this.getDefaultState()));
             }
             else
             {
@@ -73,7 +73,6 @@ public class BlockDragonEgg extends Block
 
                 for (blockpos = pos; BlockFalling.canFallThrough(worldIn.getBlockState(blockpos)) && blockpos.getY() > 0; blockpos = blockpos.down())
                 {
-                    ;
                 }
 
                 if (blockpos.getY() > 0)
@@ -121,7 +120,7 @@ public class BlockDragonEgg extends Block
                             double d1 = (double)blockpos.getX() + (double)(pos.getX() - blockpos.getX()) * d0 + (worldIn.rand.nextDouble() - 0.5D) + 0.5D;
                             double d2 = (double)blockpos.getY() + (double)(pos.getY() - blockpos.getY()) * d0 + worldIn.rand.nextDouble() - 0.5D;
                             double d3 = (double)blockpos.getZ() + (double)(pos.getZ() - blockpos.getZ()) * d0 + (worldIn.rand.nextDouble() - 0.5D) + 0.5D;
-                            worldIn.spawnParticle(EnumParticleTypes.PORTAL, d1, d2, d3, (double)f, (double)f1, (double)f2);
+                            worldIn.spawnParticle(EnumParticleTypes.PORTAL, d1, d2, d3, f, f1, f2);
                         }
                     }
                     else

@@ -8,8 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class LootTableList
 {
-    private static final Set<ResourceLocation> LOOT_TABLES = Sets.<ResourceLocation>newHashSet();
-    private static final Set<ResourceLocation> READ_ONLY_LOOT_TABLES = Collections.<ResourceLocation>unmodifiableSet(LOOT_TABLES);
+    private static final Set<ResourceLocation> LOOT_TABLES = Sets.newHashSet();
+    private static final Set<ResourceLocation> READ_ONLY_LOOT_TABLES = Collections.unmodifiableSet(LOOT_TABLES);
     public static final ResourceLocation EMPTY = register("empty");
     public static final ResourceLocation CHESTS_SPAWN_BONUS_CHEST = register("chests/spawn_bonus_chest");
     public static final ResourceLocation CHESTS_END_CITY_TREASURE = register("chests/end_city_treasure");
@@ -117,7 +117,7 @@ public class LootTableList
 
     public static boolean test()
     {
-        LootTableManager loottablemanager = new LootTableManager((File)null);
+        LootTableManager loottablemanager = new LootTableManager(null);
 
         for (ResourceLocation resourcelocation : READ_ONLY_LOOT_TABLES)
         {

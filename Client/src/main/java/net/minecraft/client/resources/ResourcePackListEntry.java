@@ -15,9 +15,9 @@ import net.minecraft.util.text.TextComponentTranslation;
 public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListEntry
 {
     private static final ResourceLocation RESOURCE_PACKS_TEXTURE = new ResourceLocation("textures/gui/resource_packs.png");
-    private static final ITextComponent INCOMPATIBLE = new TextComponentTranslation("resourcePack.incompatible", new Object[0]);
-    private static final ITextComponent INCOMPATIBLE_OLD = new TextComponentTranslation("resourcePack.incompatible.old", new Object[0]);
-    private static final ITextComponent INCOMPATIBLE_NEW = new TextComponentTranslation("resourcePack.incompatible.new", new Object[0]);
+    private static final ITextComponent INCOMPATIBLE = new TextComponentTranslation("resourcePack.incompatible");
+    private static final ITextComponent INCOMPATIBLE_OLD = new TextComponentTranslation("resourcePack.incompatible.old");
+    private static final ITextComponent INCOMPATIBLE_NEW = new TextComponentTranslation("resourcePack.incompatible.new");
     protected final Minecraft mc;
     protected final GuiScreenResourcePacks resourcePacksGUI;
 
@@ -156,14 +156,14 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
     {
         List<ResourcePackListEntry> list = this.resourcePacksGUI.getListContaining(this);
         int i = list.indexOf(this);
-        return i > 0 && ((ResourcePackListEntry)list.get(i - 1)).showHoverOverlay();
+        return i > 0 && list.get(i - 1).showHoverOverlay();
     }
 
     protected boolean canMoveDown()
     {
         List<ResourcePackListEntry> list = this.resourcePacksGUI.getListContaining(this);
         int i = list.indexOf(this);
-        return i >= 0 && i < list.size() - 1 && ((ResourcePackListEntry)list.get(i + 1)).showHoverOverlay();
+        return i >= 0 && i < list.size() - 1 && list.get(i + 1).showHoverOverlay();
     }
 
     /**
@@ -177,7 +177,7 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
             if (this.canMoveRight())
             {
                 this.resourcePacksGUI.markChanged();
-                final int j = ((ResourcePackListEntry)this.resourcePacksGUI.getSelectedResourcePacks().get(0)).isServerPack() ? 1 : 0;
+                final int j = this.resourcePacksGUI.getSelectedResourcePacks().get(0).isServerPack() ? 1 : 0;
                 int l = this.getResourcePackFormat();
 
                 if (l == 3)

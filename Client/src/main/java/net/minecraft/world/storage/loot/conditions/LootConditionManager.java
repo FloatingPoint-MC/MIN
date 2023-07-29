@@ -19,8 +19,8 @@ import net.minecraft.world.storage.loot.LootContext;
 
 public class LootConditionManager
 {
-    private static final Map < ResourceLocation, LootCondition.Serializer<? >> NAME_TO_SERIALIZER_MAP = Maps. < ResourceLocation, LootCondition.Serializer<? >> newHashMap();
-    private static final Map < Class <? extends LootCondition > , LootCondition.Serializer<? >> CLASS_TO_SERIALIZER_MAP = Maps. < Class <? extends LootCondition > , LootCondition.Serializer<? >> newHashMap();
+    private static final Map < ResourceLocation, LootCondition.Serializer<? >> NAME_TO_SERIALIZER_MAP = Maps.newHashMap();
+    private static final Map < Class <? extends LootCondition > , LootCondition.Serializer<? >> CLASS_TO_SERIALIZER_MAP = Maps.newHashMap();
 
     public static <T extends LootCondition> void registerCondition(LootCondition.Serializer <? extends T > condition)
     {
@@ -64,7 +64,7 @@ public class LootConditionManager
 
     public static LootCondition.Serializer<?> getSerializerForName(ResourceLocation location)
     {
-        LootCondition.Serializer<?> serializer = (LootCondition.Serializer)NAME_TO_SERIALIZER_MAP.get(location);
+        LootCondition.Serializer<?> serializer = NAME_TO_SERIALIZER_MAP.get(location);
 
         if (serializer == null)
         {
@@ -121,7 +121,7 @@ public class LootConditionManager
 
         public JsonElement serialize(LootCondition p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_)
         {
-            LootCondition.Serializer<LootCondition> serializer = LootConditionManager.<LootCondition>getSerializerFor(p_serialize_1_);
+            LootCondition.Serializer<LootCondition> serializer = LootConditionManager.getSerializerFor(p_serialize_1_);
             JsonObject jsonobject = new JsonObject();
             serializer.serialize(jsonobject, p_serialize_1_, p_serialize_3_);
             jsonobject.addProperty("condition", serializer.getLootTableLocation().toString());

@@ -23,7 +23,7 @@ import net.minecraft.util.JsonUtils;
 
 public class AdvancementProgress implements Comparable<AdvancementProgress>
 {
-    private final Map<String, CriterionProgress> criteria = Maps.<String, CriterionProgress>newHashMap();
+    private final Map<String, CriterionProgress> criteria = Maps.newHashMap();
     private String[][] requirements = new String[0][];
 
     /**
@@ -36,7 +36,7 @@ public class AdvancementProgress implements Comparable<AdvancementProgress>
 
         while (iterator.hasNext())
         {
-            Entry<String, CriterionProgress> entry = (Entry)iterator.next();
+            Entry<String, CriterionProgress> entry = iterator.next();
 
             if (!set.contains(entry.getKey()))
             {
@@ -143,7 +143,7 @@ public class AdvancementProgress implements Comparable<AdvancementProgress>
         for (Entry<String, CriterionProgress> entry : this.criteria.entrySet())
         {
             p_192104_1_.writeString(entry.getKey());
-            ((CriterionProgress)entry.getValue()).write(p_192104_1_);
+            entry.getValue().write(p_192104_1_);
         }
     }
 
@@ -233,11 +233,11 @@ public class AdvancementProgress implements Comparable<AdvancementProgress>
 
     public Iterable<String> getRemaningCriteria()
     {
-        List<String> list = Lists.<String>newArrayList();
+        List<String> list = Lists.newArrayList();
 
         for (Entry<String, CriterionProgress> entry : this.criteria.entrySet())
         {
-            if (!((CriterionProgress)entry.getValue()).isObtained())
+            if (!entry.getValue().isObtained())
             {
                 list.add(entry.getKey());
             }
@@ -248,11 +248,11 @@ public class AdvancementProgress implements Comparable<AdvancementProgress>
 
     public Iterable<String> getCompletedCriteria()
     {
-        List<String> list = Lists.<String>newArrayList();
+        List<String> list = Lists.newArrayList();
 
         for (Entry<String, CriterionProgress> entry : this.criteria.entrySet())
         {
-            if (((CriterionProgress)entry.getValue()).isObtained())
+            if (entry.getValue().isObtained())
             {
                 list.add(entry.getKey());
             }

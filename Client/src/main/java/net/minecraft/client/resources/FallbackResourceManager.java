@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 public class FallbackResourceManager implements IResourceManager
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    protected final List<IResourcePack> resourcePacks = Lists.<IResourcePack>newArrayList();
+    protected final List<IResourcePack> resourcePacks = Lists.newArrayList();
     private final MetadataSerializer frmMetadataSerializer;
 
     public FallbackResourceManager(MetadataSerializer frmMetadataSerializerIn)
@@ -32,7 +32,7 @@ public class FallbackResourceManager implements IResourceManager
 
     public Set<String> getResourceDomains()
     {
-        return Collections.<String>emptySet();
+        return Collections.emptySet();
     }
 
     public IResource getResource(ResourceLocation location) throws IOException
@@ -69,7 +69,7 @@ public class FallbackResourceManager implements IResourceManager
     protected InputStream getInputStream(ResourceLocation location, IResourcePack resourcePack) throws IOException
     {
         InputStream inputstream = resourcePack.getInputStream(location);
-        return (InputStream)(LOGGER.isDebugEnabled() ? new FallbackResourceManager.InputStreamLeakedResourceLogger(inputstream, location, resourcePack.getPackName()) : inputstream);
+        return LOGGER.isDebugEnabled() ? new InputStreamLeakedResourceLogger(inputstream, location, resourcePack.getPackName()) : inputstream;
     }
 
     private void checkResourcePath(ResourceLocation p_188552_1_) throws IOException
@@ -83,7 +83,7 @@ public class FallbackResourceManager implements IResourceManager
     public List<IResource> getAllResources(ResourceLocation location) throws IOException
     {
         this.checkResourcePath(location);
-        List<IResource> list = Lists.<IResource>newArrayList();
+        List<IResource> list = Lists.newArrayList();
         ResourceLocation resourcelocation = getLocationMcmeta(location);
 
         for (IResourcePack iresourcepack : this.resourcePacks)

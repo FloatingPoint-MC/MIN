@@ -17,7 +17,7 @@ public class VboRegion
     private int capacity = 4096;
     private int positionTop = 0;
     private int sizeUsed;
-    private LinkedList<VboRange> rangeList = new LinkedList<VboRange>();
+    private final LinkedList<VboRange> rangeList = new LinkedList<VboRange>();
     private VboRange compactRangeLast = null;
     private IntBuffer bufferIndexVertex;
     private IntBuffer bufferCountVertex;
@@ -41,7 +41,7 @@ public class VboRegion
     {
         int i = range.getPosition();
         int j = range.getSize();
-        int k = this.toVertex((long)data.limit());
+        int k = this.toVertex(data.limit());
 
         if (k <= 0)
         {
@@ -145,7 +145,7 @@ public class VboRegion
 
             if (vborange == null)
             {
-                this.positionTop = ((VboRange)this.rangeList.getLast().getItem()).getPositionNext();
+                this.positionTop = this.rangeList.getLast().getItem().getPositionNext();
             }
 
             this.compactRangeLast = vborange;
@@ -219,7 +219,6 @@ public class VboRegion
 
         for (i = this.capacity * 6 / 4; i < sizeMin; i = i * 6 / 4)
         {
-            ;
         }
 
         long j = this.toBytes(this.capacity);

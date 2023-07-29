@@ -39,10 +39,7 @@ public class ArrayUtils
             int[] aint = new int[j];
             System.arraycopy(intArray, 0, aint, 0, i);
 
-            for (int k = 0; k < copyFrom.length; ++k)
-            {
-                aint[k + i] = copyFrom[k];
-            }
+            System.arraycopy(copyFrom, 0, aint, i, copyFrom.length);
 
             return aint;
         }
@@ -122,7 +119,7 @@ public class ArrayUtils
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(flag));
+                stringbuffer.append(flag);
             }
 
             return stringbuffer.toString();
@@ -153,7 +150,7 @@ public class ArrayUtils
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(f));
+                stringbuffer.append(f);
             }
 
             return stringbuffer.toString();
@@ -210,7 +207,7 @@ public class ArrayUtils
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(j));
+                stringbuffer.append(j);
             }
 
             return stringbuffer.toString();
@@ -268,7 +265,7 @@ public class ArrayUtils
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(object));
+                stringbuffer.append(object);
             }
 
             return stringbuffer.toString();
@@ -339,7 +336,7 @@ public class ArrayUtils
         }
         else
         {
-            return o1 == null ? false : o1.equals(o2);
+            return o1 != null && o1.equals(o2);
         }
     }
 

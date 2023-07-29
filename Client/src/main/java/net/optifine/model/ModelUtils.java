@@ -23,11 +23,11 @@ public class ModelUtils
             for (int i = 0; i < aenumfacing.length; ++i)
             {
                 EnumFacing enumfacing = aenumfacing[i];
-                List list = model.getQuads((IBlockState)null, enumfacing, 0L);
+                List list = model.getQuads(null, enumfacing, 0L);
                 dbgQuads(enumfacing.getName(), list, "  ");
             }
 
-            List list1 = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+            List list1 = model.getQuads(null, null, 0L);
             dbgQuads("General", list1, "  ");
         }
     }
@@ -54,7 +54,7 @@ public class ModelUtils
         for (int j = 0; j < 4; ++j)
         {
             int k = j * i;
-            float f = Float.intBitsToFloat(vd[k + 0]);
+            float f = Float.intBitsToFloat(vd[k]);
             float f1 = Float.intBitsToFloat(vd[k + 1]);
             float f2 = Float.intBitsToFloat(vd[k + 2]);
             int l = vd[k + 3];
@@ -66,14 +66,14 @@ public class ModelUtils
 
     public static IBakedModel duplicateModel(IBakedModel model)
     {
-        List list = duplicateQuadList(model.getQuads((IBlockState)null, (EnumFacing)null, 0L));
+        List list = duplicateQuadList(model.getQuads(null, null, 0L));
         EnumFacing[] aenumfacing = EnumFacing.VALUES;
         Map<EnumFacing, List<BakedQuad>> map = new HashMap<EnumFacing, List<BakedQuad>>();
 
         for (int i = 0; i < aenumfacing.length; ++i)
         {
             EnumFacing enumfacing = aenumfacing[i];
-            List list1 = model.getQuads((IBlockState)null, enumfacing, 0L);
+            List list1 = model.getQuads(null, enumfacing, 0L);
             List list2 = duplicateQuadList(list1);
             map.put(enumfacing, list2);
         }
@@ -97,7 +97,7 @@ public class ModelUtils
 
     public static BakedQuad duplicateQuad(BakedQuad quad)
     {
-        BakedQuad bakedquad = new BakedQuad((int[])quad.getVertexData().clone(), quad.getTintIndex(), quad.getFace(), quad.getSprite());
+        BakedQuad bakedquad = new BakedQuad(quad.getVertexData().clone(), quad.getTintIndex(), quad.getFace(), quad.getSprite());
         return bakedquad;
     }
 }

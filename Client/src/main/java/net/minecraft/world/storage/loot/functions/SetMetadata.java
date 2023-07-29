@@ -28,7 +28,7 @@ public class SetMetadata extends LootFunction
     {
         if (stack.isItemStackDamageable())
         {
-            LOGGER.warn("Couldn't set data of loot item {}", (Object)stack);
+            LOGGER.warn("Couldn't set data of loot item {}", stack);
         }
         else
         {
@@ -52,7 +52,7 @@ public class SetMetadata extends LootFunction
 
         public SetMetadata deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn)
         {
-            return new SetMetadata(conditionsIn, (RandomValueRange)JsonUtils.deserializeClass(object, "data", deserializationContext, RandomValueRange.class));
+            return new SetMetadata(conditionsIn, JsonUtils.deserializeClass(object, "data", deserializationContext, RandomValueRange.class));
         }
     }
 }

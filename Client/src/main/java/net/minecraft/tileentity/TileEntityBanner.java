@@ -130,7 +130,7 @@ public class TileEntityBanner extends TileEntity implements IWorldNameable
      */
     public ITextComponent getDisplayName()
     {
-        return (ITextComponent)(this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
@@ -229,8 +229,8 @@ public class TileEntityBanner extends TileEntity implements IWorldNameable
             }
             else
             {
-                this.patternList = Lists.<BannerPattern>newArrayList();
-                this.colorList = Lists.<EnumDyeColor>newArrayList();
+                this.patternList = Lists.newArrayList();
+                this.colorList = Lists.newArrayList();
                 this.patternList.add(BannerPattern.BASE);
                 this.colorList.add(this.baseColor);
                 this.patternResourceLocation = "b" + this.baseColor.getDyeDamage();
@@ -276,7 +276,7 @@ public class TileEntityBanner extends TileEntity implements IWorldNameable
 
                     if (stack.getTagCompound().isEmpty())
                     {
-                        stack.setTagCompound((NBTTagCompound)null);
+                        stack.setTagCompound(null);
                     }
                 }
             }

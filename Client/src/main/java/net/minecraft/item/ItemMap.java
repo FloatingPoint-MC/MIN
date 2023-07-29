@@ -66,7 +66,7 @@ public class ItemMap extends ItemMapBase
             s = "map_" + stack.getMetadata();
             mapdata = new MapData(s);
             mapdata.scale = 3;
-            mapdata.calculateMapCenter((double)worldIn.getWorldInfo().getSpawnX(), (double)worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
+            mapdata.calculateMapCenter(worldIn.getWorldInfo().getSpawnX(), worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
             mapdata.dimension = (byte)worldIn.provider.getDimensionType().getId();
             mapdata.markDirty();
             worldIn.setData(s, mapdata);
@@ -111,7 +111,7 @@ public class ItemMap extends ItemMapBase
                             boolean flag1 = i2 * i2 + j2 * j2 > (j1 - 2) * (j1 - 2);
                             int k2 = (j / i + k1 - 64) * i;
                             int l2 = (k / i + l1 - 64) * i;
-                            Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
+                            Multiset<MapColor> multiset = HashMultiset.create();
                             Chunk chunk = worldIn.getChunk(new BlockPos(k2, 0, l2));
 
                             if (!chunk.isEmpty())
@@ -206,7 +206,7 @@ public class ItemMap extends ItemMapBase
                                     i5 = 0;
                                 }
 
-                                MapColor mapcolor = (MapColor)Iterables.getFirst(Multisets.copyHighestCountFirst(multiset), MapColor.AIR);
+                                MapColor mapcolor = Iterables.getFirst(Multisets.copyHighestCountFirst(multiset), MapColor.AIR);
 
                                 if (mapcolor == MapColor.WATER)
                                 {
@@ -262,7 +262,7 @@ public class ItemMap extends ItemMapBase
                     int i = 1 << mapdata.scale;
                     int j = mapdata.xCenter;
                     int k = mapdata.zCenter;
-                    Biome[] abiome = worldIn.getBiomeProvider().getBiomes((Biome[])null, (j / i - 64) * i, (k / i - 64) * i, 128 * i, 128 * i, false);
+                    Biome[] abiome = worldIn.getBiomeProvider().getBiomes(null, (j / i - 64) * i, (k / i - 64) * i, 128 * i, 128 * i, false);
 
                     for (int l = 0; l < 128; ++l)
                     {
@@ -439,7 +439,7 @@ public class ItemMap extends ItemMapBase
         {
             mapdata1.scale = (byte)MathHelper.clamp(mapdata.scale + p_185063_2_, 0, 4);
             mapdata1.trackingPosition = mapdata.trackingPosition;
-            mapdata1.calculateMapCenter((double)mapdata.xCenter, (double)mapdata.zCenter, mapdata1.scale);
+            mapdata1.calculateMapCenter(mapdata.xCenter, mapdata.zCenter, mapdata1.scale);
             mapdata1.dimension = mapdata.dimension;
             mapdata1.markDirty();
             p_185063_1_.setData("map_" + p_185063_0_.getMetadata(), mapdata1);

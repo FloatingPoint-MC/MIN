@@ -46,7 +46,7 @@ public class DemoPlayerInteractionManager extends PlayerInteractionManager
         {
             if (j <= 6L)
             {
-                this.player.sendMessage(new TextComponentTranslation("demo.day." + j, new Object[0]));
+                this.player.sendMessage(new TextComponentTranslation("demo.day." + j));
             }
         }
         else if (j == 1L)
@@ -66,7 +66,7 @@ public class DemoPlayerInteractionManager extends PlayerInteractionManager
         }
         else if (j == 5L && i % 24000L == 22000L)
         {
-            this.player.sendMessage(new TextComponentTranslation("demo.day.warning", new Object[0]));
+            this.player.sendMessage(new TextComponentTranslation("demo.day.warning"));
         }
     }
 
@@ -77,7 +77,7 @@ public class DemoPlayerInteractionManager extends PlayerInteractionManager
     {
         if (this.demoEndedReminder > 100)
         {
-            this.player.sendMessage(new TextComponentTranslation("demo.reminder", new Object[0]));
+            this.player.sendMessage(new TextComponentTranslation("demo.reminder"));
             this.demoEndedReminder = 0;
         }
     }
@@ -111,7 +111,7 @@ public class DemoPlayerInteractionManager extends PlayerInteractionManager
      */
     public boolean tryHarvestBlock(BlockPos pos)
     {
-        return this.demoTimeExpired ? false : super.tryHarvestBlock(pos);
+        return !this.demoTimeExpired && super.tryHarvestBlock(pos);
     }
 
     public EnumActionResult processRightClick(EntityPlayer player, World worldIn, ItemStack stack, EnumHand hand)

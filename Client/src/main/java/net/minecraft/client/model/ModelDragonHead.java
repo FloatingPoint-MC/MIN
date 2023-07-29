@@ -52,7 +52,7 @@ public class ModelDragonHead extends ModelBase
      */
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        this.jaw.rotateAngleX = (float)(Math.sin((double)(limbSwing * (float)Math.PI * 0.2F)) + 1.0D) * 0.2F;
+        this.jaw.rotateAngleX = (float)(Math.sin(limbSwing * (float)Math.PI * 0.2F) + 1.0D) * 0.2F;
         this.head.rotateAngleY = netHeadYaw * 0.017453292F;
         this.head.rotateAngleX = headPitch * 0.017453292F;
         GlStateManager.translate(0.0F, -0.374375F, 0.0F);

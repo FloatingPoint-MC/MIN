@@ -77,7 +77,7 @@ public interface ITextComponent extends Iterable<ITextComponent>
      */
     ITextComponent createCopy();
 
-    public static class Serializer implements JsonDeserializer<ITextComponent>, JsonSerializer<ITextComponent>
+    class Serializer implements JsonDeserializer<ITextComponent>, JsonSerializer<ITextComponent>
     {
         private static final Gson GSON;
 
@@ -152,7 +152,7 @@ public interface ITextComponent extends Iterable<ITextComponent>
                     }
                     else
                     {
-                        itextcomponent = new TextComponentTranslation(s, new Object[0]);
+                        itextcomponent = new TextComponentTranslation(s);
                     }
                 }
                 else if (jsonobject.has("score"))
@@ -200,7 +200,7 @@ public interface ITextComponent extends Iterable<ITextComponent>
                     }
                 }
 
-                itextcomponent.setStyle((Style)p_deserialize_3_.deserialize(p_deserialize_1_, Style.class));
+                itextcomponent.setStyle(p_deserialize_3_.deserialize(p_deserialize_1_, Style.class));
                 return itextcomponent;
             }
         }
@@ -305,13 +305,13 @@ public interface ITextComponent extends Iterable<ITextComponent>
         @Nullable
         public static ITextComponent jsonToComponent(String json)
         {
-            return (ITextComponent)JsonUtils.gsonDeserialize(GSON, json, ITextComponent.class, false);
+            return JsonUtils.gsonDeserialize(GSON, json, ITextComponent.class, false);
         }
 
         @Nullable
         public static ITextComponent fromJsonLenient(String json)
         {
-            return (ITextComponent)JsonUtils.gsonDeserialize(GSON, json, ITextComponent.class, true);
+            return JsonUtils.gsonDeserialize(GSON, json, ITextComponent.class, true);
         }
 
         static

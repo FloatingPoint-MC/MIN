@@ -52,18 +52,18 @@ public class CommandSpreadPlayers extends CommandBase
     {
         if (args.length < 6)
         {
-            throw new WrongUsageException("commands.spreadplayers.usage", new Object[0]);
+            throw new WrongUsageException("commands.spreadplayers.usage");
         }
         else
         {
             int i = 0;
             BlockPos blockpos = sender.getPosition();
-            double d0 = parseDouble((double)blockpos.getX(), args[i++], true);
-            double d1 = parseDouble((double)blockpos.getZ(), args[i++], true);
+            double d0 = parseDouble(blockpos.getX(), args[i++], true);
+            double d1 = parseDouble(blockpos.getZ(), args[i++], true);
             double d2 = parseDouble(args[i++], 0.0D);
             double d3 = parseDouble(args[i++], d2 + 1.0D);
             boolean flag = parseBoolean(args[i++]);
-            List<Entity> list = Lists.<Entity>newArrayList();
+            List<Entity> list = Lists.newArrayList();
 
             while (i < args.length)
             {
@@ -71,11 +71,11 @@ public class CommandSpreadPlayers extends CommandBase
 
                 if (EntitySelector.isSelector(s))
                 {
-                    List<Entity> list1 = EntitySelector.<Entity>matchEntities(sender, s, Entity.class);
+                    List<Entity> list1 = EntitySelector.matchEntities(sender, s, Entity.class);
 
                     if (list1.isEmpty())
                     {
-                        throw new EntityNotFoundException("commands.generic.selector.notFound", new Object[] {s});
+                        throw new EntityNotFoundException("commands.generic.selector.notFound", s);
                     }
 
                     list.addAll(list1);
@@ -86,7 +86,7 @@ public class CommandSpreadPlayers extends CommandBase
 
                     if (entityplayer == null)
                     {
-                        throw new PlayerNotFoundException("commands.generic.player.notFound", new Object[] {s});
+                        throw new PlayerNotFoundException("commands.generic.player.notFound", s);
                     }
 
                     list.add(entityplayer);
@@ -101,7 +101,7 @@ public class CommandSpreadPlayers extends CommandBase
             }
             else
             {
-                sender.sendMessage(new TextComponentTranslation("commands.spreadplayers.spreading." + (flag ? "teams" : "players"), new Object[] {list.size(), d3, d0, d1, d2}));
+                sender.sendMessage(new TextComponentTranslation("commands.spreadplayers.spreading." + (flag ? "teams" : "players"), list.size(), d3, d0, d1, d2));
                 this.spread(sender, list, new CommandSpreadPlayers.Position(d0, d1), d2, d3, (list.get(0)).world, flag);
             }
         }
@@ -117,17 +117,17 @@ public class CommandSpreadPlayers extends CommandBase
         CommandSpreadPlayers.Position[] acommandspreadplayers$position = this.createInitialPositions(random, respectTeams ? this.getNumberOfTeams(p_110669_2_) : p_110669_2_.size(), d0, d1, d2, d3);
         int i = this.spreadPositions(pos, spreadDistance, worldIn, random, d0, d1, d2, d3, acommandspreadplayers$position, respectTeams);
         double d4 = this.setPlayerPositions(p_110669_2_, worldIn, acommandspreadplayers$position, respectTeams);
-        notifyCommandListener(sender, this, "commands.spreadplayers.success." + (respectTeams ? "teams" : "players"), new Object[] {acommandspreadplayers$position.length, pos.x, pos.z});
+        notifyCommandListener(sender, this, "commands.spreadplayers.success." + (respectTeams ? "teams" : "players"), acommandspreadplayers$position.length, pos.x, pos.z);
 
         if (acommandspreadplayers$position.length > 1)
         {
-            sender.sendMessage(new TextComponentTranslation("commands.spreadplayers.info." + (respectTeams ? "teams" : "players"), new Object[] {String.format("%.2f", d4), i}));
+            sender.sendMessage(new TextComponentTranslation("commands.spreadplayers.info." + (respectTeams ? "teams" : "players"), String.format("%.2f", d4), i));
         }
     }
 
     private int getNumberOfTeams(List<Entity> p_110667_1_)
     {
-        Set<Team> set = Sets.<Team>newHashSet();
+        Set<Team> set = Sets.newHashSet();
 
         for (Entity entity : p_110667_1_)
         {
@@ -180,9 +180,9 @@ public class CommandSpreadPlayers extends CommandBase
 
                 if (k > 0)
                 {
-                    commandspreadplayers$position1.x /= (double)k;
-                    commandspreadplayers$position1.z /= (double)k;
-                    double d2 = (double)commandspreadplayers$position1.getLength();
+                    commandspreadplayers$position1.x /= k;
+                    commandspreadplayers$position1.z /= k;
+                    double d2 = commandspreadplayers$position1.getLength();
 
                     if (d2 > 0.0D)
                     {
@@ -218,7 +218,7 @@ public class CommandSpreadPlayers extends CommandBase
 
         if (i >= 10000)
         {
-            throw new CommandException("commands.spreadplayers.failure." + (respectTeams ? "teams" : "players"), new Object[] {p_110668_14_.length, p_110668_1_.x, p_110668_1_.z, String.format("%.2f", d0)});
+            throw new CommandException("commands.spreadplayers.failure." + (respectTeams ? "teams" : "players"), p_110668_14_.length, p_110668_1_.x, p_110668_1_.z, String.format("%.2f", d0));
         }
         else
         {
@@ -230,7 +230,7 @@ public class CommandSpreadPlayers extends CommandBase
     {
         double d0 = 0.0D;
         int i = 0;
-        Map<Team, CommandSpreadPlayers.Position> map = Maps.<Team, CommandSpreadPlayers.Position>newHashMap();
+        Map<Team, CommandSpreadPlayers.Position> map = Maps.newHashMap();
 
         for (int j = 0; j < p_110671_1_.size(); ++j)
         {
@@ -253,7 +253,7 @@ public class CommandSpreadPlayers extends CommandBase
                 commandspreadplayers$position = p_110671_3_[i++];
             }
 
-            entity.setPositionAndUpdate((double)((float)MathHelper.floor(commandspreadplayers$position.x) + 0.5F), (double)commandspreadplayers$position.getSpawnY(worldIn), (double)MathHelper.floor(commandspreadplayers$position.z) + 0.5D);
+            entity.setPositionAndUpdate((float)MathHelper.floor(commandspreadplayers$position.x) + 0.5F, commandspreadplayers$position.getSpawnY(worldIn), (double)MathHelper.floor(commandspreadplayers$position.z) + 0.5D);
             double d2 = Double.MAX_VALUE;
 
             for (CommandSpreadPlayers.Position commandspreadplayers$position1 : p_110671_3_)
@@ -315,7 +315,7 @@ public class CommandSpreadPlayers extends CommandBase
 
         void normalize()
         {
-            double d0 = (double)this.getLength();
+            double d0 = this.getLength();
             this.x /= d0;
             this.z /= d0;
         }

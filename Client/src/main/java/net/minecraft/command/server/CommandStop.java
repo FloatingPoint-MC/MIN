@@ -30,7 +30,7 @@ public class CommandStop extends CommandBase
     {
         if (server.worlds != null)
         {
-            notifyCommandListener(sender, this, "commands.stop.start", new Object[0]);
+            notifyCommandListener(sender, this, "commands.stop.start");
         }
 
         server.initiateShutdown();

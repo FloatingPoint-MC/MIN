@@ -54,7 +54,7 @@ public abstract class BlockLeaves extends Block
                         BlockPos blockpos = pos.add(j1, k1, l1);
                         IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                        if (iblockstate.getMaterial() == Material.LEAVES && !((Boolean)iblockstate.getValue(CHECK_DECAY)).booleanValue())
+                        if (iblockstate.getMaterial() == Material.LEAVES && !iblockstate.getValue(CHECK_DECAY).booleanValue())
                         {
                             worldIn.setBlockState(blockpos, iblockstate.withProperty(CHECK_DECAY, Boolean.valueOf(true)), 4);
                         }
@@ -68,7 +68,7 @@ public abstract class BlockLeaves extends Block
     {
         if (!worldIn.isRemote)
         {
-            if (((Boolean)state.getValue(CHECK_DECAY)).booleanValue() && ((Boolean)state.getValue(DECAYABLE)).booleanValue())
+            if (state.getValue(CHECK_DECAY).booleanValue() && state.getValue(DECAYABLE).booleanValue())
             {
                 int i = 4;
                 int j = 5;
@@ -185,9 +185,9 @@ public abstract class BlockLeaves extends Block
     {
         if (worldIn.isRainingAt(pos.up()) && !worldIn.getBlockState(pos.down()).isTopSolid() && rand.nextInt(15) == 1)
         {
-            double d0 = (double)((float)pos.getX() + rand.nextFloat());
+            double d0 = (float)pos.getX() + rand.nextFloat();
             double d1 = (double)pos.getY() - 0.05D;
-            double d2 = (double)((float)pos.getZ() + rand.nextFloat());
+            double d2 = (float)pos.getZ() + rand.nextFloat();
             worldIn.spawnParticle(EnumParticleTypes.DRIP_WATER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
         }
     }
@@ -306,6 +306,6 @@ public abstract class BlockLeaves extends Block
      */
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return !this.leavesFancy && blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return (this.leavesFancy || blockAccess.getBlockState(pos.offset(side)).getBlock() != this) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }

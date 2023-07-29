@@ -38,8 +38,8 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 public class Template
 {
-    private final List<Template.BlockInfo> blocks = Lists.<Template.BlockInfo>newArrayList();
-    private final List<Template.EntityInfo> entities = Lists.<Template.EntityInfo>newArrayList();
+    private final List<Template.BlockInfo> blocks = Lists.newArrayList();
+    private final List<Template.EntityInfo> entities = Lists.newArrayList();
 
     /** size of the structure */
     private BlockPos size = BlockPos.ORIGIN;
@@ -70,9 +70,9 @@ public class Template
         if (size.getX() >= 1 && size.getY() >= 1 && size.getZ() >= 1)
         {
             BlockPos blockpos = startPos.add(size).add(-1, -1, -1);
-            List<Template.BlockInfo> list = Lists.<Template.BlockInfo>newArrayList();
-            List<Template.BlockInfo> list1 = Lists.<Template.BlockInfo>newArrayList();
-            List<Template.BlockInfo> list2 = Lists.<Template.BlockInfo>newArrayList();
+            List<Template.BlockInfo> list = Lists.newArrayList();
+            List<Template.BlockInfo> list1 = Lists.newArrayList();
+            List<Template.BlockInfo> list2 = Lists.newArrayList();
             BlockPos blockpos1 = new BlockPos(Math.min(startPos.getX(), blockpos.getX()), Math.min(startPos.getY(), blockpos.getY()), Math.min(startPos.getZ(), blockpos.getZ()));
             BlockPos blockpos2 = new BlockPos(Math.max(startPos.getX(), blockpos.getX()), Math.max(startPos.getY(), blockpos.getY()), Math.max(startPos.getZ(), blockpos.getZ()));
             this.size = size;
@@ -96,11 +96,11 @@ public class Template
                     }
                     else if (!iblockstate.isFullBlock() && !iblockstate.isFullCube())
                     {
-                        list2.add(new Template.BlockInfo(blockpos3, iblockstate, (NBTTagCompound)null));
+                        list2.add(new Template.BlockInfo(blockpos3, iblockstate, null));
                     }
                     else
                     {
-                        list.add(new Template.BlockInfo(blockpos3, iblockstate, (NBTTagCompound)null));
+                        list.add(new Template.BlockInfo(blockpos3, iblockstate, null));
                     }
                 }
             }
@@ -126,7 +126,7 @@ public class Template
      */
     private void takeEntitiesFromWorld(World worldIn, BlockPos startPos, BlockPos endPos)
     {
-        List<Entity> list = worldIn.<Entity>getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(startPos, endPos), new Predicate<Entity>()
+        List<Entity> list = worldIn.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(startPos, endPos), new Predicate<Entity>()
         {
             public boolean apply(@Nullable Entity p_apply_1_)
             {
@@ -157,7 +157,7 @@ public class Template
 
     public Map<BlockPos, String> getDataBlocks(BlockPos pos, PlacementSettings placementIn)
     {
-        Map<BlockPos, String> map = Maps.<BlockPos, String>newHashMap();
+        Map<BlockPos, String> map = Maps.newHashMap();
         StructureBoundingBox structureboundingbox = placementIn.getBoundingBox();
 
         for (Template.BlockInfo template$blockinfo : this.blocks)
@@ -338,7 +338,7 @@ public class Template
             {
                 NBTTagCompound nbttagcompound = template$entityinfo.entityData;
                 Vec3d vec3d = transformedVec3d(template$entityinfo.pos, mirrorIn, rotationIn);
-                Vec3d vec3d1 = vec3d.add((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
+                Vec3d vec3d1 = vec3d.add(pos.getX(), pos.getY(), pos.getZ());
                 NBTTagList nbttaglist = new NBTTagList();
                 nbttaglist.appendTag(new NBTTagDouble(vec3d1.x));
                 nbttaglist.appendTag(new NBTTagDouble(vec3d1.y));

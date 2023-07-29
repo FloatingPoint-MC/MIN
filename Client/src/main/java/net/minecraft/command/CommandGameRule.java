@@ -54,7 +54,7 @@ public class CommandGameRule extends CommandBase
             case 1:
                 if (!gamerules.hasRule(s))
                 {
-                    throw new CommandException("commands.gamerule.norule", new Object[] {s});
+                    throw new CommandException("commands.gamerule.norule", s);
                 }
 
                 String s2 = gamerules.getString(s);
@@ -65,12 +65,12 @@ public class CommandGameRule extends CommandBase
             default:
                 if (gamerules.areSameType(s, GameRules.ValueType.BOOLEAN_VALUE) && !"true".equals(s1) && !"false".equals(s1))
                 {
-                    throw new CommandException("commands.generic.boolean.invalid", new Object[] {s1});
+                    throw new CommandException("commands.generic.boolean.invalid", s1);
                 }
 
                 gamerules.setOrCreateGameRule(s, s1);
                 notifyGameRuleChange(gamerules, s, server);
-                notifyCommandListener(sender, this, "commands.gamerule.success", new Object[] {s, s1});
+                notifyCommandListener(sender, this, "commands.gamerule.success", s, s1);
         }
     }
 
@@ -101,7 +101,7 @@ public class CommandGameRule extends CommandBase
 
                 if (gamerules.areSameType(args[0], GameRules.ValueType.BOOLEAN_VALUE))
                 {
-                    return getListOfStringsMatchingLastWord(args, new String[] {"true", "false"});
+                    return getListOfStringsMatchingLastWord(args, "true", "false");
                 }
 
                 if (gamerules.areSameType(args[0], GameRules.ValueType.FUNCTION))
@@ -110,7 +110,7 @@ public class CommandGameRule extends CommandBase
                 }
             }
 
-            return Collections.<String>emptyList();
+            return Collections.emptyList();
         }
     }
 

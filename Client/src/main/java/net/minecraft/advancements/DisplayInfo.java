@@ -96,8 +96,8 @@ public class DisplayInfo
 
     public static DisplayInfo deserialize(JsonObject object, JsonDeserializationContext context)
     {
-        ITextComponent itextcomponent = (ITextComponent)JsonUtils.deserializeClass(object, "title", context, ITextComponent.class);
-        ITextComponent itextcomponent1 = (ITextComponent)JsonUtils.deserializeClass(object, "description", context, ITextComponent.class);
+        ITextComponent itextcomponent = JsonUtils.deserializeClass(object, "title", context, ITextComponent.class);
+        ITextComponent itextcomponent1 = JsonUtils.deserializeClass(object, "description", context, ITextComponent.class);
 
         if (itextcomponent != null && itextcomponent1 != null)
         {
@@ -168,7 +168,7 @@ public class DisplayInfo
         ITextComponent itextcomponent = buf.readTextComponent();
         ITextComponent itextcomponent1 = buf.readTextComponent();
         ItemStack itemstack = buf.readItemStack();
-        FrameType frametype = (FrameType)buf.readEnumValue(FrameType.class);
+        FrameType frametype = buf.readEnumValue(FrameType.class);
         int i = buf.readInt();
         ResourceLocation resourcelocation = (i & 1) != 0 ? buf.readResourceLocation() : null;
         boolean flag = (i & 2) != 0;

@@ -53,7 +53,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityRabbit extends EntityAnimal
 {
-    private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.<Integer>createKey(EntityRabbit.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.createKey(EntityRabbit.class, DataSerializers.VARINT);
     private int jumpTicks;
     private int jumpDuration;
     private boolean wasOnGround;
@@ -367,7 +367,7 @@ public class EntityRabbit extends EntityAnimal
      */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
+        return !this.isEntityInvulnerable(source) && super.attackEntityFrom(source, amount);
     }
 
     @Nullable
@@ -413,7 +413,7 @@ public class EntityRabbit extends EntityAnimal
 
     public int getRabbitType()
     {
-        return ((Integer)this.dataManager.get(RABBIT_TYPE)).intValue();
+        return this.dataManager.get(RABBIT_TYPE).intValue();
     }
 
     public void setRabbitType(int rabbitTypeId)
@@ -422,7 +422,7 @@ public class EntityRabbit extends EntityAnimal
         {
             this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
             this.tasks.addTask(4, new EntityRabbit.AIEvilAttack(this));
-            this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+            this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
             this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
             this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityWolf.class, true));
 
@@ -554,7 +554,7 @@ public class EntityRabbit extends EntityAnimal
 
         protected double getAttackReachSqr(EntityLivingBase attackTarget)
         {
-            return (double)(4.0F + attackTarget.width);
+            return 4.0F + attackTarget.width;
         }
     }
 
@@ -612,7 +612,7 @@ public class EntityRabbit extends EntityAnimal
         public void updateTask()
         {
             super.updateTask();
-            this.rabbit.getLookHelper().setLookPosition((double)this.destinationBlock.getX() + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)this.destinationBlock.getZ() + 0.5D, 10.0F, (float)this.rabbit.getVerticalFaceSpeed());
+            this.rabbit.getLookHelper().setLookPosition((double)this.destinationBlock.getX() + 0.5D, this.destinationBlock.getY() + 1, (double)this.destinationBlock.getZ() + 0.5D, 10.0F, (float)this.rabbit.getVerticalFaceSpeed());
 
             if (this.getIsAboveDestination())
             {
@@ -623,7 +623,7 @@ public class EntityRabbit extends EntityAnimal
 
                 if (this.canRaid && block instanceof BlockCarrot)
                 {
-                    Integer integer = (Integer)iblockstate.getValue(BlockCarrot.AGE);
+                    Integer integer = iblockstate.getValue(BlockCarrot.AGE);
 
                     if (integer.intValue() == 0)
                     {

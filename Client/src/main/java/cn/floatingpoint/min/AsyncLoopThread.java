@@ -13,17 +13,19 @@ public class AsyncLoopThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (runnableSet.isEmpty()) {
-                try {
-                    Thread.sleep(1000L);
-                    continue;
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+            synchronized (runnableSet) {
+                if (runnableSet.isEmpty()) {
+                    try {
+                        Thread.sleep(1000L);
+                        continue;
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+                Runnable runnable = runnableSet.stream().findAny().get();
+                runnableSet.remove(runnable);
+                runnable.run();
             }
-            Runnable runnable = runnableSet.stream().findAny().get();
-            runnableSet.remove(runnable);
-            runnable.run();
         }
     }
 }

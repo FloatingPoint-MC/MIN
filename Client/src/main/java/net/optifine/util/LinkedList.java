@@ -98,9 +98,9 @@ public class LinkedList<T>
             this.last = prev;
         }
 
-        node.setPrev((LinkedList.Node)null);
-        node.setNext((LinkedList.Node)null);
-        node.setParent((LinkedList)null);
+        node.setPrev(null);
+        node.setNext(null);
+        node.setParent(null);
         --this.size;
         return node;
     }
@@ -217,7 +217,7 @@ public class LinkedList<T>
             }
         }
 
-        return "" + this.size + " [" + sb.toString() + "]";
+        return this.size + " [" + sb + "]";
     }
 
     public static class Node<T>
@@ -264,7 +264,7 @@ public class LinkedList<T>
 
         public String toString()
         {
-            return "" + this.item;
+            return String.valueOf(this.item);
         }
     }
 }

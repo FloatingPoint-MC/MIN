@@ -109,10 +109,10 @@ public abstract class Biome
 
     /** The biome decorator. */
     public BiomeDecorator decorator;
-    protected List<Biome.SpawnListEntry> spawnableMonsterList = Lists.<Biome.SpawnListEntry>newArrayList();
-    protected List<Biome.SpawnListEntry> spawnableCreatureList = Lists.<Biome.SpawnListEntry>newArrayList();
-    protected List<Biome.SpawnListEntry> spawnableWaterCreatureList = Lists.<Biome.SpawnListEntry>newArrayList();
-    protected List<Biome.SpawnListEntry> spawnableCaveCreatureList = Lists.<Biome.SpawnListEntry>newArrayList();
+    protected List<Biome.SpawnListEntry> spawnableMonsterList = Lists.newArrayList();
+    protected List<Biome.SpawnListEntry> spawnableCreatureList = Lists.newArrayList();
+    protected List<Biome.SpawnListEntry> spawnableWaterCreatureList = Lists.newArrayList();
+    protected List<Biome.SpawnListEntry> spawnableCaveCreatureList = Lists.newArrayList();
 
     public static int getIdForBiome(Biome biome)
     {
@@ -174,7 +174,7 @@ public abstract class Biome
 
     public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
-        return (WorldGenAbstractTree)(rand.nextInt(10) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE);
+        return rand.nextInt(10) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE;
     }
 
     /**
@@ -217,7 +217,7 @@ public abstract class Biome
                 return this.spawnableCaveCreatureList;
 
             default:
-                return Collections.<Biome.SpawnListEntry>emptyList();
+                return Collections.emptyList();
         }
     }
 
@@ -234,7 +234,7 @@ public abstract class Biome
      */
     public boolean canRain()
     {
-        return this.isSnowyBiome() ? false : this.enableRain;
+        return !this.isSnowyBiome() && this.enableRain;
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class Biome
     {
         if (pos.getY() > 64)
         {
-            float f = (float)(TEMPERATURE_NOISE.getValue((double)((float)pos.getX() / 8.0F), (double)((float)pos.getZ() / 8.0F)) * 4.0D);
+            float f = (float)(TEMPERATURE_NOISE.getValue((float)pos.getX() / 8.0F, (float)pos.getZ() / 8.0F) * 4.0D);
             return this.getDefaultTemperature() - (f + (float)pos.getY() - 64.0F) * 0.05F / 30.0F;
         }
         else
@@ -277,15 +277,15 @@ public abstract class Biome
 
     public int getGrassColorAtPos(BlockPos pos)
     {
-        double d0 = (double)MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-        double d1 = (double)MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+        double d0 = MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+        double d1 = MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
         return ColorizerGrass.getGrassColor(d0, d1);
     }
 
     public int getFoliageColorAtPos(BlockPos pos)
     {
-        double d0 = (double)MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-        double d1 = (double)MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+        double d0 = MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+        double d1 = MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
         return ColorizerFoliage.getFoliageColor(d0, d1);
     }
 
@@ -413,7 +413,7 @@ public abstract class Biome
      */
     public static Biome getBiome(int id)
     {
-        return getBiome(id, (Biome)null);
+        return getBiome(id, null);
     }
 
     public static Biome getBiome(int biomeId, Biome fallback)
@@ -644,11 +644,11 @@ public abstract class Biome
         }
     }
 
-    public static enum TempCategory
+    public enum TempCategory
     {
         OCEAN,
         COLD,
         MEDIUM,
-        WARM;
+        WARM
     }
 }

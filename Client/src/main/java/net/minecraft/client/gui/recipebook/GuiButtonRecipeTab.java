@@ -63,7 +63,7 @@ public class GuiButtonRecipeTab extends GuiButtonToggle
         {
             if (this.animationTime > 0.0F)
             {
-                float f = 1.0F + 0.1F * (float)Math.sin((double)(this.animationTime / 15.0F * (float)Math.PI));
+                float f = 1.0F + 0.1F * (float)Math.sin(this.animationTime / 15.0F * (float)Math.PI);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate((float)(this.x + 8), (float)(this.y + 12), 0.0F);
                 GlStateManager.scale(1.0F, f, 1.0F);
@@ -137,7 +137,7 @@ public class GuiButtonRecipeTab extends GuiButtonToggle
 
     public boolean updateVisibility()
     {
-        List<RecipeList> list = (List)RecipeBookClient.RECIPES_BY_TAB.get(this.category);
+        List<RecipeList> list = RecipeBookClient.RECIPES_BY_TAB.get(this.category);
         this.visible = false;
 
         for (RecipeList recipelist : list)

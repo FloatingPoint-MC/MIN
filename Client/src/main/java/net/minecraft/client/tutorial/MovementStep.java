@@ -10,10 +10,10 @@ import net.minecraft.world.GameType;
 
 public class MovementStep implements ITutorialStep
 {
-    private static final ITextComponent MOVE_TITLE = new TextComponentTranslation("tutorial.move.title", new Object[] {Tutorial.createKeybindComponent("forward"), Tutorial.createKeybindComponent("left"), Tutorial.createKeybindComponent("back"), Tutorial.createKeybindComponent("right")});
-    private static final ITextComponent MOVE_DESCRIPTION = new TextComponentTranslation("tutorial.move.description", new Object[] {Tutorial.createKeybindComponent("jump")});
-    private static final ITextComponent LOOK_TITLE = new TextComponentTranslation("tutorial.look.title", new Object[0]);
-    private static final ITextComponent LOOK_DESCRIPTION = new TextComponentTranslation("tutorial.look.description", new Object[0]);
+    private static final ITextComponent MOVE_TITLE = new TextComponentTranslation("tutorial.move.title", Tutorial.createKeybindComponent("forward"), Tutorial.createKeybindComponent("left"), Tutorial.createKeybindComponent("back"), Tutorial.createKeybindComponent("right"));
+    private static final ITextComponent MOVE_DESCRIPTION = new TextComponentTranslation("tutorial.move.description", Tutorial.createKeybindComponent("jump"));
+    private static final ITextComponent LOOK_TITLE = new TextComponentTranslation("tutorial.look.title");
+    private static final ITextComponent LOOK_DESCRIPTION = new TextComponentTranslation("tutorial.look.description");
     private final Tutorial tutorial;
     private TutorialToast moveToast;
     private TutorialToast lookToast;

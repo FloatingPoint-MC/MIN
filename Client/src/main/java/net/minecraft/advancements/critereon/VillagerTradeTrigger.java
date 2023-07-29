@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 public class VillagerTradeTrigger implements ICriterionTrigger<VillagerTradeTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("villager_trade");
-    private final Map<PlayerAdvancements, VillagerTradeTrigger.Listeners> listeners = Maps.<PlayerAdvancements, VillagerTradeTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, VillagerTradeTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -106,7 +106,7 @@ public class VillagerTradeTrigger implements ICriterionTrigger<VillagerTradeTrig
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<VillagerTradeTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<VillagerTradeTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<VillagerTradeTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -134,11 +134,11 @@ public class VillagerTradeTrigger implements ICriterionTrigger<VillagerTradeTrig
 
             for (ICriterionTrigger.Listener<VillagerTradeTrigger.Instance> listener : this.listeners)
             {
-                if (((VillagerTradeTrigger.Instance)listener.getCriterionInstance()).test(player, villager, item))
+                if (listener.getCriterionInstance().test(player, villager, item))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<VillagerTradeTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

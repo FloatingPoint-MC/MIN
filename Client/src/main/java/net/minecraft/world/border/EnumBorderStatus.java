@@ -8,7 +8,7 @@ public enum EnumBorderStatus
 
     private final int color;
 
-    private EnumBorderStatus(int color)
+    EnumBorderStatus(int color)
     {
         this.color = color;
     }

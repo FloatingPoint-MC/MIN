@@ -274,7 +274,7 @@ public class ChunkGeneratorSettings
             {
                 try
                 {
-                    return (ChunkGeneratorSettings.Factory)JsonUtils.gsonDeserialize(JSON_ADAPTER, p_177865_0_, ChunkGeneratorSettings.Factory.class);
+                    return JsonUtils.gsonDeserialize(JSON_ADAPTER, p_177865_0_, Factory.class);
                 }
                 catch (Exception var2)
                 {
@@ -903,7 +903,6 @@ public class ChunkGeneratorSettings
             }
             catch (Exception var7)
             {
-                ;
             }
 
             return chunkgeneratorsettings$factory;

@@ -76,22 +76,22 @@ public class ModelSprite
 
         float f = maxU - minU;
         float f1 = maxV - minV;
-        double d0 = (double)(MathHelper.abs(f) * (texWidth / 16.0F));
-        double d1 = (double)(MathHelper.abs(f1) * (texHeight / 16.0F));
+        double d0 = MathHelper.abs(f) * (texWidth / 16.0F);
+        double d1 = MathHelper.abs(f1) * (texHeight / 16.0F);
         BufferBuilder bufferbuilder = tess.getBuffer();
         GL11.glNormal3f(0.0F, 0.0F, -1.0F);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, d1, 0.0D).tex((double)minU, (double)maxV).endVertex();
-        bufferbuilder.pos(d0, d1, 0.0D).tex((double)maxU, (double)maxV).endVertex();
-        bufferbuilder.pos(d0, 0.0D, 0.0D).tex((double)maxU, (double)minV).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex((double)minU, (double)minV).endVertex();
+        bufferbuilder.pos(0.0D, d1, 0.0D).tex(minU, maxV).endVertex();
+        bufferbuilder.pos(d0, d1, 0.0D).tex(maxU, maxV).endVertex();
+        bufferbuilder.pos(d0, 0.0D, 0.0D).tex(maxU, minV).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(minU, minV).endVertex();
         tess.draw();
         GL11.glNormal3f(0.0F, 0.0F, 1.0F);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, 0.0D, (double)width).tex((double)minU, (double)minV).endVertex();
-        bufferbuilder.pos(d0, 0.0D, (double)width).tex((double)maxU, (double)minV).endVertex();
-        bufferbuilder.pos(d0, d1, (double)width).tex((double)maxU, (double)maxV).endVertex();
-        bufferbuilder.pos(0.0D, d1, (double)width).tex((double)minU, (double)maxV).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, width).tex(minU, minV).endVertex();
+        bufferbuilder.pos(d0, 0.0D, width).tex(maxU, minV).endVertex();
+        bufferbuilder.pos(d0, d1, width).tex(maxU, maxV).endVertex();
+        bufferbuilder.pos(0.0D, d1, width).tex(minU, maxV).endVertex();
         tess.draw();
         float f2 = 0.5F * f / (float)sizeX;
         float f3 = 0.5F * f1 / (float)sizeY;
@@ -102,10 +102,10 @@ public class ModelSprite
         {
             float f4 = (float)i / (float)sizeX;
             float f5 = minU + f * f4 + f2;
-            bufferbuilder.pos((double)f4 * d0, d1, (double)width).tex((double)f5, (double)maxV).endVertex();
-            bufferbuilder.pos((double)f4 * d0, d1, 0.0D).tex((double)f5, (double)maxV).endVertex();
-            bufferbuilder.pos((double)f4 * d0, 0.0D, 0.0D).tex((double)f5, (double)minV).endVertex();
-            bufferbuilder.pos((double)f4 * d0, 0.0D, (double)width).tex((double)f5, (double)minV).endVertex();
+            bufferbuilder.pos((double)f4 * d0, d1, width).tex(f5, maxV).endVertex();
+            bufferbuilder.pos((double)f4 * d0, d1, 0.0D).tex(f5, maxV).endVertex();
+            bufferbuilder.pos((double)f4 * d0, 0.0D, 0.0D).tex(f5, minV).endVertex();
+            bufferbuilder.pos((double)f4 * d0, 0.0D, width).tex(f5, minV).endVertex();
         }
 
         tess.draw();
@@ -117,10 +117,10 @@ public class ModelSprite
             float f7 = (float)j / (float)sizeX;
             float f10 = minU + f * f7 + f2;
             float f6 = f7 + 1.0F / (float)sizeX;
-            bufferbuilder.pos((double)f6 * d0, 0.0D, (double)width).tex((double)f10, (double)minV).endVertex();
-            bufferbuilder.pos((double)f6 * d0, 0.0D, 0.0D).tex((double)f10, (double)minV).endVertex();
-            bufferbuilder.pos((double)f6 * d0, d1, 0.0D).tex((double)f10, (double)maxV).endVertex();
-            bufferbuilder.pos((double)f6 * d0, d1, (double)width).tex((double)f10, (double)maxV).endVertex();
+            bufferbuilder.pos((double)f6 * d0, 0.0D, width).tex(f10, minV).endVertex();
+            bufferbuilder.pos((double)f6 * d0, 0.0D, 0.0D).tex(f10, minV).endVertex();
+            bufferbuilder.pos((double)f6 * d0, d1, 0.0D).tex(f10, maxV).endVertex();
+            bufferbuilder.pos((double)f6 * d0, d1, width).tex(f10, maxV).endVertex();
         }
 
         tess.draw();
@@ -132,10 +132,10 @@ public class ModelSprite
             float f8 = (float)k / (float)sizeY;
             float f11 = minV + f1 * f8 + f3;
             float f13 = f8 + 1.0F / (float)sizeY;
-            bufferbuilder.pos(0.0D, (double)f13 * d1, (double)width).tex((double)minU, (double)f11).endVertex();
-            bufferbuilder.pos(d0, (double)f13 * d1, (double)width).tex((double)maxU, (double)f11).endVertex();
-            bufferbuilder.pos(d0, (double)f13 * d1, 0.0D).tex((double)maxU, (double)f11).endVertex();
-            bufferbuilder.pos(0.0D, (double)f13 * d1, 0.0D).tex((double)minU, (double)f11).endVertex();
+            bufferbuilder.pos(0.0D, (double)f13 * d1, width).tex(minU, f11).endVertex();
+            bufferbuilder.pos(d0, (double)f13 * d1, width).tex(maxU, f11).endVertex();
+            bufferbuilder.pos(d0, (double)f13 * d1, 0.0D).tex(maxU, f11).endVertex();
+            bufferbuilder.pos(0.0D, (double)f13 * d1, 0.0D).tex(minU, f11).endVertex();
         }
 
         tess.draw();
@@ -146,10 +146,10 @@ public class ModelSprite
         {
             float f9 = (float)l / (float)sizeY;
             float f12 = minV + f1 * f9 + f3;
-            bufferbuilder.pos(d0, (double)f9 * d1, (double)width).tex((double)maxU, (double)f12).endVertex();
-            bufferbuilder.pos(0.0D, (double)f9 * d1, (double)width).tex((double)minU, (double)f12).endVertex();
-            bufferbuilder.pos(0.0D, (double)f9 * d1, 0.0D).tex((double)minU, (double)f12).endVertex();
-            bufferbuilder.pos(d0, (double)f9 * d1, 0.0D).tex((double)maxU, (double)f12).endVertex();
+            bufferbuilder.pos(d0, (double)f9 * d1, width).tex(maxU, f12).endVertex();
+            bufferbuilder.pos(0.0D, (double)f9 * d1, width).tex(minU, f12).endVertex();
+            bufferbuilder.pos(0.0D, (double)f9 * d1, 0.0D).tex(minU, f12).endVertex();
+            bufferbuilder.pos(d0, (double)f9 * d1, 0.0D).tex(maxU, f12).endVertex();
         }
 
         tess.draw();

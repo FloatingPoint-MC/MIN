@@ -72,7 +72,7 @@ public class SimpleTexture extends AbstractTexture
         }
         finally
         {
-            IOUtils.closeQuietly((Closeable)iresource);
+            IOUtils.closeQuietly(iresource);
         }
     }
 }

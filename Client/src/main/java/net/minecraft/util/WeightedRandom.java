@@ -31,7 +31,7 @@ public class WeightedRandom
         else
         {
             int i = random.nextInt(totalWeight);
-            return (T)getRandomItem(collection, i);
+            return getRandomItem(collection, i);
         }
     }
 
@@ -50,12 +50,12 @@ public class WeightedRandom
             }
         }
 
-        return (T)null;
+        return null;
     }
 
     public static <T extends WeightedRandom.Item> T getRandomItem(Random random, List<T> collection)
     {
-        return (T)getRandomItem(random, collection, getTotalWeight(collection));
+        return getRandomItem(random, collection, getTotalWeight(collection));
     }
 
     public static class Item

@@ -19,7 +19,7 @@ enum AdvancementTabType
     private final int height;
     private final int max;
 
-    private AdvancementTabType(int p_i47386_3_, int p_i47386_4_, int widthIn, int heightIn, int p_i47386_7_)
+    AdvancementTabType(int p_i47386_3_, int p_i47386_4_, int widthIn, int heightIn, int p_i47386_7_)
     {
         this.textureX = p_i47386_3_;
         this.textureY = p_i47386_4_;
@@ -78,7 +78,7 @@ enum AdvancementTabType
                 j += 5;
         }
 
-        renderItemIn.renderItemAndEffectIntoGUI((EntityLivingBase)null, stack, i, j);
+        renderItemIn.renderItemAndEffectIntoGUI(null, stack, i, j);
     }
 
     public int getX(int p_192648_1_)

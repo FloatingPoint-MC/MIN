@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public class CombatTracker
 {
-    private final List<CombatEntry> combatEntries = Lists.<CombatEntry>newArrayList();
+    private final List<CombatEntry> combatEntries = Lists.newArrayList();
 
     /** The entity tracked. */
     private final EntityLivingBase fighter;
@@ -79,7 +79,7 @@ public class CombatTracker
     {
         if (this.combatEntries.isEmpty())
         {
-            return new TextComponentTranslation("death.attack.generic", new Object[] {this.fighter.getDisplayName()});
+            return new TextComponentTranslation("death.attack.generic", this.fighter.getDisplayName());
         }
         else
         {
@@ -95,18 +95,18 @@ public class CombatTracker
 
                 if (combatentry.getDamageSrc() != DamageSource.FALL && combatentry.getDamageSrc() != DamageSource.OUT_OF_WORLD)
                 {
-                    if (itextcomponent2 != null && (itextcomponent1 == null || !itextcomponent2.equals(itextcomponent1)))
+                    if (itextcomponent2 != null && (!itextcomponent2.equals(itextcomponent1)))
                     {
                         Entity entity1 = combatentry.getDamageSrc().getTrueSource();
                         ItemStack itemstack1 = entity1 instanceof EntityLivingBase ? ((EntityLivingBase)entity1).getHeldItemMainhand() : ItemStack.EMPTY;
 
                         if (!itemstack1.isEmpty() && itemstack1.hasDisplayName())
                         {
-                            itextcomponent = new TextComponentTranslation("death.fell.assist.item", new Object[] {this.fighter.getDisplayName(), itextcomponent2, itemstack1.getTextComponent()});
+                            itextcomponent = new TextComponentTranslation("death.fell.assist.item", this.fighter.getDisplayName(), itextcomponent2, itemstack1.getTextComponent());
                         }
                         else
                         {
-                            itextcomponent = new TextComponentTranslation("death.fell.assist", new Object[] {this.fighter.getDisplayName(), itextcomponent2});
+                            itextcomponent = new TextComponentTranslation("death.fell.assist", this.fighter.getDisplayName(), itextcomponent2);
                         }
                     }
                     else if (itextcomponent1 != null)
@@ -115,21 +115,21 @@ public class CombatTracker
 
                         if (!itemstack.isEmpty() && itemstack.hasDisplayName())
                         {
-                            itextcomponent = new TextComponentTranslation("death.fell.finish.item", new Object[] {this.fighter.getDisplayName(), itextcomponent1, itemstack.getTextComponent()});
+                            itextcomponent = new TextComponentTranslation("death.fell.finish.item", this.fighter.getDisplayName(), itextcomponent1, itemstack.getTextComponent());
                         }
                         else
                         {
-                            itextcomponent = new TextComponentTranslation("death.fell.finish", new Object[] {this.fighter.getDisplayName(), itextcomponent1});
+                            itextcomponent = new TextComponentTranslation("death.fell.finish", this.fighter.getDisplayName(), itextcomponent1);
                         }
                     }
                     else
                     {
-                        itextcomponent = new TextComponentTranslation("death.fell.killer", new Object[] {this.fighter.getDisplayName()});
+                        itextcomponent = new TextComponentTranslation("death.fell.killer", this.fighter.getDisplayName());
                     }
                 }
                 else
                 {
-                    itextcomponent = new TextComponentTranslation("death.fell.accident." + this.getFallSuffix(combatentry), new Object[] {this.fighter.getDisplayName()});
+                    itextcomponent = new TextComponentTranslation("death.fell.accident." + this.getFallSuffix(combatentry), this.fighter.getDisplayName());
                 }
             }
             else
@@ -185,7 +185,7 @@ public class CombatTracker
         for (int i = 0; i < this.combatEntries.size(); ++i)
         {
             CombatEntry combatentry2 = this.combatEntries.get(i);
-            CombatEntry combatentry3 = i > 0 ? (CombatEntry)this.combatEntries.get(i - 1) : null;
+            CombatEntry combatentry3 = i > 0 ? this.combatEntries.get(i - 1) : null;
 
             if ((combatentry2.getDamageSrc() == DamageSource.FALL || combatentry2.getDamageSrc() == DamageSource.OUT_OF_WORLD) && combatentry2.getDamageAmount() > 0.0F && (combatentry == null || combatentry2.getDamageAmount() > f1))
             {

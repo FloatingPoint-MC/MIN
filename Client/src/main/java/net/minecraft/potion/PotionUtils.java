@@ -29,7 +29,7 @@ public class PotionUtils
 
     public static List<PotionEffect> mergeEffects(PotionType potionIn, Collection<PotionEffect> effects)
     {
-        List<PotionEffect> list = Lists.<PotionEffect>newArrayList();
+        List<PotionEffect> list = Lists.newArrayList();
         list.addAll(potionIn.getEffects());
         list.addAll(effects);
         return list;
@@ -37,7 +37,7 @@ public class PotionUtils
 
     public static List<PotionEffect> getEffectsFromTag(@Nullable NBTTagCompound tag)
     {
-        List<PotionEffect> list = Lists.<PotionEffect>newArrayList();
+        List<PotionEffect> list = Lists.newArrayList();
         list.addAll(getPotionTypeFromNBT(tag).getEffects());
         addCustomPotionEffectToList(tag, list);
         return list;
@@ -50,7 +50,7 @@ public class PotionUtils
 
     public static List<PotionEffect> getFullEffectsFromTag(@Nullable NBTTagCompound tag)
     {
-        List<PotionEffect> list = Lists.<PotionEffect>newArrayList();
+        List<PotionEffect> list = Lists.newArrayList();
         addCustomPotionEffectToList(tag, list);
         return list;
     }
@@ -99,7 +99,7 @@ public class PotionUtils
 
         if (effects.isEmpty())
         {
-            return Config.isCustomColors() ? CustomColors.getPotionColor((Potion)null, i) : 3694022;
+            return Config.isCustomColors() ? CustomColors.getPotionColor(null, i) : 3694022;
         }
         else
         {
@@ -167,7 +167,7 @@ public class PotionUtils
 
                 if (nbttagcompound.isEmpty())
                 {
-                    itemIn.setTagCompound((NBTTagCompound)null);
+                    itemIn.setTagCompound(null);
                 }
             }
         }
@@ -189,7 +189,7 @@ public class PotionUtils
         }
         else
         {
-            NBTTagCompound nbttagcompound = (NBTTagCompound)MoreObjects.firstNonNull(itemIn.getTagCompound(), new NBTTagCompound());
+            NBTTagCompound nbttagcompound = MoreObjects.firstNonNull(itemIn.getTagCompound(), new NBTTagCompound());
             NBTTagList nbttaglist = nbttagcompound.getTagList("CustomPotionEffects", 9);
 
             for (PotionEffect potioneffect : effects)
@@ -206,7 +206,7 @@ public class PotionUtils
     public static void addPotionTooltip(ItemStack itemIn, List<String> lores, float durationFactor)
     {
         List<PotionEffect> list = getEffectsFromStack(itemIn);
-        List<Tuple<String, AttributeModifier>> list1 = Lists.<Tuple<String, AttributeModifier>>newArrayList();
+        List<Tuple<String, AttributeModifier>> list1 = Lists.newArrayList();
 
         if (list.isEmpty())
         {
@@ -227,7 +227,7 @@ public class PotionUtils
                     {
                         AttributeModifier attributemodifier = entry.getValue();
                         AttributeModifier attributemodifier1 = new AttributeModifier(attributemodifier.getName(), potion.getAttributeModifierAmount(potioneffect.getAmplifier(), attributemodifier), attributemodifier.getOperation());
-                        list1.add(new Tuple(((IAttribute)entry.getKey()).getName(), attributemodifier1));
+                        list1.add(new Tuple(entry.getKey().getName(), attributemodifier1));
                     }
                 }
 
@@ -274,12 +274,12 @@ public class PotionUtils
 
                 if (d0 > 0.0D)
                 {
-                    lores.add(TextFormatting.BLUE + I18n.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier2.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)tuple.getFirst())));
+                    lores.add(TextFormatting.BLUE + I18n.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier2.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + tuple.getFirst())));
                 }
                 else if (d0 < 0.0D)
                 {
                     d1 = d1 * -1.0D;
-                    lores.add(TextFormatting.RED + I18n.translateToLocalFormatted("attribute.modifier.take." + attributemodifier2.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)tuple.getFirst())));
+                    lores.add(TextFormatting.RED + I18n.translateToLocalFormatted("attribute.modifier.take." + attributemodifier2.getOperation(), ItemStack.DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + tuple.getFirst())));
                 }
             }
         }

@@ -34,7 +34,7 @@ public class SetDamage extends LootFunction
         }
         else
         {
-            LOGGER.warn("Couldn't set damage of loot item {}", (Object)stack);
+            LOGGER.warn("Couldn't set damage of loot item {}", stack);
         }
 
         return stack;
@@ -54,7 +54,7 @@ public class SetDamage extends LootFunction
 
         public SetDamage deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn)
         {
-            return new SetDamage(conditionsIn, (RandomValueRange)JsonUtils.deserializeClass(object, "damage", deserializationContext, RandomValueRange.class));
+            return new SetDamage(conditionsIn, JsonUtils.deserializeClass(object, "damage", deserializationContext, RandomValueRange.class));
         }
     }
 }

@@ -49,7 +49,7 @@ public class EntitySilverfish extends EntityMob
         this.tasks.addTask(3, this.summonSilverfish);
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(5, new EntitySilverfish.AIHideInStone(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
@@ -229,7 +229,7 @@ public class EntitySilverfish extends EntityMob
 
         public boolean shouldContinueExecuting()
         {
-            return this.doMerge ? false : super.shouldContinueExecuting();
+            return !this.doMerge && super.shouldContinueExecuting();
         }
 
         public void startExecuting()
@@ -304,7 +304,7 @@ public class EntitySilverfish extends EntityMob
                                 }
                                 else
                                 {
-                                    world.setBlockState(blockpos1, ((BlockSilverfish.EnumType)iblockstate.getValue(BlockSilverfish.VARIANT)).getModelBlock(), 3);
+                                    world.setBlockState(blockpos1, iblockstate.getValue(BlockSilverfish.VARIANT).getModelBlock(), 3);
                                 }
 
                                 if (random.nextBoolean())

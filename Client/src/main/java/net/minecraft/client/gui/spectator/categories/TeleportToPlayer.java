@@ -36,7 +36,7 @@ public class TeleportToPlayer implements ISpectatorMenuView, ISpectatorMenuObjec
 
     public TeleportToPlayer(Collection<NetworkPlayerInfo> profiles)
     {
-        this.items = Lists.<ISpectatorMenuObject>newArrayList();
+        this.items = Lists.newArrayList();
 
         for (NetworkPlayerInfo networkplayerinfo : PROFILE_ORDER.sortedCopy(profiles))
         {
@@ -54,7 +54,7 @@ public class TeleportToPlayer implements ISpectatorMenuView, ISpectatorMenuObjec
 
     public ITextComponent getPrompt()
     {
-        return new TextComponentTranslation("spectatorMenu.teleport.prompt", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.teleport.prompt");
     }
 
     public void selectItem(SpectatorMenu menu)
@@ -64,7 +64,7 @@ public class TeleportToPlayer implements ISpectatorMenuView, ISpectatorMenuObjec
 
     public ITextComponent getSpectatorName()
     {
-        return new TextComponentTranslation("spectatorMenu.teleport", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.teleport");
     }
 
     public void renderIcon(float brightness, int alpha)

@@ -101,8 +101,8 @@ public class ModelBoat extends ModelBase implements IMultipassModel
     {
         float f = boat.getRowingTime(paddle, limbSwing);
         ModelRenderer modelrenderer = this.paddles[paddle];
-        modelrenderer.rotateAngleX = (float)MathHelper.clampedLerp(-1.0471975803375244D, -0.2617993950843811D, (double)((MathHelper.sin(-f) + 1.0F) / 2.0F));
-        modelrenderer.rotateAngleY = (float)MathHelper.clampedLerp(-(Math.PI / 4D), (Math.PI / 4D), (double)((MathHelper.sin(-f + 1.0F) + 1.0F) / 2.0F));
+        modelrenderer.rotateAngleX = (float)MathHelper.clampedLerp(-1.0471975803375244D, -0.2617993950843811D, (MathHelper.sin(-f) + 1.0F) / 2.0F);
+        modelrenderer.rotateAngleY = (float)MathHelper.clampedLerp(-(Math.PI / 4D), (Math.PI / 4D), (MathHelper.sin(-f + 1.0F) + 1.0F) / 2.0F);
 
         if (paddle == 1)
         {

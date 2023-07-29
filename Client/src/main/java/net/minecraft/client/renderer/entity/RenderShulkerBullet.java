@@ -22,7 +22,6 @@ public class RenderShulkerBullet extends Render<EntityShulkerBullet>
 
         for (f = p_188347_2_ - p_188347_1_; f < -180.0F; f += 360.0F)
         {
-            ;
         }
 
         while (f >= 180.0F)

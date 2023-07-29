@@ -39,6 +39,6 @@ public class EnchantmentArrowInfinite extends Enchantment
      */
     public boolean canApplyTogether(Enchantment ench)
     {
-        return ench instanceof EnchantmentMending ? false : super.canApplyTogether(ench);
+        return !(ench instanceof EnchantmentMending) && super.canApplyTogether(ench);
     }
 }

@@ -55,7 +55,7 @@ import net.minecraft.util.EnumFacing;
 
 public class BlockModelShapes
 {
-    private final Map<IBlockState, IBakedModel> bakedModelStore = Maps.<IBlockState, IBakedModel>newIdentityHashMap();
+    private final Map<IBlockState, IBakedModel> bakedModelStore = Maps.newIdentityHashMap();
     private final BlockStateMapper blockStateMapper = new BlockStateMapper();
     private final ModelManager modelManager;
 
@@ -298,7 +298,7 @@ public class BlockModelShapes
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
-                BlockQuartz.EnumType blockquartz$enumtype = (BlockQuartz.EnumType)state.getValue(BlockQuartz.VARIANT);
+                BlockQuartz.EnumType blockquartz$enumtype = state.getValue(BlockQuartz.VARIANT);
 
                 switch (blockquartz$enumtype)
                 {
@@ -331,7 +331,7 @@ public class BlockModelShapes
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
-                Map < IProperty<?>, Comparable<? >> map = Maps. < IProperty<?>, Comparable<? >> newLinkedHashMap(state.getProperties());
+                Map < IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
 
                 if (state.getValue(BlockStem.FACING) != EnumFacing.UP)
                 {
@@ -345,7 +345,7 @@ public class BlockModelShapes
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
-                Map < IProperty<?>, Comparable<? >> map = Maps. < IProperty<?>, Comparable<? >> newLinkedHashMap(state.getProperties());
+                Map < IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
 
                 if (state.getValue(BlockStem.FACING) != EnumFacing.UP)
                 {
@@ -359,7 +359,7 @@ public class BlockModelShapes
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
-                Map < IProperty<?>, Comparable<? >> map = Maps. < IProperty<?>, Comparable<? >> newLinkedHashMap(state.getProperties());
+                Map < IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
                 String s = BlockDirt.VARIANT.getName((BlockDirt.DirtType)map.remove(BlockDirt.VARIANT));
 
                 if (BlockDirt.DirtType.PODZOL != state.getValue(BlockDirt.VARIANT))
@@ -374,10 +374,10 @@ public class BlockModelShapes
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
-                Map < IProperty<?>, Comparable<? >> map = Maps. < IProperty<?>, Comparable<? >> newLinkedHashMap(state.getProperties());
+                Map < IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
                 String s = BlockStoneSlab.VARIANT.getName((BlockStoneSlab.EnumType)map.remove(BlockStoneSlab.VARIANT));
                 map.remove(BlockStoneSlab.SEAMLESS);
-                String s1 = ((Boolean)state.getValue(BlockStoneSlab.SEAMLESS)).booleanValue() ? "all" : "normal";
+                String s1 = state.getValue(BlockStoneSlab.SEAMLESS).booleanValue() ? "all" : "normal";
                 return new ModelResourceLocation(s + "_double_slab", s1);
             }
         });
@@ -385,10 +385,10 @@ public class BlockModelShapes
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
-                Map < IProperty<?>, Comparable<? >> map = Maps. < IProperty<?>, Comparable<? >> newLinkedHashMap(state.getProperties());
+                Map < IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
                 String s = BlockStoneSlabNew.VARIANT.getName((BlockStoneSlabNew.EnumType)map.remove(BlockStoneSlabNew.VARIANT));
                 map.remove(BlockStoneSlab.SEAMLESS);
-                String s1 = ((Boolean)state.getValue(BlockStoneSlabNew.SEAMLESS)).booleanValue() ? "all" : "normal";
+                String s1 = state.getValue(BlockStoneSlabNew.SEAMLESS).booleanValue() ? "all" : "normal";
                 return new ModelResourceLocation(s + "_double_slab", s1);
             }
         });

@@ -44,7 +44,7 @@ public class ResourcePackListEntryServer extends ResourcePackListEntry
     {
         try
         {
-            PackMetadataSection packmetadatasection = (PackMetadataSection)this.resourcePack.getPackMetadata(this.mc.getResourcePackRepository().rprMetadataSerializer, "pack");
+            PackMetadataSection packmetadatasection = this.resourcePack.getPackMetadata(this.mc.getResourcePackRepository().rprMetadataSerializer, "pack");
 
             if (packmetadatasection != null)
             {
@@ -53,11 +53,11 @@ public class ResourcePackListEntryServer extends ResourcePackListEntry
         }
         catch (JsonParseException jsonparseexception)
         {
-            LOGGER.error("Couldn't load metadata info", (Throwable)jsonparseexception);
+            LOGGER.error("Couldn't load metadata info", jsonparseexception);
         }
         catch (IOException ioexception)
         {
-            LOGGER.error("Couldn't load metadata info", (Throwable)ioexception);
+            LOGGER.error("Couldn't load metadata info", ioexception);
         }
 
         return TextFormatting.RED + "Missing " + "pack.mcmeta" + " :(";

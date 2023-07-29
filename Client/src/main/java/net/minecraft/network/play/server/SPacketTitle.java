@@ -27,7 +27,7 @@ public class SPacketTitle implements Packet<INetHandlerPlayClient>
 
     public SPacketTitle(int fadeInTimeIn, int displayTimeIn, int fadeOutTimeIn)
     {
-        this(SPacketTitle.Type.TIMES, (ITextComponent)null, fadeInTimeIn, displayTimeIn, fadeOutTimeIn);
+        this(SPacketTitle.Type.TIMES, null, fadeInTimeIn, displayTimeIn, fadeOutTimeIn);
     }
 
     public SPacketTitle(SPacketTitle.Type typeIn, @Nullable ITextComponent messageIn, int fadeInTimeIn, int displayTimeIn, int fadeOutTimeIn)
@@ -44,7 +44,7 @@ public class SPacketTitle implements Packet<INetHandlerPlayClient>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.type = (SPacketTitle.Type)buf.readEnumValue(SPacketTitle.Type.class);
+        this.type = buf.readEnumValue(Type.class);
 
         if (this.type == SPacketTitle.Type.TITLE || this.type == SPacketTitle.Type.SUBTITLE || this.type == SPacketTitle.Type.ACTIONBAR)
         {
@@ -113,7 +113,7 @@ public class SPacketTitle implements Packet<INetHandlerPlayClient>
         return this.fadeOutTime;
     }
 
-    public static enum Type
+    public enum Type
     {
         TITLE,
         SUBTITLE,

@@ -72,7 +72,7 @@ public abstract class GenLayer
 
         for (int k = 0; k < i; ++k)
         {
-            genlayerhills = new GenLayerZoom((long)(1000 + k), genlayerhills);
+            genlayerhills = new GenLayerZoom(1000 + k, genlayerhills);
 
             if (k == 0)
             {

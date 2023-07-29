@@ -67,7 +67,7 @@ public class EntityIllusionIllager extends EntitySpellcasterIllager implements I
         this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityIllusionIllager.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityIllusionIllager.class));
         this.targetTasks.addTask(2, (new EntityAINearestAttackableTarget(this, EntityPlayer.class, true)).setUnseenMemoryTicks(300));
         this.targetTasks.addTask(3, (new EntityAINearestAttackableTarget(this, EntityVillager.class, false)).setUnseenMemoryTicks(300));
         this.targetTasks.addTask(3, (new EntityAINearestAttackableTarget(this, EntityIronGolem.class, false)).setUnseenMemoryTicks(300));
@@ -159,7 +159,7 @@ public class EntityIllusionIllager extends EntitySpellcasterIllager implements I
                 for (int j = 0; j < 4; ++j)
                 {
                     this.renderLocations[0][j] = this.renderLocations[1][j];
-                    this.renderLocations[1][j] = new Vec3d((double)(-6.0F + (float)this.rand.nextInt(13)) * 0.5D, (double)Math.max(0, this.rand.nextInt(6) - 4), (double)(-6.0F + (float)this.rand.nextInt(13)) * 0.5D);
+                    this.renderLocations[1][j] = new Vec3d((double)(-6.0F + (float)this.rand.nextInt(13)) * 0.5D, Math.max(0, this.rand.nextInt(6) - 4), (double)(-6.0F + (float)this.rand.nextInt(13)) * 0.5D);
                 }
 
                 for (int l = 0; l < 16; ++l)
@@ -180,7 +180,7 @@ public class EntityIllusionIllager extends EntitySpellcasterIllager implements I
         }
         else
         {
-            double d0 = (double)(((float)this.ghostTime - p_193098_1_) / 3.0F);
+            double d0 = ((float)this.ghostTime - p_193098_1_) / 3.0F;
             d0 = Math.pow(d0, 0.25D);
             Vec3d[] avec3d = new Vec3d[4];
 
@@ -241,7 +241,7 @@ public class EntityIllusionIllager extends EntitySpellcasterIllager implements I
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
-        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
         entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityarrow);

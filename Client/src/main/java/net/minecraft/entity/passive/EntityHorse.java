@@ -30,8 +30,8 @@ import net.minecraft.world.storage.loot.LootTableList;
 public class EntityHorse extends AbstractHorse
 {
     private static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
-    private static final DataParameter<Integer> HORSE_VARIANT = EntityDataManager.<Integer>createKey(EntityHorse.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> HORSE_ARMOR = EntityDataManager.<Integer>createKey(EntityHorse.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> HORSE_VARIANT = EntityDataManager.createKey(EntityHorse.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> HORSE_ARMOR = EntityDataManager.createKey(EntityHorse.class, DataSerializers.VARINT);
     public static final String[] HORSE_TEXTURES = new String[] {"textures/entity/horse/horse_white.png", "textures/entity/horse/horse_creamy.png", "textures/entity/horse/horse_chestnut.png", "textures/entity/horse/horse_brown.png", "textures/entity/horse/horse_black.png", "textures/entity/horse/horse_gray.png", "textures/entity/horse/horse_darkbrown.png"};
     public static final String[] HORSE_TEXTURES_ABBR = new String[] {"hwh", "hcr", "hch", "hbr", "hbl", "hgr", "hdb"};
     private static final String[] HORSE_MARKING_TEXTURES = new String[] {null, "textures/entity/horse/horse_markings_white.png", "textures/entity/horse/horse_markings_whitefield.png", "textures/entity/horse/horse_markings_whitedots.png", "textures/entity/horse/horse_markings_blackdots.png"};
@@ -54,7 +54,7 @@ public class EntityHorse extends AbstractHorse
     public static void registerFixesHorse(DataFixer fixer)
     {
         AbstractHorse.registerFixesAbstractHorse(fixer, EntityHorse.class);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityHorse.class, new String[] {"ArmorItem"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityHorse.class, "ArmorItem"));
     }
 
     /**
@@ -100,7 +100,7 @@ public class EntityHorse extends AbstractHorse
 
     public int getHorseVariant()
     {
-        return ((Integer)this.dataManager.get(HORSE_VARIANT)).intValue();
+        return this.dataManager.get(HORSE_VARIANT).intValue();
     }
 
     private void resetTexturePrefix()
@@ -165,14 +165,14 @@ public class EntityHorse extends AbstractHorse
 
             if (i != 0)
             {
-                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double)i, 0)).setSaved(false));
+                this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier((new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", i, 0)).setSaved(false));
             }
         }
     }
 
     public HorseArmorType getHorseArmorType()
     {
-        return HorseArmorType.getByOrdinal(((Integer)this.dataManager.get(HORSE_ARMOR)).intValue());
+        return HorseArmorType.getByOrdinal(this.dataManager.get(HORSE_ARMOR).intValue());
     }
 
     /**
@@ -203,7 +203,7 @@ public class EntityHorse extends AbstractHorse
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getModifiedMaxHealth());
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.getModifiedMovementSpeed());
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(this.getModifiedJumpStrength());
     }

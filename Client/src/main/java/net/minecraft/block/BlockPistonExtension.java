@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 public class BlockPistonExtension extends BlockDirectional
 {
-    public static final PropertyEnum<BlockPistonExtension.EnumPistonType> TYPE = PropertyEnum.<BlockPistonExtension.EnumPistonType>create("type", BlockPistonExtension.EnumPistonType.class);
+    public static final PropertyEnum<BlockPistonExtension.EnumPistonType> TYPE = PropertyEnum.create("type", BlockPistonExtension.EnumPistonType.class);
     public static final PropertyBool SHORT = PropertyBool.create("short");
     protected static final AxisAlignedBB PISTON_EXTENSION_EAST_AABB = new AxisAlignedBB(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB PISTON_EXTENSION_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
@@ -60,7 +60,7 @@ public class BlockPistonExtension extends BlockDirectional
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch ((EnumFacing)state.getValue(FACING))
+        switch (state.getValue(FACING))
         {
             case DOWN:
             default:
@@ -91,9 +91,9 @@ public class BlockPistonExtension extends BlockDirectional
 
     private AxisAlignedBB getArmShape(IBlockState state)
     {
-        boolean flag = ((Boolean)state.getValue(SHORT)).booleanValue();
+        boolean flag = state.getValue(SHORT).booleanValue();
 
-        switch ((EnumFacing)state.getValue(FACING))
+        switch (state.getValue(FACING))
         {
             case DOWN:
             default:
@@ -133,7 +133,7 @@ public class BlockPistonExtension extends BlockDirectional
     {
         if (player.capabilities.isCreativeMode)
         {
-            BlockPos blockpos = pos.offset(((EnumFacing)state.getValue(FACING)).getOpposite());
+            BlockPos blockpos = pos.offset(state.getValue(FACING).getOpposite());
             Block block = worldIn.getBlockState(blockpos).getBlock();
 
             if (block == Blocks.PISTON || block == Blocks.STICKY_PISTON)
@@ -151,11 +151,11 @@ public class BlockPistonExtension extends BlockDirectional
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         super.breakBlock(worldIn, pos, state);
-        EnumFacing enumfacing = ((EnumFacing)state.getValue(FACING)).getOpposite();
+        EnumFacing enumfacing = state.getValue(FACING).getOpposite();
         pos = pos.offset(enumfacing);
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
-        if ((iblockstate.getBlock() == Blocks.PISTON || iblockstate.getBlock() == Blocks.STICKY_PISTON) && ((Boolean)iblockstate.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+        if ((iblockstate.getBlock() == Blocks.PISTON || iblockstate.getBlock() == Blocks.STICKY_PISTON) && iblockstate.getValue(BlockPistonBase.EXTENDED).booleanValue())
         {
             iblockstate.getBlock().dropBlockAsItem(worldIn, pos, iblockstate, 0);
             worldIn.setBlockToAir(pos);
@@ -210,7 +210,7 @@ public class BlockPistonExtension extends BlockDirectional
      */
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         BlockPos blockpos = pos.offset(enumfacing.getOpposite());
         IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
@@ -259,7 +259,7 @@ public class BlockPistonExtension extends BlockDirectional
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getIndex();
+        i = i | state.getValue(FACING).getIndex();
 
         if (state.getValue(TYPE) == BlockPistonExtension.EnumPistonType.STICKY)
         {
@@ -277,7 +277,7 @@ public class BlockPistonExtension extends BlockDirectional
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -287,12 +287,12 @@ public class BlockPistonExtension extends BlockDirectional
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, TYPE, SHORT});
+        return new BlockStateContainer(this, FACING, TYPE, SHORT);
     }
 
     /**
@@ -311,14 +311,14 @@ public class BlockPistonExtension extends BlockDirectional
         return face == state.getValue(FACING) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
-    public static enum EnumPistonType implements IStringSerializable
+    public enum EnumPistonType implements IStringSerializable
     {
         DEFAULT("normal"),
         STICKY("sticky");
 
         private final String VARIANT;
 
-        private EnumPistonType(String name)
+        EnumPistonType(String name)
         {
             this.VARIANT = name;
         }

@@ -15,7 +15,7 @@ public class GuiToast extends Gui
 {
     private final Minecraft mc;
     private final GuiToast.ToastInstance<?>[] visible = new GuiToast.ToastInstance[5];
-    private final Deque<IToast> toastsQueue = Queues.<IToast>newArrayDeque();
+    private final Deque<IToast> toastsQueue = Queues.newArrayDeque();
 
     public GuiToast(Minecraft mcIn)
     {
@@ -64,12 +64,12 @@ public class GuiToast extends Gui
             }
         }
 
-        return (T)null;
+        return null;
     }
 
     public void clear()
     {
-        Arrays.fill(this.visible, (Object)null);
+        Arrays.fill(this.visible, null);
         this.toastsQueue.clear();
     }
 

@@ -123,7 +123,7 @@ public class GuiCommandBlock extends GuiScreen implements ITabCompleter
             if (button.id == 1)
             {
                 commandblockbaselogic.setTrackOutput(this.trackOutput);
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
             else if (button.id == 0)
             {
@@ -138,10 +138,10 @@ public class GuiCommandBlock extends GuiScreen implements ITabCompleter
 
                 if (!commandblockbaselogic.shouldTrackOutput())
                 {
-                    commandblockbaselogic.setLastOutput((ITextComponent)null);
+                    commandblockbaselogic.setLastOutput(null);
                 }
 
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
             else if (button.id == 4)
             {

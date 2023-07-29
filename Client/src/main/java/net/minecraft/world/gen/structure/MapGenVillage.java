@@ -14,7 +14,7 @@ import net.minecraft.world.biome.Biome;
 
 public class MapGenVillage extends MapGenStructure
 {
-    public static final List<Biome> VILLAGE_SPAWN_BIOMES = Arrays.<Biome>asList(Biomes.PLAINS, Biomes.DESERT, Biomes.SAVANNA, Biomes.TAIGA);
+    public static final List<Biome> VILLAGE_SPAWN_BIOMES = Arrays.asList(Biomes.PLAINS, Biomes.DESERT, Biomes.SAVANNA, Biomes.TAIGA);
 
     /** None */
     private int size;
@@ -33,11 +33,11 @@ public class MapGenVillage extends MapGenStructure
 
         for (Entry<String, String> entry : map.entrySet())
         {
-            if (((String)entry.getKey()).equals("size"))
+            if (entry.getKey().equals("size"))
             {
                 this.size = MathHelper.getInt(entry.getValue(), this.size, 0);
             }
-            else if (((String)entry.getKey()).equals("distance"))
+            else if (entry.getKey().equals("distance"))
             {
                 this.distance = MathHelper.getInt(entry.getValue(), this.distance, 9);
             }
@@ -76,10 +76,7 @@ public class MapGenVillage extends MapGenStructure
         {
             boolean flag = this.world.getBiomeProvider().areBiomesViable(i * 16 + 8, j * 16 + 8, 0, VILLAGE_SPAWN_BIOMES);
 
-            if (flag)
-            {
-                return true;
-            }
+            return flag;
         }
 
         return false;

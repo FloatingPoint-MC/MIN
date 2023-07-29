@@ -44,7 +44,7 @@ public class ThreadLanServerPing extends Thread
             }
             catch (IOException ioexception)
             {
-                LOGGER.warn("LanServerPinger: {}", (Object)ioexception.getMessage());
+                LOGGER.warn("LanServerPinger: {}", ioexception.getMessage());
                 break;
             }
 
@@ -54,7 +54,6 @@ public class ThreadLanServerPing extends Thread
             }
             catch (InterruptedException var5)
             {
-                ;
             }
         }
     }

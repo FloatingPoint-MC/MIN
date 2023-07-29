@@ -44,7 +44,7 @@ public class RecipeCommand extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.recipe.usage", new Object[0]);
+            throw new WrongUsageException("commands.recipe.usage");
         }
         else
         {
@@ -53,7 +53,7 @@ public class RecipeCommand extends CommandBase
 
             if (!flag && !flag1)
             {
-                throw new WrongUsageException("commands.recipe.usage", new Object[0]);
+                throw new WrongUsageException("commands.recipe.usage");
             }
             else
             {
@@ -64,12 +64,12 @@ public class RecipeCommand extends CommandBase
                         if (flag)
                         {
                             entityplayermp.unlockRecipes(this.getRecipes());
-                            notifyCommandListener(sender, this, "commands.recipe.give.success.all", new Object[] {entityplayermp.getName()});
+                            notifyCommandListener(sender, this, "commands.recipe.give.success.all", entityplayermp.getName());
                         }
                         else
                         {
                             entityplayermp.resetRecipes(this.getRecipes());
-                            notifyCommandListener(sender, this, "commands.recipe.take.success.all", new Object[] {entityplayermp.getName()});
+                            notifyCommandListener(sender, this, "commands.recipe.take.success.all", entityplayermp.getName());
                         }
                     }
                     else
@@ -78,12 +78,12 @@ public class RecipeCommand extends CommandBase
 
                         if (irecipe == null)
                         {
-                            throw new CommandException("commands.recipe.unknownrecipe", new Object[] {args[2]});
+                            throw new CommandException("commands.recipe.unknownrecipe", args[2]);
                         }
 
                         if (irecipe.isDynamic())
                         {
-                            throw new CommandException("commands.recipe.unsupported", new Object[] {args[2]});
+                            throw new CommandException("commands.recipe.unsupported", args[2]);
                         }
 
                         List<IRecipe> list = Lists.newArrayList(irecipe);
@@ -91,18 +91,18 @@ public class RecipeCommand extends CommandBase
                         if (flag == entityplayermp.getRecipeBook().isUnlocked(irecipe))
                         {
                             String s = flag ? "commands.recipe.alreadyHave" : "commands.recipe.dontHave";
-                            throw new CommandException(s, new Object[] {entityplayermp.getName(), irecipe.getRecipeOutput().getDisplayName()});
+                            throw new CommandException(s, entityplayermp.getName(), irecipe.getRecipeOutput().getDisplayName());
                         }
 
                         if (flag)
                         {
                             entityplayermp.unlockRecipes(list);
-                            notifyCommandListener(sender, this, "commands.recipe.give.success.one", new Object[] {entityplayermp.getName(), irecipe.getRecipeOutput().getDisplayName()});
+                            notifyCommandListener(sender, this, "commands.recipe.give.success.one", entityplayermp.getName(), irecipe.getRecipeOutput().getDisplayName());
                         }
                         else
                         {
                             entityplayermp.resetRecipes(list);
-                            notifyCommandListener(sender, this, "commands.recipe.take.success.one", new Object[] {irecipe.getRecipeOutput().getDisplayName(), entityplayermp.getName()});
+                            notifyCommandListener(sender, this, "commands.recipe.take.success.one", irecipe.getRecipeOutput().getDisplayName(), entityplayermp.getName());
                         }
                     }
                 }
@@ -119,7 +119,7 @@ public class RecipeCommand extends CommandBase
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"give", "take"});
+            return getListOfStringsMatchingLastWord(args, "give", "take");
         }
         else if (args.length == 2)
         {

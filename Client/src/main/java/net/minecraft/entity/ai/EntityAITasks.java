@@ -11,13 +11,13 @@ import org.apache.logging.log4j.Logger;
 public class EntityAITasks
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Set<EntityAITasks.EntityAITaskEntry> taskEntries = Sets.<EntityAITasks.EntityAITaskEntry>newLinkedHashSet();
-    private final Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries = Sets.<EntityAITasks.EntityAITaskEntry>newLinkedHashSet();
+    private final Set<EntityAITasks.EntityAITaskEntry> taskEntries = Sets.newLinkedHashSet();
+    private final Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries = Sets.newLinkedHashSet();
 
     /** Instance of Profiler. */
     private final Profiler profiler;
     private int tickCount;
-    private int tickRate = 3;
+    private final int tickRate = 3;
     private int disabledControlFlags;
 
     public EntityAITasks(Profiler profilerIn)
@@ -218,7 +218,7 @@ public class EntityAITasks
             }
             else
             {
-                return p_equals_1_ != null && this.getClass() == p_equals_1_.getClass() ? this.action.equals(((EntityAITasks.EntityAITaskEntry)p_equals_1_).action) : false;
+                return p_equals_1_ != null && this.getClass() == p_equals_1_.getClass() && this.action.equals(((EntityAITaskEntry) p_equals_1_).action);
             }
         }
 

@@ -53,7 +53,7 @@ public class ShaderLoader
 
     public static ShaderLoader loadShader(IResourceManager resourceManager, ShaderLoader.ShaderType type, String filename) throws IOException
     {
-        ShaderLoader shaderloader = (ShaderLoader)type.getLoadedShaders().get(filename);
+        ShaderLoader shaderloader = type.getLoadedShaders().get(filename);
 
         if (shaderloader == null)
         {
@@ -83,14 +83,14 @@ public class ShaderLoader
             }
             finally
             {
-                IOUtils.closeQuietly((Closeable)iresource);
+                IOUtils.closeQuietly(iresource);
             }
         }
 
         return shaderloader;
     }
 
-    public static enum ShaderType
+    public enum ShaderType
     {
         VERTEX("vertex", ".vsh", OpenGlHelper.GL_VERTEX_SHADER),
         FRAGMENT("fragment", ".fsh", OpenGlHelper.GL_FRAGMENT_SHADER);
@@ -98,9 +98,9 @@ public class ShaderLoader
         private final String shaderName;
         private final String shaderExtension;
         private final int shaderMode;
-        private final Map<String, ShaderLoader> loadedShaders = Maps.<String, ShaderLoader>newHashMap();
+        private final Map<String, ShaderLoader> loadedShaders = Maps.newHashMap();
 
-        private ShaderType(String shaderNameIn, String shaderExtensionIn, int shaderModeIn)
+        ShaderType(String shaderNameIn, String shaderExtensionIn, int shaderModeIn)
         {
             this.shaderName = shaderNameIn;
             this.shaderExtension = shaderExtensionIn;

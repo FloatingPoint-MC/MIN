@@ -104,7 +104,7 @@ public class BlockSkull extends BlockContainer
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch ((EnumFacing)state.getValue(FACING))
+        switch (state.getValue(FACING))
         {
             case UP:
             default:
@@ -183,7 +183,7 @@ public class BlockSkull extends BlockContainer
     {
         if (!worldIn.isRemote)
         {
-            if (!((Boolean)state.getValue(NODROP)).booleanValue())
+            if (!state.getValue(NODROP).booleanValue())
             {
                 TileEntity tileentity = worldIn.getTileEntity(pos);
 
@@ -297,9 +297,9 @@ public class BlockSkull extends BlockContainer
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getIndex();
+        i = i | state.getValue(FACING).getIndex();
 
-        if (((Boolean)state.getValue(NODROP)).booleanValue())
+        if (state.getValue(NODROP).booleanValue())
         {
             i |= 8;
         }
@@ -315,7 +315,7 @@ public class BlockSkull extends BlockContainer
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -325,12 +325,12 @@ public class BlockSkull extends BlockContainer
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, NODROP});
+        return new BlockStateContainer(this, FACING, NODROP);
     }
 
     protected BlockPattern getWitherBasePattern()

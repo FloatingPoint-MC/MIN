@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 public class LayerMooshroomMushroom implements LayerRenderer<EntityMooshroom>
 {
     private final RenderMooshroom mooshroomRenderer;
-    private ModelRenderer modelRendererMushroom;
+    private final ModelRenderer modelRendererMushroom;
     private static final ResourceLocation LOCATION_MUSHROOM_RED = new ResourceLocation("textures/entity/cow/mushroom_red.png");
     private static boolean hasTextureMushroom = false;
 

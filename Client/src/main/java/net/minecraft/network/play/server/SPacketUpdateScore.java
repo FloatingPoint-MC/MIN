@@ -48,7 +48,7 @@ public class SPacketUpdateScore implements Packet<INetHandlerPlayClient>
     public void readPacketData(PacketBuffer buf) throws IOException
     {
         this.name = buf.readString(40);
-        this.action = (SPacketUpdateScore.Action)buf.readEnumValue(SPacketUpdateScore.Action.class);
+        this.action = buf.readEnumValue(Action.class);
         this.objective = buf.readString(16);
 
         if (this.action != SPacketUpdateScore.Action.REMOVE)
@@ -100,9 +100,9 @@ public class SPacketUpdateScore implements Packet<INetHandlerPlayClient>
         return this.action;
     }
 
-    public static enum Action
+    public enum Action
     {
         CHANGE,
-        REMOVE;
+        REMOVE
     }
 }

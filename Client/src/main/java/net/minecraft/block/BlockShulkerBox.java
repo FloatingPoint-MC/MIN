@@ -123,12 +123,12 @@ public class BlockShulkerBox extends BlockContainer
 
             if (tileentity instanceof TileEntityShulkerBox)
             {
-                EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+                EnumFacing enumfacing = state.getValue(FACING);
                 boolean flag;
 
                 if (((TileEntityShulkerBox)tileentity).getAnimationStatus() == TileEntityShulkerBox.AnimationStatus.CLOSED)
                 {
-                    AxisAlignedBB axisalignedbb = FULL_BLOCK_AABB.expand((double)(0.5F * (float)enumfacing.getXOffset()), (double)(0.5F * (float)enumfacing.getYOffset()), (double)(0.5F * (float)enumfacing.getZOffset())).contract((double)enumfacing.getXOffset(), (double)enumfacing.getYOffset(), (double)enumfacing.getZOffset());
+                    AxisAlignedBB axisalignedbb = FULL_BLOCK_AABB.expand(0.5F * (float)enumfacing.getXOffset(), 0.5F * (float)enumfacing.getYOffset(), 0.5F * (float)enumfacing.getZOffset()).contract(enumfacing.getXOffset(), enumfacing.getYOffset(), enumfacing.getZOffset());
                     flag = !worldIn.collidesWithAnyBlock(axisalignedbb.offset(pos.offset(enumfacing)));
                 }
                 else
@@ -162,7 +162,7 @@ public class BlockShulkerBox extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     /**
@@ -170,7 +170,7 @@ public class BlockShulkerBox extends BlockContainer
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     /**
@@ -269,7 +269,7 @@ public class BlockShulkerBox extends BlockContainer
 
             if (nbttagcompound1.hasKey("Items", 9))
             {
-                NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
+                NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
                 ItemStackHelper.loadAllItems(nbttagcompound1, nonnulllist);
                 int i = 0;
                 int j = 0;
@@ -429,7 +429,7 @@ public class BlockShulkerBox extends BlockContainer
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -439,7 +439,7 @@ public class BlockShulkerBox extends BlockContainer
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     /**
@@ -456,7 +456,7 @@ public class BlockShulkerBox extends BlockContainer
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         state = this.getActualState(state, worldIn, pos);
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         TileEntityShulkerBox.AnimationStatus tileentityshulkerbox$animationstatus = ((TileEntityShulkerBox)worldIn.getTileEntity(pos)).getAnimationStatus();
         return tileentityshulkerbox$animationstatus != TileEntityShulkerBox.AnimationStatus.CLOSED && (tileentityshulkerbox$animationstatus != TileEntityShulkerBox.AnimationStatus.OPENED || enumfacing != face.getOpposite() && enumfacing != face) ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
     }

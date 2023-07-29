@@ -32,7 +32,7 @@ public class GuiConnecting extends GuiScreen
         this.mc = mcIn;
         this.previousGuiScreen = parent;
         ServerAddress serveraddress = ServerAddress.fromString(serverDataIn.serverIP);
-        mcIn.loadWorld((WorldClient)null);
+        mcIn.loadWorld(null);
         mcIn.setServerData(serverDataIn);
         this.connect(serveraddress.getIP(), serveraddress.getPort());
     }
@@ -41,7 +41,7 @@ public class GuiConnecting extends GuiScreen
     {
         this.mc = mcIn;
         this.previousGuiScreen = parent;
-        mcIn.loadWorld((WorldClient)null);
+        mcIn.loadWorld(null);
         this.connect(hostName, port);
     }
 
@@ -74,8 +74,8 @@ public class GuiConnecting extends GuiScreen
                         return;
                     }
 
-                    GuiConnecting.LOGGER.error("Couldn't connect to server", (Throwable)unknownhostexception);
-                    GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new TextComponentTranslation("disconnect.genericReason", new Object[] {"Unknown host"})));
+                    GuiConnecting.LOGGER.error("Couldn't connect to server", unknownhostexception);
+                    GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new TextComponentTranslation("disconnect.genericReason", "Unknown host")));
                 }
                 catch (Exception exception)
                 {
@@ -84,7 +84,7 @@ public class GuiConnecting extends GuiScreen
                         return;
                     }
 
-                    GuiConnecting.LOGGER.error("Couldn't connect to server", (Throwable)exception);
+                    GuiConnecting.LOGGER.error("Couldn't connect to server", exception);
                     String s = exception.toString();
 
                     if (inetaddress != null)
@@ -93,7 +93,7 @@ public class GuiConnecting extends GuiScreen
                         s = s.replaceAll(s1, "");
                     }
 
-                    GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new TextComponentTranslation("disconnect.genericReason", new Object[] {s})));
+                    GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new TextComponentTranslation("disconnect.genericReason", s)));
                 }
             }
         }).start();

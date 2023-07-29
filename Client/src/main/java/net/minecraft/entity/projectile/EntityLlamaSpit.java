@@ -91,9 +91,8 @@ public class EntityLlamaSpit extends Entity implements IProjectile
         float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
-        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -151,7 +150,7 @@ public class EntityLlamaSpit extends Entity implements IProjectile
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
             float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float)(MathHelper.atan2(y, (double)f) * (180D / Math.PI));
+            this.rotationPitch = (float)(MathHelper.atan2(y, f) * (180D / Math.PI));
             this.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
@@ -209,7 +208,7 @@ public class EntityLlamaSpit extends Entity implements IProjectile
         this.motionZ = z;
         float f1 = MathHelper.sqrt(x * x + z * z);
         this.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
-        this.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * (180D / Math.PI));
+        this.rotationPitch = (float)(MathHelper.atan2(y, f1) * (180D / Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
     }

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BlockStainedGlass extends BlockBreakable
 {
-    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.<EnumDyeColor>create("color", EnumDyeColor.class);
+    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
     public BlockStainedGlass(Material materialIn)
     {
@@ -33,7 +33,7 @@ public class BlockStainedGlass extends BlockBreakable
      */
     public int damageDropped(IBlockState state)
     {
-        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     /**
@@ -54,7 +54,7 @@ public class BlockStainedGlass extends BlockBreakable
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return MapColor.getBlockColor((EnumDyeColor)state.getValue(COLOR));
+        return MapColor.getBlockColor(state.getValue(COLOR));
     }
 
     /**
@@ -122,11 +122,11 @@ public class BlockStainedGlass extends BlockBreakable
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {COLOR});
+        return new BlockStateContainer(this, COLOR);
     }
 }

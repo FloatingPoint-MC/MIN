@@ -20,7 +20,7 @@ import net.minecraft.util.math.MathHelper;
 public class GuiRecipeOverlay extends Gui
 {
     private static final ResourceLocation RECIPE_BOOK_TEXTURE = new ResourceLocation("textures/gui/recipe_book.png");
-    private final List<GuiRecipeOverlay.Button> buttonList = Lists.<GuiRecipeOverlay.Button>newArrayList();
+    private final List<GuiRecipeOverlay.Button> buttonList = Lists.newArrayList();
     private boolean visible;
     private int x;
     private int y;
@@ -39,7 +39,7 @@ public class GuiRecipeOverlay extends Gui
         int i = list.size();
         int j = i + list1.size();
         int k = j <= 16 ? 4 : 5;
-        int l = (int)Math.ceil((double)((float)j / (float)k));
+        int l = (int)Math.ceil((float)j / (float)k);
         this.x = p_191845_3_;
         this.y = p_191845_4_;
         int i1 = 25;
@@ -73,7 +73,7 @@ public class GuiRecipeOverlay extends Gui
         for (int j1 = 0; j1 < j; ++j1)
         {
             boolean flag1 = j1 < i;
-            this.buttonList.add(new GuiRecipeOverlay.Button(this.x + 4 + 25 * (j1 % k), this.y + 5 + 25 * (j1 / k), flag1 ? (IRecipe)list.get(j1) : (IRecipe)list1.get(j1 - i), flag1));
+            this.buttonList.add(new GuiRecipeOverlay.Button(this.x + 4 + 25 * (j1 % k), this.y + 5 + 25 * (j1 / k), flag1 ? list.get(j1) : list1.get(j1 - i), flag1));
         }
 
         this.lastRecipeClicked = null;
@@ -243,7 +243,7 @@ public class GuiRecipeOverlay extends Gui
                 {
                     if (iterator.hasNext())
                     {
-                        ItemStack[] aitemstack = ((Ingredient)iterator.next()).getMatchingStacks();
+                        ItemStack[] aitemstack = iterator.next().getMatchingStacks();
 
                         if (aitemstack.length != 0)
                         {

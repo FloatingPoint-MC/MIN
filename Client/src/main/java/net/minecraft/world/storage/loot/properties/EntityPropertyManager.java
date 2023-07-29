@@ -6,8 +6,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class EntityPropertyManager
 {
-    private static final Map < ResourceLocation, EntityProperty.Serializer<? >> NAME_TO_SERIALIZER_MAP = Maps. < ResourceLocation, EntityProperty.Serializer<? >> newHashMap();
-    private static final Map < Class <? extends EntityProperty > , EntityProperty.Serializer<? >> CLASS_TO_SERIALIZER_MAP = Maps. < Class <? extends EntityProperty > , EntityProperty.Serializer<? >> newHashMap();
+    private static final Map < ResourceLocation, EntityProperty.Serializer<? >> NAME_TO_SERIALIZER_MAP = Maps.newHashMap();
+    private static final Map < Class <? extends EntityProperty > , EntityProperty.Serializer<? >> CLASS_TO_SERIALIZER_MAP = Maps.newHashMap();
 
     public static <T extends EntityProperty> void registerProperty(EntityProperty.Serializer <? extends T > serializer)
     {
@@ -31,7 +31,7 @@ public class EntityPropertyManager
 
     public static EntityProperty.Serializer<?> getSerializerForName(ResourceLocation name)
     {
-        EntityProperty.Serializer<?> serializer = (EntityProperty.Serializer)NAME_TO_SERIALIZER_MAP.get(name);
+        EntityProperty.Serializer<?> serializer = NAME_TO_SERIALIZER_MAP.get(name);
 
         if (serializer == null)
         {
@@ -45,7 +45,7 @@ public class EntityPropertyManager
 
     public static <T extends EntityProperty> EntityProperty.Serializer<T> getSerializerFor(T property)
     {
-        EntityProperty.Serializer<?> serializer = (EntityProperty.Serializer)CLASS_TO_SERIALIZER_MAP.get(property.getClass());
+        EntityProperty.Serializer<?> serializer = CLASS_TO_SERIALIZER_MAP.get(property.getClass());
 
         if (serializer == null)
         {

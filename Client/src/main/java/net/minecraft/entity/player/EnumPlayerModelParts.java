@@ -18,12 +18,12 @@ public enum EnumPlayerModelParts
     private final String partName;
     private final ITextComponent name;
 
-    private EnumPlayerModelParts(int partIdIn, String partNameIn)
+    EnumPlayerModelParts(int partIdIn, String partNameIn)
     {
         this.partId = partIdIn;
         this.partMask = 1 << partIdIn;
         this.partName = partNameIn;
-        this.name = new TextComponentTranslation("options.modelPart." + partNameIn, new Object[0]);
+        this.name = new TextComponentTranslation("options.modelPart." + partNameIn);
     }
 
     public int getPartMask()

@@ -47,7 +47,7 @@ public class ServerPinger
 {
     private static final Splitter PING_RESPONSE_SPLITTER = Splitter.on('\u0000').limit(6);
     private static final Logger LOGGER = LogManager.getLogger();
-    private final List<NetworkManager> pingDestinations = Collections.<NetworkManager>synchronizedList(Lists.newArrayList());
+    private final List<NetworkManager> pingDestinations = Collections.synchronizedList(Lists.newArrayList());
 
     public void ping(final ServerData server) throws UnknownHostException
     {
@@ -66,7 +66,7 @@ public class ServerPinger
             {
                 if (this.receivedStatus)
                 {
-                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.unrequested", new Object[0]));
+                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.unrequested"));
                 }
                 else
                 {
@@ -95,7 +95,7 @@ public class ServerPinger
 
                     if (serverstatusresponse.getPlayers() != null)
                     {
-                        server.populationInfo = TextFormatting.GRAY + "" + serverstatusresponse.getPlayers().getOnlinePlayerCount() + "" + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + serverstatusresponse.getPlayers().getMaxPlayers();
+                        server.populationInfo = TextFormatting.GRAY + String.valueOf(serverstatusresponse.getPlayers().getOnlinePlayerCount()) + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + serverstatusresponse.getPlayers().getMaxPlayers();
 
                         if (ArrayUtils.isNotEmpty(serverstatusresponse.getPlayers().getPlayers()))
                         {
@@ -144,7 +144,7 @@ public class ServerPinger
                     }
                     else
                     {
-                        server.setBase64EncodedIconData((String)null);
+                        server.setBase64EncodedIconData(null);
                     }
 
                     this.pingSentAt = Minecraft.getSystemTime();
@@ -185,7 +185,7 @@ public class ServerPinger
     private void tryCompatibilityPing(final ServerData server)
     {
         final ServerAddress serveraddress = ServerAddress.fromString(server.serverIP);
-        ((Bootstrap)((Bootstrap)((Bootstrap)(new Bootstrap()).group(NetworkManager.CLIENT_NIO_EVENTLOOP.getValue())).handler(new ChannelInitializer<Channel>()
+        (new Bootstrap()).group(NetworkManager.CLIENT_NIO_EVENTLOOP.getValue()).handler(new ChannelInitializer<Channel>()
         {
             protected void initChannel(Channel p_initChannel_1_) throws Exception
             {
@@ -195,7 +195,6 @@ public class ServerPinger
                 }
                 catch (ChannelException var3)
                 {
-                    ;
                 }
 
                 p_initChannel_1_.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>()
@@ -243,7 +242,7 @@ public class ServerPinger
                         if (short1 == 255)
                         {
                             String s = new String(p_channelRead0_2_.readBytes(p_channelRead0_2_.readShort() * 2).array(), StandardCharsets.UTF_16BE);
-                            String[] astring = (String[])Iterables.toArray(ServerPinger.PING_RESPONSE_SPLITTER.split(s), String.class);
+                            String[] astring = Iterables.toArray(ServerPinger.PING_RESPONSE_SPLITTER.split(s), String.class);
 
                             if ("\u00a71".equals(astring[0]))
                             {
@@ -255,7 +254,7 @@ public class ServerPinger
                                 server.version = -1;
                                 server.gameVersion = s1;
                                 server.serverMOTD = s2;
-                                server.populationInfo = TextFormatting.GRAY + "" + j + "" + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + k;
+                                server.populationInfo = TextFormatting.GRAY + String.valueOf(j) + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + k;
                             }
                         }
 
@@ -267,7 +266,7 @@ public class ServerPinger
                     }
                 });
             }
-        })).channel(NioSocketChannel.class)).connect(serveraddress.getIP(), serveraddress.getPort());
+        }).channel(NioSocketChannel.class).connect(serveraddress.getIP(), serveraddress.getPort());
     }
 
     public void pingPendingNetworks()
@@ -306,7 +305,7 @@ public class ServerPinger
                 if (networkmanager.isChannelOpen())
                 {
                     iterator.remove();
-                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.cancelled", new Object[0]));
+                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.cancelled"));
                 }
             }
         }

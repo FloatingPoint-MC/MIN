@@ -51,7 +51,7 @@ import org.apache.logging.log4j.Logger;
 public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final DataParameter<Integer> PHASE = EntityDataManager.<Integer>createKey(EntityDragon.class, DataSerializers.VARINT);
+    public static final DataParameter<Integer> PHASE = EntityDataManager.createKey(EntityDragon.class, DataSerializers.VARINT);
 
     /**
      * Ring buffer array for the last 64 Y-positions and yaw rotations. Used to calculate offsets for the animations.
@@ -246,7 +246,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
                 {
                     for (int i = 0; i < this.ringBuffer.length; ++i)
                     {
-                        this.ringBuffer[i][0] = (double)this.rotationYaw;
+                        this.ringBuffer[i][0] = this.rotationYaw;
                         this.ringBuffer[i][1] = this.posY;
                     }
                 }
@@ -256,7 +256,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
                     this.ringBufferIndex = 0;
                 }
 
-                this.ringBuffer[this.ringBufferIndex][0] = (double)this.rotationYaw;
+                this.ringBuffer[this.ringBufferIndex][0] = this.rotationYaw;
                 this.ringBuffer[this.ringBufferIndex][1] = this.posY;
 
                 if (this.world.isRemote)
@@ -296,12 +296,12 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
                         double d8 = vec3d.z - this.posZ;
                         double d3 = d6 * d6 + d7 * d7 + d8 * d8;
                         float f5 = iphase.getMaxRiseOrFall();
-                        d7 = MathHelper.clamp(d7 / (double)MathHelper.sqrt(d6 * d6 + d8 * d8), (double)(-f5), (double)f5);
+                        d7 = MathHelper.clamp(d7 / (double)MathHelper.sqrt(d6 * d6 + d8 * d8), -f5, f5);
                         this.motionY += d7 * 0.10000000149011612D;
                         this.rotationYaw = MathHelper.wrapDegrees(this.rotationYaw);
                         double d4 = MathHelper.clamp(MathHelper.wrapDegrees(180.0D - MathHelper.atan2(d6, d8) * (180D / Math.PI) - (double)this.rotationYaw), -50.0D, 50.0D);
                         Vec3d vec3d1 = (new Vec3d(vec3d.x - this.posX, vec3d.y - this.posY, vec3d.z - this.posZ)).normalize();
-                        Vec3d vec3d2 = (new Vec3d((double)MathHelper.sin(this.rotationYaw * 0.017453292F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)))).normalize();
+                        Vec3d vec3d2 = (new Vec3d(MathHelper.sin(this.rotationYaw * 0.017453292F), this.motionY, -MathHelper.cos(this.rotationYaw * 0.017453292F))).normalize();
                         float f7 = Math.max(((float)vec3d2.dotProduct(vec3d1) + 0.5F) / 1.5F, 0.0F);
                         this.randomYawVelocity *= 0.8F;
                         this.randomYawVelocity = (float)((double)this.randomYawVelocity + d4 * (double)iphase.getYawFactor());
@@ -322,8 +322,8 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
                         Vec3d vec3d3 = (new Vec3d(this.motionX, this.motionY, this.motionZ)).normalize();
                         float f10 = ((float)vec3d3.dotProduct(vec3d2) + 1.0F) / 2.0F;
                         f10 = 0.8F + 0.15F * f10;
-                        this.motionX *= (double)f10;
-                        this.motionZ *= (double)f10;
+                        this.motionX *= f10;
+                        this.motionZ *= f10;
                         this.motionY *= 0.9100000262260437D;
                     }
                 }
@@ -468,7 +468,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
 
         if (this.rand.nextInt(10) == 0)
         {
-            List<EntityEnderCrystal> list = this.world.<EntityEnderCrystal>getEntitiesWithinAABB(EntityEnderCrystal.class, this.getEntityBoundingBox().grow(32.0D));
+            List<EntityEnderCrystal> list = this.world.getEntitiesWithinAABB(EntityEnderCrystal.class, this.getEntityBoundingBox().grow(32.0D));
             EntityEnderCrystal entityendercrystal = null;
             double d0 = Double.MAX_VALUE;
 
@@ -1086,7 +1086,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
         {
             if (iphase.getIsStationary())
             {
-                d0 = (double)p_184667_1_;
+                d0 = p_184667_1_;
             }
             else if (p_184667_1_ == 6)
             {
@@ -1101,7 +1101,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
         {
             BlockPos blockpos = this.world.getTopSolidOrLiquidBlock(WorldGenEndPodium.END_PODIUM_LOCATION);
             float f = Math.max(MathHelper.sqrt(this.getDistanceSqToCenter(blockpos)) / 4.0F, 1.0F);
-            d0 = (double)((float)p_184667_1_ / f);
+            d0 = (float)p_184667_1_ / f;
         }
 
         return (float)d0;
@@ -1168,7 +1168,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
     {
         if (PHASE.equals(key) && this.world.isRemote)
         {
-            this.phaseManager.setPhase(PhaseList.getById(((Integer)this.getDataManager().get(PHASE)).intValue()));
+            this.phaseManager.setPhase(PhaseList.getById(this.getDataManager().get(PHASE).intValue()));
         }
 
         super.notifyDataManagerChange(key);

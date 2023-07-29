@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 public class ResourceIndex
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Map<String, File> resourceMap = Maps.<String, File>newHashMap();
+    private final Map<String, File> resourceMap = Maps.newHashMap();
 
     protected ResourceIndex()
     {
@@ -39,7 +39,7 @@ public class ResourceIndex
         {
             bufferedreader = Files.newReader(file2, StandardCharsets.UTF_8);
             JsonObject jsonobject = (new JsonParser()).parse(bufferedreader).getAsJsonObject();
-            JsonObject jsonobject1 = JsonUtils.getJsonObject(jsonobject, "objects", (JsonObject)null);
+            JsonObject jsonobject1 = JsonUtils.getJsonObject(jsonobject, "objects", null);
 
             if (jsonobject1 != null)
             {
@@ -57,15 +57,15 @@ public class ResourceIndex
         }
         catch (JsonParseException var20)
         {
-            LOGGER.error("Unable to parse resource index file: {}", (Object)file2);
+            LOGGER.error("Unable to parse resource index file: {}", file2);
         }
         catch (FileNotFoundException var21)
         {
-            LOGGER.error("Can't find the resource index file: {}", (Object)file2);
+            LOGGER.error("Can't find the resource index file: {}", file2);
         }
         finally
         {
-            IOUtils.closeQuietly((Reader)bufferedreader);
+            IOUtils.closeQuietly(bufferedreader);
         }
     }
 

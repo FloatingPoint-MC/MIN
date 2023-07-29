@@ -11,9 +11,9 @@ import net.minecraft.util.IntHashMap;
 
 public class GuiPageButtonList extends GuiListExtended
 {
-    private final List<GuiPageButtonList.GuiEntry> entries = Lists.<GuiPageButtonList.GuiEntry>newArrayList();
+    private final List<GuiPageButtonList.GuiEntry> entries = Lists.newArrayList();
     private final IntHashMap<Gui> componentMap = new IntHashMap<Gui>();
-    private final List<GuiTextField> editBoxes = Lists.<GuiTextField>newArrayList();
+    private final List<GuiTextField> editBoxes = Lists.newArrayList();
     private final GuiPageButtonList.GuiListEntry[][] pages;
     private int page;
     private final GuiPageButtonList.GuiResponder responder;
@@ -74,7 +74,7 @@ public class GuiPageButtonList extends GuiListExtended
             GuiPageButtonList.GuiListEntry guipagebuttonlist$guilistentry = this.pages[this.page][i];
             GuiPageButtonList.GuiListEntry guipagebuttonlist$guilistentry1 = i < this.pages[this.page].length - 1 ? this.pages[this.page][i + 1] : null;
             Gui gui = this.componentMap.lookup(guipagebuttonlist$guilistentry.getId());
-            Gui gui1 = guipagebuttonlist$guilistentry1 != null ? (Gui)this.componentMap.lookup(guipagebuttonlist$guilistentry1.getId()) : null;
+            Gui gui1 = guipagebuttonlist$guilistentry1 != null ? this.componentMap.lookup(guipagebuttonlist$guilistentry1.getId()) : null;
             GuiPageButtonList.GuiEntry guipagebuttonlist$guientry = new GuiPageButtonList.GuiEntry(gui, gui1);
             this.entries.add(guipagebuttonlist$guientry);
         }
@@ -380,7 +380,7 @@ public class GuiPageButtonList extends GuiListExtended
         public EditBoxEntry(int p_i45534_1_, String p_i45534_2_, boolean p_i45534_3_, Predicate<String> p_i45534_4_)
         {
             super(p_i45534_1_, p_i45534_2_, p_i45534_3_);
-            this.filter = (Predicate)MoreObjects.firstNonNull(p_i45534_4_, Predicates.alwaysTrue());
+            this.filter = MoreObjects.firstNonNull(p_i45534_4_, Predicates.alwaysTrue());
         }
 
         public Predicate<String> getFilter()

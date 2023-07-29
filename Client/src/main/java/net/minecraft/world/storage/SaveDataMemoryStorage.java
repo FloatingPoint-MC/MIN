@@ -6,7 +6,7 @@ public class SaveDataMemoryStorage extends MapStorage
 {
     public SaveDataMemoryStorage()
     {
-        super((ISaveHandler)null);
+        super(null);
     }
 
     @Nullable

@@ -71,7 +71,7 @@ public abstract class WorldProvider
         for (int i = 0; i <= 15; ++i)
         {
             float f1 = 1.0F - (float)i / 15.0F;
-            this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * 1.0F + 0.0F;
+            this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) + 0.0F;
         }
     }
 
@@ -113,7 +113,7 @@ public abstract class WorldProvider
         }
         else
         {
-            return this.terrainType == WorldType.CUSTOMIZED ? new ChunkGeneratorOverworld(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), this.generatorSettings) : new ChunkGeneratorOverworld(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), this.generatorSettings);
+            return new ChunkGeneratorOverworld(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), this.generatorSettings);
         }
     }
 
@@ -211,7 +211,7 @@ public abstract class WorldProvider
         f1 = f1 * (f * 0.94F + 0.06F);
         f2 = f2 * (f * 0.94F + 0.06F);
         f3 = f3 * (f * 0.91F + 0.09F);
-        return new Vec3d((double)f1, (double)f2, (double)f3);
+        return new Vec3d(f1, f2, f3);
     }
 
     /**

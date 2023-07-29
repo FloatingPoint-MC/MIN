@@ -65,7 +65,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 
 public abstract class EntityLiving extends EntityLivingBase {
-    private static final DataParameter<Byte> AI_FLAGS = EntityDataManager.<Byte>createKey(EntityLiving.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> AI_FLAGS = EntityDataManager.createKey(EntityLiving.class, DataSerializers.BYTE);
 
     /**
      * Number of ticks since this EntityLiving last produced its sound
@@ -101,13 +101,13 @@ public abstract class EntityLiving extends EntityLivingBase {
      */
     private EntityLivingBase attackTarget;
     private final EntitySenses senses;
-    private final NonNullList<ItemStack> inventoryHands = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> inventoryHands = NonNullList.withSize(2, ItemStack.EMPTY);
 
     /**
      * Chances for equipment in hands dropping when this entity dies.
      */
     protected float[] inventoryHandsDropChances = new float[2];
-    private final NonNullList<ItemStack> inventoryArmor = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> inventoryArmor = NonNullList.withSize(4, ItemStack.EMPTY);
 
     /**
      * Chances for armor dropping when this entity dies.
@@ -286,13 +286,13 @@ public abstract class EntityLiving extends EntityLivingBase {
             int i = this.experienceValue;
 
             for (int j = 0; j < this.inventoryArmor.size(); ++j) {
-                if (!((ItemStack) this.inventoryArmor.get(j)).isEmpty() && this.inventoryArmorDropChances[j] <= 1.0F) {
+                if (!this.inventoryArmor.get(j).isEmpty() && this.inventoryArmorDropChances[j] <= 1.0F) {
                     i += 1 + this.rand.nextInt(3);
                 }
             }
 
             for (int k = 0; k < this.inventoryHands.size(); ++k) {
-                if (!((ItemStack) this.inventoryHands.get(k)).isEmpty() && this.inventoryHandsDropChances[k] <= 1.0F) {
+                if (!this.inventoryHands.get(k).isEmpty() && this.inventoryHandsDropChances[k] <= 1.0F) {
                     i += 1 + this.rand.nextInt(3);
                 }
             }
@@ -389,7 +389,7 @@ public abstract class EntityLiving extends EntityLivingBase {
     }
 
     public static void registerFixesMob(DataFixer fixer, Class<?> name) {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(name, new String[]{"ArmorItems", "HandItems"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(name, "ArmorItems", "HandItems"));
     }
 
     /**
@@ -655,11 +655,11 @@ public abstract class EntityLiving extends EntityLivingBase {
 
             switch (entityequipmentslot.getSlotType()) {
                 case HAND:
-                    d0 = (double) this.inventoryHandsDropChances[entityequipmentslot.getIndex()];
+                    d0 = this.inventoryHandsDropChances[entityequipmentslot.getIndex()];
                     break;
 
                 case ARMOR:
-                    d0 = (double) this.inventoryArmorDropChances[entityequipmentslot.getIndex()];
+                    d0 = this.inventoryArmorDropChances[entityequipmentslot.getIndex()];
                     break;
 
                 default:
@@ -794,7 +794,7 @@ public abstract class EntityLiving extends EntityLivingBase {
             d2 = (entityIn.getEntityBoundingBox().minY + entityIn.getEntityBoundingBox().maxY) / 2.0D - (this.posY + (double) this.getEyeHeight());
         }
 
-        double d3 = (double) MathHelper.sqrt(d0 * d0 + d1 * d1);
+        double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1);
         float f = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
         float f1 = (float) (-(MathHelper.atan2(d2, d3) * (180D / Math.PI)));
         this.rotationPitch = this.updateRotation(this.rotationPitch, f1, maxPitchIncrease);
@@ -907,11 +907,11 @@ public abstract class EntityLiving extends EntityLivingBase {
 
             switch (entityequipmentslot.getSlotType()) {
                 case HAND:
-                    d0 = (double) this.inventoryHandsDropChances[entityequipmentslot.getIndex()];
+                    d0 = this.inventoryHandsDropChances[entityequipmentslot.getIndex()];
                     break;
 
                 case ARMOR:
-                    d0 = (double) this.inventoryArmorDropChances[entityequipmentslot.getIndex()];
+                    d0 = this.inventoryArmorDropChances[entityequipmentslot.getIndex()];
                     break;
 
                 default:
@@ -1088,11 +1088,7 @@ public abstract class EntityLiving extends EntityLivingBase {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextGaussian() * 0.05D, 1));
 
-        if (this.rand.nextFloat() < 0.05F) {
-            this.setLeftHanded(true);
-        } else {
-            this.setLeftHanded(false);
-        }
+        this.setLeftHanded(this.rand.nextFloat() < 0.05F);
 
         return livingdata;
     }
@@ -1150,7 +1146,7 @@ public abstract class EntityLiving extends EntityLivingBase {
                 itemstack.shrink(1);
                 return true;
             } else {
-                return this.processInteract(player, hand) ? true : super.processInitialInteract(player, hand);
+                return this.processInteract(player, hand) || super.processInitialInteract(player, hand);
             }
         }
     }
@@ -1191,7 +1187,7 @@ public abstract class EntityLiving extends EntityLivingBase {
             }
 
             if (!this.world.isRemote && sendPacket && this.world instanceof WorldServer) {
-                ((WorldServer) this.world).getEntityTracker().sendToTracking(this, new SPacketEntityAttach(this, (Entity) null));
+                ((WorldServer) this.world).getEntityTracker().sendToTracking(this, new SPacketEntityAttach(this, null));
             }
         }
     }
@@ -1311,12 +1307,12 @@ public abstract class EntityLiving extends EntityLivingBase {
      * Set whether this Entity's AI is disabled
      */
     public void setNoAI(boolean disable) {
-        byte b0 = ((Byte) this.dataManager.get(AI_FLAGS)).byteValue();
+        byte b0 = this.dataManager.get(AI_FLAGS).byteValue();
         this.dataManager.set(AI_FLAGS, Byte.valueOf(disable ? (byte) (b0 | 1) : (byte) (b0 & -2)));
     }
 
     public void setLeftHanded(boolean leftHanded) {
-        byte b0 = ((Byte) this.dataManager.get(AI_FLAGS)).byteValue();
+        byte b0 = this.dataManager.get(AI_FLAGS).byteValue();
         this.dataManager.set(AI_FLAGS, Byte.valueOf(leftHanded ? (byte) (b0 | 2) : (byte) (b0 & -3)));
     }
 
@@ -1324,11 +1320,11 @@ public abstract class EntityLiving extends EntityLivingBase {
      * Get whether this Entity's AI is disabled
      */
     public boolean isAIDisabled() {
-        return (((Byte) this.dataManager.get(AI_FLAGS)).byteValue() & 1) != 0;
+        return (this.dataManager.get(AI_FLAGS).byteValue() & 1) != 0;
     }
 
     public boolean isLeftHanded() {
-        return (((Byte) this.dataManager.get(AI_FLAGS)).byteValue() & 2) != 0;
+        return (this.dataManager.get(AI_FLAGS).byteValue() & 2) != 0;
     }
 
     public EnumHandSide getPrimaryHand() {
@@ -1384,18 +1380,18 @@ public abstract class EntityLiving extends EntityLivingBase {
         return this.world.getScoreboard().getPlayersTeam(this.teamUuidString);
     }
 
-    public static enum SpawnPlacementType {
+    public enum SpawnPlacementType {
         ON_GROUND,
         IN_AIR,
         IN_WATER;
 
         private final BiPredicate<IBlockAccess, BlockPos> spawnPredicate;
 
-        private SpawnPlacementType() {
+        SpawnPlacementType() {
             this.spawnPredicate = null;
         }
 
-        private SpawnPlacementType(BiPredicate<IBlockAccess, BlockPos> p_i8_3_) {
+        SpawnPlacementType(BiPredicate<IBlockAccess, BlockPos> p_i8_3_) {
             this.spawnPredicate = p_i8_3_;
         }
 

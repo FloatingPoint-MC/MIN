@@ -94,7 +94,7 @@ public class EntityAIMate extends EntityAIBase
      */
     private EntityAnimal getNearbyMate()
     {
-        List<EntityAnimal> list = this.world.<EntityAnimal>getEntitiesWithinAABB(this.mateClass, this.animal.getEntityBoundingBox().grow(8.0D));
+        List<EntityAnimal> list = this.world.getEntitiesWithinAABB(this.mateClass, this.animal.getEntityBoundingBox().grow(8.0D));
         double d0 = Double.MAX_VALUE;
         EntityAnimal entityanimal = null;
 

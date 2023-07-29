@@ -87,7 +87,7 @@ public class BlockCauldron extends Block
      */
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        int i = ((Integer)state.getValue(LEVEL)).intValue();
+        int i = state.getValue(LEVEL).intValue();
         float f = (float)pos.getY() + (6.0F + (float)(3 * i)) / 16.0F;
 
         if (!worldIn.isRemote && entityIn.isBurning() && i > 0 && entityIn.getEntityBoundingBox().minY <= (double)f)
@@ -110,7 +110,7 @@ public class BlockCauldron extends Block
         }
         else
         {
-            int i = ((Integer)state.getValue(LEVEL)).intValue();
+            int i = state.getValue(LEVEL).intValue();
             Item item = itemstack.getItem();
 
             if (item == Items.WATER_BUCKET)
@@ -124,7 +124,7 @@ public class BlockCauldron extends Block
 
                     playerIn.addStat(StatList.CAULDRON_FILLED);
                     this.setWaterLevel(worldIn, pos, state, 3);
-                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 }
 
                 return true;
@@ -149,7 +149,7 @@ public class BlockCauldron extends Block
 
                     playerIn.addStat(StatList.CAULDRON_USED);
                     this.setWaterLevel(worldIn, pos, state, 0);
-                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 }
 
                 return true;
@@ -178,7 +178,7 @@ public class BlockCauldron extends Block
                         }
                     }
 
-                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     this.setWaterLevel(worldIn, pos, state, i - 1);
                 }
 
@@ -200,7 +200,7 @@ public class BlockCauldron extends Block
                         }
                     }
 
-                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     this.setWaterLevel(worldIn, pos, state, i + 1);
                 }
 
@@ -279,7 +279,7 @@ public class BlockCauldron extends Block
             {
                 IBlockState iblockstate = worldIn.getBlockState(pos);
 
-                if (((Integer)iblockstate.getValue(LEVEL)).intValue() < 3)
+                if (iblockstate.getValue(LEVEL).intValue() < 3)
                 {
                     worldIn.setBlockState(pos, iblockstate.cycleProperty(LEVEL), 2);
                 }
@@ -315,7 +315,7 @@ public class BlockCauldron extends Block
      */
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        return ((Integer)blockState.getValue(LEVEL)).intValue();
+        return blockState.getValue(LEVEL).intValue();
     }
 
     /**
@@ -331,12 +331,12 @@ public class BlockCauldron extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(LEVEL)).intValue();
+        return state.getValue(LEVEL).intValue();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {LEVEL});
+        return new BlockStateContainer(this, LEVEL);
     }
 
     /**

@@ -17,8 +17,8 @@ public class HttpPipelineConnection
     private String host;
     private int port;
     private Proxy proxy;
-    private List<HttpPipelineRequest> listRequests;
-    private List<HttpPipelineRequest> listRequestsSend;
+    private final List<HttpPipelineRequest> listRequests;
+    private final List<HttpPipelineRequest> listRequestsSend;
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -277,7 +277,7 @@ public class HttpPipelineConnection
     {
         String s = resp.getHeader("Connection");
 
-        if (s != null && !s.toLowerCase().equals("keep-alive"))
+        if (s != null && !s.equalsIgnoreCase("keep-alive"))
         {
             this.terminate(new EOFException("Connection not keep-alive"));
         }
@@ -301,7 +301,7 @@ public class HttpPipelineConnection
 
                         if (j > 0)
                         {
-                            this.keepaliveTimeoutMs = (long)(j * 1000);
+                            this.keepaliveTimeoutMs = j * 1000L;
                         }
                     }
 
@@ -371,7 +371,6 @@ public class HttpPipelineConnection
             }
             catch (IOException var3)
             {
-                ;
             }
 
             this.socket = null;

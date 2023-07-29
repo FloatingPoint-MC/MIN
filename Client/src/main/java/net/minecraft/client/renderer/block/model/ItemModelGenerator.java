@@ -18,8 +18,8 @@ public class ItemModelGenerator
     @Nullable
     public ModelBlock makeItemModel(TextureMap textureMapIn, ModelBlock blockModel)
     {
-        Map<String, String> map = Maps.<String, String>newHashMap();
-        List<BlockPart> list = Lists.<BlockPart>newArrayList();
+        Map<String, String> map = Maps.newHashMap();
+        List<BlockPart> list = Lists.newArrayList();
 
         for (int i = 0; i < LAYERS.size(); ++i)
         {
@@ -42,18 +42,18 @@ public class ItemModelGenerator
         }
         else
         {
-            map.put("particle", blockModel.isTexturePresent("particle") ? blockModel.resolveTextureName("particle") : (String)map.get("layer0"));
-            return new ModelBlock((ResourceLocation)null, list, map, false, false, blockModel.getAllTransforms(), blockModel.getOverrides());
+            map.put("particle", blockModel.isTexturePresent("particle") ? blockModel.resolveTextureName("particle") : map.get("layer0"));
+            return new ModelBlock(null, list, map, false, false, blockModel.getAllTransforms(), blockModel.getOverrides());
         }
     }
 
     private List<BlockPart> getBlockParts(int tintIndex, String p_178394_2_, TextureAtlasSprite p_178394_3_)
     {
-        Map<EnumFacing, BlockPartFace> map = Maps.<EnumFacing, BlockPartFace>newHashMap();
-        map.put(EnumFacing.SOUTH, new BlockPartFace((EnumFacing)null, tintIndex, p_178394_2_, new BlockFaceUV(new float[] {0.0F, 0.0F, 16.0F, 16.0F}, 0)));
-        map.put(EnumFacing.NORTH, new BlockPartFace((EnumFacing)null, tintIndex, p_178394_2_, new BlockFaceUV(new float[] {16.0F, 0.0F, 0.0F, 16.0F}, 0)));
-        List<BlockPart> list = Lists.<BlockPart>newArrayList();
-        list.add(new BlockPart(new Vector3f(0.0F, 0.0F, 7.5F), new Vector3f(16.0F, 16.0F, 8.5F), map, (BlockPartRotation)null, true));
+        Map<EnumFacing, BlockPartFace> map = Maps.newHashMap();
+        map.put(EnumFacing.SOUTH, new BlockPartFace(null, tintIndex, p_178394_2_, new BlockFaceUV(new float[] {0.0F, 0.0F, 16.0F, 16.0F}, 0)));
+        map.put(EnumFacing.NORTH, new BlockPartFace(null, tintIndex, p_178394_2_, new BlockFaceUV(new float[] {16.0F, 0.0F, 0.0F, 16.0F}, 0)));
+        List<BlockPart> list = Lists.newArrayList();
+        list.add(new BlockPart(new Vector3f(0.0F, 0.0F, 7.5F), new Vector3f(16.0F, 16.0F, 8.5F), map, null, true));
         list.addAll(this.getBlockParts(p_178394_3_, p_178394_2_, tintIndex));
         return list;
     }
@@ -62,7 +62,7 @@ public class ItemModelGenerator
     {
         float f = (float)p_178397_1_.getIconWidth();
         float f1 = (float)p_178397_1_.getIconHeight();
-        List<BlockPart> list = Lists.<BlockPart>newArrayList();
+        List<BlockPart> list = Lists.newArrayList();
 
         for (ItemModelGenerator.Span itemmodelgenerator$span : this.getSpans(p_178397_1_))
         {
@@ -143,25 +143,25 @@ public class ItemModelGenerator
             f7 = f7 * f10;
             f8 = f8 * f11;
             f9 = f9 * f11;
-            Map<EnumFacing, BlockPartFace> map = Maps.<EnumFacing, BlockPartFace>newHashMap();
-            map.put(itemmodelgenerator$spanfacing.getFacing(), new BlockPartFace((EnumFacing)null, p_178397_3_, p_178397_2_, new BlockFaceUV(new float[] {f6, f8, f7, f9}, 0)));
+            Map<EnumFacing, BlockPartFace> map = Maps.newHashMap();
+            map.put(itemmodelgenerator$spanfacing.getFacing(), new BlockPartFace(null, p_178397_3_, p_178397_2_, new BlockFaceUV(new float[] {f6, f8, f7, f9}, 0)));
 
             switch (itemmodelgenerator$spanfacing)
             {
                 case UP:
-                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f4, f3, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f4, f3, 8.5F), map, null, true));
                     break;
 
                 case DOWN:
-                    list.add(new BlockPart(new Vector3f(f2, f5, 7.5F), new Vector3f(f4, f5, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f2, f5, 7.5F), new Vector3f(f4, f5, 8.5F), map, null, true));
                     break;
 
                 case LEFT:
-                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f2, f5, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f2, f5, 8.5F), map, null, true));
                     break;
 
                 case RIGHT:
-                    list.add(new BlockPart(new Vector3f(f4, f3, 7.5F), new Vector3f(f4, f5, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f4, f3, 7.5F), new Vector3f(f4, f5, 8.5F), map, null, true));
             }
         }
 
@@ -172,7 +172,7 @@ public class ItemModelGenerator
     {
         int i = p_178393_1_.getIconWidth();
         int j = p_178393_1_.getIconHeight();
-        List<ItemModelGenerator.Span> list = Lists.<ItemModelGenerator.Span>newArrayList();
+        List<ItemModelGenerator.Span> list = Lists.newArrayList();
 
         for (int k = 0; k < p_178393_1_.getFrameCount(); ++k)
         {
@@ -295,7 +295,7 @@ public class ItemModelGenerator
         }
     }
 
-    static enum SpanFacing
+    enum SpanFacing
     {
         UP(EnumFacing.UP, 0, -1),
         DOWN(EnumFacing.DOWN, 0, 1),
@@ -306,7 +306,7 @@ public class ItemModelGenerator
         private final int xOffset;
         private final int yOffset;
 
-        private SpanFacing(EnumFacing facing, int p_i46215_4_, int p_i46215_5_)
+        SpanFacing(EnumFacing facing, int p_i46215_4_, int p_i46215_5_)
         {
             this.facing = facing;
             this.xOffset = p_i46215_4_;

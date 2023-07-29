@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderHorse extends RenderLiving<EntityHorse>
 {
-    private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.<String, ResourceLocation>newHashMap();
+    private static final Map<String, ResourceLocation> LAYERED_LOCATION_CACHE = Maps.newHashMap();
 
     public RenderHorse(RenderManager p_i47205_1_)
     {

@@ -18,7 +18,7 @@ public class WoodlandMansion extends MapGenStructure
 {
     private final int featureSpacing = 80;
     private final int minFeatureSeparation = 20;
-    public static final List<Biome> ALLOWED_BIOMES = Arrays.<Biome>asList(Biomes.ROOFED_FOREST, Biomes.MUTATED_ROOFED_FOREST);
+    public static final List<Biome> ALLOWED_BIOMES = Arrays.asList(Biomes.ROOFED_FOREST, Biomes.MUTATED_ROOFED_FOREST);
     private final ChunkGeneratorOverworld provider;
 
     public WoodlandMansion(ChunkGeneratorOverworld providerIn)
@@ -58,10 +58,7 @@ public class WoodlandMansion extends MapGenStructure
         {
             boolean flag = this.world.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 32, ALLOWED_BIOMES);
 
-            if (flag)
-            {
-                return true;
-            }
+            return flag;
         }
 
         return false;
@@ -128,7 +125,7 @@ public class WoodlandMansion extends MapGenStructure
             else
             {
                 BlockPos blockpos = new BlockPos(p_191092_4_ * 16 + 8, k1 + 1, p_191092_5_ * 16 + 8);
-                List<WoodlandMansionPieces.MansionTemplate> list = Lists.<WoodlandMansionPieces.MansionTemplate>newLinkedList();
+                List<WoodlandMansionPieces.MansionTemplate> list = Lists.newLinkedList();
                 WoodlandMansionPieces.generateMansion(p_191092_1_.getSaveHandler().getStructureTemplateManager(), blockpos, rotation, list, p_191092_3_);
                 this.components.addAll(list);
                 this.updateBoundingBox();

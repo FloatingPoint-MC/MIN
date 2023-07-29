@@ -42,7 +42,7 @@ public class LootPool
      */
     protected void createLootRoll(Collection<ItemStack> stacks, Random rand, LootContext context)
     {
-        List<LootEntry> list = Lists.<LootEntry>newArrayList();
+        List<LootEntry> list = Lists.newArrayList();
         int i = 0;
 
         for (LootEntry lootentry : this.lootEntries)
@@ -97,10 +97,10 @@ public class LootPool
         public LootPool deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
         {
             JsonObject jsonobject = JsonUtils.getJsonObject(p_deserialize_1_, "loot pool");
-            LootEntry[] alootentry = (LootEntry[])JsonUtils.deserializeClass(jsonobject, "entries", p_deserialize_3_, LootEntry[].class);
-            LootCondition[] alootcondition = (LootCondition[])JsonUtils.deserializeClass(jsonobject, "conditions", new LootCondition[0], p_deserialize_3_, LootCondition[].class);
-            RandomValueRange randomvaluerange = (RandomValueRange)JsonUtils.deserializeClass(jsonobject, "rolls", p_deserialize_3_, RandomValueRange.class);
-            RandomValueRange randomvaluerange1 = (RandomValueRange)JsonUtils.deserializeClass(jsonobject, "bonus_rolls", new RandomValueRange(0.0F, 0.0F), p_deserialize_3_, RandomValueRange.class);
+            LootEntry[] alootentry = JsonUtils.deserializeClass(jsonobject, "entries", p_deserialize_3_, LootEntry[].class);
+            LootCondition[] alootcondition = JsonUtils.deserializeClass(jsonobject, "conditions", new LootCondition[0], p_deserialize_3_, LootCondition[].class);
+            RandomValueRange randomvaluerange = JsonUtils.deserializeClass(jsonobject, "rolls", p_deserialize_3_, RandomValueRange.class);
+            RandomValueRange randomvaluerange1 = JsonUtils.deserializeClass(jsonobject, "bonus_rolls", new RandomValueRange(0.0F, 0.0F), p_deserialize_3_, RandomValueRange.class);
             return new LootPool(alootentry, alootcondition, randomvaluerange, randomvaluerange1);
         }
 
@@ -115,7 +115,7 @@ public class LootPool
                 jsonobject.add("bonus_rolls", p_serialize_3_.serialize(p_serialize_1_.bonusRolls));
             }
 
-            if (!ArrayUtils.isEmpty((Object[])p_serialize_1_.poolConditions))
+            if (!ArrayUtils.isEmpty(p_serialize_1_.poolConditions))
             {
                 jsonobject.add("conditions", p_serialize_3_.serialize(p_serialize_1_.poolConditions));
             }

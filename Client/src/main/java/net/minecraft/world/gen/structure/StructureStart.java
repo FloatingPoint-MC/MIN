@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public abstract class StructureStart
 {
-    protected List<StructureComponent> components = Lists.<StructureComponent>newLinkedList();
+    protected List<StructureComponent> components = Lists.newLinkedList();
     protected StructureBoundingBox boundingBox;
     private int chunkPosX;
     private int chunkPosZ;

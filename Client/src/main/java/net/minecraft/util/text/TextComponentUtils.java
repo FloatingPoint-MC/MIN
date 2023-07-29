@@ -21,11 +21,11 @@ public class TextComponentUtils
 
             if (EntitySelector.isSelector(s))
             {
-                List<Entity> list = EntitySelector.<Entity>matchEntities(commandSender, s, Entity.class);
+                List<Entity> list = EntitySelector.matchEntities(commandSender, s, Entity.class);
 
                 if (list.size() != 1)
                 {
-                    throw new EntityNotFoundException("commands.generic.selector.notFound", new Object[] {s});
+                    throw new EntityNotFoundException("commands.generic.selector.notFound", s);
                 }
 
                 Entity entity = list.get(0);

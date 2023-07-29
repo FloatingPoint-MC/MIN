@@ -24,7 +24,7 @@ public class FunctionManager implements ITickable
     private static final Logger LOGGER = LogManager.getLogger();
     private final File functionDir;
     private final MinecraftServer server;
-    private final Map<ResourceLocation, FunctionObject> functions = Maps.<ResourceLocation, FunctionObject>newHashMap();
+    private final Map<ResourceLocation, FunctionObject> functions = Maps.newHashMap();
     private String currentGameLoopFunctionId = "-";
     private FunctionObject gameLoopFunction;
     private final ArrayDeque<FunctionManager.QueuedCommand> commandQueue = new ArrayDeque<FunctionManager.QueuedCommand>();

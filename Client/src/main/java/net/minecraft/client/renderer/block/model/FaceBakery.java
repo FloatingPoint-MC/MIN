@@ -267,7 +267,7 @@ public class FaceBakery
         Vector3f.sub(vector3f, vector3f1, vector3f3);
         Vector3f.sub(vector3f2, vector3f1, vector3f4);
         Vector3f.cross(vector3f4, vector3f3, vector3f5);
-        float f = (float)Math.sqrt((double)(vector3f5.x * vector3f5.x + vector3f5.y * vector3f5.y + vector3f5.z * vector3f5.z));
+        float f = (float)Math.sqrt(vector3f5.x * vector3f5.x + vector3f5.y * vector3f5.y + vector3f5.z * vector3f5.z);
         vector3f5.x /= f;
         vector3f5.y /= f;
         vector3f5.z /= f;

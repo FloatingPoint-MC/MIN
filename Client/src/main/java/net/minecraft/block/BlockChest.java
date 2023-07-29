@@ -213,7 +213,7 @@ public class BlockChest extends BlockContainer
             IBlockState iblockstate1 = worldIn.getBlockState(pos.south());
             IBlockState iblockstate2 = worldIn.getBlockState(pos.west());
             IBlockState iblockstate3 = worldIn.getBlockState(pos.east());
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
 
             if (iblockstate.getBlock() != this && iblockstate1.getBlock() != this)
             {
@@ -230,11 +230,11 @@ public class BlockChest extends BlockContainer
 
                     if (iblockstate2.getBlock() == this)
                     {
-                        enumfacing2 = (EnumFacing)iblockstate2.getValue(FACING);
+                        enumfacing2 = iblockstate2.getValue(FACING);
                     }
                     else
                     {
-                        enumfacing2 = (EnumFacing)iblockstate3.getValue(FACING);
+                        enumfacing2 = iblockstate3.getValue(FACING);
                     }
 
                     if (enumfacing2 == EnumFacing.NORTH)
@@ -263,11 +263,11 @@ public class BlockChest extends BlockContainer
 
                 if (iblockstate.getBlock() == this)
                 {
-                    enumfacing1 = (EnumFacing)iblockstate.getValue(FACING);
+                    enumfacing1 = iblockstate.getValue(FACING);
                 }
                 else
                 {
-                    enumfacing1 = (EnumFacing)iblockstate1.getValue(FACING);
+                    enumfacing1 = iblockstate1.getValue(FACING);
                 }
 
                 if (enumfacing1 == EnumFacing.WEST)
@@ -323,7 +323,7 @@ public class BlockChest extends BlockContainer
         }
         else
         {
-            EnumFacing enumfacing2 = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing2 = state.getValue(FACING);
 
             if (worldIn.getBlockState(pos.offset(enumfacing2)).isFullBlock())
             {
@@ -620,7 +620,7 @@ public class BlockChest extends BlockContainer
 
     private boolean isOcelotSittingOnChest(World worldIn, BlockPos pos)
     {
-        for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB((double)pos.getX(), (double)(pos.getY() + 1), (double)pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 2), (double)(pos.getZ() + 1))))
+        for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
         {
             EntityOcelot entityocelot = (EntityOcelot)entity;
 
@@ -671,7 +671,7 @@ public class BlockChest extends BlockContainer
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     /**
@@ -682,7 +682,7 @@ public class BlockChest extends BlockContainer
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -692,12 +692,12 @@ public class BlockChest extends BlockContainer
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     /**
@@ -716,9 +716,9 @@ public class BlockChest extends BlockContainer
         return BlockFaceShape.UNDEFINED;
     }
 
-    public static enum Type
+    public enum Type
     {
         BASIC,
-        TRAP;
+        TRAP
     }
 }

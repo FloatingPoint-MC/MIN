@@ -7,7 +7,7 @@ public enum AdvancementState
 
     private final int id;
 
-    private AdvancementState(int id)
+    AdvancementState(int id)
     {
         this.id = id;
     }

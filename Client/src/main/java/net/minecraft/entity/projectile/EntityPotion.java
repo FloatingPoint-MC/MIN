@@ -34,7 +34,7 @@ import org.apache.logging.log4j.Logger;
 
 public class EntityPotion extends EntityThrowable
 {
-    private static final DataParameter<ItemStack> ITEM = EntityDataManager.<ItemStack>createKey(EntityPotion.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityPotion.class, DataSerializers.ITEM_STACK);
     private static final Logger LOGGER = LogManager.getLogger();
     public static final Predicate<EntityLivingBase> WATER_SENSITIVE = new Predicate<EntityLivingBase>()
     {
@@ -72,13 +72,13 @@ public class EntityPotion extends EntityThrowable
 
     public ItemStack getPotion()
     {
-        ItemStack itemstack = (ItemStack)this.getDataManager().get(ITEM);
+        ItemStack itemstack = this.getDataManager().get(ITEM);
 
         if (itemstack.getItem() != Items.SPLASH_POTION && itemstack.getItem() != Items.LINGERING_POTION)
         {
             if (this.world != null)
             {
-                LOGGER.error("ThrownPotion entity {} has no item?!", (int)this.getEntityId());
+                LOGGER.error("ThrownPotion entity {} has no item?!", this.getEntityId());
             }
 
             return new ItemStack(Items.SPLASH_POTION);
@@ -151,7 +151,7 @@ public class EntityPotion extends EntityThrowable
     private void applyWater()
     {
         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
-        List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, WATER_SENSITIVE);
+        List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, WATER_SENSITIVE);
 
         if (!list.isEmpty())
         {
@@ -170,7 +170,7 @@ public class EntityPotion extends EntityThrowable
     private void applySplash(RayTraceResult p_190543_1_, List<PotionEffect> p_190543_2_)
     {
         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
-        List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+        List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 
         if (!list.isEmpty())
         {
@@ -247,14 +247,14 @@ public class EntityPotion extends EntityThrowable
     {
         if (this.world.getBlockState(pos).getBlock() == Blocks.FIRE)
         {
-            this.world.extinguishFire((EntityPlayer)null, pos.offset(p_184542_2_), p_184542_2_.getOpposite());
+            this.world.extinguishFire(null, pos.offset(p_184542_2_), p_184542_2_.getOpposite());
         }
     }
 
     public static void registerFixesPotion(DataFixer fixer)
     {
         EntityThrowable.registerFixesThrowable(fixer, "ThrownPotion");
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityPotion.class, new String[] {"Potion"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityPotion.class, "Potion"));
     }
 
     /**

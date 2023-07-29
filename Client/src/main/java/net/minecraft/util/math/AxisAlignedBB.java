@@ -47,11 +47,11 @@ public class AxisAlignedBB {
     }
 
     public AxisAlignedBB(BlockPos pos) {
-        this((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double) (pos.getX() + 1), (double) (pos.getY() + 1), (double) (pos.getZ() + 1));
+        this(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
     }
 
     public AxisAlignedBB(BlockPos pos1, BlockPos pos2) {
-        this((double) pos1.getX(), (double) pos1.getY(), (double) pos1.getZ(), (double) pos2.getX(), (double) pos2.getY(), (double) pos2.getZ());
+        this(pos1.getX(), pos1.getY(), pos1.getZ(), pos2.getX(), pos2.getY(), pos2.getZ());
     }
 
     public AxisAlignedBB(Vec3d min, Vec3d max) {

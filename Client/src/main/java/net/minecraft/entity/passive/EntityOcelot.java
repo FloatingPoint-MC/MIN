@@ -44,7 +44,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityOcelot extends EntityTameable
 {
-    private static final DataParameter<Integer> OCELOT_VARIANT = EntityDataManager.<Integer>createKey(EntityOcelot.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> OCELOT_VARIANT = EntityDataManager.createKey(EntityOcelot.class, DataSerializers.VARINT);
     private EntityAIAvoidEntity<EntityPlayer> avoidEntity;
 
     /**
@@ -72,7 +72,7 @@ public class EntityOcelot extends EntityTameable
         this.tasks.addTask(9, new EntityAIMate(this, 0.8D));
         this.tasks.addTask(10, new EntityAIWanderAvoidWater(this, 0.8D, 1.0000001E-5F));
         this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
-        this.targetTasks.addTask(1, new EntityAITargetNonTamed(this, EntityChicken.class, false, (Predicate)null));
+        this.targetTasks.addTask(1, new EntityAITargetNonTamed(this, EntityChicken.class, false, null));
     }
 
     protected void entityInit()
@@ -319,7 +319,7 @@ public class EntityOcelot extends EntityTameable
 
     public int getTameSkin()
     {
-        return ((Integer)this.dataManager.get(OCELOT_VARIANT)).intValue();
+        return this.dataManager.get(OCELOT_VARIANT).intValue();
     }
 
     public void setTameSkin(int skinId)
@@ -352,10 +352,7 @@ public class EntityOcelot extends EntityTameable
             IBlockState iblockstate = this.world.getBlockState(blockpos.down());
             Block block = iblockstate.getBlock();
 
-            if (block == Blocks.GRASS || iblockstate.getMaterial() == Material.LEAVES)
-            {
-                return true;
-            }
+            return block == Blocks.GRASS || iblockstate.getMaterial() == Material.LEAVES;
         }
 
         return false;

@@ -25,7 +25,7 @@ public class TextureUtil
     public static final int[] MISSING_TEXTURE_DATA = MISSING_TEXTURE.getTextureData();
     private static final float[] COLOR_GAMMAS;
     private static final int[] MIPMAP_BUFFER;
-    private static int[] dataArray = new int[4194304];
+    private static final int[] dataArray = new int[4194304];
 
     private static float getColorGamma(int p_188543_0_)
     {
@@ -90,7 +90,7 @@ public class TextureUtil
                         for (int j1 = 0; j1 < k; ++j1)
                         {
                             int k1 = 2 * (i1 + j1 * l);
-                            aint2[i1 + j1 * j] = blendColors(aint1[k1 + 0], aint1[k1 + 1], aint1[k1 + 0 + l], aint1[k1 + 1 + l], flag);
+                            aint2[i1 + j1 * j] = blendColors(aint1[k1], aint1[k1 + 1], aint1[k1 + l], aint1[k1 + 1 + l], flag);
                         }
                     }
 
@@ -169,7 +169,7 @@ public class TextureUtil
 
         for (int i = 0; i <= mipmapLevels; ++i)
         {
-            GlStateManager.glTexImage2D(3553, i, 6408, width >> i, height >> i, 0, 32993, 33639, (IntBuffer)null);
+            GlStateManager.glTexImage2D(3553, i, 6408, width >> i, height >> i, 0, 32993, 33639, null);
         }
     }
 
@@ -362,7 +362,7 @@ public class TextureUtil
 
         for (int i1 = 0; i1 < COLOR_GAMMAS.length; ++i1)
         {
-            COLOR_GAMMAS[i1] = (float)Math.pow((double)((float)i1 / 255.0F), 2.2D);
+            COLOR_GAMMAS[i1] = (float)Math.pow((float)i1 / 255.0F, 2.2D);
         }
 
         MIPMAP_BUFFER = new int[4];

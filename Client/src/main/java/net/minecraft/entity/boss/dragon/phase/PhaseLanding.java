@@ -51,7 +51,7 @@ public class PhaseLanding extends PhaseBase
 
         if (this.targetLocation.squareDistanceTo(this.dragon.posX, this.dragon.posY, this.dragon.posZ) < 1.0D)
         {
-            ((PhaseSittingFlaming)this.dragon.getPhaseManager().getPhase(PhaseList.SITTING_FLAMING)).resetFlameCount();
+            this.dragon.getPhaseManager().getPhase(PhaseList.SITTING_FLAMING).resetFlameCount();
             this.dragon.getPhaseManager().setPhase(PhaseList.SITTING_SCANNING);
         }
     }

@@ -23,7 +23,7 @@ public class LootContext
     private final EntityPlayer player;
     @Nullable
     private final DamageSource damageSource;
-    private final Set<LootTable> lootTables = Sets.<LootTable>newLinkedHashSet();
+    private final Set<LootTable> lootTables = Sets.newLinkedHashSet();
 
     public LootContext(float luckIn, WorldServer worldIn, LootTableManager lootTableManagerIn, @Nullable Entity lootedEntityIn, @Nullable EntityPlayer playerIn, @Nullable DamageSource damageSourceIn)
     {
@@ -135,7 +135,7 @@ public class LootContext
         }
     }
 
-    public static enum EntityTarget
+    public enum EntityTarget
     {
         THIS("this"),
         KILLER("killer"),
@@ -143,7 +143,7 @@ public class LootContext
 
         private final String targetType;
 
-        private EntityTarget(String type)
+        EntityTarget(String type)
         {
             this.targetType = type;
         }

@@ -35,7 +35,7 @@ public class CommandSenderWrapper implements ICommandSender
 
     public static CommandSenderWrapper create(ICommandSender sender)
     {
-        return sender instanceof CommandSenderWrapper ? (CommandSenderWrapper)sender : new CommandSenderWrapper(sender, (Vec3d)null, (BlockPos)null, (Integer)null, (Entity)null, (Boolean)null);
+        return sender instanceof CommandSenderWrapper ? (CommandSenderWrapper)sender : new CommandSenderWrapper(sender, null, null, null, null, null);
     }
 
     public CommandSenderWrapper withEntity(Entity entityIn, Vec3d p_193997_2_)
@@ -140,7 +140,7 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public boolean canUseCommand(int permLevel, String commandName)
     {
-        return this.permissionLevel != null && this.permissionLevel.intValue() < permLevel ? false : this.delegate.canUseCommand(permLevel, commandName);
+        return (this.permissionLevel == null || this.permissionLevel.intValue() >= permLevel) && this.delegate.canUseCommand(permLevel, commandName);
     }
 
     /**

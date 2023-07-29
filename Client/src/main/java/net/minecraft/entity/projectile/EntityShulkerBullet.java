@@ -174,7 +174,7 @@ public class EntityShulkerBullet extends Entity
         if (blockpos.distanceSqToCenter(this.posX, this.posY, this.posZ) >= 4.0D)
         {
             BlockPos blockpos1 = new BlockPos(this);
-            List<EnumFacing> list = Lists.<EnumFacing>newArrayList();
+            List<EnumFacing> list = Lists.newArrayList();
 
             if (p_184569_1_ != EnumFacing.Axis.X)
             {
@@ -235,7 +235,7 @@ public class EntityShulkerBullet extends Entity
         double d6 = d1 - this.posX;
         double d7 = d2 - this.posY;
         double d4 = d3 - this.posZ;
-        double d5 = (double)MathHelper.sqrt(d6 * d6 + d7 * d7 + d4 * d4);
+        double d5 = MathHelper.sqrt(d6 * d6 + d7 * d7 + d4 * d4);
 
         if (d5 == 0.0D)
         {

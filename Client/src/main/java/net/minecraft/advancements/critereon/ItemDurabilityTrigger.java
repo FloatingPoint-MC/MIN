@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class ItemDurabilityTrigger implements ICriterionTrigger<ItemDurabilityTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("item_durability_changed");
-    private final Map<PlayerAdvancements, ItemDurabilityTrigger.Listeners> listeners = Maps.<PlayerAdvancements, ItemDurabilityTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, ItemDurabilityTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -112,7 +112,7 @@ public class ItemDurabilityTrigger implements ICriterionTrigger<ItemDurabilityTr
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<ItemDurabilityTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<ItemDurabilityTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<ItemDurabilityTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -140,11 +140,11 @@ public class ItemDurabilityTrigger implements ICriterionTrigger<ItemDurabilityTr
 
             for (ICriterionTrigger.Listener<ItemDurabilityTrigger.Instance> listener : this.listeners)
             {
-                if (((ItemDurabilityTrigger.Instance)listener.getCriterionInstance()).test(item, newDurability))
+                if (listener.getCriterionInstance().test(item, newDurability))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<ItemDurabilityTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

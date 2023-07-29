@@ -24,7 +24,7 @@ public class JsonUtils
      */
     public static boolean isString(JsonObject json, String memberName)
     {
-        return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isString();
+        return isJsonPrimitive(json, memberName) && json.getAsJsonPrimitive(memberName).isString();
     }
 
     /**
@@ -32,17 +32,17 @@ public class JsonUtils
      */
     public static boolean isString(JsonElement json)
     {
-        return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isString();
+        return json.isJsonPrimitive() && json.getAsJsonPrimitive().isString();
     }
 
     public static boolean isNumber(JsonElement json)
     {
-        return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isNumber();
+        return json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber();
     }
 
     public static boolean isBoolean(JsonObject json, String memberName)
     {
-        return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isBoolean();
+        return isJsonPrimitive(json, memberName) && json.getAsJsonPrimitive(memberName).isBoolean();
     }
 
     /**
@@ -50,7 +50,7 @@ public class JsonUtils
      */
     public static boolean isJsonArray(JsonObject json, String memberName)
     {
-        return !hasField(json, memberName) ? false : json.get(memberName).isJsonArray();
+        return hasField(json, memberName) && json.get(memberName).isJsonArray();
     }
 
     /**
@@ -59,7 +59,7 @@ public class JsonUtils
      */
     public static boolean isJsonPrimitive(JsonObject json, String memberName)
     {
-        return !hasField(json, memberName) ? false : json.get(memberName).isJsonPrimitive();
+        return hasField(json, memberName) && json.get(memberName).isJsonPrimitive();
     }
 
     /**
@@ -352,7 +352,7 @@ public class JsonUtils
     {
         if (json != null)
         {
-            return (T)context.deserialize(json, adapter);
+            return context.deserialize(json, adapter);
         }
         else
         {
@@ -364,7 +364,7 @@ public class JsonUtils
     {
         if (json.has(memberName))
         {
-            return (T)deserializeClass(json.get(memberName), memberName, context, adapter);
+            return deserializeClass(json.get(memberName), memberName, context, adapter);
         }
         else
         {
@@ -374,7 +374,7 @@ public class JsonUtils
 
     public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Class <? extends T > adapter)
     {
-        return (T)(json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter) : fallback);
+        return json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter) : fallback;
     }
 
     /**
@@ -382,7 +382,7 @@ public class JsonUtils
      */
     public static String toString(JsonElement json)
     {
-        String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf((Object)json), "...", 10);
+        String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf(json), "...", 10);
 
         if (json == null)
         {
@@ -428,7 +428,7 @@ public class JsonUtils
         {
             JsonReader jsonreader = new JsonReader(readerIn);
             jsonreader.setLenient(lenient);
-            return (T)gsonIn.getAdapter(adapter).read(jsonreader);
+            return gsonIn.getAdapter(adapter).read(jsonreader);
         }
         catch (IOException ioexception)
         {
@@ -454,36 +454,36 @@ public class JsonUtils
     @Nullable
     public static <T> T fromJson(Gson p_193837_0_, String p_193837_1_, Type p_193837_2_, boolean p_193837_3_)
     {
-        return (T)fromJson(p_193837_0_, new StringReader(p_193837_1_), p_193837_2_, p_193837_3_);
+        return fromJson(p_193837_0_, new StringReader(p_193837_1_), p_193837_2_, p_193837_3_);
     }
 
     @Nullable
     public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter, boolean lenient)
     {
-        return (T)gsonDeserialize(gsonIn, new StringReader(json), adapter, lenient);
+        return gsonDeserialize(gsonIn, new StringReader(json), adapter, lenient);
     }
 
     @Nullable
     public static <T> T fromJson(Gson p_193841_0_, Reader p_193841_1_, Type p_193841_2_)
     {
-        return (T)fromJson(p_193841_0_, p_193841_1_, p_193841_2_, false);
+        return fromJson(p_193841_0_, p_193841_1_, p_193841_2_, false);
     }
 
     @Nullable
     public static <T> T gsonDeserialize(Gson p_193840_0_, String p_193840_1_, Type p_193840_2_)
     {
-        return (T)fromJson(p_193840_0_, p_193840_1_, p_193840_2_, false);
+        return fromJson(p_193840_0_, p_193840_1_, p_193840_2_, false);
     }
 
     @Nullable
     public static <T> T fromJson(Gson gson, Reader reader, Class<T> jsonClass)
     {
-        return (T)gsonDeserialize(gson, reader, jsonClass, false);
+        return gsonDeserialize(gson, reader, jsonClass, false);
     }
 
     @Nullable
     public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter)
     {
-        return (T)gsonDeserialize(gsonIn, json, adapter, false);
+        return gsonDeserialize(gsonIn, json, adapter, false);
     }
 }

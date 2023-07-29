@@ -65,8 +65,8 @@ public class ChunkPos
 
     public double getDistanceSq(Entity entityIn)
     {
-        double d0 = (double)(this.x * 16 + 8);
-        double d1 = (double)(this.z * 16 + 8);
+        double d0 = this.x * 16 + 8;
+        double d1 = this.z * 16 + 8;
         double d2 = d0 - entityIn.posX;
         double d3 = d1 - entityIn.posZ;
         return d2 * d2 + d3 * d3;

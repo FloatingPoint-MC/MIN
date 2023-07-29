@@ -38,7 +38,7 @@ public class Language implements Comparable<Language>
         }
         else
         {
-            return !(p_equals_1_ instanceof Language) ? false : this.languageCode.equals(((Language)p_equals_1_).languageCode);
+            return p_equals_1_ instanceof Language && this.languageCode.equals(((Language) p_equals_1_).languageCode);
         }
     }
 

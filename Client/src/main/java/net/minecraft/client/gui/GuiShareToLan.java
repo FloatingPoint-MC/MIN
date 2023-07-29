@@ -86,13 +86,13 @@ public class GuiShareToLan extends GuiScreen
         }
         else if (button.id == 101)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
             String s = this.mc.getIntegratedServer().shareToLAN(GameType.getByName(this.gameMode), this.allowCheats);
             ITextComponent itextcomponent;
 
             if (s != null)
             {
-                itextcomponent = new TextComponentTranslation("commands.publish.started", new Object[] {s});
+                itextcomponent = new TextComponentTranslation("commands.publish.started", s);
             }
             else
             {

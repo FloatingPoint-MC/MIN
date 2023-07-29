@@ -133,13 +133,13 @@ public class EnchantmentProtection extends Enchantment
 
         if (i > 0)
         {
-            damage -= (double)MathHelper.floor(damage * (double)((float)i * 0.15F));
+            damage -= MathHelper.floor(damage * (double)((float)i * 0.15F));
         }
 
         return damage;
     }
 
-    public static enum Type
+    public enum Type
     {
         ALL("all", 1, 11, 20),
         FIRE("fire", 10, 8, 12),
@@ -152,7 +152,7 @@ public class EnchantmentProtection extends Enchantment
         private final int levelCost;
         private final int levelCostSpan;
 
-        private Type(String name, int minimal, int perLevelEnchantability, int p_i47051_6_)
+        Type(String name, int minimal, int perLevelEnchantability, int p_i47051_6_)
         {
             this.typeName = name;
             this.minEnchantability = minimal;

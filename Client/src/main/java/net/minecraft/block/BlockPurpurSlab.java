@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public abstract class BlockPurpurSlab extends BlockSlab
 {
-    public static final PropertyEnum<BlockPurpurSlab.Variant> VARIANT = PropertyEnum.<BlockPurpurSlab.Variant>create("variant", BlockPurpurSlab.Variant.class);
+    public static final PropertyEnum<BlockPurpurSlab.Variant> VARIANT = PropertyEnum.create("variant", BlockPurpurSlab.Variant.class);
 
     public BlockPurpurSlab()
     {
@@ -78,7 +78,7 @@ public abstract class BlockPurpurSlab extends BlockSlab
 
     protected BlockStateContainer createBlockState()
     {
-        return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {VARIANT}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class BlockPurpurSlab extends BlockSlab
         }
     }
 
-    public static enum Variant implements IStringSerializable
+    public enum Variant implements IStringSerializable
     {
         DEFAULT;
 

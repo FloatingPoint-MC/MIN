@@ -28,7 +28,7 @@ public class Timer
     /**
      * The Length of a single tick in milliseconds. Calculated as 1000/tps. At a default 20 TPS, tickLength is 50 ms
      */
-    private float tickLength;
+    private final float tickLength;
 
     public Timer(float tps)
     {

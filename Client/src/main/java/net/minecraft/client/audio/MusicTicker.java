@@ -59,7 +59,7 @@ public class MusicTicker implements ITickable
         this.timeUntilNextMusic = Integer.MAX_VALUE;
     }
 
-    public static enum MusicType
+    public enum MusicType
     {
         MENU(SoundEvents.MUSIC_MENU, 20, 600),
         GAME(SoundEvents.MUSIC_GAME, 12000, 24000),
@@ -73,7 +73,7 @@ public class MusicTicker implements ITickable
         private final int minDelay;
         private final int maxDelay;
 
-        private MusicType(SoundEvent musicLocationIn, int minDelayIn, int maxDelayIn)
+        MusicType(SoundEvent musicLocationIn, int minDelayIn, int maxDelayIn)
         {
             this.musicLocation = musicLocationIn;
             this.minDelay = minDelayIn;

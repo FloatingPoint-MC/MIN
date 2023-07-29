@@ -20,7 +20,7 @@ public class GlDebugHandler implements Handler
         ContextAttribs contextattribs = (new ContextAttribs()).withDebug(true);
         Display.create((new PixelFormat()).withDepthBits(24), contextattribs);
         ARBDebugOutput.glDebugMessageCallbackARB(new ARBDebugOutputCallback(new GlDebugHandler()));
-        ARBDebugOutput.glDebugMessageControlARB(4352, 4352, 4352, (IntBuffer)null, true);
+        ARBDebugOutput.glDebugMessageControlARB(4352, 4352, 4352, null, true);
         GL11.glEnable(33346);
     }
 

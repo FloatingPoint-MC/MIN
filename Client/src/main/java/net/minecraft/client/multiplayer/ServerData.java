@@ -139,7 +139,7 @@ public class ServerData
         this.lanServer = serverDataIn.lanServer;
     }
 
-    public static enum ServerResourceMode
+    public enum ServerResourceMode
     {
         ENABLED("enabled"),
         DISABLED("disabled"),
@@ -147,9 +147,9 @@ public class ServerData
 
         private final ITextComponent motd;
 
-        private ServerResourceMode(String name)
+        ServerResourceMode(String name)
         {
-            this.motd = new TextComponentTranslation("addServer.resourcePack." + name, new Object[0]);
+            this.motd = new TextComponentTranslation("addServer.resourcePack." + name);
         }
 
         public ITextComponent getMotd()

@@ -14,13 +14,13 @@ import org.apache.logging.log4j.Logger;
 public class BlockEntityTag implements IDataWalker
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Map<String, String> NEW_TO_OLD_ID_MAP = Maps.<String, String>newHashMap();
-    private static final Map<String, String> ITEM_ID_TO_BLOCK_ENTITY_ID = Maps.<String, String>newHashMap();
+    private static final Map<String, String> NEW_TO_OLD_ID_MAP = Maps.newHashMap();
+    private static final Map<String, String> ITEM_ID_TO_BLOCK_ENTITY_ID = Maps.newHashMap();
 
     @Nullable
     private static String getBlockEntityID(int blockID, String p_188267_1_)
     {
-        return blockID < 515 ? (String)NEW_TO_OLD_ID_MAP.get((new ResourceLocation(p_188267_1_)).toString()) : (String)ITEM_ID_TO_BLOCK_ENTITY_ID.get((new ResourceLocation(p_188267_1_)).toString());
+        return blockID < 515 ? NEW_TO_OLD_ID_MAP.get((new ResourceLocation(p_188267_1_)).toString()) : ITEM_ID_TO_BLOCK_ENTITY_ID.get((new ResourceLocation(p_188267_1_)).toString());
     }
 
     public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
@@ -42,7 +42,7 @@ public class BlockEntityTag implements IDataWalker
 
                 if (s1 == null)
                 {
-                    LOGGER.warn("Unable to resolve BlockEntity for ItemInstance: {}", (Object)s);
+                    LOGGER.warn("Unable to resolve BlockEntity for ItemInstance: {}", s);
                     flag = false;
                 }
                 else

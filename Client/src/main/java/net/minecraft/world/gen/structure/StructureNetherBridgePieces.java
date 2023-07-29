@@ -654,7 +654,7 @@ public class StructureNetherBridgePieces
 
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn)
         {
-            Random random = new Random((long)this.fillSeed);
+            Random random = new Random(this.fillSeed);
 
             for (int i = 0; i <= 4; ++i)
             {
@@ -1231,7 +1231,7 @@ public class StructureNetherBridgePieces
         public StructureNetherBridgePieces.PieceWeight lastPlaced;
         public List<StructureNetherBridgePieces.PieceWeight> primaryWeights;
         public List<StructureNetherBridgePieces.PieceWeight> secondaryWeights;
-        public List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
+        public List<StructureComponent> pendingChildren = Lists.newArrayList();
 
         public Start()
         {
@@ -1240,7 +1240,7 @@ public class StructureNetherBridgePieces
         public Start(Random p_i2059_1_, int p_i2059_2_, int p_i2059_3_)
         {
             super(p_i2059_1_, p_i2059_2_, p_i2059_3_);
-            this.primaryWeights = Lists.<StructureNetherBridgePieces.PieceWeight>newArrayList();
+            this.primaryWeights = Lists.newArrayList();
 
             for (StructureNetherBridgePieces.PieceWeight structurenetherbridgepieces$pieceweight : StructureNetherBridgePieces.PRIMARY_COMPONENTS)
             {
@@ -1248,7 +1248,7 @@ public class StructureNetherBridgePieces
                 this.primaryWeights.add(structurenetherbridgepieces$pieceweight);
             }
 
-            this.secondaryWeights = Lists.<StructureNetherBridgePieces.PieceWeight>newArrayList();
+            this.secondaryWeights = Lists.newArrayList();
 
             for (StructureNetherBridgePieces.PieceWeight structurenetherbridgepieces$pieceweight1 : StructureNetherBridgePieces.SECONDARY_COMPONENTS)
             {

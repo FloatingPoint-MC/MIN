@@ -60,7 +60,7 @@ public class EntityHasProperty implements LootCondition
 
             for (EntityProperty entityproperty : value.properties)
             {
-                EntityProperty.Serializer<EntityProperty> serializer = EntityPropertyManager.<EntityProperty>getSerializerFor(entityproperty);
+                EntityProperty.Serializer<EntityProperty> serializer = EntityPropertyManager.getSerializerFor(entityproperty);
                 jsonobject.add(serializer.getName().toString(), serializer.serialize(entityproperty, context));
             }
 
@@ -79,7 +79,7 @@ public class EntityHasProperty implements LootCondition
                 aentityproperty[i++] = EntityPropertyManager.getSerializerForName(new ResourceLocation(entry.getKey())).deserialize(entry.getValue(), context);
             }
 
-            return new EntityHasProperty(aentityproperty, (LootContext.EntityTarget)JsonUtils.deserializeClass(json, "entity", context, LootContext.EntityTarget.class));
+            return new EntityHasProperty(aentityproperty, JsonUtils.deserializeClass(json, "entity", context, LootContext.EntityTarget.class));
         }
     }
 }

@@ -31,7 +31,7 @@ public class ConditionPropertyValue implements ICondition
 
         if (iproperty == null)
         {
-            throw new RuntimeException(this.toString() + ": Definition: " + blockState + " has no property: " + this.key);
+            throw new RuntimeException(this + ": Definition: " + blockState + " has no property: " + this.key);
         }
         else
         {
@@ -47,7 +47,7 @@ public class ConditionPropertyValue implements ICondition
 
             if (list.isEmpty())
             {
-                throw new RuntimeException(this.toString() + ": has an empty value: " + this.value);
+                throw new RuntimeException(this + ": has an empty value: " + this.value);
             }
             else
             {

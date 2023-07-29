@@ -26,7 +26,7 @@ public class BlockDynamicLiquid extends BlockLiquid
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        int i = ((Integer)state.getValue(LEVEL)).intValue();
+        int i = state.getValue(LEVEL).intValue();
         int j = 1;
 
         if (this.material == Material.LAVA && !worldIn.provider.doesWaterVaporize())
@@ -75,7 +75,7 @@ public class BlockDynamicLiquid extends BlockLiquid
                 {
                     i1 = 0;
                 }
-                else if (iblockstate.getMaterial() == this.material && ((Integer)iblockstate.getValue(LEVEL)).intValue() == 0)
+                else if (iblockstate.getMaterial() == this.material && iblockstate.getValue(LEVEL).intValue() == 0)
                 {
                     i1 = 0;
                 }
@@ -185,7 +185,7 @@ public class BlockDynamicLiquid extends BlockLiquid
                 BlockPos blockpos = pos.offset(enumfacing);
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.material || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+                if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.material || iblockstate.getValue(LEVEL).intValue() > 0))
                 {
                     if (!this.isBlocked(worldIn, blockpos.down(), iblockstate))
                     {
@@ -216,14 +216,14 @@ public class BlockDynamicLiquid extends BlockLiquid
     private Set<EnumFacing> getPossibleFlowDirections(World worldIn, BlockPos pos)
     {
         int i = 1000;
-        Set<EnumFacing> set = EnumSet.<EnumFacing>noneOf(EnumFacing.class);
+        Set<EnumFacing> set = EnumSet.noneOf(EnumFacing.class);
 
         for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
         {
             BlockPos blockpos = pos.offset(enumfacing);
             IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-            if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.material || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+            if (!this.isBlocked(worldIn, blockpos, iblockstate) && (iblockstate.getMaterial() != this.material || iblockstate.getValue(LEVEL).intValue() > 0))
             {
                 int j;
 
@@ -258,7 +258,7 @@ public class BlockDynamicLiquid extends BlockLiquid
 
         if (!(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS)
         {
-            return block.material != Material.PORTAL && block.material != Material.STRUCTURE_VOID ? block.material.blocksMovement() : true;
+            return block.material == Material.PORTAL || block.material == Material.STRUCTURE_VOID || block.material.blocksMovement();
         }
         else
         {

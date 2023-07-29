@@ -11,7 +11,7 @@ public class NaturalProperties
 {
     public int rotation = 1;
     public boolean flip = false;
-    private Map[] quadMaps = new Map[8];
+    private final Map[] quadMaps = new Map[8];
 
     public NaturalProperties(String type)
     {
@@ -109,7 +109,7 @@ public class NaturalProperties
 
     private int[] transformVertexData(int[] vertexData, int rotate, boolean flipU)
     {
-        int[] aint = (int[])vertexData.clone();
+        int[] aint = vertexData.clone();
         int i = 4 - rotate;
 
         if (flipU)

@@ -27,7 +27,7 @@ import net.optifine.util.TextureUtils;
 public class TextureAtlasSprite
 {
     private final String iconName;
-    protected List<int[][]> framesTextureData = Lists.<int[][]>newArrayList();
+    protected List<int[][]> framesTextureData = Lists.newArrayList();
     protected int[][] interpolatedFrameData;
     private AnimationMetadataSection animationMetadata;
     protected boolean rotated;
@@ -251,7 +251,7 @@ public class TextureAtlasSprite
     {
         if (this.animationMetadata != null)
         {
-            this.animationActive = SmartAnimations.isActive() ? SmartAnimations.isSpriteRendered(this.animationIndex) : true;
+            this.animationActive = !SmartAnimations.isActive() || SmartAnimations.isSpriteRendered(this.animationIndex);
             ++this.tickCounter;
 
             if (this.tickCounter >= this.animationMetadata.getFrameTimeSingle(this.frameCounter))
@@ -394,7 +394,7 @@ public class TextureAtlasSprite
             bufferedimage = TextureUtils.scaleImage(bufferedimage, this.width);
         }
 
-        AnimationMetadataSection animationmetadatasection = (AnimationMetadataSection)resource.getMetadata("animation");
+        AnimationMetadataSection animationmetadatasection = resource.getMetadata("animation");
         int[][] aint = new int[mipmaplevels][];
         aint[0] = new int[bufferedimage.getWidth() * bufferedimage.getHeight()];
         bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), aint[0], 0, bufferedimage.getWidth());
@@ -428,7 +428,7 @@ public class TextureAtlasSprite
             }
             else
             {
-                List<AnimationFrame> list = Lists.<AnimationFrame>newArrayList();
+                List<AnimationFrame> list = Lists.newArrayList();
 
                 for (int l = 0; l < i; ++l)
                 {
@@ -471,7 +471,7 @@ public class TextureAtlasSprite
 
     public void generateMipmaps(int level)
     {
-        List<int[][]> list = Lists.<int[][]>newArrayList();
+        List<int[][]> list = Lists.newArrayList();
 
         for (int i = 0; i < this.framesTextureData.size(); ++i)
         {
@@ -609,7 +609,7 @@ public class TextureAtlasSprite
 
     public Collection<ResourceLocation> getDependencies()
     {
-        return ImmutableList.<ResourceLocation>of();
+        return ImmutableList.of();
     }
 
     public int getIndexInMap()
@@ -674,9 +674,9 @@ public class TextureAtlasSprite
                     int l1 = j1 >> 16 & 255;
                     int i2 = j1 >> 8 & 255;
                     int j2 = j1 & 255;
-                    i += (long)l1;
-                    j += (long)i2;
-                    k += (long)j2;
+                    i += l1;
+                    j += i2;
+                    k += j2;
                     ++l;
                 }
             }
@@ -705,13 +705,13 @@ public class TextureAtlasSprite
     public double getSpriteU16(float p_getSpriteU16_1_)
     {
         float f = this.maxU - this.minU;
-        return (double)((p_getSpriteU16_1_ - this.minU) / f * 16.0F);
+        return (p_getSpriteU16_1_ - this.minU) / f * 16.0F;
     }
 
     public double getSpriteV16(float p_getSpriteV16_1_)
     {
         float f = this.maxV - this.minV;
-        return (double)((p_getSpriteV16_1_ - this.minV) / f * 16.0F);
+        return (p_getSpriteV16_1_ - this.minV) / f * 16.0F;
     }
 
     public void bindSpriteTexture()

@@ -9,7 +9,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public class BaseSpectatorGroup implements ISpectatorMenuView
 {
-    private final List<ISpectatorMenuObject> items = Lists.<ISpectatorMenuObject>newArrayList();
+    private final List<ISpectatorMenuObject> items = Lists.newArrayList();
 
     public BaseSpectatorGroup()
     {
@@ -24,6 +24,6 @@ public class BaseSpectatorGroup implements ISpectatorMenuView
 
     public ITextComponent getPrompt()
     {
-        return new TextComponentTranslation("spectatorMenu.root.prompt", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.root.prompt");
     }
 }

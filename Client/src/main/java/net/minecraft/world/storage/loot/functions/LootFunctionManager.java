@@ -17,8 +17,8 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 public class LootFunctionManager
 {
-    private static final Map < ResourceLocation, LootFunction.Serializer<? >> NAME_TO_SERIALIZER_MAP = Maps. < ResourceLocation, LootFunction.Serializer<? >> newHashMap();
-    private static final Map < Class <? extends LootFunction > , LootFunction.Serializer<? >> CLASS_TO_SERIALIZER_MAP = Maps. < Class <? extends LootFunction > , LootFunction.Serializer<? >> newHashMap();
+    private static final Map < ResourceLocation, LootFunction.Serializer<? >> NAME_TO_SERIALIZER_MAP = Maps.newHashMap();
+    private static final Map < Class <? extends LootFunction > , LootFunction.Serializer<? >> CLASS_TO_SERIALIZER_MAP = Maps.newHashMap();
 
     public static <T extends LootFunction> void registerFunction(LootFunction.Serializer <? extends T > serializer)
     {
@@ -42,7 +42,7 @@ public class LootFunctionManager
 
     public static LootFunction.Serializer<?> getSerializerForName(ResourceLocation location)
     {
-        LootFunction.Serializer<?> serializer = (LootFunction.Serializer)NAME_TO_SERIALIZER_MAP.get(location);
+        LootFunction.Serializer<?> serializer = NAME_TO_SERIALIZER_MAP.get(location);
 
         if (serializer == null)
         {
@@ -98,12 +98,12 @@ public class LootFunctionManager
                 throw new JsonSyntaxException("Unknown function '" + resourcelocation + "'");
             }
 
-            return serializer.deserialize(jsonobject, p_deserialize_3_, (LootCondition[])JsonUtils.deserializeClass(jsonobject, "conditions", new LootCondition[0], p_deserialize_3_, LootCondition[].class));
+            return serializer.deserialize(jsonobject, p_deserialize_3_, JsonUtils.deserializeClass(jsonobject, "conditions", new LootCondition[0], p_deserialize_3_, LootCondition[].class));
         }
 
         public JsonElement serialize(LootFunction p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_)
         {
-            LootFunction.Serializer<LootFunction> serializer = LootFunctionManager.<LootFunction>getSerializerFor(p_serialize_1_);
+            LootFunction.Serializer<LootFunction> serializer = LootFunctionManager.getSerializerFor(p_serialize_1_);
             JsonObject jsonobject = new JsonObject();
             serializer.serialize(jsonobject, p_serialize_1_, p_serialize_3_);
             jsonobject.addProperty("function", serializer.getFunctionName().toString());

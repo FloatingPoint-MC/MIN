@@ -84,9 +84,9 @@ public class GuiOptions extends GuiScreen
     public String getDifficultyText(EnumDifficulty p_175355_1_)
     {
         ITextComponent itextcomponent = new TextComponentString("");
-        itextcomponent.appendSibling(new TextComponentTranslation("options.difficulty", new Object[0]));
+        itextcomponent.appendSibling(new TextComponentTranslation("options.difficulty"));
         itextcomponent.appendText(": ");
-        itextcomponent.appendSibling(new TextComponentTranslation(p_175355_1_.getTranslationKey(), new Object[0]));
+        itextcomponent.appendSibling(new TextComponentTranslation(p_175355_1_.getTranslationKey()));
         return itextcomponent.getFormattedText();
     }
 
@@ -139,7 +139,7 @@ public class GuiOptions extends GuiScreen
 
             if (button.id == 109)
             {
-                this.mc.displayGuiScreen(new GuiYesNo(this, (new TextComponentTranslation("difficulty.lock.title", new Object[0])).getFormattedText(), (new TextComponentTranslation("difficulty.lock.question", new Object[] {new TextComponentTranslation(this.mc.world.getWorldInfo().getDifficulty().getTranslationKey(), new Object[0])})).getFormattedText(), 109));
+                this.mc.displayGuiScreen(new GuiYesNo(this, (new TextComponentTranslation("difficulty.lock.title")).getFormattedText(), (new TextComponentTranslation("difficulty.lock.question", new TextComponentTranslation(this.mc.world.getWorldInfo().getDifficulty().getTranslationKey()))).getFormattedText(), 109));
             }
 
             if (button.id == 110)

@@ -125,7 +125,7 @@ public class PhaseHoldingPattern extends PhaseBase
                 k = k + 12;
             }
 
-            this.currentPath = this.dragon.findPath(j, k, (PathPoint)null);
+            this.currentPath = this.dragon.findPath(j, k, null);
 
             if (this.currentPath != null)
             {
@@ -139,7 +139,7 @@ public class PhaseHoldingPattern extends PhaseBase
     private void strafePlayer(EntityPlayer player)
     {
         this.dragon.getPhaseManager().setPhase(PhaseList.STRAFE_PLAYER);
-        ((PhaseStrafePlayer)this.dragon.getPhaseManager().getPhase(PhaseList.STRAFE_PLAYER)).setTarget(player);
+        this.dragon.getPhaseManager().getPhase(PhaseList.STRAFE_PLAYER).setTarget(player);
     }
 
     private void navigateToNextPathNode()

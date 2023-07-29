@@ -10,7 +10,7 @@ public class ScorePlayerTeam extends Team
 {
     private final Scoreboard scoreboard;
     private final String name;
-    private final Set<String> membershipSet = Sets.<String>newHashSet();
+    private final Set<String> membershipSet = Sets.newHashSet();
     private String displayName;
     private String prefix = "";
     private String suffix = "";

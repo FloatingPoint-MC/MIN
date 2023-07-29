@@ -35,7 +35,7 @@ public class SpectatorMenu
         }
     };
     private final ISpectatorMenuRecipient listener;
-    private final List<SpectatorDetails> previousCategories = Lists.<SpectatorDetails>newArrayList();
+    private final List<SpectatorDetails> previousCategories = Lists.newArrayList();
     private ISpectatorMenuView category = new BaseSpectatorGroup();
     private int selectedSlot = -1;
     private int page;
@@ -63,13 +63,13 @@ public class SpectatorMenu
         }
         else
         {
-            return i >= 0 && i < this.category.getItems().size() ? (ISpectatorMenuObject)MoreObjects.firstNonNull(this.category.getItems().get(i), EMPTY_SLOT) : EMPTY_SLOT;
+            return i >= 0 && i < this.category.getItems().size() ? MoreObjects.firstNonNull(this.category.getItems().get(i), EMPTY_SLOT) : EMPTY_SLOT;
         }
     }
 
     public List<ISpectatorMenuObject> getItems()
     {
-        List<ISpectatorMenuObject> list = Lists.<ISpectatorMenuObject>newArrayList();
+        List<ISpectatorMenuObject> list = Lists.newArrayList();
 
         for (int i = 0; i <= 8; ++i)
         {
@@ -142,7 +142,7 @@ public class SpectatorMenu
 
         public ITextComponent getSpectatorName()
         {
-            return new TextComponentTranslation("spectatorMenu.close", new Object[0]);
+            return new TextComponentTranslation("spectatorMenu.close");
         }
 
         public void renderIcon(float brightness, int alpha)
@@ -175,7 +175,7 @@ public class SpectatorMenu
 
         public ITextComponent getSpectatorName()
         {
-            return this.direction < 0 ? new TextComponentTranslation("spectatorMenu.previous_page", new Object[0]) : new TextComponentTranslation("spectatorMenu.next_page", new Object[0]);
+            return this.direction < 0 ? new TextComponentTranslation("spectatorMenu.previous_page") : new TextComponentTranslation("spectatorMenu.next_page");
         }
 
         public void renderIcon(float brightness, int alpha)

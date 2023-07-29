@@ -59,13 +59,13 @@ public class NetHandlerLoginClient implements INetHandlerLoginClient {
             try {
                 this.getSessionService().joinServer(this.mc.getSession().getProfile(), this.mc.getSession().getToken(), s1);
             } catch (AuthenticationUnavailableException var7) {
-                this.networkManager.closeChannel(new TextComponentTranslation("disconnect.loginFailedInfo", new Object[]{new TextComponentTranslation("disconnect.loginFailedInfo.serversUnavailable", new Object[0])}));
+                this.networkManager.closeChannel(new TextComponentTranslation("disconnect.loginFailedInfo", new TextComponentTranslation("disconnect.loginFailedInfo.serversUnavailable")));
                 return;
             } catch (InvalidCredentialsException var8) {
-                this.networkManager.closeChannel(new TextComponentTranslation("disconnect.loginFailedInfo", new Object[]{new TextComponentTranslation("disconnect.loginFailedInfo.invalidSession", new Object[0])}));
+                this.networkManager.closeChannel(new TextComponentTranslation("disconnect.loginFailedInfo", new TextComponentTranslation("disconnect.loginFailedInfo.invalidSession")));
                 return;
             } catch (AuthenticationException authenticationexception) {
-                this.networkManager.closeChannel(new TextComponentTranslation("disconnect.loginFailedInfo", new Object[]{authenticationexception.getMessage()}));
+                this.networkManager.closeChannel(new TextComponentTranslation("disconnect.loginFailedInfo", authenticationexception.getMessage()));
                 return;
             }
         }

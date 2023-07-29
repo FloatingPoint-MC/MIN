@@ -23,7 +23,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
 {
-    private final List<ISpectatorMenuObject> items = Lists.<ISpectatorMenuObject>newArrayList();
+    private final List<ISpectatorMenuObject> items = Lists.newArrayList();
 
     public TeleportToTeam()
     {
@@ -42,7 +42,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
 
     public ITextComponent getPrompt()
     {
-        return new TextComponentTranslation("spectatorMenu.team_teleport.prompt", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.team_teleport.prompt");
     }
 
     public void selectItem(SpectatorMenu menu)
@@ -52,7 +52,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
 
     public ITextComponent getSpectatorName()
     {
-        return new TextComponentTranslation("spectatorMenu.team_teleport", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.team_teleport");
     }
 
     public void renderIcon(float brightness, int alpha)
@@ -83,7 +83,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
         public TeamSelectionObject(ScorePlayerTeam teamIn)
         {
             this.team = teamIn;
-            this.players = Lists.<NetworkPlayerInfo>newArrayList();
+            this.players = Lists.newArrayList();
 
             for (String s : teamIn.getMembershipCollection())
             {
@@ -101,7 +101,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
             }
             else
             {
-                String s1 = ((NetworkPlayerInfo)this.players.get((new Random()).nextInt(this.players.size()))).getGameProfile().getName();
+                String s1 = this.players.get((new Random()).nextInt(this.players.size())).getGameProfile().getName();
                 this.location = AbstractClientPlayer.getLocationSkin(s1);
                 AbstractClientPlayer.getDownloadImageSkin(this.location, s1);
             }

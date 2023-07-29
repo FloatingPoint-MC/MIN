@@ -17,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
 public class GhostRecipe
 {
     private IRecipe recipe;
-    private final List<GhostRecipe.GhostIngredient> ingredients = Lists.<GhostRecipe.GhostIngredient>newArrayList();
+    private final List<GhostRecipe.GhostIngredient> ingredients = Lists.newArrayList();
     private float time;
 
     public void clear()

@@ -47,7 +47,7 @@ public class SaveFormatOld implements ISaveFormat
 
     public List<WorldSummary> getSaveList() throws AnvilConverterException
     {
-        List<WorldSummary> list = Lists.<WorldSummary>newArrayList();
+        List<WorldSummary> list = Lists.newArrayList();
 
         for (int i = 0; i < 5; ++i)
         {
@@ -181,11 +181,11 @@ public class SaveFormatOld implements ISaveFormat
         }
         else
         {
-            LOGGER.info("Deleting level {}", (Object)saveName);
+            LOGGER.info("Deleting level {}", saveName);
 
             for (int i = 1; i <= 5; ++i)
             {
-                LOGGER.info("Attempt {}...", (int)i);
+                LOGGER.info("Attempt {}...", i);
 
                 if (deleteFiles(file1.listFiles()))
                 {
@@ -202,7 +202,6 @@ public class SaveFormatOld implements ISaveFormat
                     }
                     catch (InterruptedException var5)
                     {
-                        ;
                     }
                 }
             }
@@ -218,17 +217,17 @@ public class SaveFormatOld implements ISaveFormat
     {
         for (File file1 : files)
         {
-            LOGGER.debug("Deleting {}", (Object)file1);
+            LOGGER.debug("Deleting {}", file1);
 
             if (file1.isDirectory() && !deleteFiles(file1.listFiles()))
             {
-                LOGGER.warn("Couldn't delete directory {}", (Object)file1);
+                LOGGER.warn("Couldn't delete directory {}", file1);
                 return false;
             }
 
             if (!file1.delete())
             {
-                LOGGER.warn("Couldn't delete file {}", (Object)file1);
+                LOGGER.warn("Couldn't delete file {}", file1);
                 return false;
             }
         }

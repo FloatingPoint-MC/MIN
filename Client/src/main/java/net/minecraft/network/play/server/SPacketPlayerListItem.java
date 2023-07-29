@@ -17,7 +17,7 @@ import net.minecraft.world.GameType;
 public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
 {
     private SPacketPlayerListItem.Action action;
-    private final List<SPacketPlayerListItem.AddPlayerData> players = Lists.<SPacketPlayerListItem.AddPlayerData>newArrayList();
+    private final List<SPacketPlayerListItem.AddPlayerData> players = Lists.newArrayList();
 
     public SPacketPlayerListItem()
     {
@@ -48,7 +48,7 @@ public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.action = (SPacketPlayerListItem.Action)buf.readEnumValue(SPacketPlayerListItem.Action.class);
+        this.action = buf.readEnumValue(Action.class);
         int i = buf.readVarInt();
 
         for (int j = 0; j < i; ++j)
@@ -91,17 +91,17 @@ public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
                     break;
 
                 case UPDATE_GAME_MODE:
-                    gameprofile = new GameProfile(buf.readUniqueId(), (String)null);
+                    gameprofile = new GameProfile(buf.readUniqueId(), null);
                     gametype = GameType.getByID(buf.readVarInt());
                     break;
 
                 case UPDATE_LATENCY:
-                    gameprofile = new GameProfile(buf.readUniqueId(), (String)null);
+                    gameprofile = new GameProfile(buf.readUniqueId(), null);
                     k = buf.readVarInt();
                     break;
 
                 case UPDATE_DISPLAY_NAME:
-                    gameprofile = new GameProfile(buf.readUniqueId(), (String)null);
+                    gameprofile = new GameProfile(buf.readUniqueId(), null);
 
                     if (buf.readBoolean())
                     {
@@ -111,7 +111,7 @@ public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
                     break;
 
                 case REMOVE_PLAYER:
-                    gameprofile = new GameProfile(buf.readUniqueId(), (String)null);
+                    gameprofile = new GameProfile(buf.readUniqueId(), null);
             }
 
             this.players.add(new SPacketPlayerListItem.AddPlayerData(gameprofile, k, gametype, itextcomponent));
@@ -220,13 +220,13 @@ public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
         return MoreObjects.toStringHelper(this).add("action", this.action).add("entries", this.players).toString();
     }
 
-    public static enum Action
+    public enum Action
     {
         ADD_PLAYER,
         UPDATE_GAME_MODE,
         UPDATE_LATENCY,
         UPDATE_DISPLAY_NAME,
-        REMOVE_PLAYER;
+        REMOVE_PLAYER
     }
 
     public class AddPlayerData

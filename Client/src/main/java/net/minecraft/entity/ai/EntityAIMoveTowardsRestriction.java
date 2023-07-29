@@ -31,7 +31,7 @@ public class EntityAIMoveTowardsRestriction extends EntityAIBase
         else
         {
             BlockPos blockpos = this.creature.getHomePosition();
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.creature, 16, 7, new Vec3d((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ()));
+            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.creature, 16, 7, new Vec3d(blockpos.getX(), blockpos.getY(), blockpos.getZ()));
 
             if (vec3d == null)
             {

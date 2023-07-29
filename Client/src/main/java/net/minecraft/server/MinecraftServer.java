@@ -94,7 +94,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
      */
     private final Snooper usageSnooper = new Snooper("server", this, getCurrentTimeMillis());
     private final File anvilFile;
-    private final List<ITickable> tickables = Lists.<ITickable>newArrayList();
+    private final List<ITickable> tickables = Lists.newArrayList();
     public final ICommandManager commandManager;
     public final Profiler profiler = new Profiler();
     private final NetworkSystem networkSystem;
@@ -105,7 +105,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     /**
      * The server's port.
      */
-    private int serverPort = -1;
+    private final int serverPort = -1;
 
     /**
      * The server world instances.
@@ -210,7 +210,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     private final GameProfileRepository profileRepo;
     private final PlayerProfileCache profileCache;
     private long nanoTimeSinceStatusRefresh;
-    public final Queue<FutureTask<?>> futureTaskQueue = Queues.<FutureTask<?>>newArrayDeque();
+    public final Queue<FutureTask<?>> futureTaskQueue = Queues.newArrayDeque();
     private Thread serverThread;
     private long currentTime = getCurrentTimeMillis();
     private boolean worldIconSet;
@@ -253,7 +253,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 public void setLoadingProgress(int progress) {
                     if (System.currentTimeMillis() - this.startTime >= 1000L) {
                         this.startTime = System.currentTimeMillis();
-                        MinecraftServer.LOGGER.info("Converting... {}%", (int) progress);
+                        MinecraftServer.LOGGER.info("Converting... {}%", progress);
                     }
                 }
 
@@ -370,7 +370,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
             try {
                 this.setResourcePack("level://" + URLEncoder.encode(worldNameIn, StandardCharsets.UTF_8.toString()) + "/" + "resources.zip", "");
             } catch (UnsupportedEncodingException var5) {
-                LOGGER.warn("Something went wrong url encoding {}", (Object) worldNameIn);
+                LOGGER.warn("Something went wrong url encoding {}", worldNameIn);
             }
         }
     }
@@ -429,7 +429,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 }
 
                 try {
-                    worldserver.saveAllChunks(true, (IProgressUpdate) null);
+                    worldserver.saveAllChunks(true, null);
                 } catch (MinecraftException minecraftexception) {
                     LOGGER.warn(minecraftexception.getMessage());
                 }
@@ -528,7 +528,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                     this.serverIsRunning = true;
                 }
             } else {
-                this.finalTick((CrashReport) null);
+                this.finalTick(null);
             }
         } catch (Throwable throwable1) {
             LOGGER.error("Encountered an unexpected exception", throwable1);
@@ -543,7 +543,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
             File file1 = new File(new File(this.getDataDirectory(), "crash-reports"), "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-server.txt");
 
             if (crashreport.saveToFile(file1)) {
-                LOGGER.error("This crash report has been saved to: {}", (Object) file1.getAbsolutePath());
+                LOGGER.error("This crash report has been saved to: {}", file1.getAbsolutePath());
             } else {
                 LOGGER.error("We were unable to save this crash report to disk.");
             }
@@ -579,7 +579,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 ByteBuf bytebuf1 = Base64.encode(bytebuf);
                 response.setFavicon("data:image/png;base64," + bytebuf1.toString(StandardCharsets.UTF_8));
             } catch (Exception exception) {
-                LOGGER.error("Couldn't load server icon", (Throwable) exception);
+                LOGGER.error("Couldn't load server icon", exception);
             } finally {
                 bytebuf.release();
             }
@@ -634,7 +634,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
             int j = MathHelper.getInt(this.random, 0, this.getCurrentPlayerCount() - agameprofile.length);
 
             for (int k = 0; k < agameprofile.length; ++k) {
-                agameprofile[k] = ((EntityPlayerMP) this.playerList.getPlayers().get(j + k)).getGameProfile();
+                agameprofile[k] = this.playerList.getPlayers().get(j + k).getGameProfile();
             }
 
             Collections.shuffle(Arrays.asList(agameprofile));
@@ -729,7 +729,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         this.profiler.endStartSection("tickables");
 
         for (int k = 0; k < this.tickables.size(); ++k) {
-            ((ITickable) this.tickables.get(k)).update();
+            this.tickables.get(k).update();
         }
 
         this.profiler.endSection();
@@ -830,7 +830,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     }
 
     public List<String> getTabCompletions(ICommandSender sender, String input, @Nullable BlockPos pos, boolean hasTargetBlock) {
-        List<String> list = Lists.<String>newArrayList();
+        List<String> list = Lists.newArrayList();
         boolean flag = input.startsWith("/");
 
         if (flag) {
@@ -1279,7 +1279,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         Validate.notNull(callable);
 
         if (!this.isCallingFromMinecraftThread() && !this.isServerStopped()) {
-            ListenableFutureTask<V> listenablefuturetask = ListenableFutureTask.<V>create(callable);
+            ListenableFutureTask<V> listenablefuturetask = ListenableFutureTask.create(callable);
 
             synchronized (this.futureTaskQueue) {
                 this.futureTaskQueue.add(listenablefuturetask);
@@ -1287,7 +1287,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
             }
         } else {
             try {
-                return Futures.<V>immediateFuture(callable.call());
+                return Futures.immediateFuture(callable.call());
             } catch (Exception exception) {
                 return Futures.immediateFailedCheckedFuture(exception);
             }
@@ -1296,7 +1296,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
 
     public ListenableFuture<Object> addScheduledTask(Runnable runnableToSchedule) {
         Validate.notNull(runnableToSchedule);
-        return this.<Object>callFromMainThread(Executors.callable(runnableToSchedule));
+        return this.callFromMainThread(Executors.callable(runnableToSchedule));
     }
 
     public boolean isCallingFromMinecraftThread() {

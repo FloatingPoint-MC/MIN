@@ -64,7 +64,7 @@ public class EntityHasScore implements LootCondition
         else
         {
             String s = entityIn instanceof EntityPlayerMP ? entityIn.getName() : entityIn.getCachedUniqueIdString();
-            return !scoreboardIn.entityHasObjective(s, scoreobjective) ? false : rand.isInRange(scoreboardIn.getOrCreateScore(s, scoreobjective).getScorePoints());
+            return scoreboardIn.entityHasObjective(s, scoreobjective) && rand.isInRange(scoreboardIn.getOrCreateScore(s, scoreobjective).getScorePoints());
         }
     }
 
@@ -91,14 +91,14 @@ public class EntityHasScore implements LootCondition
         public EntityHasScore deserialize(JsonObject json, JsonDeserializationContext context)
         {
             Set<Entry<String, JsonElement>> set = JsonUtils.getJsonObject(json, "scores").entrySet();
-            Map<String, RandomValueRange> map = Maps.<String, RandomValueRange>newLinkedHashMap();
+            Map<String, RandomValueRange> map = Maps.newLinkedHashMap();
 
             for (Entry<String, JsonElement> entry : set)
             {
                 map.put(entry.getKey(), JsonUtils.deserializeClass(entry.getValue(), "score", context, RandomValueRange.class));
             }
 
-            return new EntityHasScore(map, (LootContext.EntityTarget)JsonUtils.deserializeClass(json, "entity", context, LootContext.EntityTarget.class));
+            return new EntityHasScore(map, JsonUtils.deserializeClass(json, "entity", context, LootContext.EntityTarget.class));
         }
     }
 }

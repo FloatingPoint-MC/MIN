@@ -9,5 +9,5 @@ public enum FixTypes implements IFixType
     ENTITY,
     ITEM_INSTANCE,
     OPTIONS,
-    STRUCTURE;
+    STRUCTURE
 }

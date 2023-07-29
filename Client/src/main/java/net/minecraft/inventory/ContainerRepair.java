@@ -105,7 +105,7 @@ public class ContainerRepair extends Container
 
                 if (!thePlayer.capabilities.isCreativeMode && !worldIn.isRemote && iblockstate.getBlock() == Blocks.ANVIL && thePlayer.getRNG().nextFloat() < 0.12F)
                 {
-                    int l = ((Integer)iblockstate.getValue(BlockAnvil.DAMAGE)).intValue();
+                    int l = iblockstate.getValue(BlockAnvil.DAMAGE).intValue();
                     ++l;
 
                     if (l > 2)
@@ -243,8 +243,8 @@ public class ContainerRepair extends Container
                     {
                         if (enchantment1 != null)
                         {
-                            int i2 = map.containsKey(enchantment1) ? ((Integer)map.get(enchantment1)).intValue() : 0;
-                            int j2 = ((Integer)map1.get(enchantment1)).intValue();
+                            int i2 = map.containsKey(enchantment1) ? map.get(enchantment1).intValue() : 0;
+                            int j2 = map1.get(enchantment1).intValue();
                             j2 = i2 == j2 ? j2 + 1 : Math.max(j2, i2);
                             boolean flag1 = enchantment1.canApply(itemstack);
 

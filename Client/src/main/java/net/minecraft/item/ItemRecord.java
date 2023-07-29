@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public class ItemRecord extends Item
 {
-    private static final Map<SoundEvent, ItemRecord> RECORDS = Maps.<SoundEvent, ItemRecord>newHashMap();
+    private static final Map<SoundEvent, ItemRecord> RECORDS = Maps.newHashMap();
     private final SoundEvent sound;
     private final String displayName;
 
@@ -41,13 +41,13 @@ public class ItemRecord extends Item
     {
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
-        if (iblockstate.getBlock() == Blocks.JUKEBOX && !((Boolean)iblockstate.getValue(BlockJukebox.HAS_RECORD)).booleanValue())
+        if (iblockstate.getBlock() == Blocks.JUKEBOX && !iblockstate.getValue(BlockJukebox.HAS_RECORD).booleanValue())
         {
             if (!worldIn.isRemote)
             {
                 ItemStack itemstack = player.getHeldItem(hand);
                 ((BlockJukebox)Blocks.JUKEBOX).insertRecord(worldIn, pos, iblockstate, itemstack);
-                worldIn.playEvent((EntityPlayer)null, 1010, pos, Item.getIdFromItem(this));
+                worldIn.playEvent(null, 1010, pos, Item.getIdFromItem(this));
                 itemstack.shrink(1);
                 player.addStat(StatList.RECORD_PLAYED);
             }

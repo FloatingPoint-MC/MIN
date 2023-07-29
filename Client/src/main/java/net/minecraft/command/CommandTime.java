@@ -58,7 +58,7 @@ public class CommandTime extends CommandBase
                 }
 
                 this.setAllWorldTimes(server, i1);
-                notifyCommandListener(sender, this, "commands.time.set", new Object[] {i1});
+                notifyCommandListener(sender, this, "commands.time.set", i1);
                 return;
             }
 
@@ -66,7 +66,7 @@ public class CommandTime extends CommandBase
             {
                 int l = parseInt(args[1], 0);
                 this.incrementAllWorldTimes(server, l);
-                notifyCommandListener(sender, this, "commands.time.added", new Object[] {l});
+                notifyCommandListener(sender, this, "commands.time.added", l);
                 return;
             }
 
@@ -76,7 +76,7 @@ public class CommandTime extends CommandBase
                 {
                     int k = (int)(sender.getEntityWorld().getWorldTime() % 24000L);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, k);
-                    notifyCommandListener(sender, this, "commands.time.query", new Object[] {k});
+                    notifyCommandListener(sender, this, "commands.time.query", k);
                     return;
                 }
 
@@ -84,7 +84,7 @@ public class CommandTime extends CommandBase
                 {
                     int j = (int)(sender.getEntityWorld().getWorldTime() / 24000L % 2147483647L);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, j);
-                    notifyCommandListener(sender, this, "commands.time.query", new Object[] {j});
+                    notifyCommandListener(sender, this, "commands.time.query", j);
                     return;
                 }
 
@@ -92,28 +92,28 @@ public class CommandTime extends CommandBase
                 {
                     int i = (int)(sender.getEntityWorld().getTotalWorldTime() % 2147483647L);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, i);
-                    notifyCommandListener(sender, this, "commands.time.query", new Object[] {i});
+                    notifyCommandListener(sender, this, "commands.time.query", i);
                     return;
                 }
             }
         }
 
-        throw new WrongUsageException("commands.time.usage", new Object[0]);
+        throw new WrongUsageException("commands.time.usage");
     }
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"set", "add", "query"});
+            return getListOfStringsMatchingLastWord(args, "set", "add", "query");
         }
         else if (args.length == 2 && "set".equals(args[0]))
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"day", "night"});
+            return getListOfStringsMatchingLastWord(args, "day", "night");
         }
         else
         {
-            return args.length == 2 && "query".equals(args[0]) ? getListOfStringsMatchingLastWord(args, new String[] {"daytime", "gametime", "day"}) : Collections.emptyList();
+            return args.length == 2 && "query".equals(args[0]) ? getListOfStringsMatchingLastWord(args, "daytime", "gametime", "day") : Collections.emptyList();
         }
     }
 
@@ -121,7 +121,7 @@ public class CommandTime extends CommandBase
     {
         for (int i = 0; i < server.worlds.length; ++i)
         {
-            server.worlds[i].setWorldTime((long)time);
+            server.worlds[i].setWorldTime(time);
         }
     }
 

@@ -18,7 +18,7 @@ import org.apache.commons.io.IOUtils;
 
 public class SimpleResource implements IResource
 {
-    private final Map<String, IMetadataSection> mapMetadataSections = Maps.<String, IMetadataSection>newHashMap();
+    private final Map<String, IMetadataSection> mapMetadataSections = Maps.newHashMap();
     private final String resourcePackName;
     private final ResourceLocation srResourceLocation;
     private final InputStream resourceInputStream;
@@ -56,7 +56,7 @@ public class SimpleResource implements IResource
     {
         if (!this.hasMetadata())
         {
-            return (T)null;
+            return null;
         }
         else
         {
@@ -72,7 +72,7 @@ public class SimpleResource implements IResource
                 }
                 finally
                 {
-                    IOUtils.closeQuietly((Reader)bufferedreader);
+                    IOUtils.closeQuietly(bufferedreader);
                 }
             }
 
@@ -120,17 +120,9 @@ public class SimpleResource implements IResource
 
             if (this.resourcePackName != null)
             {
-                if (!this.resourcePackName.equals(simpleresource.resourcePackName))
-                {
-                    return false;
-                }
+                return this.resourcePackName.equals(simpleresource.resourcePackName);
             }
-            else if (simpleresource.resourcePackName != null)
-            {
-                return false;
-            }
-
-            return true;
+            else return simpleresource.resourcePackName == null;
         }
     }
 

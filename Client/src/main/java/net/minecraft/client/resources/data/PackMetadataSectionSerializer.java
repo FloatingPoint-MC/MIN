@@ -15,7 +15,7 @@ public class PackMetadataSectionSerializer extends BaseMetadataSectionSerializer
     public PackMetadataSection deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
     {
         JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
-        ITextComponent itextcomponent = (ITextComponent)p_deserialize_3_.deserialize(jsonobject.get("description"), ITextComponent.class);
+        ITextComponent itextcomponent = p_deserialize_3_.deserialize(jsonobject.get("description"), ITextComponent.class);
 
         if (itextcomponent == null)
         {

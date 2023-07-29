@@ -36,7 +36,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 public class EntityPolarBear extends EntityAnimal
 {
-    private static final DataParameter<Boolean> IS_STANDING = EntityDataManager.<Boolean>createKey(EntityPolarBear.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_STANDING = EntityDataManager.createKey(EntityPolarBear.class, DataSerializers.BOOLEAN);
     private float clientSideStandAnimation0;
     private float clientSideStandAnimation;
     private int warningSoundTicks;
@@ -167,7 +167,7 @@ public class EntityPolarBear extends EntityAnimal
 
     public boolean isStanding()
     {
-        return ((Boolean)this.dataManager.get(IS_STANDING)).booleanValue();
+        return this.dataManager.get(IS_STANDING).booleanValue();
     }
 
     public void setStanding(boolean standing)
@@ -222,7 +222,7 @@ public class EntityPolarBear extends EntityAnimal
     {
         public AIAttackPlayer()
         {
-            super(EntityPolarBear.this, EntityPlayer.class, 20, true, true, (Predicate)null);
+            super(EntityPolarBear.this, EntityPlayer.class, 20, true, true, null);
         }
 
         public boolean shouldExecute()
@@ -244,7 +244,7 @@ public class EntityPolarBear extends EntityAnimal
                     }
                 }
 
-                EntityPolarBear.this.setAttackTarget((EntityLivingBase)null);
+                EntityPolarBear.this.setAttackTarget(null);
                 return false;
             }
         }
@@ -328,7 +328,7 @@ public class EntityPolarBear extends EntityAnimal
 
         protected double getAttackReachSqr(EntityLivingBase attackTarget)
         {
-            return (double)(4.0F + attackTarget.width);
+            return 4.0F + attackTarget.width;
         }
     }
 
@@ -341,7 +341,7 @@ public class EntityPolarBear extends EntityAnimal
 
         public boolean shouldExecute()
         {
-            return !EntityPolarBear.this.isChild() && !EntityPolarBear.this.isBurning() ? false : super.shouldExecute();
+            return (EntityPolarBear.this.isChild() || EntityPolarBear.this.isBurning()) && super.shouldExecute();
         }
     }
 

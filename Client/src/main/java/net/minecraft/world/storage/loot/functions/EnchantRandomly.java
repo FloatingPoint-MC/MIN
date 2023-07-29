@@ -42,7 +42,7 @@ public class EnchantRandomly extends LootFunction
 
         if (this.enchantments.isEmpty())
         {
-            List<Enchantment> list = Lists.<Enchantment>newArrayList();
+            List<Enchantment> list = Lists.newArrayList();
 
             for (Enchantment enchantment1 : Enchantment.REGISTRY)
             {
@@ -54,7 +54,7 @@ public class EnchantRandomly extends LootFunction
 
             if (list.isEmpty())
             {
-                LOGGER.warn("Couldn't find a compatible enchantment for {}", (Object)stack);
+                LOGGER.warn("Couldn't find a compatible enchantment for {}", stack);
                 return stack;
             }
 
@@ -111,7 +111,7 @@ public class EnchantRandomly extends LootFunction
 
         public EnchantRandomly deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn)
         {
-            List<Enchantment> list = Lists.<Enchantment>newArrayList();
+            List<Enchantment> list = Lists.newArrayList();
 
             if (object.has("enchantments"))
             {

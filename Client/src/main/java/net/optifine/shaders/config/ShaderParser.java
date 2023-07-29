@@ -142,24 +142,15 @@ public class ShaderParser
     {
         byte b0 = -1;
 
-        switch (uniform.hashCode())
-        {
-            case -1560188349:
-                if (uniform.equals("shadowcolor"))
-                {
-                    b0 = 0;
-                }
-
-            default:
-                switch (b0)
-                {
-                    case 0:
-                        return 0;
-
-                    default:
-                        return getIndex(uniform, "shadowcolor", 0, 1);
-                }
+        if (uniform.hashCode() == -1560188349) {
+            if (uniform.equals("shadowcolor")) {
+                b0 = 0;
+            }
         }
+        if (b0 == 0) {
+            return 0;
+        }
+        return getIndex(uniform, "shadowcolor", 0, 1);
     }
 
     public static int getDepthIndex(String uniform)

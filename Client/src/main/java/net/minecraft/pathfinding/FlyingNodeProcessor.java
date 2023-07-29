@@ -55,11 +55,11 @@ public class FlyingNodeProcessor extends WalkNodeProcessor
 
         if (this.entity.getPathPriority(pathnodetype1) < 0.0F)
         {
-            Set<BlockPos> set = Sets.<BlockPos>newHashSet();
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, (double)i, this.entity.getEntityBoundingBox().minZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, (double)i, this.entity.getEntityBoundingBox().maxZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, (double)i, this.entity.getEntityBoundingBox().minZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, (double)i, this.entity.getEntityBoundingBox().maxZ));
+            Set<BlockPos> set = Sets.newHashSet();
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, i, this.entity.getEntityBoundingBox().minZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, i, this.entity.getEntityBoundingBox().maxZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, i, this.entity.getEntityBoundingBox().minZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, i, this.entity.getEntityBoundingBox().maxZ));
 
             for (BlockPos blockpos : set)
             {
@@ -276,12 +276,12 @@ public class FlyingNodeProcessor extends WalkNodeProcessor
             }
         }
 
-        return pathnodetype != PathNodeType.OPEN && pathnodetype != PathNodeType.WALKABLE ? pathpoint : pathpoint;
+        return pathpoint;
     }
 
     public PathNodeType getPathNodeType(IBlockAccess blockaccessIn, int x, int y, int z, EntityLiving entitylivingIn, int xSize, int ySize, int zSize, boolean canBreakDoorsIn, boolean canEnterDoorsIn)
     {
-        EnumSet<PathNodeType> enumset = EnumSet.<PathNodeType>noneOf(PathNodeType.class);
+        EnumSet<PathNodeType> enumset = EnumSet.noneOf(PathNodeType.class);
         PathNodeType pathnodetype = PathNodeType.BLOCKED;
         BlockPos blockpos = new BlockPos(entitylivingIn);
         pathnodetype = this.getPathNodeType(blockaccessIn, x, y, z, xSize, ySize, zSize, canBreakDoorsIn, canEnterDoorsIn, enumset, pathnodetype, blockpos);

@@ -21,7 +21,7 @@ public class GuiScreenAdvancements extends GuiScreen implements ClientAdvancemen
     private static final ResourceLocation WINDOW = new ResourceLocation("textures/gui/advancements/window.png");
     private static final ResourceLocation TABS = new ResourceLocation("textures/gui/advancements/tabs.png");
     private final ClientAdvancementManager clientAdvancementManager;
-    private final Map<Advancement, GuiAdvancementTab> tabs = Maps.<Advancement, GuiAdvancementTab>newLinkedHashMap();
+    private final Map<Advancement, GuiAdvancementTab> tabs = Maps.newLinkedHashMap();
     private GuiAdvancementTab selectedTab;
     private int scrollMouseX;
     private int scrollMouseY;
@@ -44,7 +44,7 @@ public class GuiScreenAdvancements extends GuiScreen implements ClientAdvancemen
 
         if (this.selectedTab == null && !this.tabs.isEmpty())
         {
-            this.clientAdvancementManager.setSelectedTab(((GuiAdvancementTab)this.tabs.values().iterator().next()).getAdvancement(), true);
+            this.clientAdvancementManager.setSelectedTab(this.tabs.values().iterator().next().getAdvancement(), true);
         }
         else
         {
@@ -57,7 +57,7 @@ public class GuiScreenAdvancements extends GuiScreen implements ClientAdvancemen
      */
     public void onGuiClosed()
     {
-        this.clientAdvancementManager.setListener((ClientAdvancementManager.IListener)null);
+        this.clientAdvancementManager.setListener(null);
         NetHandlerPlayClient nethandlerplayclient = this.mc.getConnection();
 
         if (nethandlerplayclient != null)
@@ -97,7 +97,7 @@ public class GuiScreenAdvancements extends GuiScreen implements ClientAdvancemen
     {
         if (keyCode == this.mc.gameSettings.keyBindAdvancements.getKeyCode())
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
             this.mc.setIngameFocus();
         }
         else

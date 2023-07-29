@@ -153,7 +153,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
         if (itextureobject == null)
         {
-            itextureobject = new ThreadDownloadImageData((File)null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", StringUtils.stripControlCodes(username)), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
+            itextureobject = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", StringUtils.stripControlCodes(username)), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
             texturemanager.loadTexture(resourceLocationIn, itextureobject);
         }
 
@@ -236,7 +236,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
         else
         {
-            return resourcelocation == this.locationOfCape ? this.elytraOfCape : true;
+            return resourcelocation != this.locationOfCape || this.elytraOfCape;
         }
     }
 

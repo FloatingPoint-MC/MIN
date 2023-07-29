@@ -30,7 +30,7 @@ public class CPacketSeenAdvancements implements Packet<INetHandlerPlayServer>
 
     public static CPacketSeenAdvancements closedScreen()
     {
-        return new CPacketSeenAdvancements(CPacketSeenAdvancements.Action.CLOSED_SCREEN, (ResourceLocation)null);
+        return new CPacketSeenAdvancements(CPacketSeenAdvancements.Action.CLOSED_SCREEN, null);
     }
 
     /**
@@ -38,7 +38,7 @@ public class CPacketSeenAdvancements implements Packet<INetHandlerPlayServer>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.action = (CPacketSeenAdvancements.Action)buf.readEnumValue(CPacketSeenAdvancements.Action.class);
+        this.action = buf.readEnumValue(Action.class);
 
         if (this.action == CPacketSeenAdvancements.Action.OPENED_TAB)
         {
@@ -77,9 +77,9 @@ public class CPacketSeenAdvancements implements Packet<INetHandlerPlayServer>
         return this.tab;
     }
 
-    public static enum Action
+    public enum Action
     {
         OPENED_TAB,
-        CLOSED_SCREEN;
+        CLOSED_SCREEN
     }
 }

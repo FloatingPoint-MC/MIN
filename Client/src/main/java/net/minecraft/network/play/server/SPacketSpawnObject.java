@@ -53,9 +53,9 @@ public class SPacketSpawnObject implements Packet<INetHandlerPlayClient>
     public SPacketSpawnObject(Entity entityIn, int typeIn, int dataIn, BlockPos pos)
     {
         this(entityIn, typeIn, dataIn);
-        this.x = (double)pos.getX();
-        this.y = (double)pos.getY();
-        this.z = (double)pos.getZ();
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
     }
 
     /**

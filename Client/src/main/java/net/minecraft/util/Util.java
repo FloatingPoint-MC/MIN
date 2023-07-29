@@ -49,7 +49,7 @@ public class Util
         }
         catch (ExecutionException executionexception)
         {
-            logger.fatal("Error executing task", (Throwable)executionexception);
+            logger.fatal("Error executing task", executionexception);
 
             if (executionexception.getCause() instanceof OutOfMemoryError)
             {
@@ -59,10 +59,10 @@ public class Util
         }
         catch (InterruptedException interruptedexception)
         {
-            logger.fatal("Error executing task", (Throwable)interruptedexception);
+            logger.fatal("Error executing task", interruptedexception);
         }
 
-        return (V)null;
+        return null;
     }
 
     public static <T> T getLastElement(List<T> list)
@@ -70,12 +70,12 @@ public class Util
         return list.get(list.size() - 1);
     }
 
-    public static enum EnumOS
+    public enum EnumOS
     {
         LINUX,
         SOLARIS,
         WINDOWS,
         OSX,
-        UNKNOWN;
+        UNKNOWN
     }
 }

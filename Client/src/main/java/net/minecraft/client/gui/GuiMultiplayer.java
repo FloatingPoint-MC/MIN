@@ -71,7 +71,7 @@ public class GuiMultiplayer extends GuiScreen
             }
             catch (Exception exception)
             {
-                LOGGER.warn("Unable to start LAN server detection: {}", (Object)exception.getMessage());
+                LOGGER.warn("Unable to start LAN server detection: {}", exception.getMessage());
             }
 
             this.serverListSelector = new ServerSelectionList(this, this.mc, this.width, this.height, 32, this.height - 64, 36);

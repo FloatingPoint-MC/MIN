@@ -5,12 +5,12 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public enum EnumHandSide
 {
-    LEFT(new TextComponentTranslation("options.mainHand.left", new Object[0])),
-    RIGHT(new TextComponentTranslation("options.mainHand.right", new Object[0]));
+    LEFT(new TextComponentTranslation("options.mainHand.left")),
+    RIGHT(new TextComponentTranslation("options.mainHand.right"));
 
     private final ITextComponent handName;
 
-    private EnumHandSide(ITextComponent nameIn)
+    EnumHandSide(ITextComponent nameIn)
     {
         this.handName = nameIn;
     }

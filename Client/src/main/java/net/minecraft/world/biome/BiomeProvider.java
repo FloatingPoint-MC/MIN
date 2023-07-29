@@ -62,7 +62,7 @@ public class BiomeProvider
      */
     public Biome getBiome(BlockPos pos)
     {
-        return this.getBiome(pos, (Biome)null);
+        return this.getBiome(pos, null);
     }
 
     public Biome getBiome(BlockPos pos, Biome defaultBiome)

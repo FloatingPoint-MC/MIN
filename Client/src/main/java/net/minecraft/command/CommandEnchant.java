@@ -43,11 +43,11 @@ public class CommandEnchant extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.enchant.usage", new Object[0]);
+            throw new WrongUsageException("commands.enchant.usage");
         }
         else
         {
-            EntityLivingBase entitylivingbase = (EntityLivingBase)getEntity(server, sender, args[0], EntityLivingBase.class);
+            EntityLivingBase entitylivingbase = getEntity(server, sender, args[0], EntityLivingBase.class);
             sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, 0);
             Enchantment enchantment;
 
@@ -62,7 +62,7 @@ public class CommandEnchant extends CommandBase
 
             if (enchantment == null)
             {
-                throw new NumberInvalidException("commands.enchant.notFound", new Object[] {args[1]});
+                throw new NumberInvalidException("commands.enchant.notFound", args[1]);
             }
             else
             {
@@ -71,11 +71,11 @@ public class CommandEnchant extends CommandBase
 
                 if (itemstack.isEmpty())
                 {
-                    throw new CommandException("commands.enchant.noItem", new Object[0]);
+                    throw new CommandException("commands.enchant.noItem");
                 }
                 else if (!enchantment.canApply(itemstack))
                 {
-                    throw new CommandException("commands.enchant.cantEnchant", new Object[0]);
+                    throw new CommandException("commands.enchant.cantEnchant");
                 }
                 else
                 {
@@ -98,14 +98,14 @@ public class CommandEnchant extends CommandBase
 
                                 if (!enchantment.isCompatibleWith(enchantment1))
                                 {
-                                    throw new CommandException("commands.enchant.cantCombine", new Object[] {enchantment.getTranslatedName(i), enchantment1.getTranslatedName(nbttaglist.getCompoundTagAt(j).getShort("lvl"))});
+                                    throw new CommandException("commands.enchant.cantCombine", enchantment.getTranslatedName(i), enchantment1.getTranslatedName(nbttaglist.getCompoundTagAt(j).getShort("lvl")));
                                 }
                             }
                         }
                     }
 
                     itemstack.addEnchantment(enchantment, i);
-                    notifyCommandListener(sender, this, "commands.enchant.success", new Object[0]);
+                    notifyCommandListener(sender, this, "commands.enchant.success");
                     sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, 1);
                 }
             }

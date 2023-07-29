@@ -12,8 +12,8 @@ import org.apache.logging.log4j.Logger;
 public class DataFixer implements IDataFixer
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Map<IFixType, List<IDataWalker>> walkerMap = Maps.<IFixType, List<IDataWalker>>newHashMap();
-    private final Map<IFixType, List<IFixableData>> fixMap = Maps.<IFixType, List<IFixableData>>newHashMap();
+    private final Map<IFixType, List<IDataWalker>> walkerMap = Maps.newHashMap();
+    private final Map<IFixType, List<IFixableData>> fixMap = Maps.newHashMap();
     private final int version;
 
     public DataFixer(int versionIn)
@@ -40,7 +40,7 @@ public class DataFixer implements IDataFixer
 
     private NBTTagCompound processFixes(IFixType type, NBTTagCompound compound, int versionIn)
     {
-        List<IFixableData> list = (List)this.fixMap.get(type);
+        List<IFixableData> list = this.fixMap.get(type);
 
         if (list != null)
         {
@@ -60,13 +60,13 @@ public class DataFixer implements IDataFixer
 
     private NBTTagCompound processWalkers(IFixType type, NBTTagCompound compound, int versionIn)
     {
-        List<IDataWalker> list = (List)this.walkerMap.get(type);
+        List<IDataWalker> list = this.walkerMap.get(type);
 
         if (list != null)
         {
             for (int i = 0; i < list.size(); ++i)
             {
-                compound = ((IDataWalker)list.get(i)).process(this, compound, versionIn);
+                compound = list.get(i).process(this, compound, versionIn);
             }
         }
 
@@ -88,7 +88,7 @@ public class DataFixer implements IDataFixer
 
     public void registerFix(IFixType type, IFixableData fixable)
     {
-        List<IFixableData> list = this.<IFixableData>getTypeList(this.fixMap, type);
+        List<IFixableData> list = this.getTypeList(this.fixMap, type);
         int i = fixable.getFixVersion();
 
         if (i > this.version)
@@ -97,11 +97,11 @@ public class DataFixer implements IDataFixer
         }
         else
         {
-            if (!list.isEmpty() && ((IFixableData)Util.getLastElement(list)).getFixVersion() > i)
+            if (!list.isEmpty() && Util.getLastElement(list).getFixVersion() > i)
             {
                 for (int j = 0; j < list.size(); ++j)
                 {
-                    if (((IFixableData)list.get(j)).getFixVersion() > i)
+                    if (list.get(j).getFixVersion() > i)
                     {
                         list.add(j, fixable);
                         break;
@@ -117,11 +117,11 @@ public class DataFixer implements IDataFixer
 
     private <V> List<V> getTypeList(Map<IFixType, List<V>> map, IFixType type)
     {
-        List<V> list = (List)map.get(type);
+        List<V> list = map.get(type);
 
         if (list == null)
         {
-            list = Lists.<V>newArrayList();
+            list = Lists.newArrayList();
             map.put(type, list);
         }
 

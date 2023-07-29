@@ -16,9 +16,9 @@ import org.apache.logging.log4j.Logger;
 public class AdvancementList
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Map<ResourceLocation, Advancement> advancements = Maps.<ResourceLocation, Advancement>newHashMap();
-    private final Set<Advancement> roots = Sets.<Advancement>newLinkedHashSet();
-    private final Set<Advancement> nonRoots = Sets.<Advancement>newLinkedHashSet();
+    private final Map<ResourceLocation, Advancement> advancements = Maps.newHashMap();
+    private final Set<Advancement> roots = Sets.newLinkedHashSet();
+    private final Set<Advancement> nonRoots = Sets.newLinkedHashSet();
     private AdvancementList.Listener listener;
 
     private void remove(Advancement advancementIn)
@@ -70,7 +70,7 @@ public class AdvancementList
 
     public void loadAdvancements(Map<ResourceLocation, Advancement.Builder> advancementsIn)
     {
-        Function<ResourceLocation, Advancement> function = Functions.<ResourceLocation, Advancement>forMap(this.advancements, null);
+        Function<ResourceLocation, Advancement> function = Functions.forMap(this.advancements, null);
         label42:
 
         while (!advancementsIn.isEmpty())
@@ -80,7 +80,7 @@ public class AdvancementList
 
             while (iterator.hasNext())
             {
-                Entry<ResourceLocation, Advancement.Builder> entry = (Entry)iterator.next();
+                Entry<ResourceLocation, Advancement.Builder> entry = iterator.next();
                 ResourceLocation resourcelocation = entry.getKey();
                 Advancement.Builder advancement$builder = entry.getValue();
 
@@ -123,7 +123,7 @@ public class AdvancementList
                         break label42;
                     }
 
-                    Entry<ResourceLocation, Advancement.Builder> entry1 = (Entry)iterator.next();
+                    Entry<ResourceLocation, Advancement.Builder> entry1 = iterator.next();
                     LOGGER.error("Couldn't load advancement " + entry1.getKey() + ": " + entry1.getValue());
                 }
             }

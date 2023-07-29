@@ -102,7 +102,7 @@ public class ThreadDownloadImageData extends SimpleTexture
         {
             if (this.cacheFile != null && this.cacheFile.isFile())
             {
-                LOGGER.debug("Loading http texture from local cache ({})", (Object)this.cacheFile);
+                LOGGER.debug("Loading http texture from local cache ({})", this.cacheFile);
 
                 try
                 {
@@ -182,7 +182,6 @@ public class ThreadDownloadImageData extends SimpleTexture
                     catch (Exception exception1)
                     {
                         ThreadDownloadImageData.LOGGER.error("Couldn't download http texture: " + exception1.getMessage());
-                        return;
                     }
                     finally
                     {
@@ -257,7 +256,6 @@ public class ThreadDownloadImageData extends SimpleTexture
         catch (Exception exception)
         {
             LOGGER.error("Couldn't download http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
-            return;
         }
         finally
         {

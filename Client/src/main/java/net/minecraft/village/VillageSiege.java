@@ -177,7 +177,7 @@ public class VillageSiege
             try
             {
                 entityzombie = new EntityZombie(this.world);
-                entityzombie.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityzombie)), (IEntityLivingData)null);
+                entityzombie.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityzombie)), null);
             }
             catch (Exception exception)
             {
@@ -202,7 +202,7 @@ public class VillageSiege
 
             if (this.village.isBlockPosWithinSqVillageRadius(blockpos) && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntityLiving.SpawnPlacementType.ON_GROUND, this.world, blockpos))
             {
-                return new Vec3d((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
+                return new Vec3d(blockpos.getX(), blockpos.getY(), blockpos.getZ());
             }
         }
 

@@ -103,7 +103,7 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
         return this.flags;
     }
 
-    public static enum EnumFlags
+    public enum EnumFlags
     {
         X(0),
         Y(1),
@@ -113,7 +113,7 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
 
         private final int bit;
 
-        private EnumFlags(int bitIn)
+        EnumFlags(int bitIn)
         {
             this.bit = bitIn;
         }
@@ -130,7 +130,7 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
 
         public static Set<SPacketPlayerPosLook.EnumFlags> unpack(int flags)
         {
-            Set<SPacketPlayerPosLook.EnumFlags> set = EnumSet.<SPacketPlayerPosLook.EnumFlags>noneOf(SPacketPlayerPosLook.EnumFlags.class);
+            Set<SPacketPlayerPosLook.EnumFlags> set = EnumSet.noneOf(SPacketPlayerPosLook.EnumFlags.class);
 
             for (SPacketPlayerPosLook.EnumFlags spacketplayerposlook$enumflags : values())
             {

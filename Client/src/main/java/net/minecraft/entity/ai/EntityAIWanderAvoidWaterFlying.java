@@ -67,6 +67,6 @@ public class EntityAIWanderAvoidWaterFlying extends EntityAIWanderAvoidWater
             }
         }
 
-        return new Vec3d((double)blockpos1.getX(), (double)blockpos1.getY(), (double)blockpos1.getZ());
+        return new Vec3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
     }
 }

@@ -36,7 +36,7 @@ public class PathNavigateGround extends PathNavigate
 
     protected Vec3d getEntityPosition()
     {
-        return new Vec3d(this.entity.posX, (double)this.getPathablePosY(), this.entity.posZ);
+        return new Vec3d(this.entity.posX, this.getPathablePosY(), this.entity.posZ);
     }
 
     /**
@@ -50,7 +50,6 @@ public class PathNavigateGround extends PathNavigate
 
             for (blockpos = pos.down(); blockpos.getY() > 0 && this.world.getBlockState(blockpos).getMaterial() == Material.AIR; blockpos = blockpos.down())
             {
-                ;
             }
 
             if (blockpos.getY() > 0)
@@ -76,7 +75,6 @@ public class PathNavigateGround extends PathNavigate
 
             for (blockpos1 = pos.up(); blockpos1.getY() < this.world.getHeight() && this.world.getBlockState(blockpos1).getMaterial().isSolid(); blockpos1 = blockpos1.up())
             {
-                ;
             }
 
             return super.getPathToPos(blockpos1);

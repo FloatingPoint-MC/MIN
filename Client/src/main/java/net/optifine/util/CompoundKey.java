@@ -4,7 +4,7 @@ import net.optifine.Config;
 
 public class CompoundKey
 {
-    private Object[] keys;
+    private final Object[] keys;
     private int hashcode;
 
     public CompoundKey(Object[] keys)
@@ -93,7 +93,7 @@ public class CompoundKey
         }
         else
         {
-            return key2 == null ? false : key1.equals(key2);
+            return key1.equals(key2);
         }
     }
 

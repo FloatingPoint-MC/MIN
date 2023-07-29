@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 import net.optifine.util.CompoundKey;
 
 public class ItemOverrideCache {
-    private ItemOverrideProperty[] itemOverrideProperties;
-    private Map<CompoundKey, ResourceLocation> mapValueModels = new HashMap<CompoundKey, ResourceLocation>();
+    private final ItemOverrideProperty[] itemOverrideProperties;
+    private final Map<CompoundKey, ResourceLocation> mapValueModels = new HashMap<CompoundKey, ResourceLocation>();
     public static final ResourceLocation LOCATION_NULL = new ResourceLocation("");
 
     public ItemOverrideCache(ItemOverrideProperty[] itemOverrideProperties) {
@@ -28,7 +28,7 @@ public class ItemOverrideCache {
 
     public ResourceLocation getModelLocation(ItemStack stack, World world, EntityLivingBase entity) {
         CompoundKey compoundkey = this.getValueKey(stack, world, entity);
-        return compoundkey == null ? null : (ResourceLocation) this.mapValueModels.get(compoundkey);
+        return compoundkey == null ? null : this.mapValueModels.get(compoundkey);
     }
 
     public void putModelLocation(ItemStack stack, World world, EntityLivingBase entity, ResourceLocation location) {
@@ -77,13 +77,13 @@ public class ItemOverrideCache {
             List<ItemOverrideProperty> list = new ArrayList<ItemOverrideProperty>();
 
             for (ResourceLocation resourcelocation1 : map.keySet()) {
-                Set<Float> set1 = (Set) map.get(resourcelocation1);
+                Set<Float> set1 = map.get(resourcelocation1);
                 float[] afloat = Floats.toArray(set1);
                 ItemOverrideProperty itemoverrideproperty = new ItemOverrideProperty(resourcelocation1, afloat);
                 list.add(itemoverrideproperty);
             }
 
-            ItemOverrideProperty[] aitemoverrideproperty = (ItemOverrideProperty[]) list.toArray(new ItemOverrideProperty[list.size()]);
+            ItemOverrideProperty[] aitemoverrideproperty = list.toArray(new ItemOverrideProperty[list.size()]);
             ItemOverrideCache itemoverridecache = new ItemOverrideCache(aitemoverrideproperty);
             logCache(aitemoverrideproperty, overrides);
             return itemoverridecache;
@@ -100,14 +100,14 @@ public class ItemOverrideCache {
                 stringbuffer.append(", ");
             }
 
-            stringbuffer.append("" + itemoverrideproperty.getLocation() + "=" + itemoverrideproperty.getValues().length);
+            stringbuffer.append(itemoverrideproperty.getLocation() + "=" + itemoverrideproperty.getValues().length);
         }
 
         if (overrides.size() > 0) {
-            stringbuffer.append(" -> " + ((ItemOverride) overrides.get(0)).getLocation() + " ...");
+            stringbuffer.append(" -> " + overrides.get(0).getLocation() + " ...");
         }
 
-        Config.dbg("ItemOverrideCache: " + stringbuffer.toString());
+        Config.dbg("ItemOverrideCache: " + stringbuffer);
     }
 
     public String toString() {

@@ -23,7 +23,7 @@ public class CPacketResourcePackStatus implements Packet<INetHandlerPlayServer>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.action = (CPacketResourcePackStatus.Action)buf.readEnumValue(CPacketResourcePackStatus.Action.class);
+        this.action = buf.readEnumValue(Action.class);
     }
 
     /**
@@ -42,11 +42,11 @@ public class CPacketResourcePackStatus implements Packet<INetHandlerPlayServer>
         handler.handleResourcePackStatus(this);
     }
 
-    public static enum Action
+    public enum Action
     {
         SUCCESSFULLY_LOADED,
         DECLINED,
         FAILED_DOWNLOAD,
-        ACCEPTED;
+        ACCEPTED
     }
 }

@@ -12,14 +12,14 @@ import net.minecraft.util.text.ITextComponent;
 
 public class BossInfoServer extends BossInfo
 {
-    private final Set<EntityPlayerMP> players = Sets.<EntityPlayerMP>newHashSet();
+    private final Set<EntityPlayerMP> players = Sets.newHashSet();
     private final Set<EntityPlayerMP> readOnlyPlayers;
     private boolean visible;
 
     public BossInfoServer(ITextComponent nameIn, BossInfo.Color colorIn, BossInfo.Overlay overlayIn)
     {
         super(MathHelper.getRandomUUID(), nameIn, colorIn, overlayIn);
-        this.readOnlyPlayers = Collections.<EntityPlayerMP>unmodifiableSet(this.players);
+        this.readOnlyPlayers = Collections.unmodifiableSet(this.players);
         this.visible = true;
     }
 

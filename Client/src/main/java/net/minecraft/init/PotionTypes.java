@@ -67,7 +67,7 @@ public class PotionTypes
         }
         else
         {
-            CACHE = Sets.<PotionType>newHashSet();
+            CACHE = Sets.newHashSet();
             EMPTY = getRegisteredPotionType("empty");
             WATER = getRegisteredPotionType("water");
             MUNDANE = getRegisteredPotionType("mundane");

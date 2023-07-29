@@ -86,7 +86,7 @@ public class PhaseSittingFlaming extends PhaseSittingBase
                 blockpos$mutableblockpos.setPos(MathHelper.floor(d0), MathHelper.floor(d2), MathHelper.floor(d1));
             }
 
-            d2 = (double)(MathHelper.floor(d2) + 1);
+            d2 = MathHelper.floor(d2) + 1;
             this.areaEffectCloud = new EntityAreaEffectCloud(this.dragon.world, d0, d2, d1);
             this.areaEffectCloud.setOwner(this.dragon);
             this.areaEffectCloud.setRadius(5.0F);

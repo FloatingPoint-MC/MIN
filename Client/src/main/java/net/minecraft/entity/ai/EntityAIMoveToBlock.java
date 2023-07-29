@@ -57,7 +57,7 @@ public abstract class EntityAIMoveToBlock extends EntityAIBase
      */
     public void startExecuting()
     {
-        this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
+        this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, this.destinationBlock.getY() + 1, (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
         this.timeoutCounter = 0;
         this.maxStayTicks = this.creature.getRNG().nextInt(this.creature.getRNG().nextInt(1200) + 1200) + 1200;
     }
@@ -74,7 +74,7 @@ public abstract class EntityAIMoveToBlock extends EntityAIBase
 
             if (this.timeoutCounter % 40 == 0)
             {
-                this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
+                this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, this.destinationBlock.getY() + 1, (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
             }
         }
         else

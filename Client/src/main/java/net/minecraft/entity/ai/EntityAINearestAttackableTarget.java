@@ -37,7 +37,7 @@ public class EntityAINearestAttackableTarget<T extends EntityLivingBase> extends
 
     public EntityAINearestAttackableTarget(EntityCreature creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby)
     {
-        this(creature, classTarget, 10, checkSight, onlyNearby, (Predicate)null);
+        this(creature, classTarget, 10, checkSight, onlyNearby, null);
     }
 
     public EntityAINearestAttackableTarget(EntityCreature creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate <? super T > targetSelector)
@@ -61,7 +61,7 @@ public class EntityAINearestAttackableTarget<T extends EntityLivingBase> extends
                 }
                 else
                 {
-                    return !EntitySelectors.NOT_SPECTATING.apply(p_apply_1_) ? false : EntityAINearestAttackableTarget.this.isSuitableTarget(p_apply_1_, false);
+                    return EntitySelectors.NOT_SPECTATING.apply(p_apply_1_) && EntityAINearestAttackableTarget.this.isSuitableTarget(p_apply_1_, false);
                 }
             }
         };
@@ -78,7 +78,7 @@ public class EntityAINearestAttackableTarget<T extends EntityLivingBase> extends
         }
         else if (this.targetClass != EntityPlayer.class && this.targetClass != EntityPlayerMP.class)
         {
-            List<T> list = this.taskOwner.world.<T>getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<T> list = this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
 
             if (list.isEmpty())
             {

@@ -10,7 +10,7 @@ public class GuiScreenWorking extends GuiScreen implements IProgressUpdate
     private String stage = "";
     private int progress;
     private boolean doneWorking;
-    private CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
+    private final CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
 
     /**
      * Shows the 'Saving level' string.

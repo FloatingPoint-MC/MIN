@@ -68,7 +68,7 @@ public abstract class BlockRailBase extends Block
      */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = state.getBlock() == this ? (BlockRailBase.EnumRailDirection)state.getValue(this.getShapeProperty()) : null;
+        BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = state.getBlock() == this ? state.getValue(this.getShapeProperty()) : null;
         return blockrailbase$enumraildirection != null && blockrailbase$enumraildirection.isAscending() ? ASCENDING_AABB : FLAT_AABB;
     }
 
@@ -129,13 +129,8 @@ public abstract class BlockRailBase extends Block
     {
         if (!worldIn.isRemote)
         {
-            BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = (BlockRailBase.EnumRailDirection)state.getValue(this.getShapeProperty());
-            boolean flag = false;
-
-            if (!worldIn.getBlockState(pos.down()).isTopSolid())
-            {
-                flag = true;
-            }
+            BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = state.getValue(this.getShapeProperty());
+            boolean flag = !worldIn.getBlockState(pos.down()).isTopSolid();
 
             if (blockrailbase$enumraildirection == BlockRailBase.EnumRailDirection.ASCENDING_EAST && !worldIn.getBlockState(pos.east()).isTopSolid())
             {
@@ -199,7 +194,7 @@ public abstract class BlockRailBase extends Block
     {
         super.breakBlock(worldIn, pos, state);
 
-        if (((BlockRailBase.EnumRailDirection)state.getValue(this.getShapeProperty())).isAscending())
+        if (state.getValue(this.getShapeProperty()).isAscending())
         {
             worldIn.notifyNeighborsOfStateChange(pos.up(), this, false);
         }
@@ -213,7 +208,7 @@ public abstract class BlockRailBase extends Block
 
     public abstract IProperty<BlockRailBase.EnumRailDirection> getShapeProperty();
 
-    public static enum EnumRailDirection implements IStringSerializable
+    public enum EnumRailDirection implements IStringSerializable
     {
         NORTH_SOUTH(0, "north_south"),
         EAST_WEST(1, "east_west"),
@@ -230,7 +225,7 @@ public abstract class BlockRailBase extends Block
         private final int meta;
         private final String name;
 
-        private EnumRailDirection(int meta, String name)
+        EnumRailDirection(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -281,7 +276,7 @@ public abstract class BlockRailBase extends Block
         private final BlockRailBase block;
         private IBlockState state;
         private final boolean isPowered;
-        private final List<BlockPos> connectedRails = Lists.<BlockPos>newArrayList();
+        private final List<BlockPos> connectedRails = Lists.newArrayList();
 
         public Rail(World worldIn, BlockPos pos, IBlockState state)
         {
@@ -289,7 +284,7 @@ public abstract class BlockRailBase extends Block
             this.pos = pos;
             this.state = state;
             this.block = (BlockRailBase)state.getBlock();
-            BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = (BlockRailBase.EnumRailDirection)state.getValue(this.block.getShapeProperty());
+            BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = state.getValue(this.block.getShapeProperty());
             this.isPowered = this.block.isPowered;
             this.updateConnectedRails(blockrailbase$enumraildirection);
         }

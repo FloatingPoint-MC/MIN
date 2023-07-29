@@ -12,7 +12,7 @@ public class GuiSlider extends GuiButton
     private final float min;
     private final float max;
     private final GuiPageButtonList.GuiResponder responder;
-    private GuiSlider.FormatHelper formatHelper;
+    private final GuiSlider.FormatHelper formatHelper;
 
     public GuiSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, String nameIn, float minIn, float maxIn, float defaultValue, GuiSlider.FormatHelper formatter)
     {

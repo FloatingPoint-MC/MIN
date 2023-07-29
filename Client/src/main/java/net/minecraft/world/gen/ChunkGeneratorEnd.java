@@ -87,13 +87,13 @@ public class ChunkGeneratorEnd implements IChunkGenerator
                 for (int k1 = 0; k1 < 32; ++k1)
                 {
                     double d0 = 0.25D;
-                    double d1 = this.buffer[((i1 + 0) * 3 + j1 + 0) * 33 + k1 + 0];
-                    double d2 = this.buffer[((i1 + 0) * 3 + j1 + 1) * 33 + k1 + 0];
-                    double d3 = this.buffer[((i1 + 1) * 3 + j1 + 0) * 33 + k1 + 0];
-                    double d4 = this.buffer[((i1 + 1) * 3 + j1 + 1) * 33 + k1 + 0];
-                    double d5 = (this.buffer[((i1 + 0) * 3 + j1 + 0) * 33 + k1 + 1] - d1) * 0.25D;
-                    double d6 = (this.buffer[((i1 + 0) * 3 + j1 + 1) * 33 + k1 + 1] - d2) * 0.25D;
-                    double d7 = (this.buffer[((i1 + 1) * 3 + j1 + 0) * 33 + k1 + 1] - d3) * 0.25D;
+                    double d1 = this.buffer[((i1) * 3 + j1) * 33 + k1];
+                    double d2 = this.buffer[((i1) * 3 + j1 + 1) * 33 + k1];
+                    double d3 = this.buffer[((i1 + 1) * 3 + j1) * 33 + k1];
+                    double d4 = this.buffer[((i1 + 1) * 3 + j1 + 1) * 33 + k1];
+                    double d5 = (this.buffer[((i1) * 3 + j1) * 33 + k1 + 1] - d1) * 0.25D;
+                    double d6 = (this.buffer[((i1) * 3 + j1 + 1) * 33 + k1 + 1] - d2) * 0.25D;
+                    double d7 = (this.buffer[((i1 + 1) * 3 + j1) * 33 + k1 + 1] - d3) * 0.25D;
                     double d8 = (this.buffer[((i1 + 1) * 3 + j1 + 1) * 33 + k1 + 1] - d4) * 0.25D;
 
                     for (int l1 = 0; l1 < 4; ++l1)
@@ -233,8 +233,8 @@ public class ChunkGeneratorEnd implements IChunkGenerator
         {
             for (int j = -12; j <= 12; ++j)
             {
-                long k = (long)(p_185960_1_ + i);
-                long l = (long)(p_185960_2_ + j);
+                long k = p_185960_1_ + i;
+                long l = p_185960_2_ + j;
 
                 if (k * k + l * l > 4096L && this.islandNoise.getValue((double)k, (double)l) < -0.8999999761581421D)
                 {
@@ -318,7 +318,7 @@ public class ChunkGeneratorEnd implements IChunkGenerator
 
                     if (j1 > p_185963_6_ / 2 - k1)
                     {
-                        double d6 = (double)((float)(j1 - (p_185963_6_ / 2 - k1)) / 64.0F);
+                        double d6 = (float)(j1 - (p_185963_6_ / 2 - k1)) / 64.0F;
                         d6 = MathHelper.clamp(d6, 0.0D, 1.0D);
                         d4 = d4 * (1.0D - d6) + -3000.0D * d6;
                     }
@@ -327,7 +327,7 @@ public class ChunkGeneratorEnd implements IChunkGenerator
 
                     if (j1 < k1)
                     {
-                        double d7 = (double)((float)(k1 - j1) / ((float)k1 - 1.0F));
+                        double d7 = (float)(k1 - j1) / ((float)k1 - 1.0F);
                         d4 = d4 * (1.0D - d7) + -30.0D * d7;
                     }
 
@@ -441,7 +441,7 @@ public class ChunkGeneratorEnd implements IChunkGenerator
 
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
-        return "EndCity".equals(structureName) && this.endCityGen != null ? this.endCityGen.isInsideStructure(pos) : false;
+        return "EndCity".equals(structureName) && this.endCityGen != null && this.endCityGen.isInsideStructure(pos);
     }
 
     /**

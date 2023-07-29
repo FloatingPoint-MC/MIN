@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public abstract class AbstractIllager extends EntityMob
 {
-    protected static final DataParameter<Byte> AGGRESSIVE = EntityDataManager.<Byte>createKey(AbstractIllager.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> AGGRESSIVE = EntityDataManager.createKey(AbstractIllager.class, DataSerializers.BYTE);
 
     public AbstractIllager(World p_i47509_1_)
     {
@@ -23,13 +23,13 @@ public abstract class AbstractIllager extends EntityMob
 
     protected boolean isAggressive(int mask)
     {
-        int i = ((Byte)this.dataManager.get(AGGRESSIVE)).byteValue();
+        int i = this.dataManager.get(AGGRESSIVE).byteValue();
         return (i & mask) != 0;
     }
 
     protected void setAggressive(int mask, boolean value)
     {
-        int i = ((Byte)this.dataManager.get(AGGRESSIVE)).byteValue();
+        int i = this.dataManager.get(AGGRESSIVE).byteValue();
 
         if (value)
         {
@@ -56,11 +56,11 @@ public abstract class AbstractIllager extends EntityMob
         return AbstractIllager.IllagerArmPose.CROSSED;
     }
 
-    public static enum IllagerArmPose
+    public enum IllagerArmPose
     {
         CROSSED,
         ATTACKING,
         SPELLCASTING,
-        BOW_AND_ARROW;
+        BOW_AND_ARROW
     }
 }

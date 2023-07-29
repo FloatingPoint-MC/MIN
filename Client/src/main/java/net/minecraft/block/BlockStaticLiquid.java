@@ -114,6 +114,6 @@ public class BlockStaticLiquid extends BlockLiquid
 
     private boolean getCanBlockBurn(World worldIn, BlockPos pos)
     {
-        return pos.getY() >= 0 && pos.getY() < 256 && !worldIn.isBlockLoaded(pos) ? false : worldIn.getBlockState(pos).getMaterial().getCanBurn();
+        return (pos.getY() < 0 || pos.getY() >= 256 || worldIn.isBlockLoaded(pos)) && worldIn.getBlockState(pos).getMaterial().getCanBurn();
     }
 }

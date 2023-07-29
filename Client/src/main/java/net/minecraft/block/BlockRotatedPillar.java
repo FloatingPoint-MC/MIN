@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BlockRotatedPillar extends Block
 {
-    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.<EnumFacing.Axis>create("axis", EnumFacing.Axis.class);
+    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
     protected BlockRotatedPillar(Material materialIn)
     {
@@ -40,7 +40,7 @@ public class BlockRotatedPillar extends Block
         {
             case COUNTERCLOCKWISE_90:
             case CLOCKWISE_90:
-                switch ((EnumFacing.Axis)state.getValue(AXIS))
+                switch (state.getValue(AXIS))
                 {
                     case X:
                         return state.withProperty(AXIS, EnumFacing.Axis.Z);
@@ -83,7 +83,7 @@ public class BlockRotatedPillar extends Block
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        EnumFacing.Axis enumfacing$axis = (EnumFacing.Axis)state.getValue(AXIS);
+        EnumFacing.Axis enumfacing$axis = state.getValue(AXIS);
 
         if (enumfacing$axis == EnumFacing.Axis.X)
         {
@@ -99,7 +99,7 @@ public class BlockRotatedPillar extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AXIS});
+        return new BlockStateContainer(this, AXIS);
     }
 
     protected ItemStack getSilkTouchDrop(IBlockState state)

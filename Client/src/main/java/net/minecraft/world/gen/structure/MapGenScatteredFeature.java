@@ -15,7 +15,7 @@ import net.minecraft.world.biome.Biome;
 
 public class MapGenScatteredFeature extends MapGenStructure
 {
-    private static final List<Biome> BIOMELIST = Arrays.<Biome>asList(Biomes.DESERT, Biomes.DESERT_HILLS, Biomes.JUNGLE, Biomes.JUNGLE_HILLS, Biomes.SWAMPLAND, Biomes.ICE_PLAINS, Biomes.COLD_TAIGA);
+    private static final List<Biome> BIOMELIST = Arrays.asList(Biomes.DESERT, Biomes.DESERT_HILLS, Biomes.JUNGLE, Biomes.JUNGLE_HILLS, Biomes.SWAMPLAND, Biomes.ICE_PLAINS, Biomes.COLD_TAIGA);
     private final List<Biome.SpawnListEntry> monsters;
 
     /** the maximum distance between scattered features */
@@ -26,7 +26,7 @@ public class MapGenScatteredFeature extends MapGenStructure
 
     public MapGenScatteredFeature()
     {
-        this.monsters = Lists.<Biome.SpawnListEntry>newArrayList();
+        this.monsters = Lists.newArrayList();
         this.maxDistanceBetweenScatteredFeatures = 32;
         this.minDistanceBetweenScatteredFeatures = 8;
         this.monsters.add(new Biome.SpawnListEntry(EntityWitch.class, 1, 1, 1));
@@ -38,7 +38,7 @@ public class MapGenScatteredFeature extends MapGenStructure
 
         for (Entry<String, String> entry : p_i2061_1_.entrySet())
         {
-            if (((String)entry.getKey()).equals("distance"))
+            if (entry.getKey().equals("distance"))
             {
                 this.maxDistanceBetweenScatteredFeatures = MathHelper.getInt(entry.getValue(), this.maxDistanceBetweenScatteredFeatures, 9);
             }

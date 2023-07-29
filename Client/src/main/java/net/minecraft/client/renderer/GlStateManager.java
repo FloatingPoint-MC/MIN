@@ -43,10 +43,10 @@ public class GlStateManager
     private static final GlStateManager.ColorMask colorMaskState;
     private static final GlStateManager.Color colorState;
     public static boolean clearEnabled = true;
-    private static LockCounter alphaLock = new LockCounter();
-    private static GlAlphaState alphaLockState = new GlAlphaState();
-    private static LockCounter blendLock = new LockCounter();
-    private static GlBlendState blendLockState = new GlBlendState();
+    private static final LockCounter alphaLock = new LockCounter();
+    private static final GlAlphaState alphaLockState = new GlAlphaState();
+    private static final LockCounter blendLock = new LockCounter();
+    private static final GlBlendState blendLockState = new GlBlendState();
     private static boolean creatingDisplayList = false;
 
     /**
@@ -819,7 +819,7 @@ public class GlStateManager
 
     public static void glTexCoordPointer(int size, int type, int stride, int buffer_offset)
     {
-        GL11.glTexCoordPointer(size, type, stride, (long)buffer_offset);
+        GL11.glTexCoordPointer(size, type, stride, buffer_offset);
     }
 
     public static void glTexCoordPointer(int size, int type, int stride, ByteBuffer buffer)
@@ -829,7 +829,7 @@ public class GlStateManager
 
     public static void glVertexPointer(int size, int type, int stride, int buffer_offset)
     {
-        GL11.glVertexPointer(size, type, stride, (long)buffer_offset);
+        GL11.glVertexPointer(size, type, stride, buffer_offset);
     }
 
     public static void glVertexPointer(int size, int type, int stride, ByteBuffer buffer)
@@ -839,7 +839,7 @@ public class GlStateManager
 
     public static void glColorPointer(int size, int type, int stride, int buffer_offset)
     {
-        GL11.glColorPointer(size, type, stride, (long)buffer_offset);
+        GL11.glColorPointer(size, type, stride, buffer_offset);
     }
 
     public static void glColorPointer(int size, int type, int stride, ByteBuffer buffer)
@@ -1349,7 +1349,7 @@ public class GlStateManager
         }
     }
 
-    public static enum CullFace
+    public enum CullFace
     {
         FRONT(1028),
         BACK(1029),
@@ -1357,7 +1357,7 @@ public class GlStateManager
 
         public final int mode;
 
-        private CullFace(int modeIn)
+        CullFace(int modeIn)
         {
             this.mode = modeIn;
         }
@@ -1389,7 +1389,7 @@ public class GlStateManager
         }
     }
 
-    public static enum DestFactor
+    public enum DestFactor
     {
         CONSTANT_ALPHA(32771),
         CONSTANT_COLOR(32769),
@@ -1408,13 +1408,13 @@ public class GlStateManager
 
         public final int factor;
 
-        private DestFactor(int factorIn)
+        DestFactor(int factorIn)
         {
             this.factor = factorIn;
         }
     }
 
-    public static enum FogMode
+    public enum FogMode
     {
         LINEAR(9729),
         EXP(2048),
@@ -1422,7 +1422,7 @@ public class GlStateManager
 
         public final int capabilityId;
 
-        private FogMode(int capabilityIn)
+        FogMode(int capabilityIn)
         {
             this.capabilityId = capabilityIn;
         }
@@ -1445,7 +1445,7 @@ public class GlStateManager
         }
     }
 
-    public static enum LogicOp
+    public enum LogicOp
     {
         AND(5377),
         AND_INVERTED(5380),
@@ -1466,7 +1466,7 @@ public class GlStateManager
 
         public final int opcode;
 
-        private LogicOp(int opcodeIn)
+        LogicOp(int opcodeIn)
         {
             this.opcode = opcodeIn;
         }
@@ -1486,7 +1486,7 @@ public class GlStateManager
         }
     }
 
-    public static enum Profile
+    public enum Profile
     {
         DEFAULT {
             public void apply()
@@ -1626,7 +1626,7 @@ public class GlStateManager
             }
         };
 
-        private Profile()
+        Profile()
         {
         }
 
@@ -1635,7 +1635,7 @@ public class GlStateManager
         public abstract void clean();
     }
 
-    public static enum SourceFactor
+    public enum SourceFactor
     {
         CONSTANT_ALPHA(32771),
         CONSTANT_COLOR(32769),
@@ -1655,7 +1655,7 @@ public class GlStateManager
 
         public final int factor;
 
-        private SourceFactor(int factorIn)
+        SourceFactor(int factorIn)
         {
             this.factor = factorIn;
         }
@@ -1691,12 +1691,12 @@ public class GlStateManager
         }
     }
 
-    public static enum TexGen
+    public enum TexGen
     {
         S,
         T,
         R,
-        Q;
+        Q
     }
 
     static class TexGenCoord

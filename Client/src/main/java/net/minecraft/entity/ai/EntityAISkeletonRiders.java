@@ -54,7 +54,7 @@ public class EntityAISkeletonRiders extends EntityAIBase
     private AbstractHorse createHorse(DifficultyInstance p_188515_1_)
     {
         EntitySkeletonHorse entityskeletonhorse = new EntitySkeletonHorse(this.horse.world);
-        entityskeletonhorse.onInitialSpawn(p_188515_1_, (IEntityLivingData)null);
+        entityskeletonhorse.onInitialSpawn(p_188515_1_, null);
         entityskeletonhorse.setPosition(this.horse.posX, this.horse.posY, this.horse.posZ);
         entityskeletonhorse.hurtResistantTime = 60;
         entityskeletonhorse.enablePersistence();
@@ -67,7 +67,7 @@ public class EntityAISkeletonRiders extends EntityAIBase
     private EntitySkeleton createSkeleton(DifficultyInstance p_188514_1_, AbstractHorse p_188514_2_)
     {
         EntitySkeleton entityskeleton = new EntitySkeleton(p_188514_2_.world);
-        entityskeleton.onInitialSpawn(p_188514_1_, (IEntityLivingData)null);
+        entityskeleton.onInitialSpawn(p_188514_1_, null);
         entityskeleton.setPosition(p_188514_2_.posX, p_188514_2_.posY, p_188514_2_.posZ);
         entityskeleton.hurtResistantTime = 60;
         entityskeleton.enablePersistence();

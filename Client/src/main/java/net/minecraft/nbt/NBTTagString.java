@@ -33,7 +33,7 @@ public class NBTTagString extends NBTBase
     {
         sizeTracker.read(288L);
         this.data = input.readUTF();
-        sizeTracker.read((long)(16 * this.data.length()));
+        sizeTracker.read(16L * this.data.length());
     }
 
     /**

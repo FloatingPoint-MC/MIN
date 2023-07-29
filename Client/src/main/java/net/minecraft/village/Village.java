@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 public class Village
 {
     private World world;
-    private final List<VillageDoorInfo> villageDoorInfoList = Lists.<VillageDoorInfo>newArrayList();
+    private final List<VillageDoorInfo> villageDoorInfoList = Lists.newArrayList();
 
     /**
      * This is the sum of all door coordinates and used to calculate the actual village center by dividing by the number
@@ -46,8 +46,8 @@ public class Village
 
     /** Timestamp of tick count when villager last bred */
     private int noBreedTicks;
-    private final Map<String, Integer> playerReputation = Maps.<String, Integer>newHashMap();
-    private final List<Village.VillageAggressor> villageAgressors = Lists.<Village.VillageAggressor>newArrayList();
+    private final Map<String, Integer> playerReputation = Maps.newHashMap();
+    private final List<Village.VillageAggressor> villageAgressors = Lists.newArrayList();
     private int numIronGolems;
 
     public Village()
@@ -107,7 +107,7 @@ public class Village
 
             if (this.isBlockPosWithinSqVillageRadius(blockpos) && this.isAreaClearAround(new BlockPos(x, y, z), blockpos))
             {
-                return new Vec3d((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
+                return new Vec3d(blockpos.getX(), blockpos.getY(), blockpos.getZ());
             }
         }
 
@@ -148,13 +148,13 @@ public class Village
 
     private void updateNumIronGolems()
     {
-        List<EntityIronGolem> list = this.world.<EntityIronGolem>getEntitiesWithinAABB(EntityIronGolem.class, new AxisAlignedBB((double)(this.center.getX() - this.villageRadius), (double)(this.center.getY() - 4), (double)(this.center.getZ() - this.villageRadius), (double)(this.center.getX() + this.villageRadius), (double)(this.center.getY() + 4), (double)(this.center.getZ() + this.villageRadius)));
+        List<EntityIronGolem> list = this.world.getEntitiesWithinAABB(EntityIronGolem.class, new AxisAlignedBB(this.center.getX() - this.villageRadius, this.center.getY() - 4, this.center.getZ() - this.villageRadius, this.center.getX() + this.villageRadius, this.center.getY() + 4, this.center.getZ() + this.villageRadius));
         this.numIronGolems = list.size();
     }
 
     private void updateNumVillagers()
     {
-        List<EntityVillager> list = this.world.<EntityVillager>getEntitiesWithinAABB(EntityVillager.class, new AxisAlignedBB((double)(this.center.getX() - this.villageRadius), (double)(this.center.getY() - 4), (double)(this.center.getZ() - this.villageRadius), (double)(this.center.getX() + this.villageRadius), (double)(this.center.getY() + 4), (double)(this.center.getZ() + this.villageRadius)));
+        List<EntityVillager> list = this.world.getEntitiesWithinAABB(EntityVillager.class, new AxisAlignedBB(this.center.getX() - this.villageRadius, this.center.getY() - 4, this.center.getZ() - this.villageRadius, this.center.getX() + this.villageRadius, this.center.getY() + 4, this.center.getZ() + this.villageRadius));
         this.numVillagers = list.size();
 
         if (this.numVillagers == 0)
@@ -444,7 +444,7 @@ public class Village
                 j = Math.max(villagedoorinfo.getDistanceToDoorBlockSq(this.center), j);
             }
 
-            this.villageRadius = Math.max(32, (int)Math.sqrt((double)j) + 1);
+            this.villageRadius = Math.max(32, (int)Math.sqrt(j) + 1);
         }
     }
 
@@ -568,13 +568,12 @@ public class Village
                 if (gameprofile != null)
                 {
                     nbttagcompound1.setString("UUID", gameprofile.getId().toString());
-                    nbttagcompound1.setInteger("S", ((Integer)this.playerReputation.get(s)).intValue());
+                    nbttagcompound1.setInteger("S", this.playerReputation.get(s).intValue());
                     nbttaglist1.appendTag(nbttagcompound1);
                 }
             }
             catch (RuntimeException var9)
             {
-                ;
             }
         }
 

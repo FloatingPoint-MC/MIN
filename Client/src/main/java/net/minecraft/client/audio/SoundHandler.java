@@ -81,19 +81,18 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
                     }
                     catch (RuntimeException runtimeexception)
                     {
-                        LOGGER.warn("Invalid sounds.json", (Throwable)runtimeexception);
+                        LOGGER.warn("Invalid sounds.json", runtimeexception);
                     }
                 }
             }
             catch (IOException var11)
             {
-                ;
             }
         }
 
         for (ResourceLocation resourcelocation : this.soundRegistry.getKeys())
         {
-            SoundEventAccessor soundeventaccessor = (SoundEventAccessor)this.soundRegistry.getObject(resourcelocation);
+            SoundEventAccessor soundeventaccessor = this.soundRegistry.getObject(resourcelocation);
 
             if (soundeventaccessor.getSubtitle() instanceof TextComponentTranslation)
             {
@@ -110,7 +109,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
         {
             if (SoundEvent.REGISTRY.getObject(resourcelocation1) == null)
             {
-                LOGGER.debug("Not having sound event for: {}", (Object)resourcelocation1);
+                LOGGER.debug("Not having sound event for: {}", resourcelocation1);
             }
         }
 
@@ -124,7 +123,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
 
         try
         {
-            map = (Map)JsonUtils.fromJson(GSON, new InputStreamReader(stream, StandardCharsets.UTF_8), TYPE);
+            map = JsonUtils.fromJson(GSON, new InputStreamReader(stream, StandardCharsets.UTF_8), TYPE);
         }
         finally
         {
@@ -136,14 +135,14 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
 
     private void loadSoundResource(ResourceLocation location, SoundList sounds)
     {
-        SoundEventAccessor soundeventaccessor = (SoundEventAccessor)this.soundRegistry.getObject(location);
+        SoundEventAccessor soundeventaccessor = this.soundRegistry.getObject(location);
         boolean flag = soundeventaccessor == null;
 
         if (flag || sounds.canReplaceExisting())
         {
             if (!flag)
             {
-                LOGGER.debug("Replaced sound event location {}", (Object)location);
+                LOGGER.debug("Replaced sound event location {}", location);
             }
 
             soundeventaccessor = new SoundEventAccessor(location, sounds.getSubtitle());
@@ -171,12 +170,12 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
                     {
                         public int getWeight()
                         {
-                            SoundEventAccessor soundeventaccessor1 = (SoundEventAccessor)SoundHandler.this.soundRegistry.getObject(resourcelocation);
+                            SoundEventAccessor soundeventaccessor1 = SoundHandler.this.soundRegistry.getObject(resourcelocation);
                             return soundeventaccessor1 == null ? 0 : soundeventaccessor1.getWeight();
                         }
                         public Sound cloneEntry()
                         {
-                            SoundEventAccessor soundeventaccessor1 = (SoundEventAccessor)SoundHandler.this.soundRegistry.getObject(resourcelocation);
+                            SoundEventAccessor soundeventaccessor1 = SoundHandler.this.soundRegistry.getObject(resourcelocation);
 
                             if (soundeventaccessor1 == null)
                             {
@@ -224,7 +223,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
         }
         finally
         {
-            IOUtils.closeQuietly((Closeable)iresource);
+            IOUtils.closeQuietly(iresource);
         }
 
         return flag;
@@ -233,7 +232,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
     @Nullable
     public SoundEventAccessor getAccessor(ResourceLocation location)
     {
-        return (SoundEventAccessor)this.soundRegistry.getObject(location);
+        return this.soundRegistry.getObject(location);
     }
 
     /**

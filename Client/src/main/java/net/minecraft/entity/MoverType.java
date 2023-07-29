@@ -6,5 +6,5 @@ public enum MoverType
     PLAYER,
     PISTON,
     SHULKER_BOX,
-    SHULKER;
+    SHULKER
 }

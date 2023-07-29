@@ -18,7 +18,7 @@ import net.minecraft.world.WorldServer;
 public class NetherTravelTrigger implements ICriterionTrigger<NetherTravelTrigger.Instance>
 {
     private static final ResourceLocation ID = new ResourceLocation("nether_travel");
-    private final Map<PlayerAdvancements, NetherTravelTrigger.Listeners> listeners = Maps.<PlayerAdvancements, NetherTravelTrigger.Listeners>newHashMap();
+    private final Map<PlayerAdvancements, NetherTravelTrigger.Listeners> listeners = Maps.newHashMap();
 
     public ResourceLocation getId()
     {
@@ -113,7 +113,7 @@ public class NetherTravelTrigger implements ICriterionTrigger<NetherTravelTrigge
     static class Listeners
     {
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<NetherTravelTrigger.Instance>> listeners = Sets.<ICriterionTrigger.Listener<NetherTravelTrigger.Instance>>newHashSet();
+        private final Set<ICriterionTrigger.Listener<NetherTravelTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
@@ -141,11 +141,11 @@ public class NetherTravelTrigger implements ICriterionTrigger<NetherTravelTrigge
 
             for (ICriterionTrigger.Listener<NetherTravelTrigger.Instance> listener : this.listeners)
             {
-                if (((NetherTravelTrigger.Instance)listener.getCriterionInstance()).test(world, enteredNetherPosition, x, y, z))
+                if (listener.getCriterionInstance().test(world, enteredNetherPosition, x, y, z))
                 {
                     if (list == null)
                     {
-                        list = Lists.<ICriterionTrigger.Listener<NetherTravelTrigger.Instance>>newArrayList();
+                        list = Lists.newArrayList();
                     }
 
                     list.add(listener);

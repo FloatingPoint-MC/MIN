@@ -59,7 +59,7 @@ public class SPacketCombatEvent implements Packet<INetHandlerPlayClient>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.eventType = (SPacketCombatEvent.Event)buf.readEnumValue(SPacketCombatEvent.Event.class);
+        this.eventType = buf.readEnumValue(Event.class);
 
         if (this.eventType == SPacketCombatEvent.Event.END_COMBAT)
         {
@@ -102,10 +102,10 @@ public class SPacketCombatEvent implements Packet<INetHandlerPlayClient>
         handler.handleCombatEvent(this);
     }
 
-    public static enum Event
+    public enum Event
     {
         ENTER_COMBAT,
         END_COMBAT,
-        ENTITY_DIED;
+        ENTITY_DIED
     }
 }

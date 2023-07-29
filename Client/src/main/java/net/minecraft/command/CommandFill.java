@@ -50,7 +50,7 @@ public class CommandFill extends CommandBase
     {
         if (args.length < 7)
         {
-            throw new WrongUsageException("commands.fill.usage", new Object[0]);
+            throw new WrongUsageException("commands.fill.usage");
         }
         else
         {
@@ -75,7 +75,7 @@ public class CommandFill extends CommandBase
 
             if (i > 32768)
             {
-                throw new CommandException("commands.fill.tooManyBlocks", new Object[] {i, Integer.valueOf(32768)});
+                throw new CommandException("commands.fill.tooManyBlocks", i, Integer.valueOf(32768));
             }
             else if (blockpos2.getY() >= 0 && blockpos3.getY() < 256)
             {
@@ -87,7 +87,7 @@ public class CommandFill extends CommandBase
                     {
                         if (!world.isBlockLoaded(new BlockPos(k, blockpos3.getY() - blockpos2.getY(), j)))
                         {
-                            throw new CommandException("commands.fill.outOfWorld", new Object[0]);
+                            throw new CommandException("commands.fill.outOfWorld");
                         }
                     }
                 }
@@ -106,11 +106,11 @@ public class CommandFill extends CommandBase
                     }
                     catch (NBTException nbtexception)
                     {
-                        throw new CommandException("commands.fill.tagError", new Object[] {nbtexception.getMessage()});
+                        throw new CommandException("commands.fill.tagError", nbtexception.getMessage());
                     }
                 }
 
-                List<BlockPos> list = Lists.<BlockPos>newArrayList();
+                List<BlockPos> list = Lists.newArrayList();
                 i = 0;
 
                 for (int l = blockpos2.getZ(); l <= blockpos3.getZ(); ++l)
@@ -195,17 +195,17 @@ public class CommandFill extends CommandBase
 
                 if (i <= 0)
                 {
-                    throw new CommandException("commands.fill.failed", new Object[0]);
+                    throw new CommandException("commands.fill.failed");
                 }
                 else
                 {
                     sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, i);
-                    notifyCommandListener(sender, this, "commands.fill.success", new Object[] {i});
+                    notifyCommandListener(sender, this, "commands.fill.success", i);
                 }
             }
             else
             {
-                throw new CommandException("commands.fill.outOfWorld", new Object[0]);
+                throw new CommandException("commands.fill.outOfWorld");
             }
         }
     }
@@ -226,7 +226,7 @@ public class CommandFill extends CommandBase
         }
         else if (args.length == 9)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"replace", "destroy", "keep", "hollow", "outline"});
+            return getListOfStringsMatchingLastWord(args, "replace", "destroy", "keep", "hollow", "outline");
         }
         else
         {

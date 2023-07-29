@@ -28,7 +28,7 @@ public class RenderRabbit extends RenderLiving<EntityRabbit>
     {
         String s = TextFormatting.getTextWithoutFormattingCodes(entity.getName());
 
-        if (s != null && "Toast".equals(s))
+        if ("Toast".equals(s))
         {
             return TOAST;
         }

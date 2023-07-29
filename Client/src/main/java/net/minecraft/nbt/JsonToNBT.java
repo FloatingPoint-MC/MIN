@@ -138,7 +138,6 @@ public class JsonToNBT
         }
         catch (NumberFormatException var3)
         {
-            ;
         }
 
         return new NBTTagString(stringIn);
@@ -198,7 +197,6 @@ public class JsonToNBT
 
         for (i = this.cursor; this.canRead() && this.isAllowedInKey(this.peek()); ++this.cursor)
         {
-            ;
         }
 
         return this.string.substring(i, this.cursor);
@@ -342,7 +340,7 @@ public class JsonToNBT
 
     private <T extends Number> List<T> readArray(byte p_193603_1_, byte p_193603_2_) throws NBTException
     {
-        List<T> list = Lists.<T>newArrayList();
+        List<T> list = Lists.newArrayList();
 
         while (true)
         {

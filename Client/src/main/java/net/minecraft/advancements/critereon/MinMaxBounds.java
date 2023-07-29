@@ -7,7 +7,7 @@ import net.minecraft.util.JsonUtils;
 
 public class MinMaxBounds
 {
-    public static final MinMaxBounds UNBOUNDED = new MinMaxBounds((Float)null, (Float)null);
+    public static final MinMaxBounds UNBOUNDED = new MinMaxBounds(null, null);
     private final Float min;
     private final Float max;
 

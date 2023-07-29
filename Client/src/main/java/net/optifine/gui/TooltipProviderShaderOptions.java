@@ -46,7 +46,7 @@ public class TooltipProviderShaderOptions extends TooltipProviderOptions
 
         if (so.getPaths() != null && gamesettings.advancedItemTooltips)
         {
-            s3 = "\u00a78" + Lang.get("of.general.from") + ": " + Config.arrayToString((Object[])so.getPaths());
+            s3 = "\u00a78" + Lang.get("of.general.from") + ": " + Config.arrayToString(so.getPaths());
         }
 
         String s4 = null;
@@ -119,7 +119,7 @@ public class TooltipProviderShaderOptions extends TooltipProviderOptions
             }
         }
 
-        String[] astring = (String[])list.toArray(new String[list.size()]);
+        String[] astring = list.toArray(new String[list.size()]);
         return astring;
     }
 }

@@ -56,7 +56,7 @@ public class BiomeTaiga extends Biome
         }
         else
         {
-            return (WorldGenAbstractTree)(rand.nextInt(3) == 0 ? PINE_GENERATOR : SPRUCE_GENERATOR);
+            return rand.nextInt(3) == 0 ? PINE_GENERATOR : SPRUCE_GENERATOR;
         }
     }
 
@@ -116,10 +116,10 @@ public class BiomeTaiga extends Biome
         this.generateBiomeTerrain(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
     }
 
-    public static enum Type
+    public enum Type
     {
         NORMAL,
         MEGA,
-        MEGA_SPRUCE;
+        MEGA_SPRUCE
     }
 }

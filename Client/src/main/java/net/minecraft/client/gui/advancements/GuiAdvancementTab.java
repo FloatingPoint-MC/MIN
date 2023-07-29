@@ -25,7 +25,7 @@ public class GuiAdvancementTab extends Gui
     private final ItemStack icon;
     private final String title;
     private final GuiAdvancement root;
-    private final Map<Advancement, GuiAdvancement> guis = Maps.<Advancement, GuiAdvancement>newLinkedHashMap();
+    private final Map<Advancement, GuiAdvancement> guis = Maps.newLinkedHashMap();
     private int scrollX;
     private int scrollY;
     private int minX = Integer.MAX_VALUE;

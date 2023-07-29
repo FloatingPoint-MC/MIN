@@ -29,7 +29,7 @@ public class SPacketMaps implements Packet<INetHandlerPlayClient>
         this.mapId = mapIdIn;
         this.mapScale = mapScaleIn;
         this.trackingPosition = trackingPositionIn;
-        this.icons = (MapDecoration[])iconsIn.toArray(new MapDecoration[iconsIn.size()]);
+        this.icons = iconsIn.toArray(new MapDecoration[iconsIn.size()]);
         this.minX = minXIn;
         this.minZ = minZIn;
         this.columns = columnsIn;
@@ -57,7 +57,7 @@ public class SPacketMaps implements Packet<INetHandlerPlayClient>
 
         for (int i = 0; i < this.icons.length; ++i)
         {
-            short short1 = (short)buf.readByte();
+            short short1 = buf.readByte();
             this.icons[i] = new MapDecoration(MapDecoration.Type.byIcon((byte)(short1 >> 4 & 15)), buf.readByte(), buf.readByte(), (byte)(short1 & 15));
         }
 

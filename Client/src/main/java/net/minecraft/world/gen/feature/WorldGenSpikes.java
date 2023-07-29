@@ -37,7 +37,7 @@ public class WorldGenSpikes extends WorldGenerator
 
             for (BlockPos.MutableBlockPos blockpos$mutableblockpos : BlockPos.getAllInBoxMutable(new BlockPos(position.getX() - i, 0, position.getZ() - i), new BlockPos(position.getX() + i, this.spike.getHeight() + 10, position.getZ() + i)))
             {
-                if (blockpos$mutableblockpos.distanceSq((double)position.getX(), (double)blockpos$mutableblockpos.getY(), (double)position.getZ()) <= (double)(i * i + 1) && blockpos$mutableblockpos.getY() < this.spike.getHeight())
+                if (blockpos$mutableblockpos.distanceSq(position.getX(), blockpos$mutableblockpos.getY(), position.getZ()) <= (double)(i * i + 1) && blockpos$mutableblockpos.getY() < this.spike.getHeight())
                 {
                     this.setBlockAndNotifyAdequately(worldIn, blockpos$mutableblockpos, Blocks.OBSIDIAN.getDefaultState());
                 }
@@ -68,7 +68,7 @@ public class WorldGenSpikes extends WorldGenerator
             EntityEnderCrystal entityendercrystal = new EntityEnderCrystal(worldIn);
             entityendercrystal.setBeamTarget(this.beamTarget);
             entityendercrystal.setEntityInvulnerable(this.crystalInvulnerable);
-            entityendercrystal.setLocationAndAngles((double)((float)position.getX() + 0.5F), (double)(this.spike.getHeight() + 1), (double)((float)position.getZ() + 0.5F), rand.nextFloat() * 360.0F, 0.0F);
+            entityendercrystal.setLocationAndAngles((float)position.getX() + 0.5F, this.spike.getHeight() + 1, (float)position.getZ() + 0.5F, rand.nextFloat() * 360.0F, 0.0F);
             worldIn.spawnEntity(entityendercrystal);
             this.setBlockAndNotifyAdequately(worldIn, new BlockPos(position.getX(), this.spike.getHeight(), position.getZ()), Blocks.BEDROCK.getDefaultState());
             return true;
@@ -100,7 +100,7 @@ public class WorldGenSpikes extends WorldGenerator
             this.radius = p_i47020_3_;
             this.height = p_i47020_4_;
             this.guarded = p_i47020_5_;
-            this.topBoundingBox = new AxisAlignedBB((double)(p_i47020_1_ - p_i47020_3_), 0.0D, (double)(p_i47020_2_ - p_i47020_3_), (double)(p_i47020_1_ + p_i47020_3_), 256.0D, (double)(p_i47020_2_ + p_i47020_3_));
+            this.topBoundingBox = new AxisAlignedBB(p_i47020_1_ - p_i47020_3_, 0.0D, p_i47020_2_ - p_i47020_3_, p_i47020_1_ + p_i47020_3_, 256.0D, p_i47020_2_ + p_i47020_3_);
         }
 
         public boolean doesStartInChunk(BlockPos p_186154_1_)

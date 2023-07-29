@@ -2,11 +2,8 @@ package net.minecraft.world.gen.structure;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
 import java.util.Map.Entry;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.init.Biomes;
@@ -23,9 +20,9 @@ public class StructureOceanMonument extends MapGenStructure
 {
     private int spacing;
     private int separation;
-    public static final List<Biome> WATER_BIOMES = Arrays.<Biome>asList(Biomes.OCEAN, Biomes.DEEP_OCEAN, Biomes.RIVER, Biomes.FROZEN_OCEAN, Biomes.FROZEN_RIVER);
-    public static final List<Biome> SPAWN_BIOMES = Arrays.<Biome>asList(Biomes.DEEP_OCEAN);
-    private static final List<Biome.SpawnListEntry> MONUMENT_ENEMIES = Lists.<Biome.SpawnListEntry>newArrayList();
+    public static final List<Biome> WATER_BIOMES = Arrays.asList(Biomes.OCEAN, Biomes.DEEP_OCEAN, Biomes.RIVER, Biomes.FROZEN_OCEAN, Biomes.FROZEN_RIVER);
+    public static final List<Biome> SPAWN_BIOMES = Collections.singletonList(Biomes.DEEP_OCEAN);
+    private static final List<Biome.SpawnListEntry> MONUMENT_ENEMIES = Lists.newArrayList();
 
     public StructureOceanMonument()
     {
@@ -39,11 +36,11 @@ public class StructureOceanMonument extends MapGenStructure
 
         for (Entry<String, String> entry : p_i45608_1_.entrySet())
         {
-            if (((String)entry.getKey()).equals("spacing"))
+            if (entry.getKey().equals("spacing"))
             {
                 this.spacing = MathHelper.getInt(entry.getValue(), this.spacing, 1);
             }
-            else if (((String)entry.getKey()).equals("separation"))
+            else if (entry.getKey().equals("separation"))
             {
                 this.separation = MathHelper.getInt(entry.getValue(), this.separation, 1);
             }
@@ -87,10 +84,7 @@ public class StructureOceanMonument extends MapGenStructure
 
             boolean flag = this.world.getBiomeProvider().areBiomesViable(i * 16 + 8, j * 16 + 8, 29, WATER_BIOMES);
 
-            if (flag)
-            {
-                return true;
-            }
+            return flag;
         }
 
         return false;
@@ -119,7 +113,7 @@ public class StructureOceanMonument extends MapGenStructure
 
     public static class StartMonument extends StructureStart
     {
-        private final Set<ChunkPos> processed = Sets.<ChunkPos>newHashSet();
+        private final Set<ChunkPos> processed = Sets.newHashSet();
         private boolean wasCreated;
 
         public StartMonument()
@@ -161,7 +155,7 @@ public class StructureOceanMonument extends MapGenStructure
 
         public boolean isValidForPostProcess(ChunkPos pair)
         {
-            return this.processed.contains(pair) ? false : super.isValidForPostProcess(pair);
+            return !this.processed.contains(pair) && super.isValidForPostProcess(pair);
         }
 
         public void notifyPostProcessAt(ChunkPos pair)

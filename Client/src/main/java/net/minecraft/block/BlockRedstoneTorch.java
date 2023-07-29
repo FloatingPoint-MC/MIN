@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public class BlockRedstoneTorch extends BlockTorch
 {
-    private static final Map<World, List<BlockRedstoneTorch.Toggle>> toggles = Maps.<World, List<BlockRedstoneTorch.Toggle>>newHashMap();
+    private static final Map<World, List<BlockRedstoneTorch.Toggle>> toggles = Maps.newHashMap();
     private final boolean isOn;
 
     private boolean isBurnedOut(World worldIn, BlockPos pos, boolean turnOff)
@@ -31,7 +31,7 @@ public class BlockRedstoneTorch extends BlockTorch
             toggles.put(worldIn, Lists.newArrayList());
         }
 
-        List<BlockRedstoneTorch.Toggle> list = (List)toggles.get(worldIn);
+        List<BlockRedstoneTorch.Toggle> list = toggles.get(worldIn);
 
         if (turnOff)
         {
@@ -62,7 +62,7 @@ public class BlockRedstoneTorch extends BlockTorch
     {
         this.isOn = isOn;
         this.setTickRandomly(true);
-        this.setCreativeTab((CreativeTabs)null);
+        this.setCreativeTab(null);
     }
 
     /**
@@ -112,7 +112,7 @@ public class BlockRedstoneTorch extends BlockTorch
 
     private boolean shouldBeOff(World worldIn, BlockPos pos, IBlockState state)
     {
-        EnumFacing enumfacing = ((EnumFacing)state.getValue(FACING)).getOpposite();
+        EnumFacing enumfacing = state.getValue(FACING).getOpposite();
         return worldIn.isSidePowered(pos.offset(enumfacing), enumfacing);
     }
 
@@ -126,7 +126,7 @@ public class BlockRedstoneTorch extends BlockTorch
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         boolean flag = this.shouldBeOff(worldIn, pos, state);
-        List<BlockRedstoneTorch.Toggle> list = (List)toggles.get(worldIn);
+        List<BlockRedstoneTorch.Toggle> list = toggles.get(worldIn);
 
         while (list != null && !list.isEmpty() && worldIn.getTotalWorldTime() - (list.get(0)).time > 60L)
         {
@@ -141,7 +141,7 @@ public class BlockRedstoneTorch extends BlockTorch
 
                 if (this.isBurnedOut(worldIn, pos, true))
                 {
-                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_REDSTONE_TORCH_BURNOUT, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_REDSTONE_TORCH_BURNOUT, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
                     for (int i = 0; i < 5; ++i)
                     {
@@ -215,7 +215,7 @@ public class BlockRedstoneTorch extends BlockTorch
             double d0 = (double)pos.getX() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
             double d1 = (double)pos.getY() + 0.7D + (rand.nextDouble() - 0.5D) * 0.2D;
             double d2 = (double)pos.getZ() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
-            EnumFacing enumfacing = (EnumFacing)stateIn.getValue(FACING);
+            EnumFacing enumfacing = stateIn.getValue(FACING);
 
             if (enumfacing.getAxis().isHorizontal())
             {

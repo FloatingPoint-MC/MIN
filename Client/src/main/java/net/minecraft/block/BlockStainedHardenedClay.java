@@ -23,6 +23,6 @@ public class BlockStainedHardenedClay extends BlockColored
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return MAP_COLORS[((EnumDyeColor)state.getValue(COLOR)).getMetadata()];
+        return MAP_COLORS[state.getValue(COLOR).getMetadata()];
     }
 }

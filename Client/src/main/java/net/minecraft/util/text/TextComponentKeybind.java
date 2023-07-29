@@ -28,7 +28,7 @@ public class TextComponentKeybind extends TextComponentBase
     {
         if (this.displaySupplier == null)
         {
-            this.displaySupplier = (Supplier)displaySupplierFunction.apply(this.keybind);
+            this.displaySupplier = displaySupplierFunction.apply(this.keybind);
         }
 
         return this.displaySupplier.get();

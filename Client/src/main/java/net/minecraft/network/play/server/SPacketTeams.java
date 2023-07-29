@@ -27,7 +27,7 @@ public class SPacketTeams implements Packet<INetHandlerPlayClient>
         this.nameTagVisibility = Team.EnumVisible.ALWAYS.internalName;
         this.collisionRule = Team.CollisionRule.ALWAYS.name;
         this.color = -1;
-        this.players = Lists.<String>newArrayList();
+        this.players = Lists.newArrayList();
     }
 
     public SPacketTeams(ScorePlayerTeam teamIn, int actionIn)
@@ -35,7 +35,7 @@ public class SPacketTeams implements Packet<INetHandlerPlayClient>
         this.nameTagVisibility = Team.EnumVisible.ALWAYS.internalName;
         this.collisionRule = Team.CollisionRule.ALWAYS.name;
         this.color = -1;
-        this.players = Lists.<String>newArrayList();
+        this.players = Lists.newArrayList();
         this.name = teamIn.getName();
         this.action = actionIn;
 
@@ -61,7 +61,7 @@ public class SPacketTeams implements Packet<INetHandlerPlayClient>
         this.nameTagVisibility = Team.EnumVisible.ALWAYS.internalName;
         this.collisionRule = Team.CollisionRule.ALWAYS.name;
         this.color = -1;
-        this.players = Lists.<String>newArrayList();
+        this.players = Lists.newArrayList();
 
         if (actionIn != 3 && actionIn != 4)
         {

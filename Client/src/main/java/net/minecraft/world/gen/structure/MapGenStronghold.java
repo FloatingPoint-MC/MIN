@@ -29,7 +29,7 @@ public class MapGenStronghold extends MapGenStructure
         this.structureCoords = new ChunkPos[128];
         this.distance = 32.0D;
         this.spread = 3;
-        this.allowedBiomes = Lists.<Biome>newArrayList();
+        this.allowedBiomes = Lists.newArrayList();
 
         for (Biome biome : Biome.REGISTRY)
         {
@@ -46,15 +46,15 @@ public class MapGenStronghold extends MapGenStructure
 
         for (Entry<String, String> entry : p_i2068_1_.entrySet())
         {
-            if (((String)entry.getKey()).equals("distance"))
+            if (entry.getKey().equals("distance"))
             {
                 this.distance = MathHelper.getDouble(entry.getValue(), this.distance, 1.0D);
             }
-            else if (((String)entry.getKey()).equals("count"))
+            else if (entry.getKey().equals("count"))
             {
                 this.structureCoords = new ChunkPos[MathHelper.getInt(entry.getValue(), this.structureCoords.length, 1)];
             }
-            else if (((String)entry.getKey()).equals("spread"))
+            else if (entry.getKey().equals("spread"))
             {
                 this.spread = MathHelper.getInt(entry.getValue(), this.spread, 1);
             }
@@ -181,7 +181,6 @@ public class MapGenStronghold extends MapGenStructure
 
         for (mapgenstronghold$start = new MapGenStronghold.Start(this.world, this.rand, chunkX, chunkZ); mapgenstronghold$start.getComponents().isEmpty() || ((StructureStrongholdPieces.Stairs2)mapgenstronghold$start.getComponents().get(0)).strongholdPortalRoom == null; mapgenstronghold$start = new MapGenStronghold.Start(this.world, this.rand, chunkX, chunkZ))
         {
-            ;
         }
 
         return mapgenstronghold$start;

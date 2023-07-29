@@ -56,16 +56,16 @@ public class Teleporter
                 {
                     for (int l1 = -1; l1 < 3; ++l1)
                     {
-                        int i2 = i + k1 * 1 + j1 * 0;
+                        int i2 = i + k1;
                         int j2 = j + l1;
-                        int k2 = k + k1 * 0 - j1 * 1;
+                        int k2 = k - j1;
                         boolean flag = l1 < 0;
                         this.world.setBlockState(new BlockPos(i2, j2, k2), flag ? Blocks.OBSIDIAN.getDefaultState() : Blocks.AIR.getDefaultState());
                     }
                 }
             }
 
-            entityIn.setLocationAndAngles((double)i, (double)j, (double)k, entityIn.rotationYaw, 0.0F);
+            entityIn.setLocationAndAngles(i, j, k, entityIn.rotationYaw, 0.0F);
             entityIn.motionX = 0.0D;
             entityIn.motionY = 0.0D;
             entityIn.motionZ = 0.0D;
@@ -84,7 +84,7 @@ public class Teleporter
 
         if (this.destinationCoordinateCache.containsKey(l))
         {
-            Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.get(l);
+            Teleporter.PortalPosition teleporter$portalposition = this.destinationCoordinateCache.get(l);
             d0 = 0.0D;
             blockpos = teleporter$portalposition;
             teleporter$portalposition.lastUpdateTime = this.world.getTotalWorldTime();
@@ -417,7 +417,7 @@ public class Teleporter
 
             while (objectiterator.hasNext())
             {
-                Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition)objectiterator.next();
+                Teleporter.PortalPosition teleporter$portalposition = objectiterator.next();
 
                 if (teleporter$portalposition == null || teleporter$portalposition.lastUpdateTime < i)
                 {

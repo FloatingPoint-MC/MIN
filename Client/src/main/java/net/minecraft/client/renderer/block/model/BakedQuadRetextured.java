@@ -25,8 +25,8 @@ public class BakedQuadRetextured extends BakedQuad
         {
             int j = this.format.getIntegerSize() * i;
             int k = this.format.getUvOffsetById(0) / 4;
-            this.vertexData[j + k] = Float.floatToRawIntBits(this.texture.getInterpolatedU((double)this.spriteOld.getUnInterpolatedU(Float.intBitsToFloat(this.vertexData[j + k]))));
-            this.vertexData[j + k + 1] = Float.floatToRawIntBits(this.texture.getInterpolatedV((double)this.spriteOld.getUnInterpolatedV(Float.intBitsToFloat(this.vertexData[j + k + 1]))));
+            this.vertexData[j + k] = Float.floatToRawIntBits(this.texture.getInterpolatedU(this.spriteOld.getUnInterpolatedU(Float.intBitsToFloat(this.vertexData[j + k]))));
+            this.vertexData[j + k + 1] = Float.floatToRawIntBits(this.texture.getInterpolatedV(this.spriteOld.getUnInterpolatedV(Float.intBitsToFloat(this.vertexData[j + k + 1]))));
         }
     }
 

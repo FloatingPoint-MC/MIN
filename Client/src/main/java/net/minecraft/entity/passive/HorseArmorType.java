@@ -16,14 +16,14 @@ public enum HorseArmorType
     private final String hash;
     private final int protection;
 
-    private HorseArmorType(int armorStrengthIn)
+    HorseArmorType(int armorStrengthIn)
     {
         this.protection = armorStrengthIn;
         this.textureName = null;
         this.hash = "";
     }
 
-    private HorseArmorType(int armorStrengthIn, String p_i46800_4_, String p_i46800_5_)
+    HorseArmorType(int armorStrengthIn, String p_i46800_4_, String p_i46800_5_)
     {
         this.protection = armorStrengthIn;
         this.textureName = "textures/entity/horse/armor/horse_armor_" + p_i46800_4_ + ".png";

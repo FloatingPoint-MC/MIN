@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class JsonException extends IOException
 {
-    private final List<JsonException.Entry> entries = Lists.<JsonException.Entry>newArrayList();
+    private final List<JsonException.Entry> entries = Lists.newArrayList();
     private final String message;
 
     public JsonException(String messageIn)
@@ -26,7 +26,7 @@ public class JsonException extends IOException
 
     public void prependJsonKey(String key)
     {
-        ((JsonException.Entry)this.entries.get(0)).addJsonKey(key);
+        this.entries.get(0).addJsonKey(key);
     }
 
     public void setFilenameAndFlush(String filenameIn)
@@ -66,7 +66,7 @@ public class JsonException extends IOException
 
         private Entry()
         {
-            this.jsonKeys = Lists.<String>newArrayList();
+            this.jsonKeys = Lists.newArrayList();
         }
 
         private void addJsonKey(String key)
@@ -76,7 +76,7 @@ public class JsonException extends IOException
 
         public String getJsonKeys()
         {
-            return StringUtils.join((Iterable)this.jsonKeys, "->");
+            return StringUtils.join(this.jsonKeys, "->");
         }
 
         public String toString()

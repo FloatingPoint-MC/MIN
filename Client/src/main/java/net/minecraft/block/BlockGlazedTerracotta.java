@@ -26,7 +26,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
 
         if (s.length() > 1)
         {
-            String s1 = s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
+            String s1 = s.substring(0, 1).toUpperCase() + s.substring(1);
             this.setTranslationKey("glazedTerracotta" + s1);
         }
 
@@ -35,7 +35,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     /**
@@ -46,7 +46,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -56,7 +56,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     /**
@@ -74,7 +74,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        i = i | state.getValue(FACING).getHorizontalIndex();
         return i;
     }
 

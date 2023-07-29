@@ -54,7 +54,7 @@ public class NBTTagLongArray extends NBTBase
     {
         sizeTracker.read(192L);
         int i = input.readInt();
-        sizeTracker.read((long)(64 * i));
+        sizeTracker.read(64L * i);
         this.data = new long[i];
 
         for (int j = 0; j < i; ++j)

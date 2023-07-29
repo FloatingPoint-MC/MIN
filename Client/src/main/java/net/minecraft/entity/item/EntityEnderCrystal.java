@@ -18,8 +18,8 @@ import net.minecraft.world.end.DragonFightManager;
 
 public class EntityEnderCrystal extends Entity
 {
-    private static final DataParameter<Optional<BlockPos>> BEAM_TARGET = EntityDataManager.<Optional<BlockPos>>createKey(EntityEnderCrystal.class, DataSerializers.OPTIONAL_BLOCK_POS);
-    private static final DataParameter<Boolean> SHOW_BOTTOM = EntityDataManager.<Boolean>createKey(EntityEnderCrystal.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Optional<BlockPos>> BEAM_TARGET = EntityDataManager.createKey(EntityEnderCrystal.class, DataSerializers.OPTIONAL_BLOCK_POS);
+    private static final DataParameter<Boolean> SHOW_BOTTOM = EntityDataManager.createKey(EntityEnderCrystal.class, DataSerializers.BOOLEAN);
 
     /** Used to create the rotation animation when rendering the crystal. */
     public int innerRotation;
@@ -134,7 +134,7 @@ public class EntityEnderCrystal extends Entity
                 {
                     if (!source.isExplosion())
                     {
-                        this.world.createExplosion((Entity)null, this.posX, this.posY, this.posZ, 6.0F, true);
+                        this.world.createExplosion(null, this.posX, this.posY, this.posZ, 6.0F, true);
                     }
 
                     this.onCrystalDestroyed(source);
@@ -186,7 +186,7 @@ public class EntityEnderCrystal extends Entity
 
     public boolean shouldShowBottom()
     {
-        return ((Boolean)this.getDataManager().get(SHOW_BOTTOM)).booleanValue();
+        return this.getDataManager().get(SHOW_BOTTOM).booleanValue();
     }
 
     /**

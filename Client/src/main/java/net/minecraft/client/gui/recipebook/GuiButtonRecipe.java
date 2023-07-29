@@ -89,7 +89,7 @@ public class GuiButtonRecipe extends GuiButton
 
             if (flag)
             {
-                float f = 1.0F + 0.1F * (float)Math.sin((double)(this.animationTime / 15.0F * (float)Math.PI));
+                float f = 1.0F + 0.1F * (float)Math.sin(this.animationTime / 15.0F * (float)Math.PI);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate((float)(this.x + 8), (float)(this.y + 12), 0.0F);
                 GlStateManager.scale(f, f, 1.0F);
@@ -100,7 +100,7 @@ public class GuiButtonRecipe extends GuiButton
             this.drawTexturedModalRect(this.x, this.y, i, j, this.width, this.height);
             List<IRecipe> list = this.getOrderedRecipes();
             this.currentIndex = MathHelper.floor(this.time / 30.0F) % list.size();
-            ItemStack itemstack = ((IRecipe)list.get(this.currentIndex)).getRecipeOutput();
+            ItemStack itemstack = list.get(this.currentIndex).getRecipeOutput();
             int k = 4;
 
             if (this.list.hasSingleResultItem() && this.getOrderedRecipes().size() > 1)
@@ -146,7 +146,7 @@ public class GuiButtonRecipe extends GuiButton
 
     public List<String> getToolTipText(GuiScreen p_191772_1_)
     {
-        ItemStack itemstack = ((IRecipe)this.getOrderedRecipes().get(this.currentIndex)).getRecipeOutput();
+        ItemStack itemstack = this.getOrderedRecipes().get(this.currentIndex).getRecipeOutput();
         List<String> list = p_191772_1_.getItemToolTip(itemstack);
 
         if (this.list.getRecipes(this.book.isFilteringCraftable()).size() > 1)

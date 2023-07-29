@@ -23,11 +23,11 @@ public enum ShaderParameterBool implements IExpressionBool
     IS_SPRINTING("is_sprinting"),
     IS_WET("is_wet");
 
-    private String name;
-    private RenderManager renderManager;
+    private final String name;
+    private final RenderManager renderManager;
     private static final ShaderParameterBool[] VALUES = values();
 
-    private ShaderParameterBool(String name)
+    ShaderParameterBool(String name)
     {
         this.name = name;
         this.renderManager = Minecraft.getMinecraft().getRenderManager();

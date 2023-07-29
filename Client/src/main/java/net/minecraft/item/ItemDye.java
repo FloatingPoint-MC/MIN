@@ -145,7 +145,7 @@ public class ItemDye extends Item
                 double d0 = itemRand.nextGaussian() * 0.02D;
                 double d1 = itemRand.nextGaussian() * 0.02D;
                 double d2 = itemRand.nextGaussian() * 0.02D;
-                worldIn.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double)((float)pos.getX() + itemRand.nextFloat()), (double)pos.getY() + (double)itemRand.nextFloat() * iblockstate.getBoundingBox(worldIn, pos).maxY, (double)((float)pos.getZ() + itemRand.nextFloat()), d0, d1, d2);
+                worldIn.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (float)pos.getX() + itemRand.nextFloat(), (double)pos.getY() + (double)itemRand.nextFloat() * iblockstate.getBoundingBox(worldIn, pos).maxY, (float)pos.getZ() + itemRand.nextFloat(), d0, d1, d2);
             }
         }
     }

@@ -49,7 +49,7 @@ public class EntityAIFindEntityNearest extends EntityAIBase
                 }
                 else
                 {
-                    return (double)p_apply_1_.getDistance(EntityAIFindEntityNearest.this.mob) > d0 ? false : EntityAITarget.isSuitableTarget(EntityAIFindEntityNearest.this.mob, p_apply_1_, false, true);
+                    return !((double) p_apply_1_.getDistance(EntityAIFindEntityNearest.this.mob) > d0) && EntityAITarget.isSuitableTarget(EntityAIFindEntityNearest.this.mob, p_apply_1_, false, true);
                 }
             }
         };
@@ -62,7 +62,7 @@ public class EntityAIFindEntityNearest extends EntityAIBase
     public boolean shouldExecute()
     {
         double d0 = this.getFollowRange();
-        List<EntityLivingBase> list = this.mob.world.<EntityLivingBase>getEntitiesWithinAABB(this.classToCheck, this.mob.getEntityBoundingBox().grow(d0, 4.0D, d0), this.predicate);
+        List<EntityLivingBase> list = this.mob.world.getEntitiesWithinAABB(this.classToCheck, this.mob.getEntityBoundingBox().grow(d0, 4.0D, d0), this.predicate);
         Collections.sort(list, this.sorter);
 
         if (list.isEmpty())
@@ -120,7 +120,7 @@ public class EntityAIFindEntityNearest extends EntityAIBase
      */
     public void resetTask()
     {
-        this.mob.setAttackTarget((EntityLivingBase)null);
+        this.mob.setAttackTarget(null);
         super.startExecuting();
     }
 

@@ -401,8 +401,8 @@ public class WorldInfo
         nbt.setDouble("BorderSafeZone", this.borderSafeZone);
         nbt.setDouble("BorderDamagePerBlock", this.borderDamagePerBlock);
         nbt.setDouble("BorderSizeLerpTarget", this.borderSizeLerpTarget);
-        nbt.setDouble("BorderWarningBlocks", (double)this.borderWarningDistance);
-        nbt.setDouble("BorderWarningTime", (double)this.borderWarningTime);
+        nbt.setDouble("BorderWarningBlocks", this.borderWarningDistance);
+        nbt.setDouble("BorderWarningTime", this.borderWarningTime);
 
         if (this.difficulty != null)
         {
@@ -415,7 +415,7 @@ public class WorldInfo
 
         for (Entry<DimensionType, NBTTagCompound> entry : this.dimensionData.entrySet())
         {
-            nbttagcompound1.setTag(String.valueOf(((DimensionType)entry.getKey()).getId()), entry.getValue());
+            nbttagcompound1.setTag(String.valueOf(entry.getKey().getId()), entry.getValue());
         }
 
         nbt.setTag("DimensionData", nbttagcompound1);
@@ -963,7 +963,6 @@ public class WorldInfo
                 }
                 catch (Throwable var3)
                 {
-                    ;
                 }
 
                 return String.format("0x%05X - %s", WorldInfo.this.saveVersion, s);

@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockSand extends BlockFalling
 {
-    public static final PropertyEnum<BlockSand.EnumType> VARIANT = PropertyEnum.<BlockSand.EnumType>create("variant", BlockSand.EnumType.class);
+    public static final PropertyEnum<BlockSand.EnumType> VARIANT = PropertyEnum.create("variant", BlockSand.EnumType.class);
 
     public BlockSand()
     {
@@ -27,7 +27,7 @@ public class BlockSand extends BlockFalling
      */
     public int damageDropped(IBlockState state)
     {
-        return ((BlockSand.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     /**
@@ -48,7 +48,7 @@ public class BlockSand extends BlockFalling
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return ((BlockSand.EnumType)state.getValue(VARIANT)).getMapColor();
+        return state.getValue(VARIANT).getMapColor();
     }
 
     /**
@@ -64,21 +64,21 @@ public class BlockSand extends BlockFalling
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((BlockSand.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
     public int getDustColor(IBlockState state)
     {
-        BlockSand.EnumType blocksand$enumtype = (BlockSand.EnumType)state.getValue(VARIANT);
+        BlockSand.EnumType blocksand$enumtype = state.getValue(VARIANT);
         return blocksand$enumtype.getDustColor();
     }
 
-    public static enum EnumType implements IStringSerializable
+    public enum EnumType implements IStringSerializable
     {
         SAND(0, "sand", "default", MapColor.SAND, -2370656),
         RED_SAND(1, "red_sand", "red", MapColor.ADOBE, -5679071);
@@ -90,7 +90,7 @@ public class BlockSand extends BlockFalling
         private final String translationKey;
         private final int dustColor;
 
-        private EnumType(int p_i47157_3_, String p_i47157_4_, String p_i47157_5_, MapColor p_i47157_6_, int p_i47157_7_)
+        EnumType(int p_i47157_3_, String p_i47157_4_, String p_i47157_5_, MapColor p_i47157_6_, int p_i47157_7_)
         {
             this.meta = p_i47157_3_;
             this.name = p_i47157_4_;

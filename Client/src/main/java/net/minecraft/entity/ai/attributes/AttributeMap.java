@@ -8,7 +8,7 @@ import net.minecraft.util.LowerStringMap;
 
 public class AttributeMap extends AbstractAttributeMap
 {
-    private final Set<IAttributeInstance> dirtyInstances = Sets.<IAttributeInstance>newHashSet();
+    private final Set<IAttributeInstance> dirtyInstances = Sets.newHashSet();
     protected final Map<String, IAttributeInstance> instancesByName = new LowerStringMap();
 
     public ModifiableAttributeInstance getAttributeInstance(IAttribute attribute)
@@ -73,7 +73,7 @@ public class AttributeMap extends AbstractAttributeMap
 
     public Collection<IAttributeInstance> getWatchedAttributes()
     {
-        Set<IAttributeInstance> set = Sets.<IAttributeInstance>newHashSet();
+        Set<IAttributeInstance> set = Sets.newHashSet();
 
         for (IAttributeInstance iattributeinstance : this.getAllAttributes())
         {

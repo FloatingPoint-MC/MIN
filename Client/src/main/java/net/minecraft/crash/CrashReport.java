@@ -33,7 +33,7 @@ public class CrashReport
 
     /** Category of crash */
     private final CrashReportCategory systemDetailsCategory = new CrashReportCategory(this, "System Details");
-    private final List<CrashReportCategory> crashReportSections = Lists.<CrashReportCategory>newArrayList();
+    private final List<CrashReportCategory> crashReportSections = Lists.newArrayList();
 
     /** File of crash report. */
     private File crashReportFile;
@@ -117,7 +117,7 @@ public class CrashReport
     {
         if ((this.stacktrace == null || this.stacktrace.length <= 0) && !this.crashReportSections.isEmpty())
         {
-            this.stacktrace = (StackTraceElement[])ArrayUtils.subarray(((CrashReportCategory)this.crashReportSections.get(0)).getStackTrace(), 0, 1);
+            this.stacktrace = ArrayUtils.subarray(this.crashReportSections.get(0).getStackTrace(), 0, 1);
         }
 
         if (this.stacktrace != null && this.stacktrace.length > 0)
@@ -128,7 +128,7 @@ public class CrashReport
 
             for (StackTraceElement stacktraceelement : this.stacktrace)
             {
-                builder.append("\t").append("at ").append((Object)stacktraceelement);
+                builder.append("\t").append("at ").append(stacktraceelement);
                 builder.append("\n");
             }
 
@@ -182,8 +182,8 @@ public class CrashReport
         }
         finally
         {
-            IOUtils.closeQuietly((Writer)stringwriter);
-            IOUtils.closeQuietly((Writer)printwriter);
+            IOUtils.closeQuietly(stringwriter);
+            IOUtils.closeQuietly(printwriter);
         }
 
         return s;

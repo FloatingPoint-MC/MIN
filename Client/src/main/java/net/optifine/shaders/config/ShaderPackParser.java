@@ -7,6 +7,7 @@ import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -67,13 +68,13 @@ public class ShaderPackParser
 
             while (iterator.hasNext())
             {
-                int i = ((Integer)iterator.next()).intValue();
+                int i = iterator.next().intValue();
                 String s = "/shaders/world" + i;
                 collectShaderOptions(shaderPack, s, programNames, map);
             }
 
             Collection<ShaderOption> collection = map.values();
-            ShaderOption[] ashaderoption = (ShaderOption[])collection.toArray(new ShaderOption[collection.size()]);
+            ShaderOption[] ashaderoption = collection.toArray(new ShaderOption[collection.size()]);
             Comparator<ShaderOption> comparator = new Comparator<ShaderOption>()
             {
                 public int compare(ShaderOption o1, ShaderOption o2)
@@ -121,8 +122,8 @@ public class ShaderPackParser
                     if (!Config.equals(shaderoption1.getValueDefault(), shaderoption.getValueDefault()))
                     {
                         Config.warn("Ambiguous shader option: " + shaderoption.getName());
-                        Config.warn(" - in " + Config.arrayToString((Object[])shaderoption1.getPaths()) + ": " + shaderoption1.getValueDefault());
-                        Config.warn(" - in " + Config.arrayToString((Object[])shaderoption.getPaths()) + ": " + shaderoption.getValueDefault());
+                        Config.warn(" - in " + Config.arrayToString(shaderoption1.getPaths()) + ": " + shaderoption1.getValueDefault());
+                        Config.warn(" - in " + Config.arrayToString(shaderoption.getPaths()) + ": " + shaderoption.getValueDefault());
                         shaderoption1.setEnabled(false);
                     }
 
@@ -284,7 +285,7 @@ public class ShaderPackParser
         }
         else
         {
-            ShaderProfile[] ashaderprofile = (ShaderProfile[])list.toArray(new ShaderProfile[list.size()]);
+            ShaderProfile[] ashaderprofile = list.toArray(new ShaderProfile[list.size()]);
             return ashaderprofile;
         }
     }
@@ -506,7 +507,7 @@ public class ShaderPackParser
 
                 if (s1.equals("<empty>"))
                 {
-                    list.add((ShaderOption) null);
+                    list.add(null);
                 }
                 else if (set.contains(s1))
                 {
@@ -558,7 +559,7 @@ public class ShaderPackParser
                         if (shaderoption == null)
                         {
                             Config.warn("[Shaders] Invalid option: " + s1 + ", key: " + key);
-                            list.add((ShaderOption) null);
+                            list.add(null);
                         }
                         else
                         {
@@ -569,7 +570,7 @@ public class ShaderPackParser
                 }
             }
 
-            ShaderOption[] ashaderoption = (ShaderOption[])list.toArray(new ShaderOption[list.size()]);
+            ShaderOption[] ashaderoption = list.toArray(new ShaderOption[list.size()]);
             String s2 = props.getProperty(key + ".columns");
             int j = Config.parseInt(s2, 2);
             ScreenShaderOptions screenshaderoptions = new ScreenShaderOptions(key, ashaderoption, j);
@@ -679,11 +680,7 @@ public class ShaderPackParser
             {
                 ShaderMacro[] ashadermacro = findMacros(s1, ShaderMacros.getExtensions());
 
-                for (int i1 = 0; i1 < ashadermacro.length; ++i1)
-                {
-                    ShaderMacro shadermacro1 = ashadermacro[i1];
-                    set.add(shadermacro1);
-                }
+                Collections.addAll(set, ashadermacro);
             }
 
             chararraywriter.write(s1);
@@ -706,7 +703,7 @@ public class ShaderPackParser
             }
         }
 
-        ShaderMacro[] ashadermacro = (ShaderMacro[])list.toArray(new ShaderMacro[list.size()]);
+        ShaderMacro[] ashadermacro = list.toArray(new ShaderMacro[list.size()]);
         return ashadermacro;
     }
 
@@ -727,7 +724,7 @@ public class ShaderPackParser
             }
             else
             {
-                InputStreamReader inputstreamreader = new InputStreamReader(inputstream, "ASCII");
+                InputStreamReader inputstreamreader = new InputStreamReader(inputstream, StandardCharsets.US_ASCII);
                 BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
                 bufferedreader = resolveIncludes(bufferedreader, filePath, shaderPack, fileIndex, listFiles, includeLevel);
                 CharArrayWriter chararraywriter = new CharArrayWriter();
@@ -796,7 +793,7 @@ public class ShaderPackParser
         }
         else
         {
-            CustomUniform[] acustomuniform = (CustomUniform[])list.toArray(new CustomUniform[list.size()]);
+            CustomUniform[] acustomuniform = list.toArray(new CustomUniform[list.size()]);
             CustomUniforms customuniforms = new CustomUniforms(acustomuniform, map);
             return customuniforms;
         }
@@ -848,7 +845,7 @@ public class ShaderPackParser
         }
         else
         {
-            return (IExpression)(expr instanceof IExpressionFloatArray ? new ExpressionFloatArrayCached((IExpressionFloatArray)expr) : expr);
+            return expr instanceof IExpressionFloatArray ? new ExpressionFloatArrayCached((IExpressionFloatArray)expr) : expr;
         }
     }
 
@@ -1083,7 +1080,7 @@ public class ShaderPackParser
                         if (i >= 0 && i < aboolean.length)
                         {
                             String s4 = props.getProperty((String) s).trim();
-                            Boolean obool = Config.parseBoolean(s4, (Boolean)null);
+                            Boolean obool = Config.parseBoolean(s4, null);
 
                             if (obool == null)
                             {
@@ -1115,7 +1112,7 @@ public class ShaderPackParser
         map.put("NOTEQUAL", new Integer(517));
         map.put("GEQUAL", new Integer(518));
         map.put("ALWAYS", new Integer(519));
-        return Collections.<String, Integer>unmodifiableMap(map);
+        return Collections.unmodifiableMap(map);
     }
 
     private static Map<String, Integer> makeMapBlendFactors()
@@ -1136,6 +1133,6 @@ public class ShaderPackParser
         map.put("CONSTANT_ALPHA", new Integer(32771));
         map.put("ONE_MINUS_CONSTANT_ALPHA", new Integer(32772));
         map.put("SRC_ALPHA_SATURATE", new Integer(776));
-        return Collections.<String, Integer>unmodifiableMap(map);
+        return Collections.unmodifiableMap(map);
     }
 }

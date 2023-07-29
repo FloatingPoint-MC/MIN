@@ -40,7 +40,7 @@ public class SPacketWorldBorder implements Packet<INetHandlerPlayClient>
      */
     public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.action = (SPacketWorldBorder.Action)buf.readEnumValue(SPacketWorldBorder.Action.class);
+        this.action = buf.readEnumValue(Action.class);
 
         switch (this.action)
         {
@@ -173,13 +173,13 @@ public class SPacketWorldBorder implements Packet<INetHandlerPlayClient>
         }
     }
 
-    public static enum Action
+    public enum Action
     {
         SET_SIZE,
         LERP_SIZE,
         SET_CENTER,
         INITIALIZE,
         SET_WARNING_TIME,
-        SET_WARNING_BLOCKS;
+        SET_WARNING_BLOCKS
     }
 }

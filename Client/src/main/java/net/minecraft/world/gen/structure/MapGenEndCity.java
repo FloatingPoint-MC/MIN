@@ -70,7 +70,7 @@ public class MapGenEndCity extends MapGenStructure
 
     private static int getYPosForStructure(int chunkX, int chunkY, ChunkGeneratorEnd generatorIn)
     {
-        Random random = new Random((long)(chunkX + chunkY * 10387313));
+        Random random = new Random(chunkX + chunkY * 10387313L);
         Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
         ChunkPrimer chunkprimer = new ChunkPrimer();
         generatorIn.setBlocksInChunk(chunkX, chunkY, chunkprimer);
@@ -115,7 +115,7 @@ public class MapGenEndCity extends MapGenStructure
 
         private void create(World worldIn, ChunkGeneratorEnd chunkProvider, Random rnd, int chunkX, int chunkZ)
         {
-            Random random = new Random((long)(chunkX + chunkZ * 10387313));
+            Random random = new Random(chunkX + chunkZ * 10387313L);
             Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
             int i = MapGenEndCity.getYPosForStructure(chunkX, chunkZ, chunkProvider);
 

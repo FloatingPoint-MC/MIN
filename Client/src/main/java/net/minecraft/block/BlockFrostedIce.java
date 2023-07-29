@@ -25,7 +25,7 @@ public class BlockFrostedIce extends BlockIce
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return state.getValue(AGE).intValue();
     }
 
     /**
@@ -38,7 +38,7 @@ public class BlockFrostedIce extends BlockIce
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if ((rand.nextInt(3) == 0 || this.countNeighbors(worldIn, pos) < 4) && worldIn.getLightFromNeighbors(pos) > 11 - ((Integer)state.getValue(AGE)).intValue() - state.getLightOpacity())
+        if ((rand.nextInt(3) == 0 || this.countNeighbors(worldIn, pos) < 4) && worldIn.getLightFromNeighbors(pos) > 11 - state.getValue(AGE).intValue() - state.getLightOpacity())
         {
             this.slightlyMelt(worldIn, pos, state, rand, true);
         }
@@ -88,7 +88,7 @@ public class BlockFrostedIce extends BlockIce
 
     protected void slightlyMelt(World worldIn, BlockPos pos, IBlockState state, Random rand, boolean meltNeighbors)
     {
-        int i = ((Integer)state.getValue(AGE)).intValue();
+        int i = state.getValue(AGE).intValue();
 
         if (i < 3)
         {
@@ -117,7 +117,7 @@ public class BlockFrostedIce extends BlockIce
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)

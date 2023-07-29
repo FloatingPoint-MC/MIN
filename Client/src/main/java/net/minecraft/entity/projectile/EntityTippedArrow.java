@@ -22,9 +22,9 @@ import net.minecraft.world.World;
 
 public class EntityTippedArrow extends EntityArrow
 {
-    private static final DataParameter<Integer> COLOR = EntityDataManager.<Integer>createKey(EntityTippedArrow.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(EntityTippedArrow.class, DataSerializers.VARINT);
     private PotionType potion = PotionTypes.EMPTY;
-    private final Set<PotionEffect> customPotionEffects = Sets.<PotionEffect>newHashSet();
+    private final Set<PotionEffect> customPotionEffects = Sets.newHashSet();
     private boolean fixedColor;
 
     public EntityTippedArrow(World worldIn)
@@ -149,7 +149,7 @@ public class EntityTippedArrow extends EntityArrow
 
     public int getColor()
     {
-        return ((Integer)this.dataManager.get(COLOR)).intValue();
+        return this.dataManager.get(COLOR).intValue();
     }
 
     private void setFixedColor(int p_191507_1_)
@@ -172,7 +172,7 @@ public class EntityTippedArrow extends EntityArrow
 
         if (this.potion != PotionTypes.EMPTY && this.potion != null)
         {
-            compound.setString("Potion", ((ResourceLocation)PotionType.REGISTRY.getNameForObject(this.potion)).toString());
+            compound.setString("Potion", PotionType.REGISTRY.getNameForObject(this.potion).toString());
         }
 
         if (this.fixedColor)

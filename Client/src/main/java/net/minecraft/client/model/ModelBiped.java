@@ -335,11 +335,11 @@ public class ModelBiped extends ModelBase
         }
     }
 
-    public static enum ArmPose
+    public enum ArmPose
     {
         EMPTY,
         ITEM,
         BLOCK,
-        BOW_AND_ARROW;
+        BOW_AND_ARROW
     }
 }

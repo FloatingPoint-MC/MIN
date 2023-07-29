@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 public abstract class AbstractChestHorse extends AbstractHorse
 {
-    private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.<Boolean>createKey(AbstractChestHorse.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DATA_ID_CHEST = EntityDataManager.createKey(AbstractChestHorse.class, DataSerializers.BOOLEAN);
 
     public AbstractChestHorse(World worldIn)
     {
@@ -41,14 +41,14 @@ public abstract class AbstractChestHorse extends AbstractHorse
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)this.getModifiedMaxHealth());
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getModifiedMaxHealth());
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.17499999701976776D);
         this.getEntityAttribute(JUMP_STRENGTH).setBaseValue(0.5D);
     }
 
     public boolean hasChest()
     {
-        return ((Boolean)this.dataManager.get(DATA_ID_CHEST)).booleanValue();
+        return this.dataManager.get(DATA_ID_CHEST).booleanValue();
     }
 
     public void setChested(boolean chested)
@@ -96,7 +96,7 @@ public abstract class AbstractChestHorse extends AbstractHorse
     public static void registerFixesAbstractChestHorse(DataFixer fixer, Class<?> entityClass)
     {
         AbstractHorse.registerFixesAbstractHorse(fixer, entityClass);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(entityClass, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(entityClass, "Items"));
     }
 
     /**

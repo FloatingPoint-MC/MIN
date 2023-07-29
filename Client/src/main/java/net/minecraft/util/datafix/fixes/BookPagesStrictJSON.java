@@ -38,7 +38,7 @@ public class BookPagesStrictJSON implements IFixableData
                         {
                             try
                             {
-                                itextcomponent = (ITextComponent)JsonUtils.gsonDeserialize(SignStrictJSON.GSON_INSTANCE, s, ITextComponent.class, true);
+                                itextcomponent = JsonUtils.gsonDeserialize(SignStrictJSON.GSON_INSTANCE, s, ITextComponent.class, true);
 
                                 if (itextcomponent == null)
                                 {
@@ -47,7 +47,6 @@ public class BookPagesStrictJSON implements IFixableData
                             }
                             catch (JsonParseException var10)
                             {
-                                ;
                             }
 
                             if (itextcomponent == null)
@@ -58,7 +57,6 @@ public class BookPagesStrictJSON implements IFixableData
                                 }
                                 catch (JsonParseException var9)
                                 {
-                                    ;
                                 }
                             }
 
@@ -70,7 +68,6 @@ public class BookPagesStrictJSON implements IFixableData
                                 }
                                 catch (JsonParseException var8)
                                 {
-                                    ;
                                 }
                             }
 

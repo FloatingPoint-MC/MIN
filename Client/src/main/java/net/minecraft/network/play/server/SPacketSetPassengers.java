@@ -24,7 +24,7 @@ public class SPacketSetPassengers implements Packet<INetHandlerPlayClient>
 
         for (int i = 0; i < list.size(); ++i)
         {
-            this.passengerIds[i] = ((Entity)list.get(i)).getEntityId();
+            this.passengerIds[i] = list.get(i).getEntityId();
         }
     }
 

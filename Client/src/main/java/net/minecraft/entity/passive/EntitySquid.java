@@ -48,7 +48,7 @@ public class EntitySquid extends EntityWaterMob
     {
         super(worldIn);
         this.setSize(0.8F, 0.8F);
-        this.rand.setSeed((long)(1 + this.getEntityId()));
+        this.rand.setSeed(1 + this.getEntityId());
         this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
     }
 
@@ -169,16 +169,16 @@ public class EntitySquid extends EntityWaterMob
 
             if (!this.world.isRemote)
             {
-                this.motionX = (double)(this.randomMotionVecX * this.randomMotionSpeed);
-                this.motionY = (double)(this.randomMotionVecY * this.randomMotionSpeed);
-                this.motionZ = (double)(this.randomMotionVecZ * this.randomMotionSpeed);
+                this.motionX = this.randomMotionVecX * this.randomMotionSpeed;
+                this.motionY = this.randomMotionVecY * this.randomMotionSpeed;
+                this.motionZ = this.randomMotionVecZ * this.randomMotionSpeed;
             }
 
             float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.renderYawOffset += (-((float)MathHelper.atan2(this.motionX, this.motionZ)) * (180F / (float)Math.PI) - this.renderYawOffset) * 0.1F;
             this.rotationYaw = this.renderYawOffset;
             this.squidYaw = (float)((double)this.squidYaw + Math.PI * (double)this.rotateSpeed * 1.5D);
-            this.squidPitch += (-((float)MathHelper.atan2((double)f1, this.motionY)) * (180F / (float)Math.PI) - this.squidPitch) * 0.1F;
+            this.squidPitch += (-((float)MathHelper.atan2(f1, this.motionY)) * (180F / (float)Math.PI) - this.squidPitch) * 0.1F;
         }
         else
         {

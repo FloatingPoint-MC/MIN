@@ -21,7 +21,7 @@ public class SpectatorDetails
 
     public ISpectatorMenuObject getObject(int index)
     {
-        return index >= 0 && index < this.items.size() ? (ISpectatorMenuObject)MoreObjects.firstNonNull(this.items.get(index), SpectatorMenu.EMPTY_SLOT) : SpectatorMenu.EMPTY_SLOT;
+        return index >= 0 && index < this.items.size() ? MoreObjects.firstNonNull(this.items.get(index), SpectatorMenu.EMPTY_SLOT) : SpectatorMenu.EMPTY_SLOT;
     }
 
     public int getSelectedSlot()

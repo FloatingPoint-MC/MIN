@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockPlanks extends Block
 {
-    public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.<BlockPlanks.EnumType>create("variant", BlockPlanks.EnumType.class);
+    public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class);
 
     public BlockPlanks()
     {
@@ -30,7 +30,7 @@ public class BlockPlanks extends Block
      */
     public int damageDropped(IBlockState state)
     {
-        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     /**
@@ -59,7 +59,7 @@ public class BlockPlanks extends Block
      */
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMapColor();
+        return state.getValue(VARIANT).getMapColor();
     }
 
     /**
@@ -67,15 +67,15 @@ public class BlockPlanks extends Block
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
+        return state.getValue(VARIANT).getMetadata();
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
-    public static enum EnumType implements IStringSerializable
+    public enum EnumType implements IStringSerializable
     {
         OAK(0, "oak", MapColor.WOOD),
         SPRUCE(1, "spruce", MapColor.OBSIDIAN),
@@ -90,12 +90,12 @@ public class BlockPlanks extends Block
         private final String translationKey;
         private final MapColor mapColor;
 
-        private EnumType(int metaIn, String nameIn, MapColor mapColorIn)
+        EnumType(int metaIn, String nameIn, MapColor mapColorIn)
         {
             this(metaIn, nameIn, nameIn, mapColorIn);
         }
 
-        private EnumType(int metaIn, String nameIn, String unlocalizedNameIn, MapColor mapColorIn)
+        EnumType(int metaIn, String nameIn, String unlocalizedNameIn, MapColor mapColorIn)
         {
             this.meta = metaIn;
             this.name = nameIn;

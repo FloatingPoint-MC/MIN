@@ -34,7 +34,7 @@ import net.minecraft.world.chunk.Chunk;
 public class BlockFlowerPot extends BlockContainer
 {
     public static final PropertyInteger LEGACY_DATA = PropertyInteger.create("legacy_data", 0, 15);
-    public static final PropertyEnum<BlockFlowerPot.EnumFlowerType> CONTENTS = PropertyEnum.<BlockFlowerPot.EnumFlowerType>create("contents", BlockFlowerPot.EnumFlowerType.class);
+    public static final PropertyEnum<BlockFlowerPot.EnumFlowerType> CONTENTS = PropertyEnum.create("contents", BlockFlowerPot.EnumFlowerType.class);
     protected static final AxisAlignedBB FLOWER_POT_AABB = new AxisAlignedBB(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.375D, 0.6875D);
 
     public BlockFlowerPot()
@@ -316,7 +316,7 @@ public class BlockFlowerPot extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {CONTENTS, LEGACY_DATA});
+        return new BlockStateContainer(this, CONTENTS, LEGACY_DATA);
     }
 
     /**
@@ -324,7 +324,7 @@ public class BlockFlowerPot extends BlockContainer
      */
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(LEGACY_DATA)).intValue();
+        return state.getValue(LEGACY_DATA).intValue();
     }
 
     /**
@@ -489,7 +489,7 @@ public class BlockFlowerPot extends BlockContainer
         return BlockFaceShape.UNDEFINED;
     }
 
-    public static enum EnumFlowerType implements IStringSerializable
+    public enum EnumFlowerType implements IStringSerializable
     {
         EMPTY("empty"),
         POPPY("rose"),
@@ -516,7 +516,7 @@ public class BlockFlowerPot extends BlockContainer
 
         private final String name;
 
-        private EnumFlowerType(String name)
+        EnumFlowerType(String name)
         {
             this.name = name;
         }

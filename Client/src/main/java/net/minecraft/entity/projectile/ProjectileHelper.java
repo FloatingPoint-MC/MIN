@@ -65,7 +65,7 @@ public final class ProjectileHelper
         return raytraceresult;
     }
 
-    public static final void rotateTowardsMovement(Entity projectile, float rotationSpeed)
+    public static void rotateTowardsMovement(Entity projectile, float rotationSpeed)
     {
         double d0 = projectile.motionX;
         double d1 = projectile.motionY;
@@ -73,9 +73,8 @@ public final class ProjectileHelper
         float f = MathHelper.sqrt(d0 * d0 + d2 * d2);
         projectile.rotationYaw = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) + 90.0F;
 
-        for (projectile.rotationPitch = (float)(MathHelper.atan2((double)f, d1) * (180D / Math.PI)) - 90.0F; projectile.rotationPitch - projectile.prevRotationPitch < -180.0F; projectile.prevRotationPitch -= 360.0F)
+        for (projectile.rotationPitch = (float)(MathHelper.atan2(f, d1) * (180D / Math.PI)) - 90.0F; projectile.rotationPitch - projectile.prevRotationPitch < -180.0F; projectile.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (projectile.rotationPitch - projectile.prevRotationPitch >= 180.0F)

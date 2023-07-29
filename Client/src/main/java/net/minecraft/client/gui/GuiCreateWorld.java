@@ -213,7 +213,7 @@ public class GuiCreateWorld extends GuiScreen
             }
             else if (button.id == 0)
             {
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
 
                 if (this.alreadyGenerated)
                 {
@@ -237,7 +237,7 @@ public class GuiCreateWorld extends GuiScreen
                     }
                     catch (NumberFormatException var7)
                     {
-                        i = (long)s.hashCode();
+                        i = s.hashCode();
                     }
                 }
 
@@ -369,7 +369,7 @@ public class GuiCreateWorld extends GuiScreen
 
         if (worldtype != null && worldtype.canBeCreated())
         {
-            return worldtype == WorldType.DEBUG_ALL_BLOCK_STATES ? isShiftKeyDown() : true;
+            return worldtype != WorldType.DEBUG_ALL_BLOCK_STATES || isShiftKeyDown();
         }
         else
         {
@@ -534,7 +534,7 @@ public class GuiCreateWorld extends GuiScreen
     public void recreateFromExistingWorld(WorldInfo original)
     {
         this.worldName = I18n.format("selectWorld.newWorld.copyOf", original.getWorldName());
-        this.worldSeed = original.getSeed() + "";
+        this.worldSeed = String.valueOf(original.getSeed());
         this.selectedIndex = original.getTerrainType().getId();
         this.chunkProviderSettingsJson = original.getGeneratorOptions();
         this.generateStructuresEnabled = original.isMapFeaturesEnabled();

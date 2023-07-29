@@ -120,7 +120,7 @@ public class EntityAIAttackMelee extends EntityAIBase
 
         if (entitylivingbase instanceof EntityPlayer && (((EntityPlayer)entitylivingbase).isSpectator() || ((EntityPlayer)entitylivingbase).isCreative()))
         {
-            this.attacker.setAttackTarget((EntityLivingBase)null);
+            this.attacker.setAttackTarget(null);
         }
 
         this.attacker.getNavigator().clearPath();
@@ -176,6 +176,6 @@ public class EntityAIAttackMelee extends EntityAIBase
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget)
     {
-        return (double)(this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width);
+        return this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width;
     }
 }

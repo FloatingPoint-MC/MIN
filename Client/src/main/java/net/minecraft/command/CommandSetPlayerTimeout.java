@@ -35,13 +35,13 @@ public class CommandSetPlayerTimeout extends CommandBase
     {
         if (args.length != 1)
         {
-            throw new WrongUsageException("commands.setidletimeout.usage", new Object[0]);
+            throw new WrongUsageException("commands.setidletimeout.usage");
         }
         else
         {
             int i = parseInt(args[0], 0);
             server.setPlayerIdleTimeout(i);
-            notifyCommandListener(sender, this, "commands.setidletimeout.success", new Object[] {i});
+            notifyCommandListener(sender, this, "commands.setidletimeout.success", i);
         }
     }
 }

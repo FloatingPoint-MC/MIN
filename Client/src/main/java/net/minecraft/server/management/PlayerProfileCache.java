@@ -45,9 +45,9 @@ public class PlayerProfileCache
 {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
     private static boolean onlineMode;
-    private final Map<String, PlayerProfileCache.ProfileEntry> usernameToProfileEntryMap = Maps.<String, PlayerProfileCache.ProfileEntry>newHashMap();
-    private final Map<UUID, PlayerProfileCache.ProfileEntry> uuidToProfileEntryMap = Maps.<UUID, PlayerProfileCache.ProfileEntry>newHashMap();
-    private final Deque<GameProfile> gameProfiles = Lists.<GameProfile>newLinkedList();
+    private final Map<String, PlayerProfileCache.ProfileEntry> usernameToProfileEntryMap = Maps.newHashMap();
+    private final Map<UUID, PlayerProfileCache.ProfileEntry> uuidToProfileEntryMap = Maps.newHashMap();
+    private final Deque<GameProfile> gameProfiles = Lists.newLinkedList();
     private final GameProfileRepository profileRepo;
     protected final Gson gson;
     private final File usercacheFile;
@@ -118,7 +118,7 @@ public class PlayerProfileCache
      */
     public void addEntry(GameProfile gameProfile)
     {
-        this.addEntry(gameProfile, (Date)null);
+        this.addEntry(gameProfile, null);
     }
 
     /**
@@ -198,7 +198,7 @@ public class PlayerProfileCache
     public String[] getUsernames()
     {
         List<String> list = Lists.newArrayList(this.usernameToProfileEntryMap.keySet());
-        return (String[])list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     @Nullable
@@ -239,7 +239,7 @@ public class PlayerProfileCache
         try
         {
             bufferedreader = Files.newReader(this.usercacheFile, StandardCharsets.UTF_8);
-            List<PlayerProfileCache.ProfileEntry> list = (List)JsonUtils.fromJson(this.gson, bufferedreader, TYPE);
+            List<PlayerProfileCache.ProfileEntry> list = JsonUtils.fromJson(this.gson, bufferedreader, TYPE);
             this.usernameToProfileEntryMap.clear();
             this.uuidToProfileEntryMap.clear();
             this.gameProfiles.clear();
@@ -257,15 +257,13 @@ public class PlayerProfileCache
         }
         catch (FileNotFoundException var9)
         {
-            ;
         }
         catch (JsonParseException var10)
         {
-            ;
         }
         finally
         {
-            IOUtils.closeQuietly((Reader)bufferedreader);
+            IOUtils.closeQuietly(bufferedreader);
         }
     }
 
@@ -281,25 +279,22 @@ public class PlayerProfileCache
         {
             bufferedwriter = Files.newWriter(this.usercacheFile, StandardCharsets.UTF_8);
             bufferedwriter.write(s);
-            return;
         }
         catch (FileNotFoundException var8)
         {
-            ;
         }
         catch (IOException var9)
         {
-            return;
         }
         finally
         {
-            IOUtils.closeQuietly((Writer)bufferedwriter);
+            IOUtils.closeQuietly(bufferedwriter);
         }
     }
 
     private List<PlayerProfileCache.ProfileEntry> getEntriesWithLimit(int limitSize)
     {
-        List<PlayerProfileCache.ProfileEntry> list = Lists.<PlayerProfileCache.ProfileEntry>newArrayList();
+        List<PlayerProfileCache.ProfileEntry> list = Lists.newArrayList();
 
         for (GameProfile gameprofile : Lists.newArrayList(Iterators.limit(this.gameProfiles.iterator(), limitSize)))
         {
