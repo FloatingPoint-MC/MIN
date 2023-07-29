@@ -656,7 +656,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
-        Display.setTitle("MIN Client(Minecraft 1.12.2)");
+        Display.setTitle("MIN Client(Minecraft 1.12.2) - Release " + MIN.VERSION);
 
         try {
             Display.create((new PixelFormat()).withDepthBits(24));

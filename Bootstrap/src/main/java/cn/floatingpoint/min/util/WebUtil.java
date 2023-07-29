@@ -86,9 +86,14 @@ public class WebUtil {
         context = ctx;
     }
 
-    public static String getRemoteIP() {
+    public static String getPlatform() {
         int abroad = getAddressByIP(getOutIPV4());
-        return abroad == 1 ? "github.com" : "gitee.com";
+        return abroad == 1 ? "https://raw.githubusercontent.com/FloatingPoint-MC/MIN/master/" : "https://gitee.com/FloatingPoint-MC/MIN/raw/master/";
+    }
+
+    public static String getDownloadUrl() {
+        int abroad = getAddressByIP(getOutIPV4());
+        return abroad == 1 ? "https://github.com/FloatingPoint-MC/MIN/releases/download/" : "https://gitee.com/FloatingPoint-MC/MIN/releases/download/";
     }
 
     public static JSONObject getJSON(String url) throws IOException, JSONException, URISyntaxException {
