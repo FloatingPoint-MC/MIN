@@ -1,12 +1,12 @@
 package guichaguri.betterfps;
 
-import cn.floatingpoint.min.management.Managers;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import net.minecraft.client.Minecraft;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,7 @@ public class BetterFpsHelper {
     }
 
     public static void loadConfig() {
-        CONFIG_FILE = Managers.fileManager.getConfigFile("betterfps.json");
+        CONFIG_FILE = new File(Minecraft.getMinecraft().getDataDir(), "MIN/betterfps.json");
         FileReader reader = null;
         try {
             if (CONFIG_FILE.exists()) {

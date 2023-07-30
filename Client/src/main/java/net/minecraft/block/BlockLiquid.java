@@ -2,6 +2,8 @@ package net.minecraft.block;
 
 import java.util.Random;
 import javax.annotation.Nullable;
+
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
@@ -340,7 +342,11 @@ public abstract class BlockLiquid extends Block
                 double d8 = d0 + (double)rand.nextFloat();
                 double d4 = d1 + stateIn.getBoundingBox(worldIn, pos).maxY;
                 double d6 = d2 + (double)rand.nextFloat();
-                worldIn.spawnParticle(EnumParticleTypes.LAVA, d8, d4, d6, 0.0D, 0.0D, 0.0D);
+                if (Particles.lava.getValue()) {
+                    for (int i = 0; i < Particles.lavaAmplifier.getValue(); i++) {
+                        worldIn.spawnParticle(EnumParticleTypes.LAVA, d8, d4, d6, 0.0D, 0.0D, 0.0D);
+                    }
+                }
                 worldIn.playSound(d8, d4, d6, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
             }
 

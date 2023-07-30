@@ -3,6 +3,7 @@ package cn.floatingpoint.min.system.hyt.packet.impl;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
 import cn.floatingpoint.min.system.hyt.party.ButtonDecoder;
 import cn.floatingpoint.min.system.hyt.party.Sender;
+import cn.floatingpoint.min.system.ui.hyt.party.GuiHandleRequests;
 import cn.floatingpoint.min.system.ui.hyt.party.GuiInit;
 import cn.floatingpoint.min.system.ui.hyt.party.GuiInput;
 import cn.floatingpoint.min.system.ui.hyt.party.GuiPartyManage;
@@ -28,18 +29,22 @@ public class VexViewPacket implements CustomPacket {
             ChatUtil.printToChat(textComponents);
         } else if (buttonDecoder.sign) {
             Sender.clickButton(buttonDecoder.getButton("sign").getId());
+        } else if (buttonDecoder.list) {
+            mc.displayGuiScreen(new GuiHandleRequests(buttonDecoder.requests));
         } else if (buttonDecoder.containsButtons("创建队伍", "申请入队")) {
             mc.displayGuiScreen(new GuiInit(buttonDecoder.getButton("创建队伍"), buttonDecoder.getButton("申请入队")));
-        } else if (buttonDecoder.containsButtons("申请列表", "踢出队员", "离开队伍", "解散队伍")) {
+        } else if (buttonDecoder.containsButtons("申请列表", "申请列表", "踢出队员", "离开队伍", "解散队伍")) {
             if (buttonDecoder.containsButton("邀请玩家")) {
-                mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), buttonDecoder.getButton("解散队伍"), buttonDecoder.getButton("邀请玩家")));
+                mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), buttonDecoder.getButton("解散队伍"), buttonDecoder.getButton("邀请玩家"), buttonDecoder.getButton("申请列表")));
             } else {
-                mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), buttonDecoder.getButton("解散队伍"), null));
+                mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), buttonDecoder.getButton("解散队伍"), null, null));
             }
         } else if (buttonDecoder.containsButton("手动输入")) {
             Sender.clickButton(buttonDecoder.getButton("手动输入").getId());
         } else if (buttonDecoder.containsButton("提交")) { // 提交
             mc.displayGuiScreen(new GuiInput(buttonDecoder.getElement(buttonDecoder.getButtonIndex("提交") - 1), buttonDecoder.getButton("提交")));
+        } else if (buttonDecoder.containsButton("离开队伍")) {
+            mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), null, null, null));
         }
     }
 }

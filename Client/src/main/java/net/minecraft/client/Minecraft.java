@@ -7,6 +7,7 @@ import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.KeyStrokes;
+import cn.floatingpoint.min.system.module.value.impl.Spinning;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -1564,6 +1565,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         if (this.world != null) {
             Managers.moduleManager.boostModules.values().stream().filter(Module::isEnabled).forEach(BoostModule::tick);
             Managers.moduleManager.miscModules.values().stream().filter(Module::isEnabled).forEach(MiscModule::tick);
+            Spinning.current += Spinning.speed.getValue() * (Spinning.direction.isCurrentMode("P") ? 1 : -1);
             this.player.lastAttackTick--;
             if (this.player.lastAttackTick < 0) {
                 this.player.attackedOther = false;

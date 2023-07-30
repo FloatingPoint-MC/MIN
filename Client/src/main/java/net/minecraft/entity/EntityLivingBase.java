@@ -1,6 +1,7 @@
 package net.minecraft.entity;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import cn.floatingpoint.min.system.module.value.impl.Spinning;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
@@ -308,10 +309,12 @@ public abstract class EntityLivingBase extends Entity {
         if (!this.world.isRemote && this.fallDistance > 3.0F && onGroundIn) {
             float f = (float) MathHelper.ceil(this.fallDistance - 3.0F);
 
-            if (state.getMaterial() != Material.AIR) {
+            if (state.getMaterial() != Material.AIR && Particles.blockDust.getValue()) {
                 double d0 = Math.min(0.2F + f / 15.0F, 2.5D);
                 int i = (int) (150.0D * d0);
-                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+                for (int j = 0; j < Particles.blockDustAmplifier.getValue(); j++) {
+                    ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+                }
             }
         }
 
@@ -1121,7 +1124,11 @@ public abstract class EntityLivingBase extends Entity {
             vec3d1 = vec3d1.rotatePitch(-this.rotationPitch * 0.017453292F);
             vec3d1 = vec3d1.rotateYaw(-this.rotationYaw * 0.017453292F);
             vec3d1 = vec3d1.add(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
-            this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()));
+            if (Particles.itemCrack.getValue()) {
+                for (int i2 = 0; i2 < Particles.itemCrackAmplifier.getValue(); i2++) {
+                    this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()));
+                }
+            }
         }
     }
 
@@ -2517,10 +2524,15 @@ public abstract class EntityLivingBase extends Entity {
                     vec3d1 = vec3d1.rotateYaw(-this.rotationYaw * 0.017453292F);
                     vec3d1 = vec3d1.add(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
 
-                    if (stack.getHasSubtypes()) {
-                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()), stack.getMetadata());
-                    } else {
-                        this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()));
+
+                    if (Particles.itemCrack.getValue()) {
+                        for (int i2 = 0; i2 < Particles.itemCrackAmplifier.getValue(); i2++) {
+                            if (stack.getHasSubtypes()) {
+                                this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()), stack.getMetadata());
+                            } else {
+                                this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y + 0.05D, vec3d.z, Item.getIdFromItem(stack.getItem()));
+                            }
+                        }
                     }
                 }
 

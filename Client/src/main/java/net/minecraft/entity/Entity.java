@@ -1,16 +1,11 @@
 package net.minecraft.entity;
 
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -82,8 +77,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public abstract class Entity implements ICommandSender {
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.emptyList();
@@ -333,7 +326,7 @@ public abstract class Entity implements ICommandSender {
     private final double[] pistonDeltas;
     private long pistonDeltasGameTime;
 
-    public Entity(World worldIn) {
+    public Entity(@Nullable World worldIn) {
         this.entityId = nextEntityID++;
         this.riddenByEntities = Lists.newArrayList();
         this.boundingBox = ZERO_AABB;
@@ -357,12 +350,12 @@ public abstract class Entity implements ICommandSender {
         }
 
         this.dataManager = new EntityDataManager(this);
-        this.dataManager.register(FLAGS, Byte.valueOf((byte) 0));
-        this.dataManager.register(AIR, Integer.valueOf(300));
-        this.dataManager.register(CUSTOM_NAME_VISIBLE, Boolean.valueOf(false));
+        this.dataManager.register(FLAGS, (byte) 0);
+        this.dataManager.register(AIR, 300);
+        this.dataManager.register(CUSTOM_NAME_VISIBLE, Boolean.FALSE);
         this.dataManager.register(CUSTOM_NAME, "");
-        this.dataManager.register(SILENT, Boolean.valueOf(false));
-        this.dataManager.register(NO_GRAVITY, Boolean.valueOf(false));
+        this.dataManager.register(SILENT, Boolean.FALSE);
+        this.dataManager.register(NO_GRAVITY, Boolean.FALSE);
         this.entityInit();
     }
 
@@ -531,7 +524,7 @@ public abstract class Entity implements ICommandSender {
     public void onEntityUpdate() {
         this.world.profiler.startSection("entityBaseTick");
 
-        if (this.isRiding() && this.getRidingEntity().isDead) {
+        if (this.isRiding() && Objects.requireNonNull(this.getRidingEntity()).isDead) {
             this.dismountRidingEntity();
         }
 
@@ -1299,7 +1292,11 @@ public abstract class Entity implements ICommandSender {
         IBlockState iblockstate = this.world.getBlockState(blockpos);
 
         if (iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
-            this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, -this.motionX * 4.0D, 1.5D, -this.motionZ * 4.0D, Block.getStateId(iblockstate));
+            if (Particles.blockCrack.getValue()) {
+                for (int l = 0; l < Particles.blockCrackAmplifier.getValue(); l++) {
+                    this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, -this.motionX * 4.0D, 1.5D, -this.motionZ * 4.0D, Block.getStateId(iblockstate));
+                }
+            }
         }
     }
 

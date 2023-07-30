@@ -73,17 +73,6 @@ public class ParticleCrit extends Particle
         }
     }
 
-    public static class DamageIndicatorFactory implements IParticleFactory
-    {
-        public Particle createParticle(int particleID, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_)
-        {
-            Particle particle = new ParticleCrit(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn + 1.0D, zSpeedIn, 1.0F);
-            particle.setMaxAge(20);
-            particle.setParticleTextureIndex(67);
-            return particle;
-        }
-    }
-
     public static class Factory implements IParticleFactory
     {
         public Particle createParticle(int particleID, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_)

@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.command.CommandMin;
 import cn.floatingpoint.min.system.module.impl.misc.impl.CheaterDetector;
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.CheatDetection;
 import net.minecraft.client.Minecraft;
@@ -804,11 +805,19 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * Called when the entity is dealt a critical hit.
      */
     public void onCriticalHit(Entity entityHit) {
-        this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT);
+        if (Particles.crit.getValue()) {
+            for (int i = 0; i < Particles.critAmplifier.getValue(); i++) {
+                this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT);
+            }
+        }
     }
 
     public void onEnchantmentCritical(Entity entityHit) {
-        this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT_MAGIC);
+        if (Particles.sharpness.getValue()) {
+            for (int i = 0; i < Particles.sharpnessAmplifier.getValue(); i++) {
+                this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT_MAGIC);
+            }
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -607,7 +608,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
     }
 
     public void renderEntities(Entity renderViewEntity, ICamera camera, float partialTicks) {
-        int i = 0;
         if (this.renderEntitiesStartupCounter > 0) {
             --this.renderEntitiesStartupCounter;
         } else {
@@ -635,9 +635,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             this.world.profiler.endStartSection("global");
             List<Entity> list = this.world.getLoadedEntityList();
 
-            if (i == 0) {
-                this.countEntitiesTotal = list.size();
-            }
+            this.countEntitiesTotal = list.size();
 
             if (Config.isFogOff() && this.mc.entityRenderer.fogStandard) {
                 GlStateManager.disableFog();
@@ -711,7 +709,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 }
             }
 
-            if (i == 0 && this.isRenderEntityOutlines() && (!list2.isEmpty() || this.entityOutlinesRendered)) {
+            if (this.isRenderEntityOutlines() && (!list2.isEmpty() || this.entityOutlinesRendered)) {
                 this.world.profiler.endStartSection("entityOutlines");
                 this.entityOutlineFramebuffer.framebufferClear();
                 this.entityOutlinesRendered = !list2.isEmpty();
@@ -2426,7 +2424,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while adding particle");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being added");
-            crashreportcategory.addCrashSection("ID", Integer.valueOf(id));
+            crashreportcategory.addCrashSection("ID", id);
 
             if (parameters != null) {
                 crashreportcategory.addCrashSection("Parameters", parameters);
@@ -2454,7 +2452,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
     private Particle spawnParticle0(int particleID, boolean ignoreRange, boolean minParticles, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
         Entity entity = this.mc.getRenderViewEntity();
 
-        if (this.mc != null && entity != null && this.mc.effectRenderer != null) {
+        if (entity != null && this.mc.effectRenderer != null) {
             int k1 = this.calculateParticleLevel(minParticles);
             double d3 = entity.posX - xCoord;
             double d4 = entity.posY - yCoord;
@@ -2497,6 +2495,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             } else if (particleID == EnumParticleTypes.FIREWORKS_SPARK.getParticleID() && !Config.isFireworkParticles()) {
                 return null;
             } else {
+
                 if (!ignoreRange) {
                     double d6 = 64.0D;
 
@@ -2811,8 +2810,12 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 double d7 = blockPosIn.getY();
                 double d8 = blockPosIn.getZ();
 
-                for (int i2 = 0; i2 < 8; ++i2) {
-                    this.spawnParticle(EnumParticleTypes.ITEM_CRACK, d6, d7, d8, random.nextGaussian() * 0.15D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.15D, Item.getIdFromItem(Items.SPLASH_POTION));
+                if (Particles.itemCrack.getValue()) {
+                    for (int i = 0; i < Particles.itemCrackAmplifier.getValue(); i++) {
+                        for (int i2 = 0; i2 < 8; ++i2) {
+                            this.spawnParticle(EnumParticleTypes.ITEM_CRACK, d6, d7, d8, random.nextGaussian() * 0.15D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.15D, Item.getIdFromItem(Items.SPLASH_POTION));
+                        }
+                    }
                 }
 
                 float f5 = (float) (data >> 16 & 255) / 255.0F;
@@ -2843,8 +2846,12 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 double d11 = blockPosIn.getY();
                 double d13 = (double) blockPosIn.getZ() + 0.5D;
 
-                for (int j3 = 0; j3 < 8; ++j3) {
-                    this.spawnParticle(EnumParticleTypes.ITEM_CRACK, d9, d11, d13, random.nextGaussian() * 0.15D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.15D, Item.getIdFromItem(Items.ENDER_EYE));
+                if (Particles.itemCrack.getValue()) {
+                    for (int i = 0; i < Particles.itemCrackAmplifier.getValue(); i++) {
+                        for (int j3 = 0; j3 < 8; ++j3) {
+                            this.spawnParticle(EnumParticleTypes.ITEM_CRACK, d9, d11, d13, random.nextGaussian() * 0.15D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.15D, Item.getIdFromItem(Items.ENDER_EYE));
+                        }
+                    }
                 }
 
                 for (double d25 = 0.0D; d25 < (Math.PI * 2D); d25 += 0.15707963267948966D) {

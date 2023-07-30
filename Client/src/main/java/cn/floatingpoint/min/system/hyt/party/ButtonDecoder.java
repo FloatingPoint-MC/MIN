@@ -1,11 +1,13 @@
 package cn.floatingpoint.min.system.hyt.party;
 
+import cn.floatingpoint.min.system.ui.hyt.party.Request;
 import cn.floatingpoint.min.system.ui.hyt.party.VexViewButton;
 import io.netty.buffer.ByteBuf;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
 public class ButtonDecoder {
@@ -13,6 +15,8 @@ public class ButtonDecoder {
     public final boolean invited;
     public final String inviter;
     public final boolean sign;
+    public final boolean list;
+    public final ArrayList<Request> requests;
 
     public ButtonDecoder(ByteBuf byteBuf) {
         byte[] bytes = new byte[byteBuf.readableBytes()];
@@ -22,12 +26,36 @@ public class ButtonDecoder {
         if (sign) {
             result = result.replace("[but]", "[but]sign");
         }
+        list = result.contains("[gui]https://ok.166.net/gameyw-misc/opd/squash/20210915/195203-c2npy8skq6.png");
+        requests = new ArrayList<>();
+        if (list) {
+            result = result.replace("null<#>[but]", "null<#>[denyButton]");
+            result = result.replace("[but]", "[but]accept");
+            result = result.replace("[denyButton]", "[but]deny");
+        }
         elements = result.split("<&>");
+        if (list) {
+            boolean nextDeny = false;
+            String cacheName = "";
+            int cacheAccept = -1;
+            for (int i = 0; i < elements.length; i++) {
+               String element = elements[i];
+                if (!nextDeny) {
+                    if (element.contains("<#>[but]accept")) {
+                        cacheName = element.substring(0, element.length() - 8);
+                        cacheAccept = i += 6;
+                        nextDeny = true;
+                    }
+                } else if (element.contains("<#>[but]deny")) {
+                    nextDeny = false;
+                    requests.add(new Request(cacheName, String.valueOf(cacheAccept), String.valueOf(i += 6)));
+                }
+            }
+        }
         int index = this.containsString("邀请你加入队伍");
         if (index != -1) {
             invited = true;
-            System.out.println(this.elements[index - 3]);
-            inviter = this.elements[index - 3].replace(":<#>[txt]50", "").replace("\2476玩家 \2473\247l", "");
+            inviter = this.elements[index - 3].replace("\2476：<#>[txt]50", "").replace("\2476玩家 \2473\247l", "");
         } else {
             invited = false;
             inviter = "";

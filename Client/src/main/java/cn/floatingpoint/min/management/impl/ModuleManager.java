@@ -63,10 +63,10 @@ public class ModuleManager implements Manager {
         renderModules.put("ItemPhysics", new ItemPhysics());
         renderModules.put("KeyStrokes", new KeyStrokes());
         renderModules.put("MinimizedBobbing", new MinimizedBobbing());
-        renderModules.put("MoreParticles", new MoreParticles());
         renderModules.put("NameProtect", new NameProtect());
         renderModules.put("NameTag", new NameTag());
         renderModules.put("NoHurtCam", new NoHurtCam());
+        renderModules.put("Particles", new Particles());
         renderModules.put("PotionDisplay", new PotionDisplay());
         renderModules.put("Scoreboard", new Scoreboard());
         renderModules.put("SmoothZoom", new SmoothZoom());
@@ -83,8 +83,10 @@ public class ModuleManager implements Manager {
             JSONObject jsonObject = new JSONObject(context);
             for (String key : jsonObject.keySet()) {
                 JSONObject moduleData = jsonObject.getJSONObject(key);
-                modules.get(key).setEnableOnStartUp(moduleData.getBoolean("Enabled"));
-                modules.get(key).setKey(Keyboard.getKeyIndex(moduleData.getString("KeyBind").toUpperCase()));
+                if (modules.containsKey(key)) {
+                    modules.get(key).setEnableOnStartUp(moduleData.getBoolean("Enabled"));
+                    modules.get(key).setKey(Keyboard.getKeyIndex(moduleData.getString("KeyBind").toUpperCase()));
+                }
             }
         } catch (Exception e) {
             if (Minecraft.DEBUG_MODE) {
@@ -95,23 +97,25 @@ public class ModuleManager implements Manager {
         try {
             JSONObject jsonObject = new JSONObject(context);
             for (String key : jsonObject.keySet()) {
-                for (Map.Entry<String, Value<?>> entry : modules.get(key).getValues().entrySet()) {
-                    JSONObject valueData = jsonObject.getJSONObject(key);
-                    String valueKey = entry.getKey();
-                    Value<?> value = entry.getValue();
-                    if (valueData.has(valueKey)) {
-                        if (value instanceof DecimalValue) {
-                            ((DecimalValue) value).setValue(valueData.getDouble(valueKey));
-                        } else if (value instanceof IntegerValue) {
-                            ((IntegerValue) value).setValue(valueData.getInt(valueKey));
-                        } else if (value instanceof ModeValue) {
-                            ((ModeValue) value).setValue(valueData.getString(valueKey));
-                        } else if (value instanceof OptionValue) {
-                            ((OptionValue) value).setValue(valueData.getBoolean(valueKey));
-                        } else if (value instanceof TextValue) {
-                            ((TextValue) value).setValue(valueData.getString(valueKey));
-                        } else if (value instanceof PaletteValue) {
-                            ((PaletteValue) value).setValue(valueData.getInt(valueKey));
+                if (modules.containsKey(key)) {
+                    for (Map.Entry<String, Value<?>> entry : modules.get(key).getValues().entrySet()) {
+                        JSONObject valueData = jsonObject.getJSONObject(key);
+                        String valueKey = entry.getKey();
+                        Value<?> value = entry.getValue();
+                        if (valueData.has(valueKey)) {
+                            if (value instanceof DecimalValue) {
+                                ((DecimalValue) value).setValue(valueData.getDouble(valueKey));
+                            } else if (value instanceof IntegerValue) {
+                                ((IntegerValue) value).setValue(valueData.getInt(valueKey));
+                            } else if (value instanceof ModeValue) {
+                                ((ModeValue) value).setValue(valueData.getString(valueKey));
+                            } else if (value instanceof OptionValue) {
+                                ((OptionValue) value).setValue(valueData.getBoolean(valueKey));
+                            } else if (value instanceof TextValue) {
+                                ((TextValue) value).setValue(valueData.getString(valueKey));
+                            } else if (value instanceof PaletteValue) {
+                                ((PaletteValue) value).setValue(valueData.getInt(valueKey));
+                            }
                         }
                     }
                 }

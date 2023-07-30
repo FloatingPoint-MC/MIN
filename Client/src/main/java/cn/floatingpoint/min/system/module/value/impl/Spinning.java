@@ -13,8 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Spinning extends RenderModule {
     private static final OptionValue everyone = new OptionValue(false);
-    private final IntegerValue speed = new IntegerValue(1, 180, 1, 10);
-    private final ModeValue direction = new ModeValue(new String[]{"P", "N"}, "P");
+    public static final IntegerValue speed = new IntegerValue(1, 180, 1, 10);
+    public static final ModeValue direction = new ModeValue(new String[]{"P", "N"}, "P");
     public static float current = 0.0f;
     private static Spinning instance;
 
@@ -33,7 +33,6 @@ public class Spinning extends RenderModule {
 
     @Override
     public void onRender3D() {
-        current += speed.getValue() * (this.direction.isCurrentMode("P") ? 1 : -1);
         if (everyone.getValue()) {
             for (EntityPlayer player : mc.world.playerEntities) {
                 player.renderYawOffset = player.rotationYaw + current;

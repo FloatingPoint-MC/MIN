@@ -72,7 +72,7 @@ public abstract class ClickableButton {
         Gui.drawRect(startX + 0.5D, endY - 0.5D, endX - 0.5D, endY, new Color(44, 44, 44, 102).getRGB());
         Gui.drawRect(endX - 0.5D, startY, endX, endY, new Color(44, 44, 44, 102).getRGB());
         Gui.drawRect(startX + 0.5D, startY, endX - 0.5D, startY + 0.5, new Color(44, 44, 44, 102).getRGB());
-        Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x, startY + 6, new Color(216, 216, 216).getRGB());
+        Managers.fontManager.sourceHansSansCN_Regular_18.drawCenteredString(text, x, startY + (height == 20 ? 6 : 2), new Color(216, 216, 216).getRGB());
         GlStateManager.enableBlend();
     }
 

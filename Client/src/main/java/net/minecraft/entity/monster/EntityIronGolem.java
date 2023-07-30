@@ -1,5 +1,6 @@
 package net.minecraft.entity.monster;
 
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import com.google.common.base.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
@@ -155,7 +156,11 @@ public class EntityIronGolem extends EntityGolem
 
             if (iblockstate.getMaterial() != Material.AIR)
             {
-                this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D, Block.getStateId(iblockstate));
+                if (Particles.blockCrack.getValue()) {
+                    for (int l = 0; l < Particles.blockCrackAmplifier.getValue(); l++) {
+                        this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, 4.0D * ((double) this.rand.nextFloat() - 0.5D), 0.5D, ((double) this.rand.nextFloat() - 0.5D) * 4.0D, Block.getStateId(iblockstate));
+                    }
+                }
             }
         }
     }

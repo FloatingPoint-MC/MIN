@@ -1,7 +1,5 @@
 package net.minecraft.client.multiplayer;
 
-import cn.floatingpoint.min.management.Managers;
-import cn.floatingpoint.min.system.module.impl.render.impl.MoreParticles;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCommandBlock;
@@ -439,22 +437,6 @@ public class PlayerControllerMP {
         this.syncCurrentPlayItem();
         mc.player.attackedOther = true;
         mc.player.lastAttackTick = 10;
-        if (Managers.moduleManager.renderModules.get("MoreParticles").isEnabled()) {
-            for (int i = 0; i < MoreParticles.critParticles.getValue(); i++) {
-                mc.effectRenderer.emitParticleAtEntity(targetEntity, EnumParticleTypes.CRIT);
-            }
-
-            for (int i = 0; i < MoreParticles.sharpParticles.getValue().byteValue(); i++) {
-                mc.effectRenderer.emitParticleAtEntity(targetEntity, EnumParticleTypes.CRIT_MAGIC);
-            }
-            Random random = new Random();
-            for (int i = 0; i < MoreParticles.bloodParticles.getValue().byteValue(); i++) {
-                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), -random.nextFloat() * 2, random.nextFloat(), random.nextFloat() * 2, 152);
-                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), random.nextFloat() * 2, random.nextFloat(), -random.nextFloat() * 2, 152);
-                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), -random.nextFloat() * 2, random.nextFloat(), random.nextFloat() * 2, 152);
-                mc.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, targetEntity.posX + ((double) random.nextFloat() - 0.5D), targetEntity.posY + random.nextFloat() + 1, targetEntity.posZ + ((double) random.nextFloat() - 0.5D), -random.nextFloat() * 2, random.nextFloat(), -random.nextFloat() * 2, 152);
-            }
-        }
         this.connection.sendPacket(new CPacketUseEntity(targetEntity));
 
         if (this.currentGameType != GameType.SPECTATOR) {

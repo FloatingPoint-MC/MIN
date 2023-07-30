@@ -1248,13 +1248,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
                             if (j > 0) {
                                 targetEntity.setFire(j * 4);
                             }
-
-                            if (this.world instanceof WorldServer && f5 > 2.0F) {
-                                int k = (int) ((double) f5 * 0.5D);
-                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.DAMAGE_INDICATOR, targetEntity.posX, targetEntity.posY + (double) (targetEntity.height * 0.5F), targetEntity.posZ, k, 0.1D, 0.0D, 0.1D, 0.2D);
-                            }
                         }
-
                         this.addExhaustion(0.1F);
                     } else {
                         if (flag4) {

@@ -5,7 +5,6 @@ import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
 import cn.floatingpoint.min.system.module.impl.misc.impl.CheaterDetector;
 import cn.floatingpoint.min.utils.client.CheatDetection;
-import cn.floatingpoint.min.utils.math.DESUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -688,9 +687,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 EntityPlayer entityplayer = (EntityPlayer) entity;
                 entityplayer.wakeUpPlayer(false, false, false);
             } else if (packetIn.getAnimationType() == 4) {
-                this.client.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
+                this.client.player.onCriticalHit(entity);
             } else if (packetIn.getAnimationType() == 5) {
-                this.client.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT_MAGIC);
+                this.client.player.onEnchantmentCritical(entity);
             }
         }
     }

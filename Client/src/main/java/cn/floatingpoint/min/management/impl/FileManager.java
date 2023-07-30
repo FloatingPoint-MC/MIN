@@ -14,9 +14,10 @@ import net.minecraft.client.Minecraft;
 import org.json.JSONObject;
 import org.lwjgl.input.Keyboard;
 
+@SuppressWarnings("all")
 public class FileManager implements Manager {
     public static final int VERSION = 3;
-    public File dir;
+    public File dir = null;
     public boolean shouldSave = false;
 
     public File getConfigFile(String name) {
