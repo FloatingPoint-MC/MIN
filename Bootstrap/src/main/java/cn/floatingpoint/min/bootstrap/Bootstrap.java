@@ -30,6 +30,7 @@ public class Bootstrap extends JFrame {
     private File dir;
     private boolean canLaunch = false;
     private int length = 0;
+    private String sha1;
 
     public Bootstrap(String[] args) {
         instance = this;
@@ -126,7 +127,8 @@ public class Bootstrap extends JFrame {
             progressBar.setValue(33);
             try (InputStream inputStream = connection.getInputStream()) {
                 progressBar.setValue(67);
-                try (FileOutputStream out = new FileOutputStream(new File(this.dir, "Game.jar"))) {
+                File jarFile = new File(this.dir, "Game.jar");
+                try (FileOutputStream out = new FileOutputStream(jarFile)) {
                     progressBar.setValue(100);
                     int length = connection.getContentLength();
                     label.setText("Downloading Client: ");
@@ -138,7 +140,15 @@ public class Bootstrap extends JFrame {
                         progressBar.setValue((int) Math.round(100.0D * this.length / length));
                         out.write(bytes, 0, len);
                     }
-                    canLaunch = true;
+                    label.setText("Verifying Client: ");
+                    progressBar.setValue(0);
+                    if (checkSha1NonRight(sha1)) {
+                        JOptionPane.showMessageDialog(this, "Error while grabbing game file.", "Error", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    } else {
+                        canLaunch = true;
+                        progressBar.setValue(100);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -207,6 +217,7 @@ public class Bootstrap extends JFrame {
     }
 
     private boolean checkSha1NonRight(String sha1) {
+        this.sha1 = sha1;
         return !this.getSha1ByFile(new File(this.dir, "Game.jar")).equals(sha1);
     }
 
