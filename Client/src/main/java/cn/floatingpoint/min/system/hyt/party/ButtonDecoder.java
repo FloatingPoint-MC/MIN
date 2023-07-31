@@ -22,16 +22,22 @@ public class ButtonDecoder {
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
         String result = decode(bytes);
-        sign = result.contains("[gui]https://img.166.net/gameyw-misc/opd/squash/20221221/104939-4q3d0pgm59.png");
-        if (sign) {
-            result = result.replace("[but]", "[but]sign");
-        }
-        list = result.contains("[gui]https://ok.166.net/gameyw-misc/opd/squash/20210915/195203-c2npy8skq6.png");
-        requests = new ArrayList<>();
-        if (list) {
-            result = result.replace("null<#>[but]", "null<#>[denyButton]");
-            result = result.replace("[but]", "[but]accept");
-            result = result.replace("[denyButton]", "[but]deny");
+        if (!result.contains("[but]手动输入")) {
+            sign = result.contains("[gui]https://img.166.net/gameyw-misc/opd/squash/20221221/104939-4q3d0pgm59.png");
+            if (sign) {
+                result = result.replace("[but]", "[but]sign");
+            }
+            list = result.contains("[gui]https://ok.166.net/gameyw-misc/opd/squash/20210915/195203-c2npy8skq6.png");
+            requests = new ArrayList<>();
+            if (list) {
+                result = result.replace("null<#>[but]", "null<#>[denyButton]");
+                result = result.replace("[but]", "[but]accept");
+                result = result.replace("[denyButton]", "[but]deny");
+            }
+        } else {
+            sign = false;
+            list = false;
+            requests = null;
         }
         elements = result.split("<&>");
         if (list) {

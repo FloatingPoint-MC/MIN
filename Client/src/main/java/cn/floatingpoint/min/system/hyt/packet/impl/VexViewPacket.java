@@ -29,6 +29,10 @@ public class VexViewPacket implements CustomPacket {
             ChatUtil.printToChat(textComponents);
         } else if (buttonDecoder.sign) {
             Sender.clickButton(buttonDecoder.getButton("sign").getId());
+        } else if (buttonDecoder.containsButton("手动输入")) {
+            Sender.clickButton(buttonDecoder.getButton("手动输入").getId());
+        } else if (buttonDecoder.containsButton("提交")) { // 提交
+            mc.displayGuiScreen(new GuiInput(buttonDecoder.getElement(buttonDecoder.getButtonIndex("提交") - 1), buttonDecoder.getButton("提交")));
         } else if (buttonDecoder.list) {
             mc.displayGuiScreen(new GuiHandleRequests(buttonDecoder.requests));
         } else if (buttonDecoder.containsButtons("创建队伍", "申请入队")) {
@@ -39,10 +43,6 @@ public class VexViewPacket implements CustomPacket {
             } else {
                 mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), buttonDecoder.getButton("解散队伍"), null, null));
             }
-        } else if (buttonDecoder.containsButton("手动输入")) {
-            Sender.clickButton(buttonDecoder.getButton("手动输入").getId());
-        } else if (buttonDecoder.containsButton("提交")) { // 提交
-            mc.displayGuiScreen(new GuiInput(buttonDecoder.getElement(buttonDecoder.getButtonIndex("提交") - 1), buttonDecoder.getButton("提交")));
         } else if (buttonDecoder.containsButton("离开队伍")) {
             mc.displayGuiScreen(new GuiPartyManage(buttonDecoder.getButton("离开队伍"), null, null, null));
         }
