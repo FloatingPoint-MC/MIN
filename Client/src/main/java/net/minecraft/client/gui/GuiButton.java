@@ -36,6 +36,7 @@ public class GuiButton extends Gui
     /** Hides the button completely if false. */
     public boolean visible;
     protected boolean hovered;
+    private int animation;
 
     public GuiButton(int buttonId, int x, int y, String buttonText)
     {
@@ -52,6 +53,7 @@ public class GuiButton extends Gui
         this.width = widthIn;
         this.height = heightIn;
         this.displayString = buttonText;
+        animation = 236;
     }
 
     /**
@@ -84,18 +86,23 @@ public class GuiButton extends Gui
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             int i = this.getHoverState(this.hovered);
             this.mouseDragged(mc, mouseX, mouseY);
-            Color color = new Color(236, 236, 236);
+            Color color;
             if (!this.enabled)
             {
                 color = new Color(102, 102, 102, 102);
             } else if (i == 2) {
-                color = new Color(255, 255, 255);
+                animation = animation + Integer.compare(255, animation) * 5;
+                animation = Math.min(255, animation);
+                color = new Color(animation, animation, animation);
+            } else {
+                animation = animation + Integer.compare(236, animation) * 5;
+                animation = Math.max(236, animation);
+                color = new Color(animation, animation, animation);
             }
-            if (i == 1) {
-                RenderUtil.drawRoundedRect(this.x, this.y + 1, this.x + this.width, this.y + this.height - 1, 3, new Color(102, 102, 102, 102).getRGB());
-            } else if (i == 2) {
-                RenderUtil.drawRoundedRect(this.x, this.y + 1, this.x + this.width, this.y + this.height - 1, 3, new Color(102, 102, 102, 156).getRGB());
-            } else if (i == 0) {
+            int alpha = (int) (102 + (animation - 236) * 2.842105263157895);
+            if (i != 0) {
+                RenderUtil.drawRoundedRect(this.x, this.y + 1, this.x + this.width, this.y + this.height - 1, 3, new Color(102, 102, 102, alpha).getRGB());
+            } else {
                 RenderUtil.drawRoundedRect(this.x, this.y + 1, this.x + this.width, this.y + this.height - 1, 3, new Color(40, 40, 40, 156).getRGB());
             }
 
