@@ -70,7 +70,7 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         net.minecraft.scoreboard.Scoreboard scoreboard = scoreObjective.getScoreboard();
         List<Score> list = scoreboard.getSortedScores(scoreObjective).stream().filter(p_apply_1_ -> !p_apply_1_.getPlayerName().startsWith("#")).collect(Collectors.toList());
         ArrayList<Score> scores = new ArrayList<>();
-        Score score = new Score(scoreboard, scoreObjective, "  \247fMIN官方QQ群: \247b710042765  ");
+        Score score = new Score(scoreboard, scoreObjective, "  \247fMIN官方KOOK: \247b14221788  ");
         score.setScorePoints(0);
         scores.add(score);
 
@@ -89,13 +89,12 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         }
 
         int l1 = x - i - 3;
-        int j = 0;
+        int j;
 
-        for (Score ignored : scores) {
-            ++j;
+        for (j = 0; j < scores.size(); j++) {
             int k = y - j * fontRenderer.FONT_HEIGHT;
             int l = x - 3 + 2;
-            if (j == scores.size()) {
+            if (j == scores.size() - 1) {
                 width = l + 2 - l1;
                 height = y - k;
             }
