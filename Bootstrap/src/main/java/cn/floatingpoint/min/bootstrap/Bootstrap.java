@@ -105,11 +105,13 @@ public class Bootstrap extends JFrame {
                 progressBar.setValue(66);
                 String remoteVersion = jsonObject.getString("CurrentVersion");
                 progressBar.setValue(99);
-                if (!remoteVersion.equalsIgnoreCase(getVersion()) || checkSha1NonRight(jsonObject.getString("Sha-1"))) {
+                sha1 = jsonObject.getString("Sha-1");
+                if (!remoteVersion.equalsIgnoreCase(getVersion()) || checkSha1NonRight(sha1)) {
                     progressBar.setValue(100);
                     deleteJarFile();
                     downloadJarFile(remoteVersion);
                 } else {
+                    progressBar.setValue(100);
                     canLaunch = true;
                 }
             } catch (Exception e) {
@@ -143,7 +145,7 @@ public class Bootstrap extends JFrame {
                     label.setText("Verifying Client: ");
                     progressBar.setValue(0);
                     if (checkSha1NonRight(sha1)) {
-                        JOptionPane.showMessageDialog(this, "Error while grabbing game file.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Invalid file downloaded. Please contact the author.", "Error", JOptionPane.ERROR_MESSAGE);
                         System.exit(0);
                     } else {
                         canLaunch = true;
@@ -217,7 +219,6 @@ public class Bootstrap extends JFrame {
     }
 
     private boolean checkSha1NonRight(String sha1) {
-        this.sha1 = sha1;
         return !this.getSha1ByFile(new File(this.dir, "Game.jar")).equals(sha1);
     }
 
