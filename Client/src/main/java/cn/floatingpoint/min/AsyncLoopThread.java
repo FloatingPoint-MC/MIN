@@ -1,5 +1,7 @@
 package cn.floatingpoint.min;
 
+import net.minecraft.client.Minecraft;
+
 import java.util.HashSet;
 
 /**
@@ -12,7 +14,7 @@ public class AsyncLoopThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (Minecraft.getMinecraft().running) {
             synchronized (runnableSet) {
                 if (runnableSet.isEmpty()) {
                     try {

@@ -408,7 +408,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     /**
      * Set to true to keep the game loop running. Set to false by shutdown() to allow the game loop to exit cleanly.
      */
-    volatile boolean running = true;
+    public volatile boolean running = true;
 
     /**
      * String that shows the debug information
@@ -434,7 +434,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;

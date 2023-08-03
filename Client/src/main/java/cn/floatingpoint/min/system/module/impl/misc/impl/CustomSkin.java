@@ -4,14 +4,13 @@ import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.value.impl.TextValue;
 import cn.floatingpoint.min.utils.client.Pair;
+import cn.floatingpoint.min.utils.client.PlayerUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import cn.floatingpoint.min.utils.math.TimeHelper;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import org.json.JSONObject;
-
-import java.util.UUID;
 
 /**
  * @projectName: MIN
@@ -57,15 +56,7 @@ public class CustomSkin extends MiscModule {
                             JSONObject json = WebUtil.getJSON("https://api.mojang.com/users/profiles/minecraft/" + cacheUsername);
                             if (json.has("id")) {
                                 String raw = json.getString("id");
-                                StringBuilder uuidBuilder = new StringBuilder();
-                                for (int i = 0; i < raw.length(); i++) {
-                                    uuidBuilder.append(raw.charAt(i));
-                                    if (i == 7 || i == 11 || i == 15 || i == 19) {
-                                        uuidBuilder.append("-");
-                                    }
-                                }
-                                UUID uuid = UUID.fromString(uuidBuilder.toString());
-                                GameProfile gameProfile = new GameProfile(uuid, json.getString("name"));
+                                GameProfile gameProfile = new GameProfile(PlayerUtil.formUUID(raw), json.getString("name"));
                                 gameProfile = mc.getSessionService().fillProfileProperties(gameProfile, false);
                                 mc.getSkinManager().loadProfileTextures(gameProfile, (typeIn, location, profileTexture) -> {
                                     switch (typeIn) {

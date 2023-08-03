@@ -1,6 +1,7 @@
 package net.minecraft.client.network;
 
 import cn.floatingpoint.min.MIN;
+import cn.floatingpoint.min.utils.client.PlayerUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
@@ -17,6 +18,7 @@ import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.GameType;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class NetworkPlayerInfo
@@ -107,11 +109,11 @@ public class NetworkPlayerInfo
         return this.playerTextures.get(Type.CAPE);
     }
 
-    @Nullable
 
     /**
      * Gets the special Elytra texture for the player.
      */
+    @Nullable
     public ResourceLocation getLocationElytra()
     {
         this.loadPlayerTextures();
@@ -132,13 +134,17 @@ public class NetworkPlayerInfo
             {
                 this.playerTexturesLoaded = true;
                 MIN.runAsync(() -> {
-                    // TODO: WAIT FOR URL
-                    //try {
-                    //    JSONObject jsonObject = WebUtil.getJSONFromPost("");
-                    //} catch (URISyntaxException | IOException e) {
-//
-                    //}
-                    Minecraft.getMinecraft().getSkinManager().loadProfileTextures(this.gameProfile, (typeIn, location, profileTexture) -> {
+                    GameProfile gameProfile = null;
+                    try {
+                        JSONObject json = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/skin/get?username=" + this.gameProfile.getName());
+                        if (json.getInt("code") == 0) {
+                            String raw = json.getString("uuid");
+                            gameProfile = new GameProfile(PlayerUtil.formUUID(raw), json.getString("name"));
+                            gameProfile = Minecraft.getMinecraft().getSessionService().fillProfileProperties(gameProfile, false);
+                        }
+                    } catch (URISyntaxException | IOException | JSONException ignored) {
+                    }
+                    Minecraft.getMinecraft().getSkinManager().loadProfileTextures(gameProfile == null ? this.gameProfile : gameProfile, (typeIn, location, profileTexture) -> {
                         switch (typeIn) {
                             case SKIN:
                                 NetworkPlayerInfo.this.playerTextures.put(Type.SKIN, location);
@@ -157,7 +163,7 @@ public class NetworkPlayerInfo
                             case ELYTRA:
                                 NetworkPlayerInfo.this.playerTextures.put(Type.ELYTRA, location);
                         }
-                    }, true);
+                    }, gameProfile == null);
                 });
             }
         }
