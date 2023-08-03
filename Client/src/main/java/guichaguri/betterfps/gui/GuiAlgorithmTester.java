@@ -48,7 +48,7 @@ public class GuiAlgorithmTester extends JFrame implements ActionListener {
     private static void warmupClasses() {
         // Initialize the classes, so the loading time will not count in the startBenchmark
         JavaMath.sin(0);
-        MathHelper.sin(0);
+        //MathHelper.sin(0);
         LibGDXMath.sin(0);
         RivensMath.sin(0);
         RivensFullMath.sin(0);
@@ -76,10 +76,10 @@ public class GuiAlgorithmTester extends JFrame implements ActionListener {
             JavaMath.cos(angle);
             javaMath += System.nanoTime() - time;
 
-            time = System.nanoTime();
-            MathHelper.sin(angle);
-            MathHelper.cos(angle);
-            vanilla += System.nanoTime() - time;
+            //time = System.nanoTime();
+            //MathHelper.sin(angle);
+            //MathHelper.cos(angle);
+            //vanilla += System.nanoTime() - time;
 
             time = System.nanoTime();
             LibGDXMath.sin(angle);
