@@ -10,19 +10,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -45,7 +33,6 @@ import net.minecraft.client.renderer.chunk.IRenderChunkFactory;
 import net.minecraft.client.renderer.chunk.ListChunkFactory;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.chunk.VboChunkFactory;
-import net.minecraft.client.renderer.chunk.VisGraph;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -1012,18 +999,18 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                     RenderChunk renderchunk2 = iterator.next();
 
                     if (renderchunk2 != null && renderchunk2.getPosition().getY() <= j) {
-                        RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation = renderchunk2.getRenderInfo();
+                        RenderGlobal.ContainerLocalRenderInformation localRenderInformation = renderchunk2.getRenderInfo();
 
                         if (!renderchunk2.compiledChunk.isEmpty()) {
-                            this.renderInfos.add(renderglobal$containerlocalrenderinformation);
+                            this.renderInfos.add(localRenderInformation);
                         }
 
                         if (renderchunk2.getChunk().hasEntities) {
-                            this.renderInfosEntities.add(renderglobal$containerlocalrenderinformation);
+                            this.renderInfosEntities.add(localRenderInformation);
                         }
 
-                        if (renderchunk2.getCompiledChunk().getTileEntities().size() > 0) {
-                            this.renderInfosTileEntities.add(renderglobal$containerlocalrenderinformation);
+                        if (!renderchunk2.getCompiledChunk().getTileEntities().isEmpty()) {
+                            this.renderInfosTileEntities.add(localRenderInformation);
                         }
                     }
                 }
@@ -1045,7 +1032,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             if (renderchunk != null && renderchunk.getPosition().getY() <= j) {
                 boolean flag2 = false;
                 RenderGlobal.ContainerLocalRenderInformation localRenderInformation = new RenderGlobal.ContainerLocalRenderInformation(renderchunk, null, 0);
-                Set<EnumFacing> set1 = SET_ALL_FACINGS;
+                Set<EnumFacing> set1 = new HashSet<>(SET_ALL_FACINGS);
 
                 if (set1.size() == 1) {
                     Vector3f vector3f = this.getViewVector(viewEntity, partialTicks);
@@ -1080,9 +1067,9 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
                         if (renderchunk3 != null && renderchunk3.isBoundingBoxInFrustum(camera, frameCount)) {
                             renderchunk3.setFrameIndex(frameCount);
-                            RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation1 = renderchunk3.getRenderInfo();
-                            renderglobal$containerlocalrenderinformation1.initialize(null, 0);
-                            deque.add(renderglobal$containerlocalrenderinformation1);
+                            RenderGlobal.ContainerLocalRenderInformation localRenderInformation = renderchunk3.getRenderInfo();
+                            localRenderInformation.initialize(null, 0);
+                            deque.add(localRenderInformation);
                         }
                     }
                 }
@@ -1092,32 +1079,32 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             boolean flag3 = Config.isFogOn();
 
             while (!deque.isEmpty()) {
-                RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation5 = deque.poll();
-                RenderChunk renderchunk6 = renderglobal$containerlocalrenderinformation5.renderChunk;
-                EnumFacing enumfacing1 = renderglobal$containerlocalrenderinformation5.facing;
+                RenderGlobal.ContainerLocalRenderInformation localRenderInformation = deque.poll();
+                RenderChunk renderchunk6 = localRenderInformation.renderChunk;
+                EnumFacing enumfacing1 = localRenderInformation.facing;
                 CompiledChunk compiledchunk = renderchunk6.compiledChunk;
 
                 if (!compiledchunk.isEmpty() || renderchunk6.needsUpdate()) {
-                    this.renderInfos.add(renderglobal$containerlocalrenderinformation5);
+                    this.renderInfos.add(localRenderInformation);
                 }
 
                 if (renderchunk6.getChunk().hasEntities) {
-                    this.renderInfosEntities.add(renderglobal$containerlocalrenderinformation5);
+                    this.renderInfosEntities.add(localRenderInformation);
                 }
 
-                if (compiledchunk.getTileEntities().size() > 0) {
-                    this.renderInfosTileEntities.add(renderglobal$containerlocalrenderinformation5);
+                if (!compiledchunk.getTileEntities().isEmpty()) {
+                    this.renderInfosTileEntities.add(localRenderInformation);
                 }
 
-                for (EnumFacing enumfacing : flag1 ? ChunkVisibility.getFacingsNotOpposite(renderglobal$containerlocalrenderinformation5.setFacing) : EnumFacing.VALUES) {
+                for (EnumFacing enumfacing : flag1 ? ChunkVisibility.getFacingsNotOpposite(localRenderInformation.setFacing) : EnumFacing.VALUES) {
                     if (!flag1 || enumfacing1 == null || compiledchunk.isVisible(enumfacing1.getOpposite(), enumfacing)) {
                         RenderChunk renderchunk4 = this.getRenderChunkOffset(blockpos, renderchunk6, enumfacing, flag3, j);
 
                         if (renderchunk4 != null && renderchunk4.setFrameIndex(frameCount) && renderchunk4.isBoundingBoxInFrustum(camera, frameCount)) {
-                            int i1 = renderglobal$containerlocalrenderinformation5.setFacing | 1 << enumfacing.ordinal();
-                            RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation2 = renderchunk4.getRenderInfo();
-                            renderglobal$containerlocalrenderinformation2.initialize(enumfacing, i1);
-                            deque.add(renderglobal$containerlocalrenderinformation2);
+                            int i1 = localRenderInformation.setFacing | 1 << enumfacing.ordinal();
+                            RenderGlobal.ContainerLocalRenderInformation localRenderInformation1 = renderchunk4.getRenderInfo();
+                            localRenderInformation1.initialize(enumfacing, i1);
+                            deque.add(localRenderInformation1);
                         }
                     }
                 }
@@ -1145,8 +1132,8 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             this.chunksToUpdate.clear();
             Lagometer.timerChunkUpdate.start();
 
-            for (RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation3 : this.renderInfos) {
-                RenderChunk renderchunk5 = renderglobal$containerlocalrenderinformation3.renderChunk;
+            for (RenderGlobal.ContainerLocalRenderInformation localRenderInformation : this.renderInfos) {
+                RenderChunk renderchunk5 = localRenderInformation.renderChunk;
 
                 if (renderchunk5.needsUpdate() || set.contains(renderchunk5)) {
                     this.displayListEntitiesDirty = true;
@@ -1158,19 +1145,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             this.chunksToUpdate.addAll(set);
             this.mc.profiler.endSection();
         }
-    }
-
-    private Set<EnumFacing> getVisibleFacings(BlockPos pos) {
-        VisGraph visgraph = new VisGraph();
-        BlockPos blockpos = new BlockPos(pos.getX() >> 4 << 4, pos.getY() >> 4 << 4, pos.getZ() >> 4 << 4);
-        Chunk chunk = this.world.getChunk(blockpos);
-
-        for (BlockPos.MutableBlockPos blockpos$mutableblockpos : BlockPos.getAllInBoxMutable(blockpos, blockpos.add(15, 15, 15))) {
-            if (chunk.getBlockState(blockpos$mutableblockpos).isOpaqueCube()) {
-                visgraph.setOpaqueCube(blockpos$mutableblockpos);
-            }
-        }
-        return visgraph.getVisibleFacings(pos);
     }
 
     @Nullable
@@ -1243,7 +1217,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         return new Vector3f(f3 * f4, f5, f2 * f4);
     }
 
-    public int renderBlockLayer(BlockRenderLayer blockLayerIn, double partialTicks, int pass, Entity entityIn) {
+    public void renderBlockLayer(BlockRenderLayer blockLayerIn, Entity entityIn) {
         RenderHelper.disableStandardItemLighting();
 
         if (blockLayerIn == BlockRenderLayer.TRANSLUCENT && !Shaders.isShadowPass) {
@@ -1279,7 +1253,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         for (int j = i1; j != i; j += j1) {
             RenderChunk renderchunk = (this.renderInfos.get(j)).renderChunk;
 
-            if (!renderchunk.getCompiledChunk().isLayerEmpty(blockLayerIn)) {
+            if (renderchunk.getCompiledChunk().isLayerNotEmpty(blockLayerIn)) {
                 ++l;
                 this.renderContainer.addRenderChunk(renderchunk, blockLayerIn);
             }
@@ -1287,7 +1261,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
         if (l == 0) {
             this.mc.profiler.endSection();
-            return l;
         } else {
             if (Config.isFogOff() && this.mc.entityRenderer.fogStandard) {
                 GlStateManager.disableFog();
@@ -1299,7 +1272,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             });
             this.renderBlockLayer(blockLayerIn);
             this.mc.profiler.endSection();
-            return l;
         }
     }
 
@@ -1471,7 +1443,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 Shaders.disableTexture2D();
             }
 
-            Vec3d vec3d = this.world.getSkyColor(this.mc.getRenderViewEntity(), partialTicks);
+            Vec3d vec3d = this.world.getSkyColor(Objects.requireNonNull(this.mc.getRenderViewEntity()), partialTicks);
             vec3d = CustomColors.getSkyColor(vec3d, this.mc.world, this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().posY + 1.0D, this.mc.getRenderViewEntity().posZ);
 
             if (flag1) {
@@ -1559,7 +1531,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
                 bufferbuilder.begin(6, DefaultVertexFormats.POSITION_COLOR);
                 bufferbuilder.pos(0.0D, 100.0D, 0.0D).color(f6, f7, f8, afloat[3]).endVertex();
-                int l1 = 16;
 
                 for (int j2 = 0; j2 <= 16; ++j2) {
                     float f18 = (float) j2 * ((float) Math.PI * 2F) / 16.0F;
@@ -1685,9 +1656,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 }
 
                 GlStateManager.popMatrix();
-                float f20 = 1.0F;
                 float f22 = -((float) (d3 + 65.0D));
-                float f24 = -1.0F;
                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 bufferbuilder.pos(-1.0D, f22, 1.0D).color(0, 0, 0, 255).endVertex();
                 bufferbuilder.pos(1.0D, f22, 1.0D).color(0, 0, 0, 255).endVertex();
@@ -1762,8 +1731,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                     float f9 = partialTicks;
                     partialTicks = 0.0F;
                     GlStateManager.disableCull();
-                    int l2 = 32;
-                    int k1 = 8;
                     Tessellator tessellator = Tessellator.getInstance();
                     BufferBuilder bufferbuilder = tessellator.getBuffer();
                     this.renderEngine.bindTexture(CLOUDS_TEXTURES);
@@ -1787,7 +1754,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                             f2 = f5;
                         }
 
-                        float f10 = 4.8828125E-4F;
                         double d5 = (float) this.cloudTickCounter + partialTicks;
                         double d3 = x + d5 * 0.029999999329447746D;
                         int l1 = MathHelper.floor(d3 / 2048.0D);
@@ -1826,20 +1792,11 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         }
     }
 
-    /**
-     * Checks if the given position is to be rendered with cloud fog
-     */
-    public boolean hasCloudFog(double x, double y, double z, float partialTicks) {
-        return false;
-    }
-
     private void renderCloudsFancy(float partialTicks, int pass, double x, double y, double z) {
         float f251 = 0.0F;
         GlStateManager.disableCull();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        float f = 12.0F;
-        float f1 = 4.0F;
         double d3 = (float) this.cloudTickCounter + f251;
         double d4 = (x + d3 * 0.029999999329447746D) / 12.0D;
         double d5 = z / 12.0D + 0.33000001311302185D;
@@ -1876,14 +1833,10 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         float f12 = f3 * 0.8F;
         float f13 = f4 * 0.8F;
         float f14 = f5 * 0.8F;
-        float f15 = 0.00390625F;
         float f16 = (float) MathHelper.floor(d4) * 0.00390625F;
         float f17 = (float) MathHelper.floor(d5) * 0.00390625F;
         float f18 = (float) (d4 - (double) MathHelper.floor(d4));
         float f19 = (float) (d5 - (double) MathHelper.floor(d5));
-        int i2 = 8;
-        int j2 = 4;
-        float f20 = 9.765625E-4F;
         GlStateManager.scale(12.0F, 1.0F, 12.0F);
 
         for (int k2 = 0; k2 < 2; ++k2) {
@@ -1984,11 +1937,11 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         finishTimeNano = (long) ((double) finishTimeNano + 1.0E8D);
         this.displayListEntitiesDirty |= this.renderDispatcher.runChunkUploads(finishTimeNano);
 
-        if (this.chunksToUpdateForced.size() > 0) {
-            Iterator iterator = this.chunksToUpdateForced.iterator();
+        if (!this.chunksToUpdateForced.isEmpty()) {
+            Iterator<RenderChunk> iterator = this.chunksToUpdateForced.iterator();
 
             while (iterator.hasNext()) {
-                RenderChunk renderchunk1 = (RenderChunk) iterator.next();
+                RenderChunk renderchunk1 = iterator.next();
 
                 if (!this.renderDispatcher.updateChunkLater(renderchunk1)) {
                     break;
@@ -2001,11 +1954,11 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             }
         }
 
-        if (this.chunksToResortTransparency.size() > 0) {
-            Iterator iterator2 = this.chunksToResortTransparency.iterator();
+        if (!this.chunksToResortTransparency.isEmpty()) {
+            Iterator<RenderChunk> iterator2 = this.chunksToResortTransparency.iterator();
 
             if (iterator2.hasNext()) {
-                RenderChunk renderchunk3 = (RenderChunk) iterator2.next();
+                RenderChunk renderchunk3 = iterator2.next();
 
                 if (this.renderDispatcher.updateTransparencyLater(renderchunk3)) {
                     iterator2.remove();
@@ -2082,9 +2035,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             GlStateManager.enableAlpha();
             GlStateManager.disableCull();
             float f3 = (float) (Minecraft.getSystemTime() % 3000L) / 3000.0F;
-            float f4 = 0.0F;
-            float f5 = 0.0F;
-            float f6 = 128.0F;
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
             bufferbuilder.setTranslation(-d5, -d6, -d7);
             double d8 = Math.max(MathHelper.floor(d7 - d3), worldborder.minZ());
@@ -2908,7 +2858,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(breakerId);
 
             if (destroyblockprogress == null || destroyblockprogress.getPosition().getX() != pos.getX() || destroyblockprogress.getPosition().getY() != pos.getY() || destroyblockprogress.getPosition().getZ() != pos.getZ()) {
-                destroyblockprogress = new DestroyBlockProgress(breakerId, pos);
+                destroyblockprogress = new DestroyBlockProgress(pos);
                 this.damagedBlocks.put(breakerId, destroyblockprogress);
             }
 
@@ -3022,15 +2972,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
             this.setFacing = p_i1_3_;
         }
 
-        public void setDirection(byte p_189561_1_, EnumFacing p_189561_2_) {
-            this.setFacing = this.setFacing | p_189561_1_ | 1 << p_189561_2_.ordinal();
-        }
-
-        public boolean hasDirection(EnumFacing p_189560_1_) {
-            return (this.setFacing & 1 << p_189560_1_.ordinal()) > 0;
-        }
-
-        private void initialize(EnumFacing p_initialize_1_, int p_initialize_2_) {
+        private void initialize(@Nullable EnumFacing p_initialize_1_, int p_initialize_2_) {
             this.facing = p_initialize_1_;
             this.setFacing = p_initialize_2_;
         }

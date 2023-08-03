@@ -7,6 +7,6 @@ public class VboChunkFactory implements IRenderChunkFactory
 {
     public RenderChunk create(World worldIn, RenderGlobal renderGlobalIn, int index)
     {
-        return new RenderChunk(worldIn, renderGlobalIn, index);
+        return new RenderChunk(worldIn, renderGlobalIn);
     }
 }

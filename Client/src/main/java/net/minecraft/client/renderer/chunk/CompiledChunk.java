@@ -8,6 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nullable;
+
 public class CompiledChunk
 {
     public static final CompiledChunk DUMMY = new CompiledChunk()
@@ -48,9 +50,9 @@ public class CompiledChunk
         this.layersUsed[layer.ordinal()] = true;
     }
 
-    public boolean isLayerEmpty(BlockRenderLayer layer)
+    public boolean isLayerNotEmpty(BlockRenderLayer layer)
     {
-        return !this.layersUsed[layer.ordinal()];
+        return this.layersUsed[layer.ordinal()];
     }
 
     public void setLayerStarted(BlockRenderLayer layer)
@@ -93,6 +95,7 @@ public class CompiledChunk
         this.state = stateIn;
     }
 
+    @Nullable
     public BitSet getAnimatedSprites(BlockRenderLayer p_getAnimatedSprites_1_)
     {
         return this.animatedSprites[p_getAnimatedSprites_1_.ordinal()];

@@ -154,11 +154,6 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     private float fovModifierHandPrev;
     private float bossColorModifier;
     private float bossColorModifierPrev;
-
-    /**
-     * Cloud fog mode
-     */
-    private boolean cloudFog;
     private long timeWorldIcon;
 
     /**
@@ -732,7 +727,6 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
         d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
         d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
-        this.cloudFog = this.mc.renderGlobal.hasCloudFog(d0, d1, d2, partialTicks);
     }
 
     /**
@@ -1401,7 +1395,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             ShadersRender.beginTerrainSolid();
         }
 
-        renderglobal.renderBlockLayer(BlockRenderLayer.SOLID, partialTicks, pass, entity);
+        renderglobal.renderBlockLayer(BlockRenderLayer.SOLID, entity);
         GlStateManager.enableAlpha();
 
         if (flag) {
@@ -1409,7 +1403,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         }
 
         this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, this.mc.gameSettings.mipmapLevels > 0);
-        renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, partialTicks, pass, entity);
+        renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, entity);
         this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
         this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
 
@@ -1417,7 +1411,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             ShadersRender.beginTerrainCutout();
         }
 
-        renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT, partialTicks, pass, entity);
+        renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT, entity);
         this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 
         if (flag) {
@@ -1534,7 +1528,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             Shaders.beginWater();
         }
 
-        renderglobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, partialTicks, pass, entity);
+        renderglobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, entity);
 
         if (flag) {
             Shaders.endWater();
@@ -1876,12 +1870,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         IBlockState iblockstate1 = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
 
-        if (this.cloudFog) {
-            Vec3d vec3d4 = world.getCloudColour(partialTicks);
-            this.fogColorRed = (float) vec3d4.x;
-            this.fogColorGreen = (float) vec3d4.y;
-            this.fogColorBlue = (float) vec3d4.z;
-        } else if (iblockstate1.getMaterial() == Material.WATER) {
+        if (iblockstate1.getMaterial() == Material.WATER) {
             float f12 = 0.0F;
 
             if (entity instanceof EntityLivingBase) {
@@ -2025,9 +2014,6 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             if (GLContext.getCapabilities().GL_NV_fog_distance && Config.isFogFancy()) {
                 GlStateManager.glFogi(34138, 34139);
             }
-        } else if (this.cloudFog) {
-            GlStateManager.setFog(GlStateManager.FogMode.EXP);
-            GlStateManager.setFogDensity(0.1F);
         } else if (iblockstate.getMaterial() == Material.WATER) {
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
             float f1 = Config.isClearWater() ? 0.02F : 0.1F;

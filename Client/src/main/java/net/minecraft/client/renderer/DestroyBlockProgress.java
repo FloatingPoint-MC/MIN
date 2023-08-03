@@ -8,7 +8,6 @@ public class DestroyBlockProgress
      * entity ID of the player associated with this partially destroyed Block. Used to identify the Blocks in the client
      * Renderer, max 1 per player on a server
      */
-    private final int miningPlayerEntId;
     private final BlockPos position;
 
     /**
@@ -21,9 +20,8 @@ public class DestroyBlockProgress
      */
     private int createdAtCloudUpdateTick;
 
-    public DestroyBlockProgress(int miningPlayerEntIdIn, BlockPos positionIn)
+    public DestroyBlockProgress(BlockPos positionIn)
     {
-        this.miningPlayerEntId = miningPlayerEntIdIn;
         this.position = positionIn;
     }
 
