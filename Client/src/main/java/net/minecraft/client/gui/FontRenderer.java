@@ -7,11 +7,8 @@ import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -1127,6 +1124,6 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     protected IResource getResource(ResourceLocation p_getResource_1_) throws IOException
     {
-        return Minecraft.getMinecraft().getResourceManager().getResource(p_getResource_1_);
+        return Objects.requireNonNull(Minecraft.getMinecraft().getResourceManager().getResource(p_getResource_1_));
     }
 }

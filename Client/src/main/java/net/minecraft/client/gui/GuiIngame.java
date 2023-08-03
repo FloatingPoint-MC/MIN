@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.IChatListener;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.chat.NormalChatListener;
 import net.minecraft.client.gui.chat.OverlayChatListener;
 import net.minecraft.client.renderer.*;
@@ -155,11 +154,8 @@ public class GuiIngame extends Gui {
             this.chatListeners.put(chattype, Lists.newArrayList());
         }
 
-        IChatListener ichatlistener = NarratorChatListener.INSTANCE;
         (this.chatListeners.get(ChatType.CHAT)).add(new NormalChatListener(mcIn));
-        (this.chatListeners.get(ChatType.CHAT)).add(ichatlistener);
         (this.chatListeners.get(ChatType.SYSTEM)).add(new NormalChatListener(mcIn));
-        (this.chatListeners.get(ChatType.SYSTEM)).add(ichatlistener);
         (this.chatListeners.get(ChatType.GAME_INFO)).add(new OverlayChatListener(mcIn));
         this.setDefaultTitlesTimes();
     }

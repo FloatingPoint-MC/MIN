@@ -48,7 +48,6 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.gui.recipebook.RecipeList;
@@ -60,7 +59,6 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerLoginClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -2177,7 +2175,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             this.integratedServer = null;
             this.entityRenderer.resetData();
             this.playerController = null;
-            NarratorChatListener.INSTANCE.clear();
         }
 
         this.renderViewEntity = null;
@@ -2813,12 +2810,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                         this.toggleFullscreen();
                     } else if (i == this.gameSettings.keyBindScreenshot.getKeyCode()) {
                         this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(this.gameDir, this.displayWidth, this.displayHeight, this.framebuffer));
-                    } else if (i == 48 && GuiScreen.isCtrlKeyDown() && (this.currentScreen == null || !this.currentScreen.isFocused())) {
-                        this.gameSettings.setOptionValue(GameSettings.Options.NARRATOR, 1);
-
-                        if (this.currentScreen instanceof ScreenChatOptions) {
-                            ((ScreenChatOptions) this.currentScreen).updateNarratorButton();
-                        }
                     }
                 }
             }

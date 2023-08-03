@@ -26,7 +26,6 @@ import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
@@ -89,7 +88,6 @@ public class GameSettings {
     private static final String[] PARTICLES = new String[]{"options.particles.all", "options.particles.decreased", "options.particles.minimal"};
     private static final String[] AMBIENT_OCCLUSIONS = new String[]{"options.ao.off", "options.ao.min", "options.ao.max"};
     private static final String[] CLOUDS_TYPES = new String[]{"options.off", "options.clouds.fast", "options.clouds.fancy"};
-    public static final String[] NARRATOR_MODES = new String[]{"options.narrator.off", "options.narrator.all", "options.narrator.chat", "options.narrator.system"};
     public float mouseSensitivity = 0.5F;
     public boolean invertMouse;
     public int renderDistanceChunks = -1;
@@ -595,16 +593,6 @@ public class GameSettings {
             this.showSubtitles = !this.showSubtitles;
         }
 
-        if (settingsOption == GameSettings.Options.NARRATOR) {
-            if (NarratorChatListener.INSTANCE.isActive()) {
-                this.narrator = (this.narrator + value) % NARRATOR_MODES.length;
-            } else {
-                this.narrator = 0;
-            }
-
-            NarratorChatListener.INSTANCE.announceMode(this.narrator);
-        }
-
         this.saveOptions();
     }
 
@@ -789,8 +777,6 @@ public class GameSettings {
                 } else {
                     return s1 + I18n.format("options.graphics.fast");
                 }
-            } else if (settingOption == GameSettings.Options.NARRATOR) {
-                return NarratorChatListener.INSTANCE.isActive() ? s1 + getTranslation(NARRATOR_MODES, this.narrator) : s1 + I18n.format("options.narrator.notavailable");
             } else {
                 return s1;
             }
@@ -2789,7 +2775,6 @@ public class GameSettings {
         MAIN_HAND("options.mainHand", false, false),
         ENABLE_WEAK_ATTACKS("options.enableWeakAttacks", false, true),
         SHOW_SUBTITLES("options.showSubtitles", false, true),
-        NARRATOR("options.narrator", false, false),
         FOG_FANCY("of.options.FOG_FANCY", false, false),
         FOG_START("of.options.FOG_START", false, false),
         MIPMAP_TYPE("of.options.MIPMAP_TYPE", true, false, 0.0F, 3.0F, 1.0F),
