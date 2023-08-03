@@ -43,6 +43,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
 
     private int prevMouseX;
     private int prevMouseY;
+    private boolean irc;
 
     public GuiChat() {
     }

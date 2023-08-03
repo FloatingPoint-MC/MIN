@@ -13,20 +13,20 @@ public class AsyncLoopThread extends Thread {
     public final static HashSet<Runnable> runnableSet = new HashSet<>();
 
     @Override
+    @SuppressWarnings("all")
     public void run() {
         while (Minecraft.getMinecraft().running) {
-            synchronized (runnableSet) {
-                if (runnableSet.isEmpty()) {
-                    try {
+            try {
+                synchronized (runnableSet) {
+                    if (runnableSet.isEmpty()) {
                         Thread.sleep(1000L);
                         continue;
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
                     }
+                    Runnable runnable = runnableSet.stream().findAny().get();
+                    runnableSet.remove(runnable);
+                    runnable.run();
                 }
-                Runnable runnable = runnableSet.stream().findAny().get();
-                runnableSet.remove(runnable);
-                runnable.run();
+            } catch (Exception ignored) {
             }
         }
     }
