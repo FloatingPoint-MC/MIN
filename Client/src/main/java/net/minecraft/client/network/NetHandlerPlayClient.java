@@ -1,5 +1,6 @@
 package net.minecraft.client.network;
 
+import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
@@ -549,28 +550,28 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      */
     public void handleChunkData(SPacketChunkData packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
-        if (packetIn.isFullChunk()) {
-            this.world.doPreChunk(packetIn.getChunkX(), packetIn.getChunkZ(), true);
-        }
-
-        Chunk chunk = this.world.getChunk(packetIn.getChunkX(), packetIn.getChunkZ());
-        chunk.read(packetIn.getReadBuffer(), packetIn.getExtractedSize(), packetIn.isFullChunk());
-        this.world.markBlockRangeForRenderUpdate(packetIn.getChunkX() << 4, 0, packetIn.getChunkZ() << 4, (packetIn.getChunkX() << 4) + 15, 256, (packetIn.getChunkZ() << 4) + 15);
-
-        if (!packetIn.isFullChunk() || !(this.world.provider instanceof WorldProviderSurface)) {
-            chunk.resetRelightChecks();
-        }
-
-        for (
-                NBTTagCompound nbttagcompound : packetIn.getTileEntityTags()) {
-            BlockPos blockpos = new BlockPos(nbttagcompound.getInteger("x"), nbttagcompound.getInteger("y"), nbttagcompound.getInteger("z"));
-            TileEntity tileentity = this.world.getTileEntity(blockpos);
-
-            if (tileentity != null) {
-                tileentity.readFromNBT(nbttagcompound);
+        MIN.runAsync(() -> {
+            if (packetIn.isFullChunk()) {
+                this.world.doPreChunk(packetIn.getChunkX(), packetIn.getChunkZ(), true);
             }
-        }
 
+            Chunk chunk = this.world.getChunk(packetIn.getChunkX(), packetIn.getChunkZ());
+            chunk.read(packetIn.getReadBuffer(), packetIn.getExtractedSize(), packetIn.isFullChunk());
+            this.world.markBlockRangeForRenderUpdate(packetIn.getChunkX() << 4, 0, packetIn.getChunkZ() << 4, (packetIn.getChunkX() << 4) + 15, 256, (packetIn.getChunkZ() << 4) + 15);
+
+            if (!packetIn.isFullChunk() || !(this.world.provider instanceof WorldProviderSurface)) {
+                chunk.resetRelightChecks();
+            }
+
+            for (NBTTagCompound nbttagcompound : packetIn.getTileEntityTags()) {
+                BlockPos blockpos = new BlockPos(nbttagcompound.getInteger("x"), nbttagcompound.getInteger("y"), nbttagcompound.getInteger("z"));
+                TileEntity tileentity = this.world.getTileEntity(blockpos);
+
+                if (tileentity != null) {
+                    tileentity.readFromNBT(nbttagcompound);
+                }
+            }
+        });
     }
 
     public void processChunkUnload(SPacketUnloadChunk packetIn) {

@@ -1,7 +1,7 @@
 {
   "WARNING": "DO NOT MODIFY THIS LANGUAGE FILE OR YOUR LANGUAGE MIGHT BE REPLACED!",
   "language.identity": "English",
-  "language.version": "3",
+  "language.version": "4",
   "module.category.Boost": "Boost",
   "module.category.Misc": "Misc",
   "module.category.Render": "Render",
@@ -165,6 +165,8 @@
   "module.implement.FreeLook.InvertY.description": "Invert the vertical direction of moving of mouse.",
   "module.implement.FullBright": "Full Bright",
   "module.implement.FullBright.description": "Make your sight bright.",
+  "module.implement.FurtherCamera": "Further Camera",
+  "module.implement.FurtherCamera.description": "Make the camera further like 1.8.",
   "module.implement.ItemPhysics": "Item Physics",
   "module.implement.ItemPhysics.description": "Make items drop like in reality.",
   "module.implement.ItemPhysics.2D": "2D",

@@ -16,7 +16,7 @@ import org.lwjgl.input.Keyboard;
 
 @SuppressWarnings("all")
 public class FileManager implements Manager {
-    public static final int VERSION = 3;
+    public static final int VERSION = 4;
     public File dir = null;
     public boolean shouldSave = false;
 

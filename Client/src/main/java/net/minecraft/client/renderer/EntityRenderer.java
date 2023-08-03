@@ -709,7 +709,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 GlStateManager.rotate(f2 - entity.rotationPitch, 1.0F, 0.0F, 0.0F);
             }
         } else {
-            GlStateManager.translate(0.0F, 0.0F, 0.05F);
+            GlStateManager.translate(0.0F, 0.0F, Managers.moduleManager.renderModules.get("FurtherCamera").isEnabled() ? -0.1F : 0.05F);
         }
 
         if (!this.mc.gameSettings.debugCamEnable) {
@@ -724,9 +724,6 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         }
 
         GlStateManager.translate(0.0F, -f, 0.0F);
-        d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
-        d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
-        d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
     }
 
     /**
