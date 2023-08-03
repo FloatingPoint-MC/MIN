@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Spinning extends RenderModule {
     private static final OptionValue everyone = new OptionValue(false);
-    public static final IntegerValue speed = new IntegerValue(1, 180, 1, 10);
+    public static final IntegerValue speed = new IntegerValue(1, 360, 1, 10);
     public static final ModeValue direction = new ModeValue(new String[]{"P", "N"}, "P");
     public static float current = 0.0f;
     private static Spinning instance;
