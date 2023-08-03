@@ -11,3 +11,5 @@
 推荐Intellij IDEA，自动构建
 
 ## Made by FloatingPoint-MC <3
+
+## 警告: MIN官方版隶属于FloatingPoint-MC组织且仅隶属于该组织。对于任何一切盗用、侵权行为，我们有权利追究其法律责任。
