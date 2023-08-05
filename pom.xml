@@ -12,6 +12,7 @@
     <modules>
         <module>Client</module>
         <module>Bootstrap</module>
+        <module>Client2</module>
     </modules>
 
     <repositories>
