@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import com.google.common.collect.Lists;
@@ -12,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSpider;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;

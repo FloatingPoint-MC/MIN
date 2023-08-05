@@ -113,11 +113,11 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         this.renderLivingLabel(entityIn, name, x, y, z, 64);
     }
 
-    @Nullable
 
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
+    @Nullable
     protected abstract ResourceLocation getEntityTexture(T entity);
 
     protected boolean bindEntityTexture(T entity)
@@ -405,7 +405,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             boolean flag1 = this.renderManager.options.thirdPersonView == 2;
             float f2 = entityIn.height + 0.5F - (flag ? 0.25F : 0.0F);
             int i = "deadmau5".equals(str) ? -10 : 0;
-            if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled()) {
+            if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled() && str.contains(entityIn.getName())) {
                 if (RankDisplay.self.getValue() || entityIn != Minecraft.getMinecraft().player) {
                     if (Managers.clientManager.ranks.containsKey(entityIn.getName())) {
                         int rank = Managers.clientManager.ranks.get(entityIn.getName());
@@ -426,7 +426,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                             }
                         }
                         if (entityIn.getDistance(this.renderManager.renderViewEntity) <= 64) {
-                            EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), rankLabel, (float) x, (float) y + f2 + 0.25F, (float) z, 0, this.renderManager.playerViewY, this.renderManager.playerViewX, flag1, flag);
+                            EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), rankLabel, (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.25F : 0.0F), (float) z, i, f, f1, flag1, flag);
                         }
                     }
                 }
