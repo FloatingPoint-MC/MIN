@@ -90,6 +90,9 @@ public class ClientManager implements Manager {
     }
 
     public boolean isClientMate(UUID uuid) {
-        return clientMateUuids.contains(uuid);
+        for (UUID id : clientMateUuids) {
+            if (id.equals(uuid)) return true;
+        }
+        return false;
     }
 }

@@ -106,7 +106,7 @@ public final class DisplayMode {
      * @see Object#toString()
      */
     public String toString() {
-        String sb = width +
+        return width +
                 " x " +
                 height +
                 " x " +
@@ -114,6 +114,5 @@ public final class DisplayMode {
                 " @" +
                 freq +
                 "Hz";
-        return sb;
     }
 }

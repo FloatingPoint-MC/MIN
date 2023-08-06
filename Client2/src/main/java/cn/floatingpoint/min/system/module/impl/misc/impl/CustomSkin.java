@@ -1,6 +1,7 @@
 package cn.floatingpoint.min.system.module.impl.misc.impl;
 
 import cn.floatingpoint.min.MIN;
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.value.impl.TextValue;
 import cn.floatingpoint.min.utils.client.Pair;
@@ -78,6 +79,11 @@ public class CustomSkin extends MiscModule {
                                             info.playerTextures.put(MinecraftProfileTexture.Type.ELYTRA, location);
                                     }
                                 }, false);
+                            }
+                            json = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/get?username=" + mc.player.getName());
+                            if (json.getInt("code") == 0) {
+                                String raw = json.getString("uuid");
+                                Managers.clientManager.clientMateUuids.add(PlayerUtil.formUUID(raw));
                             }
                         } catch (Exception ignored) {
                         }
