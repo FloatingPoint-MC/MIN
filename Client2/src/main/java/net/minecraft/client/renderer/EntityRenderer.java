@@ -2350,19 +2350,19 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         if (entity instanceof EntityPlayer && str.contains(entity.getName()) && Managers.clientManager.isClientMate(entity.getUniqueID())) {
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-            bufferbuilder.pos(-i - 1, -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            bufferbuilder.pos(-i - 1, 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            bufferbuilder.pos(i + 9, 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            bufferbuilder.pos(i + 9, -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(-i - 5, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(-i - 5, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(i + 6, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(i + 6, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
             if (!isSneaking) {
-                fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 8, verticalShift, 553648127);
+                fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 5, verticalShift, 553648127);
                 GlStateManager.enableDepth();
             }
             GlStateManager.depthMask(true);
-            fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 8, 0, isSneaking ? 553648127 : -1);
-            RenderUtil.drawImage(new ResourceLocation("min/logo.png"), -fontRendererIn.getStringWidth(str) / 2, 0, 8, 8);
+            fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 5, 0, isSneaking ? 553648127 : -1);
+            RenderUtil.drawImage(new ResourceLocation("min/name_icon.png"), -fontRendererIn.getStringWidth(str) / 2 - 4, 0, 8, 8);
         } else {
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
             bufferbuilder.pos(-i - 1, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();

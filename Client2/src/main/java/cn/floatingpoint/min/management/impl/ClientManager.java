@@ -25,6 +25,7 @@ public class ClientManager implements Manager {
     public float titleSize, titleX, titleY;
     public HashSet<String> cooldown = new HashSet<>();
     public boolean firstStart;
+    public boolean lock;
 
     @Override
     public String getName() {
@@ -59,6 +60,13 @@ public class ClientManager implements Manager {
 
     @SuppressWarnings("all")
     public void getRank(String id) {
+        if (id.contains("\247")) {
+            lock = true;
+            return;
+        }
+        if (lock) {
+            return;
+        }
         if (!ranks.containsKey(id) && !cooldown.contains(id)) {
             cooldown.add(id);
             MIN.runAsync(() -> {
