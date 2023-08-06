@@ -2,6 +2,8 @@ package net.minecraft.client.entity;
 
 import javax.annotation.Nullable;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.command.CommandMin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ElytraSound;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -32,6 +34,7 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -330,6 +333,11 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * Sends a chat message from the player.
      */
     public void sendChatMessage(String message) {
+        if (message.toLowerCase().startsWith("/min")) {
+            if (CommandMin.execute(message.substring(5).split(" "))) {
+                return;
+            }
+        }
         this.connection.sendPacket(new CPacketChatMessage(message));
     }
 

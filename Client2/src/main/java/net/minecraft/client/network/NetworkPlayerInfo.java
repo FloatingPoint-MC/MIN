@@ -1,6 +1,7 @@
 package net.minecraft.client.network;
 
 import cn.floatingpoint.min.MIN;
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.utils.client.PlayerUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.base.MoreObjects;
@@ -143,6 +144,14 @@ public class NetworkPlayerInfo {
                                 NetworkPlayerInfo.this.playerTextures.put(Type.ELYTRA, location);
                         }
                     }, gameProfile == null);
+                    try {
+                        JSONObject json = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/get?username=" + this.gameProfile.getName());
+                        if (json.getInt("code") == 0) {
+                            String raw = json.getString("uuid");
+                            Managers.clientManager.clientMateUuids.add(PlayerUtil.formUUID(raw));
+                        }
+                    } catch (URISyntaxException | IOException | JSONException ignored) {
+                    }
                 });
             }
         }

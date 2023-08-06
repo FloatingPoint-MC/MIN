@@ -7,6 +7,7 @@ import cn.floatingpoint.min.system.module.impl.render.impl.FreeLook;
 import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import cn.floatingpoint.min.system.module.impl.render.impl.SmoothZoom;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
+import cn.floatingpoint.min.utils.render.RenderUtil;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -2347,22 +2348,39 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         GlStateManager.disableTexture2D();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(-i - 1, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        bufferbuilder.pos(-i - 1, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        bufferbuilder.pos(i + 1, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        bufferbuilder.pos(i + 1, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        tessellator.draw();
+        if (entity instanceof EntityPlayer && str.contains(entity.getName()) && Managers.clientManager.isClientMate(entity.getUniqueID())) {
+            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+            bufferbuilder.pos(-i - 1, -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(-i - 1, 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(i + 9, 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(i + 9, -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            tessellator.draw();
+            GlStateManager.enableTexture2D();
+            if (!isSneaking) {
+                fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 8, verticalShift, 553648127);
+                GlStateManager.enableDepth();
+            }
+            GlStateManager.depthMask(true);
+            fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 8, 0, isSneaking ? 553648127 : -1);
+            RenderUtil.drawImage(new ResourceLocation("min/logo.png"), -fontRendererIn.getStringWidth(str) / 2, 0, 8, 8);
+        } else {
+            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+            bufferbuilder.pos(-i - 1, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(-i - 1, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(i + 1, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferbuilder.pos(i + 1, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            tessellator.draw();
 
-        GlStateManager.enableTexture2D();
+            GlStateManager.enableTexture2D();
 
-        if (!isSneaking) {
-            fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2, verticalShift, 553648127);
-            GlStateManager.enableDepth();
+            if (!isSneaking) {
+                fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2, verticalShift, 553648127);
+                GlStateManager.enableDepth();
+            }
+
+            GlStateManager.depthMask(true);
+            fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2, verticalShift, isSneaking ? 553648127 : -1);
         }
-
-        GlStateManager.depthMask(true);
-        fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2, verticalShift, isSneaking ? 553648127 : -1);
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

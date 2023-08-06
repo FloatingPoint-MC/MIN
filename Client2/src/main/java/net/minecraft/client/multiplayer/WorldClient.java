@@ -292,7 +292,7 @@ public class WorldClient extends World {
         return id == this.mc.player.getEntityId() ? this.mc.player : super.getEntityByID(id);
     }
 
-    public Entity removeEntityFromWorld(int entityID) {
+    public void removeEntityFromWorld(int entityID) {
         Entity entity = this.entitiesById.removeObject(entityID);
 
         if (entity != null) {
@@ -300,7 +300,6 @@ public class WorldClient extends World {
             this.removeEntity(entity);
         }
 
-        return entity;
     }
 
     @Deprecated

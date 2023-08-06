@@ -205,11 +205,11 @@ public abstract class EntityPlayer extends EntityLivingBase
     private boolean hasReducedDebug;
     private ItemStack itemStackMainHand = ItemStack.EMPTY;
     private final CooldownTracker cooldownTracker = this.createCooldownTracker();
-    @Nullable
 
     /**
      * An instance of a fishing rod's hook. If this isn't null, the icon image of the fishing rod is slightly different
      */
+    @Nullable
     public EntityFishHook fishEntity;
 
     protected CooldownTracker createCooldownTracker()

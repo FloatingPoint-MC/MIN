@@ -636,12 +636,12 @@ public class Block {
         return blockState.getBoundingBox(worldIn, pos);
     }
 
-    @Deprecated
 
     /**
      * Used to determine ambient occlusion and culling when rebuilding chunks for render
      * @deprecated call via {@link IBlockState#isOpaqueCube()} whenever possible. Implementing/overriding is fine.
      */
+    @Deprecated
     public boolean isOpaqueCube(IBlockState state) {
         return true;
     }

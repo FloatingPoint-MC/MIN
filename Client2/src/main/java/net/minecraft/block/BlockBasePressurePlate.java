@@ -56,12 +56,12 @@ public abstract class BlockBasePressurePlate extends Block
         return 20;
     }
 
-    @Nullable
 
     /**
      * @deprecated call via {@link IBlockState#getCollisionBoundingBox(IBlockAccess,BlockPos)} whenever possible.
      * Implementing/overriding is fine.
      */
+    @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return NULL_AABB;

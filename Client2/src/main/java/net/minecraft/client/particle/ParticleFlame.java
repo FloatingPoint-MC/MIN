@@ -13,9 +13,9 @@ public class ParticleFlame extends Particle
     protected ParticleFlame(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn)
     {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
-        this.motionX = this.motionX * 0.009999999776482582D + xSpeedIn;
-        this.motionY = this.motionY * 0.009999999776482582D + ySpeedIn;
-        this.motionZ = this.motionZ * 0.009999999776482582D + zSpeedIn;
+        this.motionX = this.motionX * 0.01D + xSpeedIn;
+        this.motionY = this.motionY * 0.01D + ySpeedIn;
+        this.motionZ = this.motionZ * 0.01D + zSpeedIn;
         this.posX += (this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F;
         this.posY += (this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F;
         this.posZ += (this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F;
@@ -72,14 +72,14 @@ public class ParticleFlame extends Particle
         }
 
         this.move(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= 0.9599999785423279D;
-        this.motionY *= 0.9599999785423279D;
-        this.motionZ *= 0.9599999785423279D;
+        this.motionX *= 0.96D;
+        this.motionY *= 0.96D;
+        this.motionZ *= 0.96D;
 
         if (this.onGround)
         {
-            this.motionX *= 0.699999988079071D;
-            this.motionZ *= 0.699999988079071D;
+            this.motionX *= 0.7D;
+            this.motionZ *= 0.7D;
         }
     }
 

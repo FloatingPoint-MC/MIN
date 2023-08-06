@@ -2921,8 +2921,8 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
     private void clearRenderInfos() {
         if (renderEntitiesCounter > 0) {
             this.renderInfos = new ArrayList<>(this.renderInfos.size() + 16);
-            this.renderInfosEntities = new ArrayList(this.renderInfosEntities.size() + 16);
-            this.renderInfosTileEntities = new ArrayList(this.renderInfosTileEntities.size() + 16);
+            this.renderInfosEntities = new ArrayList<>(this.renderInfosEntities.size() + 16);
+            this.renderInfosTileEntities = new ArrayList<>(this.renderInfosTileEntities.size() + 16);
         } else {
             this.renderInfos.clear();
             this.renderInfosEntities.clear();

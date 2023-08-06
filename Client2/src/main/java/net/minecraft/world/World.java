@@ -788,11 +788,11 @@ public abstract class World implements IBlockAccess
         return i;
     }
 
-    @Deprecated
 
     /**
      * Gets the lowest height of the chunk where sunlight directly reaches
      */
+    @Deprecated
     public int getChunksLowestHorizon(int x, int z)
     {
         if (x >= -30000000 && z >= -30000000 && x < 30000000 && z < 30000000)
@@ -1178,9 +1178,8 @@ public abstract class World implements IBlockAccess
 
     public void playRecord(BlockPos blockPositionIn, @Nullable SoundEvent soundEventIn)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            this.eventListeners.get(i).playRecord(soundEventIn, blockPositionIn);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            eventListener.playRecord(soundEventIn, blockPositionIn);
         }
     }
 
@@ -1195,9 +1194,8 @@ public abstract class World implements IBlockAccess
      */
     public void spawnAlwaysVisibleParticle(int id, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            this.eventListeners.get(i).spawnParticle(id, false, true, x, y, z, xSpeed, ySpeed, zSpeed, parameters);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            eventListener.spawnParticle(id, false, true, x, y, z, xSpeed, ySpeed, zSpeed, parameters);
         }
     }
 
@@ -1208,9 +1206,8 @@ public abstract class World implements IBlockAccess
 
     private void spawnParticle(int particleID, boolean ignoreRange, double xCood, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            this.eventListeners.get(i).spawnParticle(particleID, ignoreRange, xCood, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            eventListener.spawnParticle(particleID, ignoreRange, xCood, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
         }
     }
 
