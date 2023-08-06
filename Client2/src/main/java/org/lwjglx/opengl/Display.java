@@ -510,11 +510,6 @@ public class Display {
         System.out.println("TODO: Implement Display.setDisplayModeAndFullscreen(DisplayMode)");
     }
 
-    private static final int[] savedX = new int[1];
-    private static final int[] savedY = new int[1];
-    private static final int[] savedW = new int[1];
-    private static final int[] savedH = new int[1];
-
     public static void setFullscreen(boolean fullscreen) {
         final long window = getWindow();
         if (window == 0) {
@@ -526,13 +521,17 @@ public class Display {
             return;
         }
         if (fullscreen) {
-            glfwGetWindowPos(window, savedX, savedY);
-            glfwGetWindowSize(window, savedW, savedH);
             long monitorId = glfwGetPrimaryMonitor();
             final GLFWVidMode vidMode = glfwGetVideoMode(monitorId);
             glfwSetWindowMonitor(window, monitorId, 0, 0, vidMode.width(), vidMode.height(), vidMode.refreshRate());
         } else {
-            glfwSetWindowMonitor(window, NULL, savedX[0], savedY[0], savedW[0], savedH[0], 0);
+            long monitorId = glfwGetPrimaryMonitor();
+            final GLFWVidMode vidMode = glfwGetVideoMode(monitorId);
+            int width = mode.getWidth();
+            int height = mode.getHeight();
+            int x = (vidMode.width() - width) / 2;
+            int y = (vidMode.height() - height) / 2;
+            glfwSetWindowMonitor(window, NULL, x, y, width, height, 0);
         }
     }
 

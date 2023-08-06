@@ -18,7 +18,6 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.ParticleFirework;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -134,13 +133,6 @@ public class WorldClient extends World {
         this.profiler.endStartSection("blocks");
         this.updateBlocks();
         this.profiler.endSection();
-    }
-
-    /**
-     * Invalidates an AABB region of blocks from the receive queue, in the event that the block has been modified
-     * client-side in the intervening 80 receive ticks.
-     */
-    public void invalidateBlockReceiveRegion(int x1, int y1, int z1, int x2, int y2, int z2) {
     }
 
     /**
@@ -284,11 +276,11 @@ public class WorldClient extends World {
         this.entitiesById.addKey(entityID, entityToSpawn);
     }
 
-    @Nullable
 
     /**
      * Returns the Entity with the given ID, or null if it doesn't exist in this World.
      */
+    @Nullable
     public Entity getEntityByID(int id) {
         return id == this.mc.player.getEntityId() ? this.mc.player : super.getEntityByID(id);
     }
@@ -301,15 +293,6 @@ public class WorldClient extends World {
             this.removeEntity(entity);
         }
 
-    }
-
-    @Deprecated
-    public boolean invalidateRegionAndSetBlock(BlockPos pos, IBlockState state) {
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        this.invalidateBlockReceiveRegion(i, j, k, i, j, k);
-        return super.setBlockState(pos, state, 3);
     }
 
     /**
@@ -374,11 +357,10 @@ public class WorldClient extends World {
     }
 
     public void doVoidFogParticles(int posX, int posY, int posZ) {
-        int i = 32;
         Random random = new Random();
         ItemStack itemstack = this.mc.player.getHeldItemMainhand();
 
-        if (itemstack == null || Block.getBlockFromItem(itemstack.getItem()) != Blocks.BARRIER) {
+        if (Block.getBlockFromItem(itemstack.getItem()) != Blocks.BARRIER) {
             itemstack = this.mc.player.getHeldItemOffhand();
         }
 
@@ -410,8 +392,7 @@ public class WorldClient extends World {
     public void removeAllEntities() {
         this.loadedEntityList.removeAll(this.unloadedEntityList);
 
-        for (int i = 0; i < this.unloadedEntityList.size(); ++i) {
-            Entity entity = this.unloadedEntityList.get(i);
+        for (Entity entity : this.unloadedEntityList) {
             int j = entity.chunkCoordX;
             int k = entity.chunkCoordZ;
 
@@ -420,8 +401,8 @@ public class WorldClient extends World {
             }
         }
 
-        for (int i1 = 0; i1 < this.unloadedEntityList.size(); ++i1) {
-            this.onEntityRemoved(this.unloadedEntityList.get(i1));
+        for (Entity entity : this.unloadedEntityList) {
+            this.onEntityRemoved(entity);
         }
 
         this.unloadedEntityList.clear();
@@ -457,26 +438,10 @@ public class WorldClient extends World {
      */
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport report) {
         CrashReportCategory crashreportcategory = super.addWorldInfoToCrashReport(report);
-        crashreportcategory.addDetail("Forced entities", new ICrashReportDetail<String>() {
-            public String call() {
-                return WorldClient.this.entityList.size() + " total; " + WorldClient.this.entityList;
-            }
-        });
-        crashreportcategory.addDetail("Retry entities", new ICrashReportDetail<String>() {
-            public String call() {
-                return WorldClient.this.entitySpawnQueue.size() + " total; " + WorldClient.this.entitySpawnQueue;
-            }
-        });
-        crashreportcategory.addDetail("Server brand", new ICrashReportDetail<String>() {
-            public String call() throws Exception {
-                return WorldClient.this.mc.player.getServerBrand();
-            }
-        });
-        crashreportcategory.addDetail("Server type", new ICrashReportDetail<String>() {
-            public String call() throws Exception {
-                return WorldClient.this.mc.getIntegratedServer() == null ? "Non-integrated multiplayer server" : "Integrated singleplayer server";
-            }
-        });
+        crashreportcategory.addDetail("Forced entities", () -> WorldClient.this.entityList.size() + " total; " + WorldClient.this.entityList);
+        crashreportcategory.addDetail("Retry entities", () -> WorldClient.this.entitySpawnQueue.size() + " total; " + WorldClient.this.entitySpawnQueue);
+        crashreportcategory.addDetail("Server brand", () -> WorldClient.this.mc.player.getServerBrand());
+        crashreportcategory.addDetail("Server type", () -> WorldClient.this.mc.getIntegratedServer() == null ? "Non-integrated multiplayer server" : "Integrated singleplayer server");
         return crashreportcategory;
     }
 
@@ -491,6 +456,7 @@ public class WorldClient extends World {
     }
 
     public void playSound(double x, double y, double z, SoundEvent soundIn, SoundCategory category, float volume, float pitch, boolean distanceDelay) {
+        assert this.mc.getRenderViewEntity() != null;
         double d0 = this.mc.getRenderViewEntity().getDistanceSq(x, y, z);
         PositionedSoundRecord positionedsoundrecord = new PositionedSoundRecord(soundIn, category, volume, pitch, (float) x, (float) y, (float) z);
 

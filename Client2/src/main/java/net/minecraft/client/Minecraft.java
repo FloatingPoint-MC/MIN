@@ -675,8 +675,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         } else {
             Display.setTitle("MIN Client(Minecraft 1.12.2) - Release " + MIN.VERSION);
         }
-        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        Display.setLocation((vidMode.width() - this.displayWidth) / 2, (vidMode.height() - this.displayHeight) / 2);
 
         try {
             Display.create((new PixelFormat()).withDepthBits(24));

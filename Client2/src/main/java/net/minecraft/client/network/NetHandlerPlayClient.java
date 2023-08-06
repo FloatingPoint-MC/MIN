@@ -268,6 +268,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      * Seems to be either null (integrated server) or an instance of either GuiMultiplayer (when connecting to a server)
      * or GuiScreenReamlsTOS (when connecting to MCO server)
      */
+    @Nullable
     private final GuiScreen guiScreenServer;
 
     /**
@@ -295,9 +296,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      */
     private final Random avRandomizer = new Random();
 
-    public NetHandlerPlayClient(Minecraft mcIn, GuiScreen p_i46300_2_, NetworkManager networkManagerIn, GameProfile profileIn) {
+    public NetHandlerPlayClient(Minecraft mcIn, @Nullable GuiScreen screen, NetworkManager networkManagerIn, GameProfile profileIn) {
         this.client = mcIn;
-        this.guiScreenServer = p_i46300_2_;
+        this.guiScreenServer = screen;
         this.netManager = networkManagerIn;
         this.profile = profileIn;
         this.advancementManager = new ClientAdvancementManager(mcIn);
@@ -708,8 +709,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void handleMultiBlockChange(SPacketMultiBlockChange packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
 
-        for (SPacketMultiBlockChange.BlockUpdateData spacketmultiblockchange$blockupdatedata : packetIn.getChangedBlocks()) {
-            this.world.invalidateRegionAndSetBlock(spacketmultiblockchange$blockupdatedata.getPos(), spacketmultiblockchange$blockupdatedata.getBlockState());
+        for (SPacketMultiBlockChange.BlockUpdateData blockUpdateData : packetIn.getChangedBlocks()) {
+            this.world.setBlockState(blockUpdateData.getPos(), blockUpdateData.getBlockState(), 3);
         }
     }
 
@@ -722,8 +723,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         if (packetIn.isFullChunk()) {
             this.world.doPreChunk(packetIn.getChunkX(), packetIn.getChunkZ(), true);
         }
-
-        this.world.invalidateBlockReceiveRegion(packetIn.getChunkX() << 4, 0, packetIn.getChunkZ() << 4, (packetIn.getChunkX() << 4) + 15, 256, (packetIn.getChunkZ() << 4) + 15);
         Chunk chunk = this.world.getChunk(packetIn.getChunkX(), packetIn.getChunkZ());
         chunk.read(packetIn.getReadBuffer(), packetIn.getExtractedSize(), packetIn.isFullChunk());
         this.world.markBlockRangeForRenderUpdate(packetIn.getChunkX() << 4, 0, packetIn.getChunkZ() << 4, (packetIn.getChunkX() << 4) + 15, 256, (packetIn.getChunkZ() << 4) + 15);
@@ -752,7 +751,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      */
     public void handleBlockChange(SPacketBlockChange packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
-        this.world.invalidateRegionAndSetBlock(packetIn.getBlockPosition(), packetIn.getBlockState());
+        this.world.setBlockState(packetIn.getBlockPosition(), packetIn.getBlockState(), 3);
     }
 
     /**
@@ -1312,7 +1311,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
         for (Entry<StatBase, Integer> entry : packetIn.getStatisticMap().entrySet()) {
             StatBase statbase = entry.getKey();
-            int k = entry.getValue().intValue();
+            int k = entry.getValue();
             this.client.player.getStatFileWriter().unlockAchievement(this.client.player, statbase, k);
         }
 
@@ -1327,22 +1326,12 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         recipebook = this.client.player.getRecipeBook();
         recipebook.setGuiOpen(packetIn.isGuiOpen());
         recipebook.setFilteringCraftable(packetIn.isFilteringCraftable());
-        SPacketRecipeBook.State spacketrecipebook$state = packetIn.getState();
-        label21:
-
-        switch (spacketrecipebook$state) {
+        SPacketRecipeBook.State state = packetIn.getState();
+        switch (state) {
             case REMOVE:
-                Iterator iterator = packetIn.getRecipes().iterator();
-
-                while (true) {
-                    if (!iterator.hasNext()) {
-                        break label21;
-                    }
-
-                    IRecipe irecipe = (IRecipe) iterator.next();
-                    recipebook.lock(irecipe);
+                for (IRecipe recipe : packetIn.getRecipes()) {
+                    recipebook.lock(recipe);
                 }
-
             case INIT:
                 packetIn.getRecipes().forEach(recipebook::unlock);
                 packetIn.getDisplayedRecipes().forEach(recipebook::markNew);
@@ -1357,10 +1346,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 });
         }
 
-        RecipeBookClient.ALL_RECIPES.forEach((p_194023_1_) ->
-        {
-            p_194023_1_.updateKnownRecipes(recipebook);
-        });
+        RecipeBookClient.ALL_RECIPES.forEach((recipeList) -> recipeList.updateKnownRecipes(recipebook));
 
         if (this.client.currentScreen instanceof IRecipeShownListener) {
             ((IRecipeShownListener) this.client.currentScreen).recipesUpdated();
@@ -1534,7 +1520,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         this.client.getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(packetIn.getSoundName()), packetIn.getCategory(), packetIn.getVolume(), packetIn.getPitch(), false, 0, ISound.AttenuationType.LINEAR, (float) packetIn.getX(), (float) packetIn.getY(), (float) packetIn.getZ()));
     }
 
-    @Nullable
+    @SuppressWarnings("all")
     public void handleResourcePack(SPacketResourcePackSend packetIn) {
         final String s = packetIn.getURL();
         final String s1 = packetIn.getHash();
@@ -1671,7 +1657,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                     int k = packetbuffer.readInt();
                     GuiScreen guiscreen = this.client.currentScreen;
 
-                    if (guiscreen != null && guiscreen instanceof GuiMerchant && k == this.client.player.openContainer.windowId) {
+                    if (guiscreen instanceof GuiMerchant && k == this.client.player.openContainer.windowId) {
                         IMerchant imerchant = ((GuiMerchant) guiscreen).getMerchant();
                         MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
                         imerchant.setRecipes(merchantrecipelist);
@@ -1727,13 +1713,14 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
             scoreobjective.setDisplayName(packetIn.getObjectiveValue());
             scoreobjective.setRenderType(packetIn.getRenderType());
         } else {
-            ScoreObjective scoreobjective1 = scoreboard.getObjective(packetIn.getObjectiveName());
+            ScoreObjective objective = scoreboard.getObjective(packetIn.getObjectiveName());
 
+            assert objective != null;
             if (packetIn.getAction() == 1) {
-                scoreboard.removeObjective(scoreobjective1);
+                scoreboard.removeObjective(objective);
             } else if (packetIn.getAction() == 2) {
-                scoreobjective1.setDisplayName(packetIn.getObjectiveValue());
-                scoreobjective1.setRenderType(packetIn.getRenderType());
+                objective.setDisplayName(packetIn.getObjectiveValue());
+                objective.setRenderType(packetIn.getRenderType());
             }
         }
     }
@@ -1744,16 +1731,17 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void handleUpdateScore(SPacketUpdateScore packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
         Scoreboard scoreboard = this.world.getScoreboard();
-        ScoreObjective scoreobjective = scoreboard.getObjective(packetIn.getObjectiveName());
+        ScoreObjective createScore = scoreboard.getObjective(packetIn.getObjectiveName());
 
         if (packetIn.getScoreAction() == SPacketUpdateScore.Action.CHANGE) {
-            Score score = scoreboard.getOrCreateScore(packetIn.getPlayerName(), scoreobjective);
+            assert createScore != null;
+            Score score = scoreboard.getOrCreateScore(packetIn.getPlayerName(), createScore);
             score.setScorePoints(packetIn.getScoreValue());
         } else if (packetIn.getScoreAction() == SPacketUpdateScore.Action.REMOVE) {
             if (StringUtils.isNullOrEmpty(packetIn.getObjectiveName())) {
                 scoreboard.removeObjectiveFromEntity(packetIn.getPlayerName(), null);
-            } else if (scoreobjective != null) {
-                scoreboard.removeObjectiveFromEntity(packetIn.getPlayerName(), scoreobjective);
+            } else if (createScore != null) {
+                scoreboard.removeObjectiveFromEntity(packetIn.getPlayerName(), createScore);
             }
         }
     }

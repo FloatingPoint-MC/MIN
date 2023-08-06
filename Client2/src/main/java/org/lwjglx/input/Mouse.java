@@ -1,10 +1,6 @@
 package org.lwjglx.input;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
 import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjglx.LWJGLConfig;
 import org.lwjglx.LWJGLException;
@@ -14,10 +10,6 @@ import org.lwjglx.opengl.Display;
 public class Mouse {
 
     // Fields for reflection compatibility with lwjgl2
-    public static final int EVENT_SIZE = 1 + 1 + 4 + 4 + 4 + 8;
-    private static final ByteBuffer buttons = BufferUtils.createByteBuffer(32);
-    private static final IntBuffer coord_buffer = BufferUtils.createIntBuffer(32);
-    private static final ByteBuffer readBuffer = BufferUtils.createByteBuffer(32);
 
     private static boolean grabbed = false;
 

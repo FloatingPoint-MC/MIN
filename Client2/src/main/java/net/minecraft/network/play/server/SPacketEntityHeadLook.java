@@ -7,6 +7,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class SPacketEntityHeadLook implements Packet<INetHandlerPlayClient>
 {
     private int entityId;
@@ -48,6 +50,7 @@ public class SPacketEntityHeadLook implements Packet<INetHandlerPlayClient>
         handler.handleEntityHeadLook(this);
     }
 
+    @Nullable
     public Entity getEntity(World worldIn)
     {
         return worldIn.getEntityByID(this.entityId);
