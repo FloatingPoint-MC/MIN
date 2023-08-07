@@ -1273,17 +1273,17 @@ public abstract class EntityLiving extends EntityLivingBase {
             entityequipmentslot = EntityEquipmentSlot.LEGS;
         } else {
             if (inventorySlot != 100 + EntityEquipmentSlot.FEET.getIndex()) {
-                return false;
+                return true;
             }
 
             entityequipmentslot = EntityEquipmentSlot.FEET;
         }
 
         if (!itemStackIn.isEmpty() && !isItemStackInSlot(entityequipmentslot, itemStackIn) && entityequipmentslot != EntityEquipmentSlot.HEAD) {
-            return false;
+            return true;
         } else {
             this.setItemStackToSlot(entityequipmentslot, itemStackIn);
-            return true;
+            return false;
         }
     }
 

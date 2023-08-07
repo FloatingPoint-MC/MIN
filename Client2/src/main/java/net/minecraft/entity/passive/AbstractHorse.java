@@ -1241,17 +1241,17 @@ public abstract class AbstractHorse extends EntityAnimal implements IInventoryCh
         {
             if (i == 0 && itemStackIn.getItem() != Items.SADDLE)
             {
-                return false;
+                return true;
             }
             else if (i != 1 || this.wearsArmor() && this.isArmor(itemStackIn))
             {
                 this.horseChest.setInventorySlotContents(i, itemStackIn);
                 this.updateHorseSlots();
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
         else
@@ -1261,11 +1261,11 @@ public abstract class AbstractHorse extends EntityAnimal implements IInventoryCh
             if (j >= 2 && j < this.horseChest.getSizeInventory())
             {
                 this.horseChest.setInventorySlotContents(j, itemStackIn);
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
     }

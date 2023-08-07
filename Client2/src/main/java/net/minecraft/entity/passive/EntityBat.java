@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -211,9 +210,9 @@ public class EntityBat extends EntityAmbientCreature
     /**
      * Return whether this entity should NOT trigger a pressure plate or a tripwire.
      */
-    public boolean doesEntityNotTriggerPressurePlate()
+    public boolean doesEntityTriggerPressurePlate()
     {
-        return true;
+        return false;
     }
 
     /**

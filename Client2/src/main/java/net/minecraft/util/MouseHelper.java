@@ -27,8 +27,8 @@ public class MouseHelper {
      * Ungrabs the mouse cursor so it can be moved and set it to the center of the screen
      */
     public void ungrabMouseCursor() {
-        Mouse.setGrabbed(false);
         Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
+        Mouse.setGrabbed(false);
     }
 
     public void mouseXYChange() {

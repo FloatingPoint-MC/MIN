@@ -2,8 +2,8 @@ package net.minecraft.client.entity;
 
 import javax.annotation.Nullable;
 
-import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.command.CommandMin;
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ElytraSound;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -34,7 +34,6 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -78,6 +77,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+
+import java.util.Objects;
 
 public class EntityPlayerSP extends AbstractClientPlayer {
     public final NetHandlerPlayClient connection;
@@ -406,7 +407,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     /**
      * Adds a value to a statistic field.
      */
-    public void addStat(StatBase stat, int amount) {
+    public void addStat(@Nullable StatBase stat, int amount) {
         if (stat != null) {
             if (stat.isIndependent) {
                 super.addStat(stat, amount);
@@ -485,9 +486,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     }
 
     protected boolean pushOutOfBlocks(double x, double y, double z) {
-        if (this.noClip) {
-            return false;
-        } else {
+        if (!this.noClip) {
             BlockPos blockpos = new BlockPos(x, y, z);
             double d0 = x - (double) blockpos.getX();
             double d1 = z - (double) blockpos.getZ();
@@ -532,8 +531,8 @@ public class EntityPlayerSP extends AbstractClientPlayer {
                 }
             }
 
-            return false;
         }
+        return false;
     }
 
     /**
@@ -734,11 +733,19 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      * Called when the entity is dealt a critical hit.
      */
     public void onCriticalHit(Entity entityHit) {
-        this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT);
+        if (Particles.crit.getValue()) {
+            for (int i = 0; i < Particles.critAmplifier.getValue(); i++) {
+                this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT);
+            }
+        }
     }
 
     public void onEnchantmentCritical(Entity entityHit) {
-        this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT_MAGIC);
+        if (Particles.sharpness.getValue()) {
+            for (int i = 0; i < Particles.sharpnessAmplifier.getValue(); i++) {
+                this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT_MAGIC);
+            }
+        }
     }
 
     /**
@@ -800,7 +807,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
             }
 
             this.inPortal = false;
-        } else if (this.isPotionActive(MobEffects.NAUSEA) && this.getActivePotionEffect(MobEffects.NAUSEA).getDuration() > 60) {
+        } else if (this.isPotionActive(MobEffects.NAUSEA) && Objects.requireNonNull(this.getActivePotionEffect(MobEffects.NAUSEA)).getDuration() > 60) {
             this.timeInPortal += 0.006666667F;
 
             if (this.timeInPortal > 1.0F) {
@@ -822,7 +829,6 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
         boolean flag = this.movementInput.jump;
         boolean flag1 = this.movementInput.sneak;
-        float f = 0.8F;
         boolean flag2 = this.movementInput.moveForward >= 0.8F;
         this.movementInput.updatePlayerMoveState();
         this.mc.getTutorial().handleMovement(this.movementInput);
@@ -916,6 +922,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
             if (flag && !this.movementInput.jump) {
                 this.horseJumpPowerCounter = -10;
+                assert ijumpingmount != null;
                 ijumpingmount.setJumpPower(MathHelper.floor(this.getHorseJumpPower() * 100.0F));
                 this.sendHorseJump();
             } else if (!flag && this.movementInput.jump) {

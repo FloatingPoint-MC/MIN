@@ -45,7 +45,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -2358,20 +2357,20 @@ public abstract class EntityPlayer extends EntityLivingBase
      * Determines if an entity is visible or not to a specific player, if the entity is normally invisible.
      * For EntityLivingBase subclasses, returning false when invisible will render the entity semi-transparent.
      */
-    public boolean isInvisibleToPlayer(EntityPlayer player)
+    public boolean isVisibleToPlayer(EntityPlayer player)
     {
         if (!this.isInvisible())
         {
-            return false;
+            return true;
         }
         else if (player.isSpectator())
         {
-            return false;
+            return true;
         }
         else
         {
             Team team = this.getTeam();
-            return team == null || player == null || player.getTeam() != team || !team.getSeeFriendlyInvisiblesEnabled();
+            return team != null && player != null && player.getTeam() == team && team.getSeeFriendlyInvisiblesEnabled();
         }
     }
 
@@ -2522,7 +2521,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         if (inventorySlot >= 0 && inventorySlot < this.inventory.mainInventory.size())
         {
             this.inventory.setInventorySlotContents(inventorySlot, itemStackIn);
-            return true;
+            return false;
         }
         else
         {
@@ -2552,12 +2551,12 @@ public abstract class EntityPlayer extends EntityLivingBase
             if (inventorySlot == 98)
             {
                 this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, itemStackIn);
-                return true;
+                return false;
             }
             else if (inventorySlot == 99)
             {
                 this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, itemStackIn);
-                return true;
+                return false;
             }
             else if (entityequipmentslot == null)
             {
@@ -2566,11 +2565,11 @@ public abstract class EntityPlayer extends EntityLivingBase
                 if (i >= 0 && i < this.enderChest.getSizeInventory())
                 {
                     this.enderChest.setInventorySlotContents(i, itemStackIn);
-                    return true;
+                    return false;
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
             }
             else
@@ -2581,17 +2580,17 @@ public abstract class EntityPlayer extends EntityLivingBase
                     {
                         if (entityequipmentslot != EntityEquipmentSlot.HEAD)
                         {
-                            return false;
+                            return true;
                         }
                     }
                     else if (EntityLiving.getSlotForItemStack(itemStackIn) != entityequipmentslot)
                     {
-                        return false;
+                        return true;
                     }
                 }
 
                 this.inventory.setInventorySlotContents(entityequipmentslot.getIndex() + this.inventory.mainInventory.size(), itemStackIn);
-                return true;
+                return false;
             }
         }
     }

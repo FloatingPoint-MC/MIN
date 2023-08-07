@@ -193,7 +193,7 @@ public class EntityArmorStand extends EntityLivingBase
         {
             if (inventorySlot != 100 + EntityEquipmentSlot.FEET.getIndex())
             {
-                return false;
+                return true;
             }
 
             entityequipmentslot = EntityEquipmentSlot.FEET;
@@ -201,12 +201,12 @@ public class EntityArmorStand extends EntityLivingBase
 
         if (!itemStackIn.isEmpty() && !EntityLiving.isItemStackInSlot(entityequipmentslot, itemStackIn) && entityequipmentslot != EntityEquipmentSlot.HEAD)
         {
-            return false;
+            return true;
         }
         else
         {
             this.setItemStackToSlot(entityequipmentslot, itemStackIn);
-            return true;
+            return false;
         }
     }
 

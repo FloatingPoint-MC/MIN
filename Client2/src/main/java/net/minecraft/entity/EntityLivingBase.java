@@ -1,5 +1,6 @@
 package net.minecraft.entity;
 
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -295,10 +296,12 @@ public abstract class EntityLivingBase extends Entity {
         if (!this.world.isRemote && this.fallDistance > 3.0F && onGroundIn) {
             float f = (float) MathHelper.ceil(this.fallDistance - 3.0F);
 
-            if (state.getMaterial() != Material.AIR) {
+            if (state.getMaterial() != Material.AIR && Particles.blockDust.getValue()) {
                 double d0 = Math.min(0.2F + f / 15.0F, 2.5D);
                 int i = (int) (150.0D * d0);
-                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+                for (int j = 0; j < Particles.blockDustAmplifier.getValue(); j++) {
+                    ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, Block.getStateId(state));
+                }
             }
         }
 
@@ -655,7 +658,7 @@ public abstract class EntityLivingBase extends Entity {
                     this.onChangedPotionEffect(potioneffect, false);
                 }
             }
-        } catch (ConcurrentModificationException var11) {
+        } catch (ConcurrentModificationException ignored) {
         }
 
         if (this.potionsNeedUpdate) {
@@ -666,8 +669,8 @@ public abstract class EntityLivingBase extends Entity {
             this.potionsNeedUpdate = false;
         }
 
-        int i = this.dataManager.get(POTION_EFFECTS).intValue();
-        boolean flag1 = this.dataManager.get(HIDE_PARTICLES).booleanValue();
+        int i = this.dataManager.get(POTION_EFFECTS);
+        boolean flag1 = this.dataManager.get(HIDE_PARTICLES);
 
         if (i > 0) {
             boolean flag;
@@ -682,10 +685,10 @@ public abstract class EntityLivingBase extends Entity {
                 flag &= this.rand.nextInt(5) == 0;
             }
 
-            if (flag && i > 0) {
+            if (flag) {
                 double d0 = (double) (i >> 16 & 255) / 255.0D;
                 double d1 = (double) (i >> 8 & 255) / 255.0D;
-                double d2 = (double) (i >> 0 & 255) / 255.0D;
+                double d2 = (double) (i & 255) / 255.0D;
                 this.world.spawnParticle(flag1 ? EnumParticleTypes.SPELL_MOB_AMBIENT : EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, d0, d1, d2);
             }
         }
@@ -701,8 +704,8 @@ public abstract class EntityLivingBase extends Entity {
             this.setInvisible(false);
         } else {
             Collection<PotionEffect> collection = this.activePotionsMap.values();
-            this.dataManager.set(HIDE_PARTICLES, Boolean.valueOf(areAllPotionsAmbient(collection)));
-            this.dataManager.set(POTION_EFFECTS, Integer.valueOf(PotionUtils.getPotionColorFromEffectList(collection)));
+            this.dataManager.set(HIDE_PARTICLES, areAllPotionsAmbient(collection));
+            this.dataManager.set(POTION_EFFECTS, PotionUtils.getPotionColorFromEffectList(collection));
             this.setInvisible(this.isPotionActive(MobEffects.INVISIBILITY));
         }
     }
@@ -724,8 +727,8 @@ public abstract class EntityLivingBase extends Entity {
      * Resets the potion effect color and ambience metadata values
      */
     protected void resetPotionEffectMetadata() {
-        this.dataManager.set(HIDE_PARTICLES, Boolean.valueOf(false));
-        this.dataManager.set(POTION_EFFECTS, Integer.valueOf(0));
+        this.dataManager.set(HIDE_PARTICLES, Boolean.FALSE);
+        this.dataManager.set(POTION_EFFECTS, 0);
     }
 
     public void clearActivePotions() {
@@ -751,11 +754,11 @@ public abstract class EntityLivingBase extends Entity {
         return this.activePotionsMap.containsKey(potionIn);
     }
 
-    @Nullable
 
     /**
      * returns the PotionEffect for the supplied Potion if it is active, null otherwise.
      */
+    @Nullable
     public PotionEffect getActivePotionEffect(Potion potionIn) {
         return this.activePotionsMap.get(potionIn);
     }
@@ -794,12 +797,12 @@ public abstract class EntityLivingBase extends Entity {
         return this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD;
     }
 
-    @Nullable
 
     /**
      * Removes the given potion effect from the active potion map and returns it. Does not call cleanup callbacks for
      * the end of the potion effect.
      */
+    @Nullable
     public PotionEffect removeActivePotionEffect(@Nullable Potion potioneffectin) {
         return this.activePotionsMap.remove(potioneffectin);
     }
@@ -853,11 +856,11 @@ public abstract class EntityLivingBase extends Entity {
     }
 
     public final float getHealth() {
-        return this.dataManager.get(HEALTH).floatValue();
+        return this.dataManager.get(HEALTH);
     }
 
     public void setHealth(float health) {
-        this.dataManager.set(HEALTH, Float.valueOf(MathHelper.clamp(health, 0.0F, this.getMaxHealth())));
+        this.dataManager.set(HEALTH, MathHelper.clamp(health, 0.0F, this.getMaxHealth()));
     }
 
     /**
@@ -959,7 +962,7 @@ public abstract class EntityLivingBase extends Entity {
                         this.world.setEntityState(this, b0);
                     }
 
-                    if (source != DamageSource.DROWN && (!flag || amount > 0.0F)) {
+                    if (source != DamageSource.DROWN && !flag) {
                         this.markVelocityChanged();
                     }
 
@@ -992,7 +995,7 @@ public abstract class EntityLivingBase extends Entity {
                     this.playHurtSound(source);
                 }
 
-                boolean flag2 = !flag || amount > 0.0F;
+                boolean flag2 = !flag;
 
                 if (flag2) {
                     this.lastDamageSource = source;
@@ -1035,7 +1038,7 @@ public abstract class EntityLivingBase extends Entity {
             if (itemstack != null) {
                 if (this instanceof EntityPlayerMP) {
                     EntityPlayerMP entityplayermp = (EntityPlayerMP) this;
-                    entityplayermp.addStat(StatList.getObjectUseStats(Items.TOTEM_OF_UNDYING));
+                    entityplayermp.addStat(java.util.Objects.requireNonNull(StatList.getObjectUseStats(Items.TOTEM_OF_UNDYING)));
                     CriteriaTriggers.USED_TOTEM.trigger(entityplayermp, itemstack);
                 }
 
@@ -1228,7 +1231,7 @@ public abstract class EntityLivingBase extends Entity {
     }
 
     private boolean canGoThroughtTrapDoorOnLadder(BlockPos pos, IBlockState state) {
-        if (state.getValue(BlockTrapDoor.OPEN).booleanValue()) {
+        if (state.getValue(BlockTrapDoor.OPEN)) {
             IBlockState iblockstate = this.world.getBlockState(pos.down());
 
             return iblockstate.getBlock() == Blocks.LADDER && iblockstate.getValue(BlockLadder.FACING) == state.getValue(BlockTrapDoor.FACING);
@@ -1308,7 +1311,7 @@ public abstract class EntityLivingBase extends Entity {
             return damage;
         } else {
             if (this.isPotionActive(MobEffects.RESISTANCE) && source != DamageSource.OUT_OF_WORLD) {
-                int i = (this.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier() + 1) * 5;
+                int i = (java.util.Objects.requireNonNull(this.getActivePotionEffect(MobEffects.RESISTANCE)).getAmplifier() + 1) * 5;
                 int j = 25 - i;
                 float f = damage * (float) j;
                 damage = f / 25.0F;
@@ -1378,14 +1381,15 @@ public abstract class EntityLivingBase extends Entity {
      * counts the amount of arrows stuck in the entity. getting hit by arrows increases this, used in rendering
      */
     public final int getArrowCountInEntity() {
-        return this.dataManager.get(ARROW_COUNT_IN_ENTITY).intValue();
+        return this.dataManager.get(ARROW_COUNT_IN_ENTITY);
     }
 
     /**
      * sets the amount of arrows stuck in the entity. used for rendering those
      */
     public final void setArrowCountInEntity(int count) {
-        this.dataManager.set(ARROW_COUNT_IN_ENTITY, Integer.valueOf(count));
+        this.dataManager.set(ARROW_COUNT_IN_ENTITY,
+                count);
     }
 
     /**
@@ -1394,9 +1398,9 @@ public abstract class EntityLivingBase extends Entity {
      */
     private int getArmSwingAnimationEnd() {
         if (this.isPotionActive(MobEffects.HASTE)) {
-            return 6 - (1 + this.getActivePotionEffect(MobEffects.HASTE).getAmplifier());
+            return 6 - (1 + java.util.Objects.requireNonNull(this.getActivePotionEffect(MobEffects.HASTE)).getAmplifier());
         } else {
-            return this.isPotionActive(MobEffects.MINING_FATIGUE) ? 6 + (1 + this.getActivePotionEffect(MobEffects.MINING_FATIGUE).getAmplifier()) * 2 : 6;
+            return this.isPotionActive(MobEffects.MINING_FATIGUE) ? 6 + (1 + java.util.Objects.requireNonNull(this.getActivePotionEffect(MobEffects.MINING_FATIGUE)).getAmplifier()) * 2 : 6;
         }
     }
 
@@ -1669,10 +1673,6 @@ public abstract class EntityLivingBase extends Entity {
         }
     }
 
-    public boolean getAlwaysRenderNameTagForRender() {
-        return this.getAlwaysRenderNameTag();
-    }
-
     protected float getJumpUpwardsMotion() {
         return 0.42F;
     }
@@ -1792,7 +1792,6 @@ public abstract class EntityLivingBase extends Entity {
                         }
 
                         if (this.isOnLadder()) {
-                            float f9 = 0.15F;
                             this.motionX = MathHelper.clamp(this.motionX, -0.15000000596046448D, 0.15000000596046448D);
                             this.motionZ = MathHelper.clamp(this.motionZ, -0.15000000596046448D, 0.15000000596046448D);
                             this.fallDistance = 0.0F;
@@ -1815,7 +1814,7 @@ public abstract class EntityLivingBase extends Entity {
                         }
 
                         if (this.isPotionActive(MobEffects.LEVITATION)) {
-                            this.motionY += (0.05D * (double) (this.getActivePotionEffect(MobEffects.LEVITATION).getAmplifier() + 1) - this.motionY) * 0.2D;
+                            this.motionY += (0.05D * (double) (java.util.Objects.requireNonNull(this.getActivePotionEffect(MobEffects.LEVITATION)).getAmplifier() + 1) - this.motionY) * 0.2D;
                         } else {
                             blockpos$pooledmutableblockpos.setPos(this.posX, 0.0D, this.posZ);
 
@@ -2195,7 +2194,6 @@ public abstract class EntityLivingBase extends Entity {
             ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 
             if (itemstack.getItem() == Items.ELYTRA && ItemElytra.isUsable(itemstack)) {
-                flag = true;
 
                 if (!this.world.isRemote && (this.ticksElytraFlying + 1) % 20 == 0) {
                     itemstack.damageItem(1, this);
@@ -2216,7 +2214,7 @@ public abstract class EntityLivingBase extends Entity {
     }
 
     protected void collideWithNearbyEntities() {
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox(), EntitySelectors.getTeamCollisionPredicate(this)::test);
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox(), EntitySelectors.getTeamCollisionPredicate(this));
 
         if (!list.isEmpty()) {
             int i = this.world.getGameRules().getInt("maxEntityCramming");
@@ -2224,8 +2222,8 @@ public abstract class EntityLivingBase extends Entity {
             if (i > 0 && list.size() > i - 1 && this.rand.nextInt(4) == 0) {
                 int j = 0;
 
-                for (int k = 0; k < list.size(); ++k) {
-                    if (!list.get(k).isRiding()) {
+                for (Entity entity : list) {
+                    if (!entity.isRiding()) {
                         ++j;
                     }
                 }
@@ -2235,8 +2233,7 @@ public abstract class EntityLivingBase extends Entity {
                 }
             }
 
-            for (int l = 0; l < list.size(); ++l) {
-                Entity entity = list.get(l);
+            for (Entity entity : list) {
                 this.collideWithEntity(entity);
             }
         }
@@ -2410,11 +2407,11 @@ public abstract class EntityLivingBase extends Entity {
     public abstract EnumHandSide getPrimaryHand();
 
     public boolean isHandActive() {
-        return (this.dataManager.get(HAND_STATES).byteValue() & 1) > 0;
+        return (this.dataManager.get(HAND_STATES) & 1) > 0;
     }
 
     public EnumHand getActiveHand() {
-        return (this.dataManager.get(HAND_STATES).byteValue() & 2) > 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
+        return (this.dataManager.get(HAND_STATES) & 2) > 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
     }
 
     protected void updateActiveHand() {
@@ -2449,7 +2446,7 @@ public abstract class EntityLivingBase extends Entity {
                     i |= 2;
                 }
 
-                this.dataManager.set(HAND_STATES, Byte.valueOf((byte) i));
+                this.dataManager.set(HAND_STATES, (byte) i);
             }
         }
     }
@@ -2536,7 +2533,7 @@ public abstract class EntityLivingBase extends Entity {
 
     public void resetActiveHand() {
         if (!this.world.isRemote) {
-            this.dataManager.set(HAND_STATES, Byte.valueOf((byte) 0));
+            this.dataManager.set(HAND_STATES, (byte) 0);
         }
 
         this.activeItemStack = ItemStack.EMPTY;
@@ -2608,8 +2605,6 @@ public abstract class EntityLivingBase extends Entity {
             this.setPositionAndUpdate(d0, d1, d2);
             return false;
         } else {
-            int i = 128;
-
             for (int j = 0; j < 128; ++j) {
                 double d6 = (double) j / 127.0D;
                 float f = (random.nextFloat() - 0.5F) * 0.2F;

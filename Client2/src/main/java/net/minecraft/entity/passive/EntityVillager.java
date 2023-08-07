@@ -1066,9 +1066,9 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
     public boolean replaceItemInInventory(int inventorySlot, ItemStack itemStackIn)
     {
-        if (super.replaceItemInInventory(inventorySlot, itemStackIn))
+        if (!super.replaceItemInInventory(inventorySlot, itemStackIn))
         {
-            return true;
+            return false;
         }
         else
         {
@@ -1077,11 +1077,11 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
             if (i >= 0 && i < this.villagerInventory.getSizeInventory())
             {
                 this.villagerInventory.setInventorySlotContents(i, itemStackIn);
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
     }

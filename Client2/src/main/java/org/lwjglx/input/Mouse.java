@@ -155,10 +155,6 @@ public class Mouse {
         if (grabbed == grab) {
             return;
         }
-        GLFW.glfwSetInputMode(
-                Display.getWindow(),
-                GLFW.GLFW_CURSOR,
-                grab ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
         grabbed = grab;
         if (!grab) {
             setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
@@ -166,6 +162,10 @@ public class Mouse {
             ignoreNextMove++;
         }
         ignoreNextDelta++;
+        GLFW.glfwSetInputMode(
+                Display.getWindow(),
+                GLFW.GLFW_CURSOR,
+                grab ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
     }
 
     public static boolean isGrabbed() {

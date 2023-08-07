@@ -1,7 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
 import cn.floatingpoint.min.management.Managers;
-import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import com.google.common.collect.Lists;
@@ -13,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSpider;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -277,7 +275,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
      */
     protected void renderModel(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         boolean flag = this.isVisible(entitylivingbaseIn);
-        boolean flag1 = !flag && !entitylivingbaseIn.isInvisibleToPlayer(Minecraft.getMinecraft().player);
+        boolean flag1 = !flag && entitylivingbaseIn.isVisibleToPlayer(Minecraft.getMinecraft().player);
 
         if (flag || flag1) {
             if (!this.bindEntityTexture(entitylivingbaseIn)) {
@@ -548,7 +546,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
     protected boolean canRenderName(T entity) {
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
-        boolean flag = !entity.isInvisibleToPlayer(entityplayersp);
+        boolean flag = entity.isVisibleToPlayer(entityplayersp);
 
         if (entity != entityplayersp) {
             Team team = entity.getTeam();

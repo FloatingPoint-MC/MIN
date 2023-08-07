@@ -162,14 +162,14 @@ public abstract class AbstractChestHorse extends AbstractHorse
             {
                 this.setChested(false);
                 this.initHorseChest();
-                return true;
+                return false;
             }
 
             if (!this.hasChest() && itemStackIn.getItem() == Item.getItemFromBlock(Blocks.CHEST))
             {
                 this.setChested(true);
                 this.initHorseChest();
-                return true;
+                return false;
             }
         }
 

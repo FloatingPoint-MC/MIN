@@ -162,7 +162,7 @@ public class CommandReplaceItem extends CommandBase
                     ((EntityPlayer)entity).inventoryContainer.detectAndSendChanges();
                 }
 
-                if (!entity.replaceItemInInventory(j, itemstack))
+                if (entity.replaceItemInInventory(j, itemstack))
                 {
                     throw new CommandException("commands.replaceitem.failed", s, k, itemstack.isEmpty() ? "Air" : itemstack.getTextComponent());
                 }

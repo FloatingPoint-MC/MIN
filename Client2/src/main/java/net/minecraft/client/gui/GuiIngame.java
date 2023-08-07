@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.impl.AttackIndicator;
+import cn.floatingpoint.min.system.module.impl.render.impl.MotionBlur;
 import cn.floatingpoint.min.system.module.impl.render.impl.PotionDisplay;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -47,6 +49,7 @@ import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 import net.optifine.CustomItems;
 import net.optifine.TextureAnimations;
+import org.lwjgl.opengl.GL11;
 
 public class GuiIngame extends Gui {
     private static final ResourceLocation VIGNETTE_TEX_PATH = new ResourceLocation("textures/misc/vignette.png");
@@ -138,6 +141,8 @@ public class GuiIngame extends Gui {
      * Used with updateCounter to make the heart bar flash
      */
     private long healthUpdateCounter;
+    private Framebuffer blurBufferMain = null;
+    private Framebuffer blurBufferInto = null;
     private final Map<ChatType, List<IChatListener>> chatListeners = Maps.newHashMap();
 
     public GuiIngame(Minecraft mcIn) {
@@ -294,22 +299,9 @@ public class GuiIngame extends Gui {
 
         if (this.titlesTimer > 0) {
             this.mc.profiler.startSection("titleAndSubtitle");
-            float f3 = (float) this.titlesTimer - partialTicks;
-            int i2 = 255;
+            int alpha = getAlpha(partialTicks);
 
-            if (this.titlesTimer > this.titleFadeOut + this.titleDisplayTime) {
-                float f4 = (float) (this.titleFadeIn + this.titleDisplayTime + this.titleFadeOut) - f3;
-                i2 = (int) (f4 * 255.0F / (float) this.titleFadeIn);
-            }
-
-            if (this.titlesTimer <= this.titleFadeOut) {
-                i2 = (int) (f3 * 255.0F / (float) this.titleFadeOut);
-            }
-
-            i2 = MathHelper.clamp(i2, 0, 255);
-
-            if (i2 > 8) {
-                // 调整大小
+            if (alpha > 8) {
                 float titleSize = Managers.clientManager.titleSize;
                 if (titleSize != 0.0f) {
                     float titleX = Managers.clientManager.titleX;
@@ -322,7 +314,7 @@ public class GuiIngame extends Gui {
                     GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                     GlStateManager.pushMatrix();
                     GlStateManager.scale(4.0F, 4.0F, 4.0F);
-                    int j2 = i2 << 24 & -16777216;
+                    int j2 = alpha << 24 & -16777216;
                     fontrenderer.drawString(this.displayedTitle, (float) (-fontrenderer.getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
                     GlStateManager.popMatrix();
                     GlStateManager.pushMatrix();
@@ -373,6 +365,43 @@ public class GuiIngame extends Gui {
             this.overlayPlayerList.updatePlayerList(false);
         }
 
+        if (Managers.moduleManager.renderModules.get("MotionBlur").isEnabled() && mc.currentScreen == null) {
+            if (OpenGlHelper.isFramebufferEnabled()) {
+                int width = mc.getFramebuffer().framebufferWidth;
+                int height = mc.getFramebuffer().framebufferHeight;
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0, width, height, 0.0, 2000.0, 4000.0);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translate(0f, 0f, -2000f);
+                blurBufferMain = checkFramebufferSizes(blurBufferMain, width, height);
+                blurBufferInto = checkFramebufferSizes(blurBufferInto, width, height);
+                blurBufferInto.framebufferClear();
+                blurBufferInto.bindFramebuffer(true);
+                OpenGlHelper.glBlendFunc(770, 771, 0, 1);
+                GlStateManager.disableLighting();
+                GlStateManager.disableFog();
+                GlStateManager.disableBlend();
+                mc.getFramebuffer().bindFramebufferTexture();
+                GlStateManager.color(1f, 1f, 1f, 1f);
+                drawTexturedRectNoBlend(width, height, 0.0f, 1.0f);
+                GlStateManager.enableBlend();
+                blurBufferMain.bindFramebufferTexture();
+                GlStateManager.color(1f, 1f, 1f, MotionBlur.multiplier.getValue() / 10.0f - 0.1f);
+                drawTexturedRectNoBlend(width, height, 1f, 0f);
+                mc.getFramebuffer().bindFramebuffer(true);
+                blurBufferInto.bindFramebufferTexture();
+                GlStateManager.color(1f, 1f, 1f, 1f);
+                GlStateManager.enableBlend();
+                OpenGlHelper.glBlendFunc(770, 771, 1, 771);
+                drawTexturedRectNoBlend(width, height, 0.0f, 1.0f);
+                Framebuffer tempBuff = this.blurBufferMain;
+                blurBufferMain = this.blurBufferInto;
+                blurBufferInto = tempBuff;
+            }
+        }
+
         GlStateManager.pushMatrix();
         if (mc.currentScreen instanceof GuiChat) {
             int color = new Color(40, 40, 40, 102).getRGB();
@@ -384,6 +413,51 @@ public class GuiIngame extends Gui {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
+    }
+
+    private int getAlpha(float partialTicks) {
+        float time = (float) this.titlesTimer - partialTicks;
+        int alpha = 255;
+
+        if (this.titlesTimer > this.titleFadeOut + this.titleDisplayTime) {
+            float f4 = (float) (this.titleFadeIn + this.titleDisplayTime + this.titleFadeOut) - time;
+            alpha = (int) (f4 * 255.0F / (float) this.titleFadeIn);
+        }
+
+        if (this.titlesTimer <= this.titleFadeOut) {
+            alpha = (int) (time * 255.0F / (float) this.titleFadeOut);
+        }
+
+        alpha = MathHelper.clamp(alpha, 0, 255);
+        return alpha;
+    }
+
+    private void drawTexturedRectNoBlend(float width, float height, float vMin, float vMax) {
+        GlStateManager.enableTexture2D();
+        GL11.glTexParameteri(3553, 10241, 9728);
+        GL11.glTexParameteri(3553, 10240, 9728);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos((float) 0.0, ((float) 0.0 + height), 0.0).tex((float) 0.0, vMax).endVertex();
+        worldrenderer.pos(((float) 0.0 + width), ((float) 0.0 + height), 0.0).tex((float) 1.0, vMax).endVertex();
+        worldrenderer.pos(((float) 0.0 + width), (float) 0.0, 0.0).tex((float) 1.0, vMin).endVertex();
+        worldrenderer.pos((float) 0.0, (float) 0.0, 0.0).tex((float) 0.0, vMin).endVertex();
+        tessellator.draw();
+        GL11.glTexParameteri(3553, 10241, 9728);
+        GL11.glTexParameteri(3553, 10240, 9728);
+    }
+
+    private Framebuffer checkFramebufferSizes(@Nullable Framebuffer framebuffer, int width, int height) {
+        if (framebuffer == null || framebuffer.framebufferWidth != width || framebuffer.framebufferHeight != height) {
+            if (framebuffer == null) {
+                framebuffer = new Framebuffer(width, height, true);
+            } else {
+                framebuffer.createBindFramebuffer(width, height);
+            }
+            framebuffer.setFramebufferFilter(9728);
+        }
+        return framebuffer;
     }
 
     private void renderAttackIndicator(float partialTicks, ScaledResolution scaledResolution) {

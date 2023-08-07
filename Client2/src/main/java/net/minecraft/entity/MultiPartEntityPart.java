@@ -54,8 +54,8 @@ public class MultiPartEntityPart extends Entity
     /**
      * Returns true if Entity argument is equal to this Entity
      */
-    public boolean isEntityEqual(Entity entityIn)
+    public boolean isEntityNotEqual(Entity entityIn)
     {
-        return this == entityIn || this.parent == entityIn;
+        return this != entityIn && this.parent != entityIn;
     }
 }
