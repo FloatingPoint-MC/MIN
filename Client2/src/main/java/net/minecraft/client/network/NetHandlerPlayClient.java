@@ -3,6 +3,7 @@ package net.minecraft.client.network;
 import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
+import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
@@ -19,6 +20,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import net.minecraft.advancements.Advancement;
@@ -808,6 +810,19 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      */
     public void handleChat(SPacketChat packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
+        String text = packetIn.getChatComponent().getUnformattedText();
+        if (Managers.moduleManager.miscModules.get("AutoText").isEnabled()) {
+            if (AutoText.whenToSend.isCurrentMode("End")) {
+                if (text.equals("花雨庭>> You lost the fight.")) {
+                    AutoText.timeToSendGG = true;
+                } else if (Pattern.compile("起床战争>> 恭喜 ！(.*?)之队队获得胜利!").matcher(text).matches()) {
+                    AutoText.timeToSendGG = true;
+                }
+            }
+            if (text.equals("花雨庭>> You won the fight!")) {
+                AutoText.timeToSendGG = true;
+            }
+        }
         this.client.ingameGUI.addChatMessage(packetIn.getType(), packetIn.getChatComponent());
     }
 
@@ -1415,6 +1430,12 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
             case SUBTITLE:
                 s1 = s2;
+                if (Managers.moduleManager.miscModules.get("AutoText").isEnabled() && AutoText.whenToSend.isCurrentMode("Win")) {
+                    Pattern pattern = Pattern.compile("(.*?)\2476队获得胜利，用时\247e(.*?)");
+                    if (pattern.matcher(s1).matches()) {
+                        AutoText.timeToSendGG = true;
+                    }
+                }
                 break;
 
             case ACTIONBAR:
