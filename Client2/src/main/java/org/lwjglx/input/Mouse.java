@@ -156,16 +156,16 @@ public class Mouse {
             return;
         }
         grabbed = grab;
+        GLFW.glfwSetInputMode(
+                Display.getWindow(),
+                GLFW.GLFW_CURSOR,
+                grab ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
         if (!grab) {
             setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
         } else {
             ignoreNextMove++;
         }
         ignoreNextDelta++;
-        GLFW.glfwSetInputMode(
-                Display.getWindow(),
-                GLFW.GLFW_CURSOR,
-                grab ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
     }
 
     public static boolean isGrabbed() {

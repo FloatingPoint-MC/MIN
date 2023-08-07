@@ -365,6 +365,18 @@ public class GuiIngame extends Gui {
             this.overlayPlayerList.updatePlayerList(false);
         }
 
+        GlStateManager.pushMatrix();
+        if (mc.currentScreen instanceof GuiChat) {
+            int color = new Color(40, 40, 40, 102).getRGB();
+            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y, scaledresolution.getScaledWidth() / 2 + vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
+        }
+        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y));
+        GlStateManager.popMatrix();
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.disableLighting();
+        GlStateManager.enableAlpha();
+
         if (Managers.moduleManager.renderModules.get("MotionBlur").isEnabled() && mc.currentScreen == null) {
             if (OpenGlHelper.isFramebufferEnabled()) {
                 int width = mc.getFramebuffer().framebufferWidth;
@@ -401,18 +413,6 @@ public class GuiIngame extends Gui {
                 blurBufferInto = tempBuff;
             }
         }
-
-        GlStateManager.pushMatrix();
-        if (mc.currentScreen instanceof GuiChat) {
-            int color = new Color(40, 40, 40, 102).getRGB();
-            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y, scaledresolution.getScaledWidth() / 2 + vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
-        }
-        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y));
-        GlStateManager.popMatrix();
-
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.disableLighting();
-        GlStateManager.enableAlpha();
     }
 
     private int getAlpha(float partialTicks) {

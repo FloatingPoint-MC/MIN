@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import net.minecraft.client.Minecraft;
 import org.lwjglx.input.Mouse;
 import org.lwjglx.opengl.Display;
 
@@ -27,8 +28,8 @@ public class MouseHelper {
      * Ungrabs the mouse cursor so it can be moved and set it to the center of the screen
      */
     public void ungrabMouseCursor() {
-        Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
         Mouse.setGrabbed(false);
+        Minecraft.getMinecraft().addScheduledTask(() -> Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2));
     }
 
     public void mouseXYChange() {
