@@ -3,6 +3,7 @@ package cn.floatingpoint.min.system.ui.hyt.germ;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
@@ -30,13 +31,18 @@ public class GuiButtonPage extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        GlStateManager.pushMatrix();
         RenderUtil.drawImage(new ResourceLocation("min/hyt/background.png"), width / 2 - 100, height / 2 - 81, 200, 162);
         Managers.fontManager.sourceHansSansCN_Regular_20.drawCenteredString("花雨庭菜单", width / 2, height / 2 - 72, new Color(216, 216, 216).getRGB());
+        GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         int y = height / 2 - 20;
         for (GermModButton button : buttons) {
             button.drawButton(uuid, width / 2, y, mouseX, mouseY);
             y += 40;
         }
+        GlStateManager.popMatrix();
     }
 
     @Override
