@@ -1,10 +1,8 @@
 package net.minecraft.client.network;
 
-import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
-import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -339,13 +337,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 115})))));
         this.client.gameSettings.sendSettingsToServer();
         this.netManager.sendPacket(new CPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
-        MIN.runAsync(() -> {
-            try {
-                WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/activate?username=" + this.client.player.getName() + "&uuid=" + this.client.player.getUniqueID());
-            } catch (URISyntaxException | IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
     /**

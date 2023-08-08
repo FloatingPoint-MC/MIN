@@ -271,7 +271,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
             {
                 EntityPlayer entityplayer = (EntityPlayer)raytraceresult.entityHit;
 
-                if (this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
+                if (this.shootingEntity instanceof EntityPlayer && ((EntityPlayer) this.shootingEntity).canNotAttackPlayer(entityplayer))
                 {
                     raytraceresult = null;
                 }

@@ -20,7 +20,7 @@ import java.util.UUID;
  * @date: 2023-07-18 11:26:03
  */
 public class ClientManager implements Manager {
-    public HashSet<UUID> clientMateUuids;
+    public HashMap<UUID, Integer> clientMateUuids;
     public HashMap<String, Integer> ranks = new HashMap<>();
     public float titleSize, titleX, titleY;
     public HashSet<String> cooldown = new HashSet<>();
@@ -34,7 +34,7 @@ public class ClientManager implements Manager {
 
     @Override
     public void init() {
-        clientMateUuids = new HashSet<>();
+        clientMateUuids = new HashMap<>();
         titleSize = 1.0f;
         titleX = 0.0f;
         titleY = 0.0f;
@@ -89,10 +89,7 @@ public class ClientManager implements Manager {
         }
     }
 
-    public boolean isClientMate(UUID uuid) {
-        for (UUID id : clientMateUuids) {
-            if (id.equals(uuid)) return true;
-        }
-        return false;
+    public int isClientMate(UUID uuid) {
+        return clientMateUuids.getOrDefault(uuid, -1);
     }
 }

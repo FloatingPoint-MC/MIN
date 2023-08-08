@@ -10,6 +10,7 @@ import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.KeyStrokes;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
+import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Proxy;
 import java.net.SocketAddress;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.DecimalFormat;
@@ -187,7 +189,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjglx.Sys;
 import org.lwjglx.input.Keyboard;
 import org.lwjglx.input.Mouse;
@@ -198,9 +199,6 @@ import org.lwjglx.opengl.GLContext;
 import org.lwjglx.opengl.OpenGLException;
 import org.lwjglx.opengl.PixelFormat;
 import org.lwjglx.util.glu.GLU;
-
-import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
-import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 
 public class Minecraft implements IThreadListener, ISnooperInfo {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -1587,6 +1585,13 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             Spinning.current += Spinning.speed.getValue() * (Spinning.direction.isCurrentMode("P") ? 1 : -1);
             if (this.player.ticksExisted % 600000 == 0) {
                 MIN.runAsync(Managers.fileManager::saveConfig);
+                MIN.runAsync(() -> {
+                    try {
+                        WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/activate?username=" + this.player.getName() + "&uuid=" + this.player.getUniqueID());
+                    } catch (URISyntaxException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         }
 

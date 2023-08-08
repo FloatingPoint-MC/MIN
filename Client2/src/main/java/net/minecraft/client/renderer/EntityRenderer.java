@@ -456,9 +456,12 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 }
             }
 
-            if (pointedEntity != null && flag && vec3d.distanceTo(vec3d3) > 3.0D) {
-                pointedEntity = null;
-                this.mc.objectMouseOver = new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, null, new BlockPos(vec3d3));
+            if (pointedEntity != null && flag) {
+                double distanceToEntity = vec3d.distanceTo(vec3d3);
+                if (distanceToEntity > 3.0D) {
+                    pointedEntity = null;
+                    this.mc.objectMouseOver = new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, null, new BlockPos(vec3d3));
+                }
             }
 
             if (pointedEntity != null && (d2 < d1 || this.mc.objectMouseOver == null)) {
@@ -2348,7 +2351,8 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         GlStateManager.disableTexture2D();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        if (entity instanceof EntityPlayer && str.contains(entity.getName()) && Managers.clientManager.isClientMate(entity.getUniqueID())) {
+        int id = Managers.clientManager.isClientMate(entity.getUniqueID());
+        if (entity instanceof EntityPlayer && str.contains(entity.getName()) && id != -1) {
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
             bufferbuilder.pos(-i - 5, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             bufferbuilder.pos(-i - 5, 8 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
@@ -2362,7 +2366,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
             GlStateManager.depthMask(true);
             fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2 + 4, 0, isSneaking ? 553648127 : -1);
-            RenderUtil.drawImage(new ResourceLocation("min/name_icon.png"), -fontRendererIn.getStringWidth(str) / 2 - 4, 0, 7, 7);
+            RenderUtil.drawImage(new ResourceLocation(id == 0 ? "min/name_icon.png" : id == 1 ? "min/name_icon_admin.png" : "min/name_icon_developer.png"), -fontRendererIn.getStringWidth(str) / 2 - 4, 0, 7, 7);
         } else {
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
             bufferbuilder.pos(-i - 1, -1 + verticalShift, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();

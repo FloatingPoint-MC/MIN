@@ -11,7 +11,7 @@ import net.minecraft.util.text.TextComponentString;
  */
 public class ChatUtil {
     public static void printToChatWithPrefix(String message) {
-        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(message));
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString("\247b[MIN] \247f" + message));
     }
 
     public static void printToChat(ITextComponent message) {

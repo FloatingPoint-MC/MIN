@@ -680,7 +680,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
                 {
                     Entity entity = source.getTrueSource();
 
-                    if (entity instanceof EntityPlayer && !this.canAttackPlayer((EntityPlayer)entity))
+                    if (entity instanceof EntityPlayer && this.canNotAttackPlayer((EntityPlayer) entity))
                     {
                         return false;
                     }
@@ -689,7 +689,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
                     {
                         EntityArrow entityarrow = (EntityArrow)entity;
 
-                        if (entityarrow.shootingEntity instanceof EntityPlayer && !this.canAttackPlayer((EntityPlayer)entityarrow.shootingEntity))
+                        if (entityarrow.shootingEntity instanceof EntityPlayer && this.canNotAttackPlayer((EntityPlayer) entityarrow.shootingEntity))
                         {
                             return false;
                         }
@@ -701,9 +701,9 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         }
     }
 
-    public boolean canAttackPlayer(EntityPlayer other)
+    public boolean canNotAttackPlayer(EntityPlayer other)
     {
-        return this.canPlayersAttack() && super.canAttackPlayer(other);
+        return !this.canPlayersAttack() || super.canNotAttackPlayer(other);
     }
 
     /**

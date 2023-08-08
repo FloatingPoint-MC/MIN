@@ -1,6 +1,8 @@
 package net.minecraft.entity;
 
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
+import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -10,6 +12,7 @@ import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentFrostWalker;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.*;
@@ -127,6 +130,16 @@ public abstract class EntityLivingBase extends Entity {
      * Entity head rotation yaw at previous tick
      */
     public float prevRotationYawHead;
+
+    /**
+     * Entity head rotation pitch
+     */
+    public float rotationPitchHead;
+
+    /**
+     * Entity head rotation pitch at previous tick
+     */
+    public float prevRotationPitchHead;
 
     /**
      * A factor used to determine how far this entity will move each tick if it is jumping or falling.
@@ -269,6 +282,7 @@ public abstract class EntityLivingBase extends Entity {
         this.randomUnused2 = (float) Math.random() * 12398.0F;
         this.rotationYaw = (float) (Math.random() * (Math.PI * 2D));
         this.rotationYawHead = this.rotationYaw;
+        this.rotationPitchHead = this.rotationPitch;
         this.stepHeight = 0.6F;
     }
 
@@ -420,6 +434,7 @@ public abstract class EntityLivingBase extends Entity {
         this.prevRenderYawOffset = this.renderYawOffset;
         this.prevRotationYawHead = this.rotationYawHead;
         this.prevRotationYaw = this.rotationYaw;
+        this.prevRotationPitchHead = this.rotationPitchHead;
         this.prevRotationPitch = this.rotationPitch;
         this.world.profiler.endSection();
     }
@@ -667,6 +682,10 @@ public abstract class EntityLivingBase extends Entity {
             }
 
             this.potionsNeedUpdate = false;
+        }
+
+        if (Managers.moduleManager.renderModules.get("CleanView").isEnabled() && this == Minecraft.getMinecraft().player) {
+            return;
         }
 
         int i = this.dataManager.get(POTION_EFFECTS);
@@ -2013,7 +2032,7 @@ public abstract class EntityLivingBase extends Entity {
             f = 1.0F;
             f5 = (float) Math.sqrt(f3) * 3.0F;
             float f1 = (float) MathHelper.atan2(d1, d0) * (180F / (float) Math.PI) - 90.0F;
-            float f2 = MathHelper.abs(MathHelper.wrapDegrees(this.rotationYaw) - f1);
+            float f2 = MathHelper.abs(MathHelper.wrapDegrees(this.rotationYaw + Spinning.getCurrent(this)) - f1);
 
             if (95.0F < f2 && f2 < 265.0F) {
                 f4 = f1 - 180.0F;
@@ -2023,7 +2042,7 @@ public abstract class EntityLivingBase extends Entity {
         }
 
         if (this.swingProgress > 0.0F) {
-            f4 = this.rotationYaw;
+            f4 = this.rotationYaw + Spinning.getCurrent(this);
         }
 
         if (!this.onGround) {
@@ -2066,6 +2085,14 @@ public abstract class EntityLivingBase extends Entity {
 
         while (this.rotationYawHead - this.prevRotationYawHead >= 180.0F) {
             this.prevRotationYawHead += 360.0F;
+        }
+
+        while (this.rotationPitchHead - this.prevRotationPitchHead < -180.0F) {
+            this.prevRotationPitchHead -= 360.0F;
+        }
+
+        while (this.rotationPitchHead - this.prevRotationPitchHead >= 180.0F) {
+            this.prevRotationPitchHead += 360.0F;
         }
 
         this.world.profiler.endSection();

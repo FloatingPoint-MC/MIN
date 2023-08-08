@@ -107,7 +107,7 @@ public class GuiPlayerTabOverlay extends Gui {
         }
         int addition = 0;
         for (NetworkPlayerInfo net : list) {
-            if (Managers.clientManager.isClientMate(net.getGameProfile().getId())) {
+            if (Managers.clientManager.isClientMate(net.getGameProfile().getId()) != -1) {
                 addition = 10;
                 break;
             }
@@ -166,8 +166,9 @@ public class GuiPlayerTabOverlay extends Gui {
                 GameProfile gameprofile = networkplayerinfo1.getGameProfile();
 
                 addition = 0;
-                if (Managers.clientManager.isClientMate(networkplayerinfo1.getGameProfile().getId())) {
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("min/name_icon.png"));
+                int id = Managers.clientManager.isClientMate(networkplayerinfo1.getGameProfile().getId());
+                if (id != -1) {
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(id == 0 ? "min/name_icon.png" : id == 1 ? "min/name_icon_admin.png" : "min/name_icon_developer.png"));
                     Gui.drawModalRectWithCustomSizedTexture(j2, k2, 0, 0, 8, 8, 8, 8);
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     addition = 10;

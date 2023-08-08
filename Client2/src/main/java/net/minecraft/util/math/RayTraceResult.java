@@ -3,6 +3,8 @@ package net.minecraft.util.math;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nullable;
+
 public class RayTraceResult
 {
     private BlockPos blockPos;
@@ -34,7 +36,7 @@ public class RayTraceResult
         this(entityIn, new Vec3d(entityIn.posX, entityIn.posY, entityIn.posZ));
     }
 
-    public RayTraceResult(Type typeIn, Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn)
+    public RayTraceResult(Type typeIn, Vec3d hitVecIn, @Nullable EnumFacing sideHitIn, BlockPos blockPosIn)
     {
         this.typeOfHit = typeIn;
         this.blockPos = blockPosIn;
