@@ -7,8 +7,6 @@ import cn.floatingpoint.min.system.module.value.impl.OptionValue;
 import cn.floatingpoint.min.system.module.value.impl.PaletteValue;
 import cn.floatingpoint.min.utils.client.Pair;
 import cn.floatingpoint.min.utils.render.RenderUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -65,7 +63,6 @@ public class BlockOverlay extends RenderModule {
             BlockPos pos = mc.objectMouseOver.getBlockPos();
             assert pos != null;
             IBlockState state = mc.world.getBlockState(pos);
-            Block block = state.getBlock();
             double x = pos.getX() - mc.getRenderManager().getRenderPosX();
             double y = pos.getY() - mc.getRenderManager().getRenderPosY();
             double z = pos.getZ() - mc.getRenderManager().getRenderPosZ();
@@ -80,9 +77,12 @@ public class BlockOverlay extends RenderModule {
             }
             GL11.glDepthMask(false);
             AxisAlignedBB blockBoundingBox = state.getBoundingBox(mc.world, pos);
-            double minX = (block instanceof BlockStairs) ? 0 : blockBoundingBox.minX;
-            double minY = (block instanceof BlockStairs) ? 0 : blockBoundingBox.minY;
-            double minZ = (block instanceof BlockStairs) ? 0 : blockBoundingBox.minZ;
+            double minX = blockBoundingBox.minX;
+            double maxX = blockBoundingBox.maxX;
+            double minY = blockBoundingBox.minY;
+            double maxY = blockBoundingBox.maxY;
+            double minZ = blockBoundingBox.minZ;
+            double maxZ = blockBoundingBox.maxZ;
             if (fill.getValue()) {
                 int fillColor;
                 if (fillChroma.getValue()) {
@@ -93,7 +93,7 @@ public class BlockOverlay extends RenderModule {
                 Color color = new Color(fillColor, true);
                 GL11.glPushMatrix();
                 GlStateManager.color(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
-                RenderUtil.drawBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + blockBoundingBox.maxX + 0.005, y + blockBoundingBox.maxY + 0.005, z + blockBoundingBox.maxZ + 0.005));
+                RenderUtil.drawBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + maxX + 0.005, y + maxY + 0.005, z + maxZ + 0.005));
                 GL11.glPopMatrix();
             }
             if (outline.getValue()) {
@@ -107,7 +107,7 @@ public class BlockOverlay extends RenderModule {
                 GL11.glPushMatrix();
                 GlStateManager.color(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
                 GL11.glLineWidth(outlineWidth.getValue().floatValue());
-                RenderUtil.drawBoundingBoxOutline(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + blockBoundingBox.maxX + 0.005, y + blockBoundingBox.maxY + 0.005, z + blockBoundingBox.maxZ + 0.005));
+                RenderUtil.drawBoundingBoxOutline(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + maxX + 0.005, y + maxY + 0.005, z + maxZ + 0.005));
                 GL11.glPopMatrix();
             }
             GL11.glDisable(2848);

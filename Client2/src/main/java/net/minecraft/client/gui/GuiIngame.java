@@ -2,7 +2,6 @@ package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.impl.AttackIndicator;
-import cn.floatingpoint.min.system.module.impl.render.impl.MotionBlur;
 import cn.floatingpoint.min.system.module.impl.render.impl.PotionDisplay;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -141,8 +140,6 @@ public class GuiIngame extends Gui {
      * Used with updateCounter to make the heart bar flash
      */
     private long healthUpdateCounter;
-    private Framebuffer blurBufferMain = null;
-    private Framebuffer blurBufferInto = null;
     private final Map<ChatType, List<IChatListener>> chatListeners = Maps.newHashMap();
 
     public GuiIngame(Minecraft mcIn) {
@@ -376,43 +373,6 @@ public class GuiIngame extends Gui {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
-
-        if (Managers.moduleManager.renderModules.get("MotionBlur").isEnabled() && mc.currentScreen == null) {
-            if (OpenGlHelper.isFramebufferEnabled()) {
-                int width = mc.getFramebuffer().framebufferWidth;
-                int height = mc.getFramebuffer().framebufferHeight;
-                GlStateManager.matrixMode(5889);
-                GlStateManager.loadIdentity();
-                GlStateManager.ortho(0.0, width, height, 0.0, 2000.0, 4000.0);
-                GlStateManager.matrixMode(5888);
-                GlStateManager.loadIdentity();
-                GlStateManager.translate(0f, 0f, -2000f);
-                blurBufferMain = checkFramebufferSizes(blurBufferMain, width, height);
-                blurBufferInto = checkFramebufferSizes(blurBufferInto, width, height);
-                blurBufferInto.framebufferClear();
-                blurBufferInto.bindFramebuffer(true);
-                OpenGlHelper.glBlendFunc(770, 771, 0, 1);
-                GlStateManager.disableLighting();
-                GlStateManager.disableFog();
-                GlStateManager.disableBlend();
-                mc.getFramebuffer().bindFramebufferTexture();
-                GlStateManager.color(1f, 1f, 1f, 1f);
-                drawTexturedRectNoBlend(width, height, 0.0f, 1.0f);
-                GlStateManager.enableBlend();
-                blurBufferMain.bindFramebufferTexture();
-                GlStateManager.color(1f, 1f, 1f, MotionBlur.multiplier.getValue() / 10.0f - 0.1f);
-                drawTexturedRectNoBlend(width, height, 1f, 0f);
-                mc.getFramebuffer().bindFramebuffer(true);
-                blurBufferInto.bindFramebufferTexture();
-                GlStateManager.color(1f, 1f, 1f, 1f);
-                GlStateManager.enableBlend();
-                OpenGlHelper.glBlendFunc(770, 771, 1, 771);
-                drawTexturedRectNoBlend(width, height, 0.0f, 1.0f);
-                Framebuffer tempBuff = this.blurBufferMain;
-                blurBufferMain = this.blurBufferInto;
-                blurBufferInto = tempBuff;
-            }
-        }
     }
 
     private int getAlpha(float partialTicks) {
@@ -430,34 +390,6 @@ public class GuiIngame extends Gui {
 
         alpha = MathHelper.clamp(alpha, 0, 255);
         return alpha;
-    }
-
-    private void drawTexturedRectNoBlend(float width, float height, float vMin, float vMax) {
-        GlStateManager.enableTexture2D();
-        GL11.glTexParameteri(3553, 10241, 9728);
-        GL11.glTexParameteri(3553, 10240, 9728);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder worldrenderer = tessellator.getBuffer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos((float) 0.0, ((float) 0.0 + height), 0.0).tex((float) 0.0, vMax).endVertex();
-        worldrenderer.pos(((float) 0.0 + width), ((float) 0.0 + height), 0.0).tex((float) 1.0, vMax).endVertex();
-        worldrenderer.pos(((float) 0.0 + width), (float) 0.0, 0.0).tex((float) 1.0, vMin).endVertex();
-        worldrenderer.pos((float) 0.0, (float) 0.0, 0.0).tex((float) 0.0, vMin).endVertex();
-        tessellator.draw();
-        GL11.glTexParameteri(3553, 10241, 9728);
-        GL11.glTexParameteri(3553, 10240, 9728);
-    }
-
-    private Framebuffer checkFramebufferSizes(@Nullable Framebuffer framebuffer, int width, int height) {
-        if (framebuffer == null || framebuffer.framebufferWidth != width || framebuffer.framebufferHeight != height) {
-            if (framebuffer == null) {
-                framebuffer = new Framebuffer(width, height, true);
-            } else {
-                framebuffer.createBindFramebuffer(width, height);
-            }
-            framebuffer.setFramebufferFilter(9728);
-        }
-        return framebuffer;
     }
 
     private void renderAttackIndicator(float partialTicks, ScaledResolution scaledResolution) {

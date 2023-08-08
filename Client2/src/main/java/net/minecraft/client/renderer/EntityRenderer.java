@@ -457,6 +457,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
 
             if (pointedEntity != null && flag) {
+                assert vec3d3 != null;
                 double distanceToEntity = vec3d.distanceTo(vec3d3);
                 if (distanceToEntity > 3.0D) {
                     pointedEntity = null;
@@ -465,6 +466,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
 
             if (pointedEntity != null && (d2 < d1 || this.mc.objectMouseOver == null)) {
+                assert vec3d3 != null;
                 this.mc.objectMouseOver = new RayTraceResult(pointedEntity, vec3d3);
 
                 if (pointedEntity instanceof EntityLivingBase || pointedEntity instanceof EntityItemFrame) {
@@ -586,6 +588,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
         }
 
+        assert entity != null;
         IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
 
         if (iblockstate.getMaterial() == Material.WATER) {
@@ -647,6 +650,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
      */
     private void orientCamera(float partialTicks) {
         Entity entity = this.mc.getRenderViewEntity();
+        assert entity != null;
         float f = entity.getEyeHeight();
         double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
         double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
@@ -697,6 +701,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                     RayTraceResult raytraceresult = this.mc.world.rayTraceBlocks(new Vec3d(d0 + (double) f3, d1 + (double) f4, d2 + (double) f5), new Vec3d(d0 - d4 + (double) f3 + (double) f5, d1 - d6 + (double) f4, d2 - d5 + (double) f5));
 
                     if (raytraceresult != null) {
+                        assert raytraceresult.hitVec != null;
                         double d7 = raytraceresult.hitVec.distanceTo(new Vec3d(d0, d1, d2));
 
                         if (d7 < d3) {
@@ -1121,6 +1126,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 if (this.mc.isSingleplayer() && this.timeWorldIcon < Minecraft.getSystemTime() - 1000L) {
                     this.timeWorldIcon = Minecraft.getSystemTime();
 
+                    assert this.mc.getIntegratedServer() != null;
                     if (!this.mc.getIntegratedServer().isWorldIconSet()) {
                         this.createWorldIcon();
                     }
@@ -1187,28 +1193,31 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     }
 
     private void createWorldIcon() {
-        if (this.mc.renderGlobal.getRenderedChunks() > 10 && this.mc.renderGlobal.hasNoChunkUpdates() && !this.mc.getIntegratedServer().isWorldIconSet()) {
-            BufferedImage bufferedimage = ScreenShotHelper.createScreenshot(this.mc.displayWidth, this.mc.displayHeight, this.mc.getFramebuffer());
-            int i = bufferedimage.getWidth();
-            int j = bufferedimage.getHeight();
-            int k = 0;
-            int l = 0;
+        if (this.mc.renderGlobal.getRenderedChunks() > 10 && this.mc.renderGlobal.hasNoChunkUpdates()) {
+            assert this.mc.getIntegratedServer() != null;
+            if (!this.mc.getIntegratedServer().isWorldIconSet()) {
+                BufferedImage bufferedimage = ScreenShotHelper.createScreenshot(this.mc.displayWidth, this.mc.displayHeight, this.mc.getFramebuffer());
+                int i = bufferedimage.getWidth();
+                int j = bufferedimage.getHeight();
+                int k = 0;
+                int l = 0;
 
-            if (i > j) {
-                k = (i - j) / 2;
-                i = j;
-            } else {
-                l = (j - i) / 2;
-            }
+                if (i > j) {
+                    k = (i - j) / 2;
+                    i = j;
+                } else {
+                    l = (j - i) / 2;
+                }
 
-            try {
-                BufferedImage bufferedimage1 = new BufferedImage(64, 64, 1);
-                Graphics graphics = bufferedimage1.createGraphics();
-                graphics.drawImage(bufferedimage, 0, 0, 64, 64, k, l, k + i, l + i, null);
-                graphics.dispose();
-                ImageIO.write(bufferedimage1, "png", this.mc.getIntegratedServer().getWorldIconFile());
-            } catch (IOException ioexception1) {
-                LOGGER.warn("Couldn't save auto screenshot", ioexception1);
+                try {
+                    BufferedImage bufferedimage1 = new BufferedImage(64, 64, 1);
+                    Graphics graphics = bufferedimage1.createGraphics();
+                    graphics.drawImage(bufferedimage, 0, 0, 64, 64, k, l, k + i, l + i, null);
+                    graphics.dispose();
+                    ImageIO.write(bufferedimage1, "png", this.mc.getIntegratedServer().getWorldIconFile());
+                } catch (IOException ioexception1) {
+                    LOGGER.warn("Couldn't save auto screenshot", ioexception1);
+                }
             }
         }
     }
@@ -1230,6 +1239,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
                 if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                     BlockPos blockpos = this.mc.objectMouseOver.getBlockPos();
+                    assert blockpos != null;
                     IBlockState iblockstate = this.mc.world.getBlockState(blockpos);
                     Block block = iblockstate.getBlock();
 
@@ -1319,6 +1329,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         clippinghelper.disabled = Config.isShaders() && !Shaders.isFrustumCulling();
         ICamera icamera = new Frustum(clippinghelper);
         Entity entity = this.mc.getRenderViewEntity();
+        assert entity != null;
         double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
         double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
         double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
