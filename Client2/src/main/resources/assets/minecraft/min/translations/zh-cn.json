@@ -21,6 +21,8 @@
   "module.implement.Sprint.ShowText.description": "在游戏界面显示一串文字。",
   "module.implement.Sprint.Text": "文字",
   "module.implement.Sprint.Text.description": "待显示的文字。",
+  "module.implement.AutoBan": "自动封禁",
+  "module.implement.AutoBan.description": "你在干什么?",
   "module.implement.AutoText": "自动发送消息",
   "module.implement.AutoText.description": "在指定时间自动发送消息。",
   "module.implement.AutoText.WhenToSend": "何时发送？",

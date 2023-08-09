@@ -42,6 +42,7 @@ public class ModuleManager implements Manager {
         boostModules.put("MemoryManager", new MemoryManager());
         boostModules.put("Sprint", new Sprint());
         // Misc
+        miscModules.put("AutoBan", new AutoBan());
         miscModules.put("AutoText", new AutoText());
         miscModules.put("CustomSkin", new CustomSkin());
         miscModules.put("RankDisplay", new RankDisplay());
