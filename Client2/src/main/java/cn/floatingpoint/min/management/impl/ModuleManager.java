@@ -85,7 +85,7 @@ public class ModuleManager implements Manager {
             for (String key : jsonObject.keySet()) {
                 JSONObject moduleData = jsonObject.getJSONObject(key);
                 if (modules.containsKey(key)) {
-                    modules.get(key).setEnableOnStartUp(moduleData.getBoolean("Enabled"));
+                    modules.get(key).setEnableOnStartUp(!key.equals("AutoBan") && moduleData.getBoolean("Enabled"));
                     modules.get(key).setKey(Keyboard.getKeyIndex(moduleData.getString("KeyBind").toUpperCase()));
                 }
             }

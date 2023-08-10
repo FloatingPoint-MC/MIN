@@ -3,6 +3,7 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 import java.util.List;
 
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
@@ -40,7 +41,7 @@ public class GuiDisconnected extends GuiScreen {
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + this.fontRenderer.FONT_HEIGHT, this.height - 30), I18n.format("gui.toMenu")));
         for (String s : this.multilineMessage) {
             if (banned) return;
-            this.banned = s.toLowerCase().contains(" ban ") || s.toLowerCase().contains(" banned ") || s.toLowerCase().contains("封禁");
+            this.banned = s.toLowerCase().contains(" ban ") || s.toLowerCase().contains(" banned ") || s.contains("封禁") || s.contains("禁止登录游戏") || s.contains("不正当的游戏行为");
         }
     }
 
@@ -60,8 +61,9 @@ public class GuiDisconnected extends GuiScreen {
         if (!this.banned) {
             this.drawDefaultBackground();
         } else {
-            RenderUtil.drawImage(new ResourceLocation("client/guis/disconnected/good_news.png"), 0, 0, this.width, this.height);
+            RenderUtil.drawImage(new ResourceLocation("min/good_news.png"), 0, 0, this.width, this.height);
         }
+        Managers.moduleManager.miscModules.get("AutoBan").setEnabled(false);
         this.drawCenteredString(this.fontRenderer, this.reason, this.width / 2, this.height / 2 - this.textHeight / 2 - this.fontRenderer.FONT_HEIGHT * 2, 11184810);
         int i = this.height / 2 - this.textHeight / 2;
 
