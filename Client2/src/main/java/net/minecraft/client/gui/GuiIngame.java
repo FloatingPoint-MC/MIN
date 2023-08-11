@@ -379,7 +379,12 @@ public class GuiIngame extends Gui {
                 }
             });
         }
-        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y));
+        Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> {
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(draggableGameView.scalePercent(), draggableGameView.scalePercent(), 0.0f);
+            draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y);
+            GlStateManager.popMatrix();
+        });
         GlStateManager.popMatrix();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

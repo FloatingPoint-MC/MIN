@@ -18,6 +18,12 @@ public interface DraggableGameView {
 
     int getHeight();
 
+    void multiplyScale();
+
+    void divideScale();
+
+    float scalePercent();
+
     static DraggableGameView getDraggable(String name) {
         Module module = Managers.moduleManager.modules.get(name);
         if (module instanceof DraggableGameView) {

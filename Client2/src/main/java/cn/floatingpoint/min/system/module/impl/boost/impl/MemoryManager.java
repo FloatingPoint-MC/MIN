@@ -26,6 +26,7 @@ public class MemoryManager extends BoostModule implements DraggableGameView {
     private float percentage;
     private int width;
     private boolean drawable;
+    private float scale = 1.0f;
 
     public MemoryManager() {
         addValues(
@@ -82,14 +83,37 @@ public class MemoryManager extends BoostModule implements DraggableGameView {
         return drawable;
     }
 
+
+
     @Override
     public int getWidth() {
-        return width;
+        return (int) (width * scale);
     }
 
     @Override
     public int getHeight() {
-        return 16;
+        return (int) (16 * scale);
+    }
+
+    @Override
+    public void multiplyScale() {
+        scale += 0.1f;
+        if (scale > 2.0f) {
+            scale = 2.0f;
+        }
+    }
+
+    @Override
+    public void divideScale() {
+        scale -= 0.1f;
+        if (scale < 0.1f) {
+            scale = 0.1f;
+        }
+    }
+
+    @Override
+    public float scalePercent() {
+        return scale;
     }
 
     @Override

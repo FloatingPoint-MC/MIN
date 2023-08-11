@@ -33,6 +33,7 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
     public static ScoreObjective scoreObjective;
     private int width, height;
     private boolean drawable;
+    private float scale = 1.0f;
 
     public Scoreboard() {
         addValues(
@@ -149,14 +150,37 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         return drawable;
     }
 
+
+
     @Override
     public int getWidth() {
-        return width;
+        return (int) (width * scale);
     }
 
     @Override
     public int getHeight() {
-        return height;
+        return (int) (height * scale);
+    }
+
+    @Override
+    public void multiplyScale() {
+        scale += 0.1f;
+        if (scale > 2.0f) {
+            scale = 2.0f;
+        }
+    }
+
+    @Override
+    public void divideScale() {
+        scale -= 0.1f;
+        if (scale < 0.1f) {
+            scale = 0.1f;
+        }
+    }
+
+    @Override
+    public float scalePercent() {
+        return scale;
     }
 
     @Override

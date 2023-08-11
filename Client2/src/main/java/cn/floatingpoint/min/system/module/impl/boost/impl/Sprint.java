@@ -20,6 +20,7 @@ public class Sprint extends BoostModule implements DraggableGameView {
     private final TextValue text = new TextValue("[Sprint Enabled]", showText::getValue);
     private final int defaultColor;
     private boolean drawable;
+    private float scale = 1.0f;
 
     public Sprint() {
         addValues(new Pair<>("ShowText", showText), new Pair<>("Text", text));
@@ -58,12 +59,33 @@ public class Sprint extends BoostModule implements DraggableGameView {
 
     @Override
     public int getWidth() {
-        return showText.getValue() ? mc.fontRenderer.getStringWidth(text.getValue()) : 0;
+        return (int) ((showText.getValue() ? mc.fontRenderer.getStringWidth(text.getValue()) : 0) * scale);
     }
 
     @Override
     public int getHeight() {
-        return mc.fontRenderer.FONT_HEIGHT + 1;
+        return (int) ((mc.fontRenderer.FONT_HEIGHT + 1) * scale);
+    }
+
+    @Override
+    public void multiplyScale() {
+        scale += 0.1f;
+        if (scale > 2.0f) {
+            scale = 2.0f;
+        }
+    }
+
+    @Override
+    public void divideScale() {
+        scale -= 0.1f;
+        if (scale < 0.1f) {
+            scale = 0.1f;
+        }
+    }
+
+    @Override
+    public float scalePercent() {
+        return scale;
     }
 
     @Override

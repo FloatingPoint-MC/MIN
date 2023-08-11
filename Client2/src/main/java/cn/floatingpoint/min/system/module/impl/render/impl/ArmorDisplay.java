@@ -18,6 +18,7 @@ public class ArmorDisplay extends RenderModule implements DraggableGameView {
     private final ModeValue mode = new ModeValue(new String[]{"V", "H"}, "V");
     private int width, height;
     private boolean drawable;
+    private float scale = 1.0f;
 
     public ArmorDisplay() {
         addValues(
@@ -125,12 +126,33 @@ public class ArmorDisplay extends RenderModule implements DraggableGameView {
 
     @Override
     public int getWidth() {
-        return width;
+        return (int) (width * scale);
     }
 
     @Override
     public int getHeight() {
-        return height;
+        return (int) (height * scale);
+    }
+
+    @Override
+    public void multiplyScale() {
+        scale += 0.1f;
+        if (scale > 2.0f) {
+            scale = 2.0f;
+        }
+    }
+
+    @Override
+    public void divideScale() {
+        scale -= 0.1f;
+        if (scale < 0.1f) {
+            scale = 0.1f;
+        }
+    }
+
+    @Override
+    public float scalePercent() {
+        return scale;
     }
 
     @Override

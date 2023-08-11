@@ -125,8 +125,23 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
      */
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
+        int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        ScaledResolution scaledresolution = new ScaledResolution(mc);
+        for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
+            DraggableGameView draggableGameView = entry.getKey();
+            Vec2i position = entry.getValue();
+            if (isHovered(scaledresolution.getScaledWidth() / 2 + position.x, position.y, scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.getWidth(), position.y + draggableGameView.getHeight(), mouseX, mouseY)) {
+                int dWheel = Mouse.getDWheel();
+                if (dWheel > 0) {
+                    draggableGameView.multiplyScale();
+                } else if (dWheel < 0) {
+                    draggableGameView.divideScale();
+                }
+                return;
+            }
+        }
         int i = Mouse.getEventDWheel();
-
         if (i != 0) {
             if (i > 1) {
                 i = 1;
