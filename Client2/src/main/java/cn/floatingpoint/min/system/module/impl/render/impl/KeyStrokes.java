@@ -35,6 +35,7 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
     public final static HashSet<Long> rightCounter = new HashSet<>();
     private final HashMap<String, Integer> colors = new HashMap<>();
     private int height;
+    private boolean drawable;
 
     public KeyStrokes() {
         addValues(
@@ -62,12 +63,14 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
+    public void draw(int x, int y) {
         height = 0;
+        drawable = false;
         if (!this.isEnabled()) {
-            return false;
+            return;
         }
         if (showMoveKeys.getValue()) {
+            drawable = true;
             drawButton("Forward", mc.gameSettings.keyBindForward.getKeyCode(), x + 24, y, 22, Keyboard.getKeyName(mc.gameSettings.keyBindForward.getKeyCode()));
             drawButton("Left", mc.gameSettings.keyBindLeft.getKeyCode(), x, y + 24, 22, Keyboard.getKeyName(mc.gameSettings.keyBindLeft.getKeyCode()));
             drawButton("Back", mc.gameSettings.keyBindBack.getKeyCode(), x + 24, y + 24, 22, Keyboard.getKeyName(mc.gameSettings.keyBindBack.getKeyCode()));
@@ -75,14 +78,17 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
             height = 48;
         }
         if (showJumpKey.getValue()) {
+            drawable = true;
             drawButton("Jump", mc.gameSettings.keyBindJump.getKeyCode(), x, height + y, 70, "\247m------");
             height += 24;
         }
         if (showSneakKey.getValue()) {
+            drawable = true;
             drawButton("Sneak", mc.gameSettings.keyBindSneak.getKeyCode(), x, height + y, 70, "Sneak");
             height += 24;
         }
         if (showMouseButton.getValue()) {
+            drawable = true;
             leftCounter.removeIf(time -> System.currentTimeMillis() - time >= 1000L);
             rightCounter.removeIf(time -> System.currentTimeMillis() - time >= 1000L);
             drawButton("LMB", mc.gameSettings.keyBindAttack.getKeyCode(), x, height + y, 34, leftCounter.isEmpty() ? "LMB" : leftCounter.size() + "CPS");
@@ -91,7 +97,11 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
         } else {
             height -= 2;
         }
-        return true;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     private void drawButton(String identity, int keyCode, int x, int y, int width, String text) {

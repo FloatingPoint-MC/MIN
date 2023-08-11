@@ -17,6 +17,7 @@ import net.minecraft.util.EnumHand;
 public class ArmorDisplay extends RenderModule implements DraggableGameView {
     private final ModeValue mode = new ModeValue(new String[]{"V", "H"}, "V");
     private int width, height;
+    private boolean drawable;
 
     public ArmorDisplay() {
         addValues(
@@ -40,71 +41,78 @@ public class ArmorDisplay extends RenderModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
-        if (!this.isEnabled()) return false;
+    public void draw(int x, int y) {
+        if (!this.isEnabled()) {
+            drawable = false;
+            return;
+        }
+        drawable = true;
         if (mode.isCurrentMode("V")) {
             int tempY = 0;
             ItemStack[] armorInventory = mc.player.inventory.armorInventory.toArray(new ItemStack[0]);
-            if (armorInventory[3] != null) {
+            if (armorInventory[3].isEmpty()) {
                 draw(armorInventory[3], x, y);
-                tempY += 15;
+                tempY += 16;
             }
-            if (armorInventory[2] != null) {
+            if (armorInventory[2].isEmpty()) {
                 draw(armorInventory[2], x, y + tempY);
-                tempY += 15;
+                tempY += 16;
             }
-            if (armorInventory[1] != null) {
+            if (armorInventory[1].isEmpty()) {
                 draw(armorInventory[1], x, y + tempY);
-                tempY += 15;
+                tempY += 16;
             }
-            if (armorInventory[0] != null) {
+            if (armorInventory[0].isEmpty()) {
                 draw(armorInventory[0], x, y + tempY);
-                tempY += 15;
+                tempY += 16;
             }
             if (!mc.player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
                 draw(mc.player.getHeldItem(EnumHand.MAIN_HAND), x, y + tempY);
                 tempY += 15;
             }
-            width = 15;
+            width = 16;
             height = tempY;
-            return true;
         } else {
             int tempX = 0;
             ItemStack[] armorInventory = mc.player.inventory.armorInventory.toArray(new ItemStack[0]);
-            if (armorInventory[3] != null) {
+            if (armorInventory[3].isEmpty()) {
                 draw(armorInventory[3], x, y);
-                tempX += 15;
+                tempX += 16;
             }
-            if (armorInventory[2] != null) {
+            if (armorInventory[2].isEmpty()) {
                 draw(armorInventory[2], x + tempX, y);
-                tempX += 15;
+                tempX += 16;
             }
-            if (armorInventory[1] != null) {
+            if (armorInventory[1].isEmpty()) {
                 draw(armorInventory[1], x + tempX, y);
-                tempX += 15;
+                tempX += 16;
             }
-            if (armorInventory[0] != null) {
+            if (armorInventory[0].isEmpty()) {
                 draw(armorInventory[0], x + tempX, y);
-                tempX += 15;
+                tempX += 16;
             }
             if (!mc.player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
                 draw(mc.player.getHeldItem(EnumHand.MAIN_HAND), x + tempX, y);
-                tempX += 15;
+                tempX += 16;
             }
             width = tempX;
-            height = 15;
-            return true;
+            height = 16;
         }
     }
 
-    public int draw(ItemStack item, double x, double y) {
+    @Override
+    public boolean isDrawable() {
+        return drawable;
+    }
+
+    public int draw(ItemStack item, int x, int y) {
         int temp = 0;
         if (item == null)
             return 0;
         GlStateManager.pushMatrix();
         RenderHelper.enableGUIStandardItemLighting();
-        mc.getRenderItem().renderItemIntoGUI(item, (int) x, (int) y);
-        mc.getRenderItem().renderItemOverlays(mc.fontRenderer, item, (int) x, (int) y);
+        mc.getRenderItem().renderItemIntoGUI(item, x, y);
+        mc.getRenderItem().renderItemOverlays(mc.fontRenderer, item, x, y);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.enableAlpha();
         GlStateManager.disableCull();

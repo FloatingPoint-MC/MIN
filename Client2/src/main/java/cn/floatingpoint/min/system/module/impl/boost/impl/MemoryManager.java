@@ -25,6 +25,7 @@ public class MemoryManager extends BoostModule implements DraggableGameView {
     private long usedMemory;
     private float percentage;
     private int width;
+    private boolean drawable;
 
     public MemoryManager() {
         addValues(
@@ -60,11 +61,13 @@ public class MemoryManager extends BoostModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
+    public void draw(int x, int y) {
         if (!this.isEnabled() || !display.getValue()) {
             width = 0;
-            return false;
+            drawable = false;
+            return;
         }
+        drawable = true;
         int textColor = new Color(216, 216, 216, 216).getRGB();
         String text = "Max:" + maxMemory / 1024 / 1024 + "MB Used:" + usedMemory / 1024 / 1024 + "MB(" + (int) percentage + "%)";
         int textWidth = Managers.fontManager.sourceHansSansCN_Regular_18.getStringWidth(text);
@@ -72,7 +75,11 @@ public class MemoryManager extends BoostModule implements DraggableGameView {
         Gui.drawRect(x, y, x + width, y + 3, new Color(0, 0, 0, 120).getRGB());
         Gui.drawRect(x, y, x + width * this.percentage / 100, y + 3, textColor);
         Managers.fontManager.sourceHansSansCN_Regular_18.drawStringWithShadow(text, x, y + 6, textColor);
-        return true;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     @Override

@@ -15,22 +15,19 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PlayerControllerOF extends PlayerControllerMP
-{
+public class PlayerControllerOF extends PlayerControllerMP {
     private boolean acting = false;
     private BlockPos lastClickBlockPos = null;
     private Entity lastClickEntity = null;
 
-    public PlayerControllerOF(Minecraft mcIn, NetHandlerPlayClient netHandler)
-    {
+    public PlayerControllerOF(Minecraft mcIn, NetHandlerPlayClient netHandler) {
         super(mcIn, netHandler);
     }
 
     /**
      * Called when the player is hitting a block with an item.
      */
-    public boolean clickBlock(BlockPos loc, EnumFacing face)
-    {
+    public boolean clickBlock(BlockPos loc, EnumFacing face) {
         this.acting = true;
         this.lastClickBlockPos = loc;
         boolean flag = super.clickBlock(loc, face);
@@ -38,8 +35,7 @@ public class PlayerControllerOF extends PlayerControllerMP
         return flag;
     }
 
-    public boolean onPlayerDamageBlock(BlockPos posBlock, EnumFacing directionFacing)
-    {
+    public boolean onPlayerDamageBlock(BlockPos posBlock, EnumFacing directionFacing) {
         this.acting = true;
         this.lastClickBlockPos = posBlock;
         boolean flag = super.onPlayerDamageBlock(posBlock, directionFacing);
@@ -47,16 +43,14 @@ public class PlayerControllerOF extends PlayerControllerMP
         return flag;
     }
 
-    public EnumActionResult processRightClick(EntityPlayer player, World worldIn, EnumHand hand)
-    {
+    public EnumActionResult processRightClick(EntityPlayer player, World worldIn, EnumHand hand) {
         this.acting = true;
         EnumActionResult enumactionresult = super.processRightClick(player, worldIn, hand);
         this.acting = false;
         return enumactionresult;
     }
 
-    public EnumActionResult processRightClickBlock(EntityPlayerSP player, WorldClient worldIn, BlockPos pos, EnumFacing facing, Vec3d vec, EnumHand hand)
-    {
+    public EnumActionResult processRightClickBlock(EntityPlayerSP player, WorldClient worldIn, BlockPos pos, EnumFacing facing, Vec3d vec, EnumHand hand) {
         this.acting = true;
         this.lastClickBlockPos = pos;
         EnumActionResult enumactionresult = super.processRightClickBlock(player, worldIn, pos, facing, vec, hand);
@@ -67,8 +61,7 @@ public class PlayerControllerOF extends PlayerControllerMP
     /**
      * Handles right clicking an entity, sends a packet to the server.
      */
-    public EnumActionResult interactWithEntity(EntityPlayer player, Entity target, EnumHand hand)
-    {
+    public EnumActionResult interactWithEntity(EntityPlayer player, Entity target, EnumHand hand) {
         this.lastClickEntity = target;
         return super.interactWithEntity(player, target, hand);
     }
@@ -76,24 +69,20 @@ public class PlayerControllerOF extends PlayerControllerMP
     /**
      * Handles right clicking an entity from the entities side, sends a packet to the server.
      */
-    public EnumActionResult interactWithEntity(EntityPlayer player, Entity target, RayTraceResult ray, EnumHand hand)
-    {
+    public EnumActionResult interactWithEntity(EntityPlayer player, Entity target, RayTraceResult ray, EnumHand hand) {
         this.lastClickEntity = target;
         return super.interactWithEntity(player, target, ray, hand);
     }
 
-    public boolean isActing()
-    {
+    public boolean isActing() {
         return this.acting;
     }
 
-    public BlockPos getLastClickBlockPos()
-    {
+    public BlockPos getLastClickBlockPos() {
         return this.lastClickBlockPos;
     }
 
-    public Entity getLastClickEntity()
-    {
+    public Entity getLastClickEntity() {
         return this.lastClickEntity;
     }
 }

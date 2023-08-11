@@ -10,7 +10,9 @@ import cn.floatingpoint.min.system.module.Module;
  */
 public interface DraggableGameView {
 
-    boolean draw(int x, int y);
+    void draw(int x, int y);
+
+    boolean isDrawable();
 
     int getWidth();
 

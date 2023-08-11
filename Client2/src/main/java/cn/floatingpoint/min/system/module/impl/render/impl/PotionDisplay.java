@@ -32,6 +32,7 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
     private final OptionValue background = new OptionValue(false, () -> mode.isCurrentMode("FPSMaster"));
     public static GuiIngame guiIngame;
     private int width, height;
+    private boolean drawable;
 
     public PotionDisplay() {
         addValues(
@@ -57,10 +58,14 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
-        if (!this.isEnabled()) return false;
+    public void draw(int x, int y) {
+        if (!this.isEnabled()) {
+            drawable = false;
+            return;
+        }
         Collection<PotionEffect> collection = this.mc.player.getActivePotionEffects();
         if (!collection.isEmpty()) {
+            drawable = true;
             if (mode.isCurrentMode("FPSMaster")) {
                 width = 166;
                 int oldY = y;
@@ -116,7 +121,7 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
                     boolean flag;
                     if (!iterator.hasNext()) {
                         GlStateManager.popMatrix();
-                        return false;
+                        return;
                     }
                     potioneffect = iterator.next();
                     potion = potioneffect.getPotion();
@@ -155,8 +160,13 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
         } else {
             width = 0;
             height = 0;
+            drawable = false;
         }
-        return true;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     @Override

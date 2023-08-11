@@ -24,6 +24,7 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
     private final OptionValue shadow = new OptionValue(false);
     private final OptionValue background = new OptionValue(true);
     private int height;
+    private boolean drawable;
 
     public StatusDisplay() {
         addValues(
@@ -52,12 +53,14 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
+    public void draw(int x, int y) {
         height = 0;
+        drawable = false;
         if (!this.isEnabled()) {
-            return false;
+            return;
         }
         if (fps.getValue()) {
+            drawable = true;
             drawButton(x, y, "FPS:" + Minecraft.getDebugFPS());
             height += 12;
             if (background.getValue()) {
@@ -65,6 +68,7 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
             }
         }
         if (ping.getValue()) {
+            drawable = true;
             if (mc.player.connection != null) {
                 NetworkPlayerInfo info = mc.player.connection.getPlayerInfo(mc.player.getUniqueID());
                 if (info != null) {
@@ -79,7 +83,11 @@ public class StatusDisplay extends RenderModule implements DraggableGameView {
                 height += 12;
             }
         }
-        return true;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     private void drawButton(int x, int y, String text) {

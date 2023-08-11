@@ -19,6 +19,7 @@ public class Sprint extends BoostModule implements DraggableGameView {
     private final OptionValue showText = new OptionValue(true);
     private final TextValue text = new TextValue("[Sprint Enabled]", showText::getValue);
     private final int defaultColor;
+    private boolean drawable;
 
     public Sprint() {
         addValues(new Pair<>("ShowText", showText), new Pair<>("Text", text));
@@ -41,12 +42,18 @@ public class Sprint extends BoostModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
+    public void draw(int x, int y) {
         if (this.isEnabled() && showText.getValue()) {
             mc.fontRenderer.drawStringWithShadow(text.getValue(), x, y + 1, defaultColor);
-            return true;
+            drawable = true;
+        } else {
+            drawable = false;
         }
-        return false;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     @Override

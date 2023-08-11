@@ -362,8 +362,22 @@ public class GuiIngame extends Gui {
 
         GlStateManager.pushMatrix();
         if (mc.currentScreen instanceof GuiChat) {
-            int color = new Color(40, 40, 40, 102).getRGB();
-            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y, scaledresolution.getScaledWidth() / 2 + vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), color));
+            int color = new Color(46, 46, 46).getRGB();
+            int outlineColor = new Color(85, 255, 255).getRGB();
+            Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> {
+                if (draggableGameView.isDrawable()) {
+                    drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y, scaledresolution.getScaledWidth() / 2 + vec2i.x + draggableGameView.getWidth(), vec2i.y + draggableGameView.getHeight(), outlineColor);
+                    String text = Managers.i18NManager.getTranslation("module.implement." + draggableGameView.getIdentity());
+                    int width = Managers.fontManager.sourceHansSansCN_Regular_18.getStringWidth(text);
+                    if (vec2i.y < scaledresolution.getScaledHeight() / 2) {
+                        drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y + draggableGameView.getHeight(), scaledresolution.getScaledWidth() / 2 + vec2i.x + width + 4, vec2i.y + draggableGameView.getHeight() + 10, outlineColor);
+                        Managers.fontManager.sourceHansSansCN_Regular_18.drawString(text, scaledresolution.getScaledWidth() / 2 + vec2i.x + 2, vec2i.y + draggableGameView.getHeight() + 1, color);
+                    } else {
+                        drawRect(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y - 10, scaledresolution.getScaledWidth() / 2 + vec2i.x + width + 4, vec2i.y, outlineColor);
+                        Managers.fontManager.sourceHansSansCN_Regular_18.drawString(text, scaledresolution.getScaledWidth() / 2 + vec2i.x + 2, vec2i.y - 9, color);
+                    }
+                }
+            });
         }
         Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x, vec2i.y));
         GlStateManager.popMatrix();

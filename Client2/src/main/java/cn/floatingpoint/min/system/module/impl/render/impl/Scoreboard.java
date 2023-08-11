@@ -32,6 +32,7 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
     private final OptionValue background = new OptionValue(true);
     public static ScoreObjective scoreObjective;
     private int width, height;
+    private boolean drawable;
 
     public Scoreboard() {
         addValues(
@@ -59,12 +60,14 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
     }
 
     @Override
-    public boolean draw(int x, int y) {
+    public void draw(int x, int y) {
         if (scoreObjective == null) {
             width = 0;
             height = 0;
-            return false;
+            drawable = false;
+            return;
         }
+        drawable = true;
         FontRenderer fontRenderer = font.isCurrentMode("Minecraft") ? mc.fontRenderer : font.isCurrentMode("SourceSans") ? Managers.fontManager.sourceHansSansCN_Regular_18 : null;
         assert fontRenderer != null;
         net.minecraft.scoreboard.Scoreboard scoreboard = scoreObjective.getScoreboard();
@@ -139,7 +142,11 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
             }
         }
         scoreObjective = null;
-        return true;
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     @Override
