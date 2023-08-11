@@ -50,44 +50,44 @@ public class ArmorDisplay extends RenderModule implements DraggableGameView {
         if (mode.isCurrentMode("V")) {
             int tempY = 0;
             ItemStack[] armorInventory = mc.player.inventory.armorInventory.toArray(new ItemStack[0]);
-            if (armorInventory[3].isEmpty()) {
+            if (!armorInventory[3].isEmpty()) {
                 draw(armorInventory[3], x, y);
                 tempY += 16;
             }
-            if (armorInventory[2].isEmpty()) {
+            if (!armorInventory[2].isEmpty()) {
                 draw(armorInventory[2], x, y + tempY);
                 tempY += 16;
             }
-            if (armorInventory[1].isEmpty()) {
+            if (!armorInventory[1].isEmpty()) {
                 draw(armorInventory[1], x, y + tempY);
                 tempY += 16;
             }
-            if (armorInventory[0].isEmpty()) {
+            if (!armorInventory[0].isEmpty()) {
                 draw(armorInventory[0], x, y + tempY);
                 tempY += 16;
             }
             if (!mc.player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
                 draw(mc.player.getHeldItem(EnumHand.MAIN_HAND), x, y + tempY);
-                tempY += 15;
+                tempY += 16;
             }
             width = 16;
             height = tempY;
         } else {
             int tempX = 0;
             ItemStack[] armorInventory = mc.player.inventory.armorInventory.toArray(new ItemStack[0]);
-            if (armorInventory[3].isEmpty()) {
+            if (!armorInventory[3].isEmpty()) {
                 draw(armorInventory[3], x, y);
                 tempX += 16;
             }
-            if (armorInventory[2].isEmpty()) {
+            if (!armorInventory[2].isEmpty()) {
                 draw(armorInventory[2], x + tempX, y);
                 tempX += 16;
             }
-            if (armorInventory[1].isEmpty()) {
+            if (!armorInventory[1].isEmpty()) {
                 draw(armorInventory[1], x + tempX, y);
                 tempX += 16;
             }
-            if (armorInventory[0].isEmpty()) {
+            if (!armorInventory[0].isEmpty()) {
                 draw(armorInventory[0], x + tempX, y);
                 tempX += 16;
             }
