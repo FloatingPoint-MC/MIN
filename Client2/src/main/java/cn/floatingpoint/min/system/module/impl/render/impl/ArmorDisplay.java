@@ -106,22 +106,17 @@ public class ArmorDisplay extends RenderModule implements DraggableGameView {
         return drawable;
     }
 
-    public int draw(ItemStack item, int x, int y) {
-        int temp = 0;
-        if (item == null)
-            return 0;
+    public void draw(ItemStack item, int x, int y) {
+        if (item == null || item.isEmpty()) {
+            return;
+        }
         GlStateManager.pushMatrix();
         RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemIntoGUI(item, x, y);
         mc.getRenderItem().renderItemOverlays(mc.fontRenderer, item, x, y);
         RenderHelper.disableStandardItemLighting();
-        GlStateManager.enableAlpha();
-        GlStateManager.disableCull();
-        GlStateManager.disableBlend();
-        GlStateManager.disableLighting();
         GlStateManager.clear(256);
         GlStateManager.popMatrix();
-        return temp;
     }
 
     @Override
