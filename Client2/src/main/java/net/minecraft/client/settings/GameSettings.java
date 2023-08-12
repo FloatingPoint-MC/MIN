@@ -29,7 +29,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.tutorial.TutorialSteps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.nbt.NBTTagCompound;
@@ -149,7 +148,6 @@ public class GameSettings {
     public boolean enableWeakAttacks;
     public boolean showSubtitles;
     public boolean realmsNotifications = true;
-    public TutorialSteps tutorialStep = TutorialSteps.MOVEMENT;
     public KeyBinding keyBindForward = new KeyBinding("key.forward", 17, "key.categories.movement");
     public KeyBinding keyBindLeft = new KeyBinding("key.left", 30, "key.categories.movement");
     public KeyBinding keyBindBack = new KeyBinding("key.back", 31, "key.categories.movement");
@@ -892,10 +890,6 @@ public class GameSettings {
                                 this.updateRenderClouds();
                             }
 
-                            if ("tutorialStep".equals(s1)) {
-                                this.tutorialStep = TutorialSteps.getTutorial(s2);
-                            }
-
                             if ("ao".equals(s1)) {
                                 if ("true".equals(s2)) {
                                     this.ambientOcclusion = 2;
@@ -1217,7 +1211,6 @@ public class GameSettings {
             printwriter.println("realmsNotifications:" + this.realmsNotifications);
             printwriter.println("enableWeakAttacks:" + this.enableWeakAttacks);
             printwriter.println("narrator:" + this.narrator);
-            printwriter.println("tutorialStep:" + this.tutorialStep.getName());
 
             for (KeyBinding keybinding : this.keyBindings) {
                 printwriter.println("key_" + keybinding.getKeyDescription() + ":" + keybinding.getKeyCode());
