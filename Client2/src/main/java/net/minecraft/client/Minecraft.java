@@ -110,7 +110,6 @@ import net.minecraft.client.settings.CreativeSettings;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.client.tutorial.Tutorial;
 import net.minecraft.client.util.ISearchTree;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.RecipeBookClient;
@@ -425,7 +424,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private int fpsCounter;
     public boolean actionKeyF3;
-    private final Tutorial tutorial;
     long prevFrameTime = -1L;
 
     /**
@@ -468,7 +466,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         TextComponentKeybind.displaySupplierFunction = KeyBinding::getDisplayString;
         this.dataFixer = DataFixesManager.createFixer();
         this.toastGui = new GuiToast(this);
-        this.tutorial = new Tutorial(this);
     }
 
     public void run() {
@@ -1603,7 +1600,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
         this.profiler.endSection();
         this.entityRenderer.getMouseOver(1.0F);
-        this.tutorial.onMouseHover(this.world, this.objectMouseOver);
         this.profiler.startSection("gameMode");
 
         if (!this.isGamePaused && this.world != null) {
@@ -1707,7 +1703,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         if (this.world != null) {
             if (!this.isGamePaused) {
                 this.world.setAllowedSpawnTypes(this.world.getDifficulty() != EnumDifficulty.PEACEFUL, true);
-                this.tutorial.update();
 
                 try {
                     this.world.tick();
@@ -1936,7 +1931,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (this.playerController.isRidingHorse()) {
                 this.player.sendHorseInventory();
             } else {
-                this.tutorial.openInventory();
                 this.displayGuiScreen(new GuiInventory(this.player));
             }
         }
@@ -2936,9 +2930,5 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
     public GuiToast getToastGui() {
         return this.toastGui;
-    }
-
-    public Tutorial getTutorial() {
-        return this.tutorial;
     }
 }

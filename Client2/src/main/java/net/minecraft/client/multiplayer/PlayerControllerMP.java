@@ -40,7 +40,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
@@ -214,7 +213,6 @@ public class PlayerControllerMP {
             return false;
         } else {
             if (this.currentGameType.isCreative()) {
-                this.mc.getTutorial().onHitBlock(this.mc.world, loc, this.mc.world.getBlockState(loc), 1.0F);
                 this.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, loc, face));
                 clickBlockCreative(this.mc, this, loc, face);
                 this.blockHitDelay = 5;
@@ -224,7 +222,6 @@ public class PlayerControllerMP {
                 }
 
                 IBlockState iblockstate = this.mc.world.getBlockState(loc);
-                this.mc.getTutorial().onHitBlock(this.mc.world, loc, iblockstate, 0.0F);
                 this.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, loc, face));
                 boolean flag = iblockstate.getMaterial() != Material.AIR;
 
@@ -253,7 +250,6 @@ public class PlayerControllerMP {
      */
     public void resetBlockRemoving() {
         if (this.isHittingBlock) {
-            this.mc.getTutorial().onHitBlock(this.mc.world, this.currentBlock, this.mc.world.getBlockState(this.currentBlock), -1.0F);
             this.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, this.currentBlock, EnumFacing.DOWN));
             this.isHittingBlock = false;
             this.curBlockDamageMP = 0.0F;
@@ -270,7 +266,6 @@ public class PlayerControllerMP {
             return true;
         } else if (this.currentGameType.isCreative() && this.mc.world.getWorldBorder().contains(posBlock)) {
             this.blockHitDelay = 5;
-            this.mc.getTutorial().onHitBlock(this.mc.world, posBlock, this.mc.world.getBlockState(posBlock), 1.0F);
             this.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, posBlock, directionFacing));
             clickBlockCreative(this.mc, this, posBlock, directionFacing);
             return true;
@@ -290,7 +285,6 @@ public class PlayerControllerMP {
                 }
 
                 ++this.stepSoundTickCounter;
-                this.mc.getTutorial().onHitBlock(this.mc.world, posBlock, iblockstate, MathHelper.clamp(this.curBlockDamageMP, 0.0F, 1.0F));
 
                 if (this.curBlockDamageMP >= 1.0F) {
                     this.isHittingBlock = false;

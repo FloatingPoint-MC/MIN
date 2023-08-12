@@ -1052,7 +1052,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         EntityPlayer entityplayer = this.client.player;
         ItemStack itemstack = packetIn.getStack();
         int i = packetIn.getSlot();
-        this.client.getTutorial().handleSetSlot(itemstack);
 
         if (packetIn.getWindowId() == -1) {
             entityplayer.inventory.setItemStack(itemstack);
