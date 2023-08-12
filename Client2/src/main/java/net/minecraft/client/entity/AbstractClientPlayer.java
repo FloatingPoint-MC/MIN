@@ -2,7 +2,6 @@ package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
 
-import java.io.File;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -25,6 +24,8 @@ import net.minecraft.world.World;
 import net.optifine.player.CapeUtils;
 import net.optifine.player.PlayerConfigurations;
 
+import java.util.Objects;
+
 public abstract class AbstractClientPlayer extends EntityPlayer {
     private NetworkPlayerInfo playerInfo;
     public float rotateElytraX;
@@ -33,10 +34,9 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
     private ResourceLocation locationOfCape = null;
     private long reloadCapeTimeMs = 0L;
     private boolean elytraOfCape = false;
-    private String nameClear = null;
+    private String nameClear;
     public EntityShoulderRiding entityShoulderLeft;
     public EntityShoulderRiding entityShoulderRight;
-    private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation("textures/entity/elytra.png");
 
     public AbstractClientPlayer(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
@@ -54,12 +54,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
      * Returns true if the player is in spectator mode.
      */
     public boolean isSpectator() {
-        NetworkPlayerInfo networkplayerinfo = Minecraft.getMinecraft().getConnection().getPlayerInfo(this.getGameProfile().getId());
+        NetworkPlayerInfo networkplayerinfo = Objects.requireNonNull(Minecraft.getMinecraft().getConnection()).getPlayerInfo(this.getGameProfile().getId());
         return networkplayerinfo != null && networkplayerinfo.getGameType() == GameType.SPECTATOR;
     }
 
     public boolean isCreative() {
-        NetworkPlayerInfo networkplayerinfo = Minecraft.getMinecraft().getConnection().getPlayerInfo(this.getGameProfile().getId());
+        NetworkPlayerInfo networkplayerinfo = Objects.requireNonNull(Minecraft.getMinecraft().getConnection()).getPlayerInfo(this.getGameProfile().getId());
         return networkplayerinfo != null && networkplayerinfo.getGameType() == GameType.CREATIVE;
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
     @Nullable
     protected NetworkPlayerInfo getPlayerInfo() {
         if (this.playerInfo == null) {
-            this.playerInfo = Minecraft.getMinecraft().getConnection().getPlayerInfo(this.getUniqueID());
+            this.playerInfo = Objects.requireNonNull(Minecraft.getMinecraft().getConnection()).getPlayerInfo(this.getUniqueID());
         }
 
         return this.playerInfo;
@@ -117,17 +117,17 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
         return this.getPlayerInfo() != null;
     }
 
-    @Nullable
 
     /**
      * Gets the special Elytra texture for the player.
      */
+    @Nullable
     public ResourceLocation getLocationElytra() {
         NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
         return networkplayerinfo == null ? null : networkplayerinfo.getLocationElytra();
     }
 
-    public static ThreadDownloadImageData getDownloadImageSkin(ResourceLocation resourceLocationIn, String username) {
+    public static void getDownloadImageSkin(ResourceLocation resourceLocationIn, String username) {
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
         ITextureObject itextureobject = texturemanager.getTexture(resourceLocationIn);
 
@@ -136,11 +136,10 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
             texturemanager.loadTexture(resourceLocationIn, itextureobject);
         }
 
-        return (ThreadDownloadImageData) itextureobject;
     }
 
     /**
-     * Returns true if the username has an associated skin.
+     * Returns True if the username has an associated skin.
      */
     public static ResourceLocation getLocationSkin(String username) {
         return new ResourceLocation("skins/" + StringUtils.stripControlCodes(username));
@@ -185,10 +184,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
         return this.nameClear;
     }
 
-    public ResourceLocation getLocationOfCape() {
-        return this.locationOfCape;
-    }
-
     public void setLocationOfCape(ResourceLocation p_setLocationOfCape_1_) {
         this.locationOfCape = p_setLocationOfCape_1_;
     }
@@ -205,14 +200,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
 
     public void setElytraOfCape(boolean p_setElytraOfCape_1_) {
         this.elytraOfCape = p_setElytraOfCape_1_;
-    }
-
-    public boolean isElytraOfCape() {
-        return this.elytraOfCape;
-    }
-
-    public long getReloadCapeTimeMs() {
-        return this.reloadCapeTimeMs;
     }
 
     public void setReloadCapeTimeMs(long p_setReloadCapeTimeMs_1_) {

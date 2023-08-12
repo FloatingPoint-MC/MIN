@@ -3,8 +3,7 @@ package net.minecraft.client.audio;
 import java.util.List;
 import javax.annotation.Nullable;
 
-public class SoundList
-{
+public class SoundList {
     private final List<Sound> sounds;
 
     /**
@@ -13,26 +12,22 @@ public class SoundList
     private final boolean replaceExisting;
     private final String subtitle;
 
-    public SoundList(List<Sound> soundsIn, boolean replceIn, String subtitleIn)
-    {
+    public SoundList(List<Sound> soundsIn, boolean replceIn, @Nullable String subtitleIn) {
         this.sounds = soundsIn;
         this.replaceExisting = replceIn;
         this.subtitle = subtitleIn;
     }
 
-    public List<Sound> getSounds()
-    {
+    public List<Sound> getSounds() {
         return this.sounds;
     }
 
-    public boolean canReplaceExisting()
-    {
+    public boolean canReplaceExisting() {
         return this.replaceExisting;
     }
 
     @Nullable
-    public String getSubtitle()
-    {
+    public String getSubtitle() {
         return this.subtitle;
     }
 }

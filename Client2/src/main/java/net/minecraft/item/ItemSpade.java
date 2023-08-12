@@ -21,7 +21,7 @@ public class ItemSpade extends ItemTool
 
     public ItemSpade(ToolMaterial material)
     {
-        super(1.5F, -3.0F, material, EFFECTIVE_ON);
+        super(1.5F, material, EFFECTIVE_ON);
     }
 
     /**

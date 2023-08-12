@@ -13,7 +13,7 @@ public class ItemPickaxe extends ItemTool
 
     protected ItemPickaxe(ToolMaterial material)
     {
-        super(1.0F, -2.8F, material, EFFECTIVE_ON);
+        super(1.0F, material, EFFECTIVE_ON);
     }
 
     /**

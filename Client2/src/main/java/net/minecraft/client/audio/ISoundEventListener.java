@@ -1,6 +1,5 @@
 package net.minecraft.client.audio;
 
-public interface ISoundEventListener
-{
+public interface ISoundEventListener {
     void soundPlay(ISound soundIn, SoundEventAccessor accessor);
 }

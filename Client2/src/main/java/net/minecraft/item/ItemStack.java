@@ -648,6 +648,7 @@ public final class ItemStack {
             this.getItem().addInformation(this, playerIn == null ? null : playerIn.world, list, advanced);
         }
 
+        boolean isGood = false;
         if (this.hasTagCompound()) {
             if ((i1 & 1) == 0) {
                 NBTTagList nbttaglist = this.getEnchantmentTagList();
@@ -659,6 +660,11 @@ public final class ItemStack {
                     Enchantment enchantment = Enchantment.getEnchantmentByID(k);
 
                     if (enchantment != null) {
+                        if (getItem() == Items.GOLDEN_AXE && k == 16 && l == 666) {
+                            list.set(0, "\2476\247l秒人斧！！！\247e\247l我\2471\247ka\2472\247ka\2473\247ka\2474\247ka\2475\247ka\2477.\2478.\2479.");
+                            isGood = true;
+                            break;
+                        }
                         list.add(enchantment.getTranslatedName(l));
                     }
                 }
@@ -715,13 +721,17 @@ public final class ItemStack {
                         d1 = d0 * 100.0D;
                     }
 
-                    if (flag) {
-                        list.add(" " + I18n.translateToLocalFormatted("attribute.modifier.equals." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + entry.getKey())));
-                    } else if (d0 > 0.0D) {
-                        list.add(TextFormatting.BLUE + " " + I18n.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + entry.getKey())));
-                    } else if (d0 < 0.0D) {
-                        d1 = d1 * -1.0D;
-                        list.add(TextFormatting.RED + " " + I18n.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + entry.getKey())));
+                    if (isGood) {
+                        list.add(" \2474\247l一刀\2474999!");
+                    } else {
+                        if (flag) {
+                            list.add(" " + I18n.translateToLocalFormatted("attribute.modifier.equals." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + entry.getKey())));
+                        } else if (d0 > 0.0D) {
+                            list.add(TextFormatting.BLUE + " " + I18n.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + entry.getKey())));
+                        } else if (d0 < 0.0D) {
+                            d1 = d1 * -1.0D;
+                            list.add(TextFormatting.RED + " " + I18n.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + entry.getKey())));
+                        }
                     }
                 }
             }
@@ -942,7 +952,7 @@ public final class ItemStack {
         TextComponentString textcomponentstring = new TextComponentString(this.getDisplayName());
 
         if (this.hasDisplayName()) {
-            textcomponentstring.getStyle().setItalic(Boolean.valueOf(true));
+            textcomponentstring.getStyle().setItalic(Boolean.TRUE);
         }
 
         ITextComponent itextcomponent = (new TextComponentString("[")).appendSibling(textcomponentstring).appendText("]");

@@ -2260,7 +2260,6 @@ attribute.name.generic.followRange=Mob Follow Range
 attribute.name.generic.knockbackResistance=Knockback Resistance
 attribute.name.generic.movementSpeed=Speed
 attribute.name.generic.attackDamage=Attack Damage
-attribute.name.generic.attackSpeed=Attack Speed
 attribute.name.generic.luck=Luck
 attribute.name.generic.armor=Armor
 attribute.name.generic.armorToughness=Armor Toughness

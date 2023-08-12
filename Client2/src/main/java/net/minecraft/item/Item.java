@@ -3,11 +3,13 @@ package net.minecraft.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
@@ -56,52 +58,35 @@ import net.minecraft.util.registry.RegistrySimple;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-public class Item
-{
-    public static final RegistryNamespaced<ResourceLocation, Item> REGISTRY = new RegistryNamespaced<ResourceLocation, Item>();
+public class Item {
+    public static final RegistryNamespaced<ResourceLocation, Item> REGISTRY = new RegistryNamespaced<>();
     private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.newHashMap();
-    private static final IItemPropertyGetter DAMAGED_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return stack.isItemDamaged() ? 1.0F : 0.0F;
-        }
-    };
-    private static final IItemPropertyGetter DAMAGE_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return MathHelper.clamp((float)stack.getItemDamage() / (float)stack.getMaxDamage(), 0.0F, 1.0F);
-        }
-    };
-    private static final IItemPropertyGetter LEFTHANDED_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return entityIn != null && entityIn.getPrimaryHand() != EnumHandSide.RIGHT ? 1.0F : 0.0F;
-        }
-    };
-    private static final IItemPropertyGetter COOLDOWN_GETTER = new IItemPropertyGetter()
-    {
-        public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-        {
-            return entityIn instanceof EntityPlayer ? ((EntityPlayer)entityIn).getCooldownTracker().getCooldown(stack.getItem(), 0.0F) : 0.0F;
-        }
-    };
+    private static final IItemPropertyGetter DAMAGED_GETTER = (stack, worldIn, entityIn) -> stack.isItemDamaged() ? 1.0F : 0.0F;
+    private static final IItemPropertyGetter DAMAGE_GETTER = (stack, worldIn, entityIn) -> MathHelper.clamp((float) stack.getItemDamage() / (float) stack.getMaxDamage(), 0.0F, 1.0F);
+    private static final IItemPropertyGetter LEFTHANDED_GETTER = (stack, worldIn, entityIn) -> entityIn != null && entityIn.getPrimaryHand() != EnumHandSide.RIGHT ? 1.0F : 0.0F;
+    private static final IItemPropertyGetter COOLDOWN_GETTER = (stack, worldIn, entityIn) -> entityIn instanceof EntityPlayer ? ((EntityPlayer) entityIn).getCooldownTracker().getCooldown(stack.getItem(), 0.0F) : 0.0F;
     private final IRegistry<ResourceLocation, IItemPropertyGetter> properties = new RegistrySimple<>();
     protected static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     private CreativeTabs tabToDisplayOn;
 
-    /** The RNG used by the Item subclasses. */
+    /**
+     * The RNG used by the Item subclasses.
+     */
     protected static Random itemRand = new Random();
 
-    /** Maximum size of the stack. */
+    /**
+     * Maximum size of the stack.
+     */
     protected int maxStackSize = 64;
 
-    /** Maximum damage an item can handle. */
+    /**
+     * Maximum damage an item can handle.
+     */
     private int maxDamage;
 
-    /** If true, render the object in full 3D, like weapons and tools. */
+    /**
+     * If true, render the object in full 3D, like weapons and tools.
+     */
     protected boolean bFull3D;
 
     /**
@@ -110,21 +95,20 @@ public class Item
     protected boolean hasSubtypes;
     private Item containerItem;
 
-    /** The unlocalized name of this item. */
+    /**
+     * The unlocalized name of this item.
+     */
     private String translationKey;
 
-    public static int getIdFromItem(Item itemIn)
-    {
+    public static int getIdFromItem(Item itemIn) {
         return itemIn == null ? 0 : REGISTRY.getIDForObject(itemIn);
     }
 
-    public static Item getItemById(int id)
-    {
+    public static Item getItemById(int id) {
         return REGISTRY.getObjectById(id);
     }
 
-    public static Item getItemFromBlock(Block blockIn)
-    {
+    public static Item getItemFromBlock(Block blockIn) {
         Item item = BLOCK_TO_ITEM.get(blockIn);
         return item == null ? Items.AIR : item;
     }
@@ -135,18 +119,13 @@ public class Item
      * fail, null is returned.
      */
     @Nullable
-    public static Item getByNameOrId(String id)
-    {
+    public static Item getByNameOrId(String id) {
         Item item = REGISTRY.getObject(new ResourceLocation(id));
 
-        if (item == null)
-        {
-            try
-            {
+        if (item == null) {
+            try {
                 return getItemById(Integer.parseInt(id));
-            }
-            catch (NumberFormatException var3)
-            {
+            } catch (NumberFormatException var3) {
             }
         }
 
@@ -156,38 +135,32 @@ public class Item
     /**
      * Creates a new override param for item models. See usage in clock, compass, elytra, etc.
      */
-    public final void addPropertyOverride(ResourceLocation key, IItemPropertyGetter getter)
-    {
+    public final void addPropertyOverride(ResourceLocation key, IItemPropertyGetter getter) {
         this.properties.putObject(key, getter);
     }
 
     @Nullable
-    public IItemPropertyGetter getPropertyGetter(ResourceLocation key)
-    {
+    public IItemPropertyGetter getPropertyGetter(ResourceLocation key) {
         return this.properties.getObject(key);
     }
 
-    public boolean hasCustomProperties()
-    {
+    public boolean hasCustomProperties() {
         return !this.properties.getKeys().isEmpty();
     }
 
     /**
      * Called when an ItemStack with NBT data is read to potentially that ItemStack's NBT data
      */
-    public boolean updateItemStackNBT(NBTTagCompound nbt)
-    {
+    public boolean updateItemStackNBT(NBTTagCompound nbt) {
         return false;
     }
 
-    public Item()
-    {
+    public Item() {
         this.addPropertyOverride(new ResourceLocation("lefthanded"), LEFTHANDED_GETTER);
         this.addPropertyOverride(new ResourceLocation("cooldown"), COOLDOWN_GETTER);
     }
 
-    public Item setMaxStackSize(int maxStackSize)
-    {
+    public Item setMaxStackSize(int maxStackSize) {
         this.maxStackSize = maxStackSize;
         return this;
     }
@@ -195,18 +168,15 @@ public class Item
     /**
      * Called when a Block is right-clicked with this Item
      */
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return EnumActionResult.PASS;
     }
 
-    public float getDestroySpeed(ItemStack stack, IBlockState state)
-    {
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
         return 1.0F;
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
     }
 
@@ -214,16 +184,14 @@ public class Item
      * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
      * the Item before the action is complete.
      */
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-    {
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         return stack;
     }
 
     /**
      * Returns the maximum size of the stack for a specific item.
      */
-    public int getItemStackLimit()
-    {
+    public int getItemStackLimit() {
         return this.maxStackSize;
     }
 
@@ -231,18 +199,15 @@ public class Item
      * Converts the given ItemStack damage value into a metadata value to be placed in the world when this Item is
      * placed as a Block (mostly used with ItemBlocks).
      */
-    public int getMetadata(int damage)
-    {
+    public int getMetadata(int damage) {
         return 0;
     }
 
-    public boolean getHasSubtypes()
-    {
+    public boolean getHasSubtypes() {
         return this.hasSubtypes;
     }
 
-    protected Item setHasSubtypes(boolean hasSubtypes)
-    {
+    protected Item setHasSubtypes(boolean hasSubtypes) {
         this.hasSubtypes = hasSubtypes;
         return this;
     }
@@ -250,20 +215,17 @@ public class Item
     /**
      * Returns the maximum damage an item can take.
      */
-    public int getMaxDamage()
-    {
+    public int getMaxDamage() {
         return this.maxDamage;
     }
 
     /**
      * set max damage of an Item
      */
-    protected Item setMaxDamage(int maxDamageIn)
-    {
+    protected Item setMaxDamage(int maxDamageIn) {
         this.maxDamage = maxDamageIn;
 
-        if (maxDamageIn > 0)
-        {
+        if (maxDamageIn > 0) {
             this.addPropertyOverride(new ResourceLocation("damaged"), DAMAGED_GETTER);
             this.addPropertyOverride(new ResourceLocation("damage"), DAMAGE_GETTER);
         }
@@ -271,8 +233,7 @@ public class Item
         return this;
     }
 
-    public boolean isDamageable()
-    {
+    public boolean isDamageable() {
         return this.maxDamage > 0 && (!this.hasSubtypes || this.maxStackSize == 1);
     }
 
@@ -280,40 +241,35 @@ public class Item
      * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
      * the damage on the stack.
      */
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         return false;
     }
 
     /**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
      */
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
-    {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
         return false;
     }
 
     /**
      * Check whether this Item can harvest the given Block
      */
-    public boolean canHarvestBlock(IBlockState blockIn)
-    {
+    public boolean canHarvestBlock(IBlockState blockIn) {
         return false;
     }
 
     /**
      * Returns true if the item can be used on the given entity, e.g. shears on sheep.
      */
-    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
-    {
+    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         return false;
     }
 
     /**
      * Sets bFull3D to True and return the object.
      */
-    public Item setFull3D()
-    {
+    public Item setFull3D() {
         this.bFull3D = true;
         return this;
     }
@@ -321,8 +277,7 @@ public class Item
     /**
      * Returns True is the item is renderer in full 3D when hold.
      */
-    public boolean isFull3D()
-    {
+    public boolean isFull3D() {
         return this.bFull3D;
     }
 
@@ -330,16 +285,14 @@ public class Item
      * Returns true if this item should be rotated by 180 degrees around the Y axis when being held in an entities
      * hands.
      */
-    public boolean shouldRotateAroundWhenRendering()
-    {
+    public boolean shouldRotateAroundWhenRendering() {
         return false;
     }
 
     /**
      * Sets the unlocalized name of this item to the string passed as the parameter, prefixed by "item."
      */
-    public Item setTranslationKey(String key)
-    {
+    public Item setTranslationKey(String key) {
         this.translationKey = key;
         return this;
     }
@@ -348,16 +301,14 @@ public class Item
      * Translates the unlocalized name of this item, but without the .name suffix, so the translation fails and the
      * unlocalized name itself is returned.
      */
-    public String getUnlocalizedNameInefficiently(ItemStack stack)
-    {
+    public String getUnlocalizedNameInefficiently(ItemStack stack) {
         return I18n.translateToLocal(this.getTranslationKey(stack));
     }
 
     /**
      * Returns the unlocalized name of this item.
      */
-    public String getTranslationKey()
-    {
+    public String getTranslationKey() {
         return "item." + this.translationKey;
     }
 
@@ -365,13 +316,11 @@ public class Item
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
-    public String getTranslationKey(ItemStack stack)
-    {
+    public String getTranslationKey(ItemStack stack) {
         return "item." + this.translationKey;
     }
 
-    public Item setContainerItem(Item containerItem)
-    {
+    public Item setContainerItem(Item containerItem) {
         this.containerItem = containerItem;
         return this;
     }
@@ -379,22 +328,19 @@ public class Item
     /**
      * If this function returns true (or the item is damageable), the ItemStack's NBT tag will be sent to the client.
      */
-    public boolean getShareTag()
-    {
+    public boolean getShareTag() {
         return true;
     }
 
     @Nullable
-    public Item getContainerItem()
-    {
+    public Item getContainerItem() {
         return this.containerItem;
     }
 
     /**
      * True if this Item has a container item (a.k.a. crafting result)
      */
-    public boolean hasContainerItem()
-    {
+    public boolean hasContainerItem() {
         return this.containerItem != null;
     }
 
@@ -402,57 +348,49 @@ public class Item
      * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
      * update it's contents.
      */
-    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
-    {
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
     }
 
     /**
      * Called when item is crafted/smelted. Used only by maps so far.
      */
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn)
-    {
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
     }
 
     /**
      * false for all Items except sub-classes of ItemMapBase
      */
-    public boolean isMap()
-    {
+    public boolean isMap() {
         return false;
     }
 
     /**
      * returns the action that specifies what animation to play when the items is being used
      */
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
+    public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.NONE;
     }
 
     /**
      * How long it takes to use or consume an item
      */
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
+    public int getMaxItemUseDuration(ItemStack stack) {
         return 0;
     }
 
     /**
      * Called when the player stops using an Item (stops holding the right mouse button).
      */
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-    {
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
     }
 
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
     }
 
-    public String getItemStackDisplayName(ItemStack stack)
-    {
+    public String getItemStackDisplayName(ItemStack stack) {
         return I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim();
     }
 
@@ -460,71 +398,63 @@ public class Item
      * Returns true if this item has an enchantment glint. By default, this returns
      * <code>stack.isItemEnchanted()</code>, but other items can override it (for instance, written books always return
      * true).
-     *  
+     * <p>
      * Note that if you override this method, you generally want to also call the super version (on {@link Item}) to get
      * the glint for enchanted items. Of course, that is unnecessary if the overwritten version always returns true.
      */
-    public boolean hasEffect(ItemStack stack)
-    {
+    public boolean hasEffect(ItemStack stack) {
         return stack.isItemEnchanted();
     }
 
     /**
      * Return an item rarity from EnumRarity
      */
-    public EnumRarity getRarity(ItemStack stack)
-    {
+    public EnumRarity getRarity(ItemStack stack) {
         return stack.isItemEnchanted() ? EnumRarity.RARE : EnumRarity.COMMON;
     }
 
     /**
      * Checks isDamagable and if it cannot be stacked
      */
-    public boolean isEnchantable(ItemStack stack)
-    {
+    public boolean isEnchantable(ItemStack stack) {
         return this.getItemStackLimit() == 1 && this.isDamageable();
     }
 
-    protected RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids)
-    {
+    protected RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids) {
         float f = playerIn.rotationPitch;
         float f1 = playerIn.rotationYaw;
         double d0 = playerIn.posX;
-        double d1 = playerIn.posY + (double)playerIn.getEyeHeight();
+        double d1 = playerIn.posY + (double) playerIn.getEyeHeight();
         double d2 = playerIn.posZ;
         Vec3d vec3d = new Vec3d(d0, d1, d2);
-        float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
-        float f3 = MathHelper.sin(-f1 * 0.017453292F - (float)Math.PI);
+        float f2 = MathHelper.cos(-f1 * 0.017453292F - (float) Math.PI);
+        float f3 = MathHelper.sin(-f1 * 0.017453292F - (float) Math.PI);
         float f4 = -MathHelper.cos(-f * 0.017453292F);
         float f5 = MathHelper.sin(-f * 0.017453292F);
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         double d3 = 5.0D;
-        Vec3d vec3d1 = vec3d.add((double)f6 * 5.0D, (double)f5 * 5.0D, (double)f7 * 5.0D);
+        Vec3d vec3d1 = vec3d.add((double) f6 * 5.0D, (double) f5 * 5.0D, (double) f7 * 5.0D);
         return worldIn.rayTraceBlocks(vec3d, vec3d1, useLiquids, !useLiquids, false);
     }
 
     /**
      * Return the enchantability factor of the item, most of the time is based on material.
      */
-    public int getItemEnchantability()
-    {
+    public int getItemEnchantability() {
         return 0;
     }
 
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
-    {
-        if (this.isInCreativeTab(tab))
-        {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (this.isInCreativeTab(tab)) {
             items.add(new ItemStack(this));
         }
     }
 
-    protected boolean isInCreativeTab(CreativeTabs targetTab)
-    {
+    protected boolean isInCreativeTab(CreativeTabs targetTab) {
         CreativeTabs creativetabs = this.getCreativeTab();
         return creativetabs != null && (targetTab == CreativeTabs.SEARCH || targetTab == creativetabs);
     }
@@ -534,16 +464,14 @@ public class Item
     /**
      * gets the CreativeTab this item is displayed on
      */
-    public CreativeTabs getCreativeTab()
-    {
+    public CreativeTabs getCreativeTab() {
         return this.tabToDisplayOn;
     }
 
     /**
      * returns this;
      */
-    public Item setCreativeTab(CreativeTabs tab)
-    {
+    public Item setCreativeTab(CreativeTabs tab) {
         this.tabToDisplayOn = tab;
         return this;
     }
@@ -551,69 +479,55 @@ public class Item
     /**
      * Returns whether this item is always allowed to edit the world. Forces {@link
      * EntityPlayer#canPlayerEdit EntityPlayer#canPlayerEdit} to return {@code true}.
-
+     *
      * @return whether this item ignores other restrictions on how a player can modify the world.
      * @see ItemStack#canEditBlocks
      */
-    public boolean canItemEditBlocks()
-    {
+    public boolean canItemEditBlocks() {
         return false;
     }
 
     /**
      * Return whether this item is repairable in an anvil.
-     *  
+     *
      * @param toRepair the {@code ItemStack} being repaired
-     * @param repair the {@code ItemStack} being used to perform the repair
+     * @param repair   the {@code ItemStack} being used to perform the repair
      */
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
-    {
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return false;
     }
 
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
-    {
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
         return HashMultimap.create();
     }
 
-    public static void registerItems()
-    {
+    public static void registerItems() {
         registerItemBlock(Blocks.AIR, new ItemAir(Blocks.AIR));
-        registerItemBlock(Blocks.STONE, (new ItemMultiTexture(Blocks.STONE, Blocks.STONE, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.STONE, (new ItemMultiTexture(Blocks.STONE, Blocks.STONE, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockStone.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("stone"));
         registerItemBlock(Blocks.GRASS, new ItemColored(Blocks.GRASS, false));
-        registerItemBlock(Blocks.DIRT, (new ItemMultiTexture(Blocks.DIRT, Blocks.DIRT, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.DIRT, (new ItemMultiTexture(Blocks.DIRT, Blocks.DIRT, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockDirt.DirtType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("dirt"));
         registerItemBlock(Blocks.COBBLESTONE);
-        registerItemBlock(Blocks.PLANKS, (new ItemMultiTexture(Blocks.PLANKS, Blocks.PLANKS, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.PLANKS, (new ItemMultiTexture(Blocks.PLANKS, Blocks.PLANKS, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockPlanks.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("wood"));
-        registerItemBlock(Blocks.SAPLING, (new ItemMultiTexture(Blocks.SAPLING, Blocks.SAPLING, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.SAPLING, (new ItemMultiTexture(Blocks.SAPLING, Blocks.SAPLING, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockPlanks.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("sapling"));
         registerItemBlock(Blocks.BEDROCK);
-        registerItemBlock(Blocks.SAND, (new ItemMultiTexture(Blocks.SAND, Blocks.SAND, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.SAND, (new ItemMultiTexture(Blocks.SAND, Blocks.SAND, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockSand.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("sand"));
@@ -621,26 +535,20 @@ public class Item
         registerItemBlock(Blocks.GOLD_ORE);
         registerItemBlock(Blocks.IRON_ORE);
         registerItemBlock(Blocks.COAL_ORE);
-        registerItemBlock(Blocks.LOG, (new ItemMultiTexture(Blocks.LOG, Blocks.LOG, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.LOG, (new ItemMultiTexture(Blocks.LOG, Blocks.LOG, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockPlanks.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("log"));
-        registerItemBlock(Blocks.LOG2, (new ItemMultiTexture(Blocks.LOG2, Blocks.LOG2, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.LOG2, (new ItemMultiTexture(Blocks.LOG2, Blocks.LOG2, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockPlanks.EnumType.byMetadata(p_apply_1_.getMetadata() + 4).getTranslationKey();
             }
         })).setTranslationKey("log"));
         registerItemBlock(Blocks.LEAVES, (new ItemLeaves(Blocks.LEAVES)).setTranslationKey("leaves"));
         registerItemBlock(Blocks.LEAVES2, (new ItemLeaves(Blocks.LEAVES2)).setTranslationKey("leaves"));
-        registerItemBlock(Blocks.SPONGE, (new ItemMultiTexture(Blocks.SPONGE, Blocks.SPONGE, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.SPONGE, (new ItemMultiTexture(Blocks.SPONGE, Blocks.SPONGE, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return (p_apply_1_.getMetadata() & 1) == 1 ? "wet" : "dry";
             }
         })).setTranslationKey("sponge"));
@@ -648,10 +556,8 @@ public class Item
         registerItemBlock(Blocks.LAPIS_ORE);
         registerItemBlock(Blocks.LAPIS_BLOCK);
         registerItemBlock(Blocks.DISPENSER);
-        registerItemBlock(Blocks.SANDSTONE, (new ItemMultiTexture(Blocks.SANDSTONE, Blocks.SANDSTONE, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.SANDSTONE, (new ItemMultiTexture(Blocks.SANDSTONE, Blocks.SANDSTONE, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockSandStone.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("sandStone"));
@@ -660,21 +566,17 @@ public class Item
         registerItemBlock(Blocks.DETECTOR_RAIL);
         registerItemBlock(Blocks.STICKY_PISTON, new ItemPiston(Blocks.STICKY_PISTON));
         registerItemBlock(Blocks.WEB);
-        registerItemBlock(Blocks.TALLGRASS, (new ItemColored(Blocks.TALLGRASS, true)).setSubtypeNames(new String[] {"shrub", "grass", "fern"}));
+        registerItemBlock(Blocks.TALLGRASS, (new ItemColored(Blocks.TALLGRASS, true)).setSubtypeNames(new String[]{"shrub", "grass", "fern"}));
         registerItemBlock(Blocks.DEADBUSH);
         registerItemBlock(Blocks.PISTON, new ItemPiston(Blocks.PISTON));
         registerItemBlock(Blocks.WOOL, (new ItemCloth(Blocks.WOOL)).setTranslationKey("cloth"));
-        registerItemBlock(Blocks.YELLOW_FLOWER, (new ItemMultiTexture(Blocks.YELLOW_FLOWER, Blocks.YELLOW_FLOWER, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.YELLOW_FLOWER, (new ItemMultiTexture(Blocks.YELLOW_FLOWER, Blocks.YELLOW_FLOWER, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockFlower.EnumFlowerType.getType(BlockFlower.EnumFlowerColor.YELLOW, p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("flower"));
-        registerItemBlock(Blocks.RED_FLOWER, (new ItemMultiTexture(Blocks.RED_FLOWER, Blocks.RED_FLOWER, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.RED_FLOWER, (new ItemMultiTexture(Blocks.RED_FLOWER, Blocks.RED_FLOWER, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockFlower.EnumFlowerType.getType(BlockFlower.EnumFlowerColor.RED, p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("rose"));
@@ -731,17 +633,13 @@ public class Item
         registerItemBlock(Blocks.GLOWSTONE);
         registerItemBlock(Blocks.LIT_PUMPKIN);
         registerItemBlock(Blocks.TRAPDOOR);
-        registerItemBlock(Blocks.MONSTER_EGG, (new ItemMultiTexture(Blocks.MONSTER_EGG, Blocks.MONSTER_EGG, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.MONSTER_EGG, (new ItemMultiTexture(Blocks.MONSTER_EGG, Blocks.MONSTER_EGG, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockSilverfish.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("monsterStoneEgg"));
-        registerItemBlock(Blocks.STONEBRICK, (new ItemMultiTexture(Blocks.STONEBRICK, Blocks.STONEBRICK, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.STONEBRICK, (new ItemMultiTexture(Blocks.STONEBRICK, Blocks.STONEBRICK, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockStoneBrick.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("stonebricksmooth"));
@@ -781,10 +679,8 @@ public class Item
         registerItemBlock(Blocks.JUNGLE_STAIRS);
         registerItemBlock(Blocks.COMMAND_BLOCK);
         registerItemBlock(Blocks.BEACON);
-        registerItemBlock(Blocks.COBBLESTONE_WALL, (new ItemMultiTexture(Blocks.COBBLESTONE_WALL, Blocks.COBBLESTONE_WALL, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.COBBLESTONE_WALL, (new ItemMultiTexture(Blocks.COBBLESTONE_WALL, Blocks.COBBLESTONE_WALL, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockWall.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("cobbleWall"));
@@ -797,7 +693,7 @@ public class Item
         registerItemBlock(Blocks.REDSTONE_BLOCK);
         registerItemBlock(Blocks.QUARTZ_ORE);
         registerItemBlock(Blocks.HOPPER);
-        registerItemBlock(Blocks.QUARTZ_BLOCK, (new ItemMultiTexture(Blocks.QUARTZ_BLOCK, Blocks.QUARTZ_BLOCK, new String[] {"default", "chiseled", "lines"})).setTranslationKey("quartzBlock"));
+        registerItemBlock(Blocks.QUARTZ_BLOCK, (new ItemMultiTexture(Blocks.QUARTZ_BLOCK, Blocks.QUARTZ_BLOCK, new String[]{"default", "chiseled", "lines"})).setTranslationKey("quartzBlock"));
         registerItemBlock(Blocks.QUARTZ_STAIRS);
         registerItemBlock(Blocks.ACTIVATOR_RAIL);
         registerItemBlock(Blocks.DROPPER);
@@ -813,27 +709,21 @@ public class Item
         registerItemBlock(Blocks.DARK_OAK_STAIRS);
         registerItemBlock(Blocks.SLIME_BLOCK);
         registerItemBlock(Blocks.GRASS_PATH);
-        registerItemBlock(Blocks.DOUBLE_PLANT, (new ItemMultiTexture(Blocks.DOUBLE_PLANT, Blocks.DOUBLE_PLANT, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.DOUBLE_PLANT, (new ItemMultiTexture(Blocks.DOUBLE_PLANT, Blocks.DOUBLE_PLANT, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockDoublePlant.EnumPlantType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("doublePlant"));
         registerItemBlock(Blocks.STAINED_GLASS, (new ItemCloth(Blocks.STAINED_GLASS)).setTranslationKey("stainedGlass"));
         registerItemBlock(Blocks.STAINED_GLASS_PANE, (new ItemCloth(Blocks.STAINED_GLASS_PANE)).setTranslationKey("stainedGlassPane"));
-        registerItemBlock(Blocks.PRISMARINE, (new ItemMultiTexture(Blocks.PRISMARINE, Blocks.PRISMARINE, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.PRISMARINE, (new ItemMultiTexture(Blocks.PRISMARINE, Blocks.PRISMARINE, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockPrismarine.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("prismarine"));
         registerItemBlock(Blocks.SEA_LANTERN);
-        registerItemBlock(Blocks.RED_SANDSTONE, (new ItemMultiTexture(Blocks.RED_SANDSTONE, Blocks.RED_SANDSTONE, new ItemMultiTexture.Mapper()
-        {
-            public String apply(ItemStack p_apply_1_)
-            {
+        registerItemBlock(Blocks.RED_SANDSTONE, (new ItemMultiTexture(Blocks.RED_SANDSTONE, Blocks.RED_SANDSTONE, new ItemMultiTexture.Mapper() {
+            public String apply(ItemStack p_apply_1_) {
                 return BlockRedSandstone.EnumType.byMetadata(p_apply_1_.getMetadata()).getTranslationKey();
             }
         })).setTranslationKey("redSandStone"));
@@ -1098,37 +988,31 @@ public class Item
     /**
      * Register a default ItemBlock for the given Block.
      */
-    private static void registerItemBlock(Block blockIn)
-    {
+    private static void registerItemBlock(Block blockIn) {
         registerItemBlock(blockIn, new ItemBlock(blockIn));
     }
 
     /**
      * Register the given Item as the ItemBlock for the given Block.
      */
-    protected static void registerItemBlock(Block blockIn, Item itemIn)
-    {
+    protected static void registerItemBlock(Block blockIn, Item itemIn) {
         registerItem(Block.getIdFromBlock(blockIn), Block.REGISTRY.getNameForObject(blockIn), itemIn);
         BLOCK_TO_ITEM.put(blockIn, itemIn);
     }
 
-    private static void registerItem(int id, String textualID, Item itemIn)
-    {
+    private static void registerItem(int id, String textualID, Item itemIn) {
         registerItem(id, new ResourceLocation(textualID), itemIn);
     }
 
-    private static void registerItem(int id, ResourceLocation textualID, Item itemIn)
-    {
+    private static void registerItem(int id, ResourceLocation textualID, Item itemIn) {
         REGISTRY.register(id, textualID, itemIn);
     }
 
-    public ItemStack getDefaultInstance()
-    {
+    public ItemStack getDefaultInstance() {
         return new ItemStack(this);
     }
 
-    public enum ToolMaterial
-    {
+    public enum ToolMaterial {
         WOOD(0, 59, 2.0F, 0.0F, 15),
         STONE(1, 131, 4.0F, 1.0F, 5),
         IRON(2, 250, 6.0F, 2.0F, 14),
@@ -1141,8 +1025,7 @@ public class Item
         private final float attackDamage;
         private final int enchantability;
 
-        ToolMaterial(int harvestLevel, int maxUses, float efficiency, float damageVsEntity, int enchantability)
-        {
+        ToolMaterial(int harvestLevel, int maxUses, float efficiency, float damageVsEntity, int enchantability) {
             this.harvestLevel = harvestLevel;
             this.maxUses = maxUses;
             this.efficiency = efficiency;
@@ -1150,51 +1033,36 @@ public class Item
             this.enchantability = enchantability;
         }
 
-        public int getMaxUses()
-        {
+        public int getMaxUses() {
             return this.maxUses;
         }
 
-        public float getEfficiency()
-        {
+        public float getEfficiency() {
             return this.efficiency;
         }
 
-        public float getAttackDamage()
-        {
+        public float getAttackDamage() {
             return this.attackDamage;
         }
 
-        public int getHarvestLevel()
-        {
+        public int getHarvestLevel() {
             return this.harvestLevel;
         }
 
-        public int getEnchantability()
-        {
+        public int getEnchantability() {
             return this.enchantability;
         }
 
-        public Item getRepairItem()
-        {
-            if (this == WOOD)
-            {
+        public Item getRepairItem() {
+            if (this == WOOD) {
                 return Item.getItemFromBlock(Blocks.PLANKS);
-            }
-            else if (this == STONE)
-            {
+            } else if (this == STONE) {
                 return Item.getItemFromBlock(Blocks.COBBLESTONE);
-            }
-            else if (this == GOLD)
-            {
+            } else if (this == GOLD) {
                 return Items.GOLD_INGOT;
-            }
-            else if (this == IRON)
-            {
+            } else if (this == IRON) {
                 return Items.IRON_INGOT;
-            }
-            else
-            {
+            } else {
                 return this == DIAMOND ? Items.DIAMOND : null;
             }
         }

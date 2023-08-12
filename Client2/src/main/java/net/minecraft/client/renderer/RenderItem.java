@@ -2,6 +2,7 @@ package net.minecraft.client.renderer;
 
 import java.util.List;
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
@@ -60,11 +61,12 @@ import net.optifine.CustomItems;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersRender;
 
-public class RenderItem implements IResourceManagerReloadListener
-{
+public class RenderItem implements IResourceManagerReloadListener {
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
-    /** Defines the zLevel of rendering of item on GUI. */
+    /**
+     * Defines the zLevel of rendering of item on GUI.
+     */
     public float zLevel;
     private final ItemModelMesher itemModelMesher;
     private final TextureManager textureManager;
@@ -75,8 +77,7 @@ public class RenderItem implements IResourceManagerReloadListener
     private boolean renderModelHasEmissive = false;
     private boolean renderModelEmissive = false;
 
-    public RenderItem(TextureManager p_i46552_1_, ModelManager p_i46552_2_, ItemColors p_i46552_3_)
-    {
+    public RenderItem(TextureManager p_i46552_1_, ModelManager p_i46552_2_, ItemColors p_i46552_3_) {
         this.textureManager = p_i46552_1_;
         this.modelManager = p_i46552_2_;
         this.itemModelMesher = new ItemModelMesher(p_i46552_2_);
@@ -84,88 +85,71 @@ public class RenderItem implements IResourceManagerReloadListener
         this.itemColors = p_i46552_3_;
     }
 
-    public ItemModelMesher getItemModelMesher()
-    {
+    public ItemModelMesher getItemModelMesher() {
         return this.itemModelMesher;
     }
 
-    protected void registerItem(Item itm, int subType, String identifier)
-    {
+    protected void registerItem(Item itm, int subType, String identifier) {
         this.itemModelMesher.register(itm, subType, new ModelResourceLocation(identifier, "inventory"));
     }
 
-    protected void registerBlock(Block blk, int subType, String identifier)
-    {
+    protected void registerBlock(Block blk, int subType, String identifier) {
         this.registerItem(Item.getItemFromBlock(blk), subType, identifier);
     }
 
-    private void registerBlock(Block blk, String identifier)
-    {
+    private void registerBlock(Block blk, String identifier) {
         this.registerBlock(blk, 0, identifier);
     }
 
-    private void registerItem(Item itm, String identifier)
-    {
+    private void registerItem(Item itm, String identifier) {
         this.registerItem(itm, 0, identifier);
     }
 
-    private void renderModel(IBakedModel model, ItemStack stack)
-    {
+    private void renderModel(IBakedModel model, ItemStack stack) {
         this.renderModel(model, -1, stack);
     }
 
-    public void renderModel(IBakedModel model, int color)
-    {
+    public void renderModel(IBakedModel model, int color) {
         this.renderModel(model, color, ItemStack.EMPTY);
     }
 
-    private void renderModel(IBakedModel model, int color, ItemStack stack)
-    {
+    private void renderModel(IBakedModel model, int color, ItemStack stack) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         boolean flag = Minecraft.getMinecraft().getTextureMapBlocks().isTextureBound();
         boolean flag1 = Config.isMultiTexture() && flag;
 
-        if (flag1)
-        {
+        if (flag1) {
             bufferbuilder.setBlockLayer(BlockRenderLayer.SOLID);
         }
 
         bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
-        for (EnumFacing enumfacing : EnumFacing.VALUES)
-        {
+        for (EnumFacing enumfacing : EnumFacing.VALUES) {
             this.renderQuads(bufferbuilder, model.getQuads(null, enumfacing, 0L), color, stack);
         }
 
         this.renderQuads(bufferbuilder, model.getQuads(null, null, 0L), color, stack);
         tessellator.draw();
 
-        if (flag1)
-        {
+        if (flag1) {
             bufferbuilder.setBlockLayer(null);
             GlStateManager.bindCurrentTexture();
         }
     }
 
-    public void renderItem(ItemStack stack, IBakedModel model)
-    {
-        if (!stack.isEmpty())
-        {
+    public void renderItem(ItemStack stack, IBakedModel model) {
+        if (!stack.isEmpty()) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
-            if (model.isBuiltInRenderer())
-            {
+            if (model.isBuiltInRenderer()) {
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.enableRescaleNormal();
 
                 TileEntityItemStackRenderer.instance.renderByItem(stack);
-            }
-            else
-            {
-                if (Config.isCustomItems())
-                {
+            } else {
+                if (Config.isCustomItems()) {
                     model = CustomItems.getCustomItemModel(stack, model, this.modelLocation, false);
                     this.modelLocation = null;
                 }
@@ -173,8 +157,7 @@ public class RenderItem implements IResourceManagerReloadListener
                 this.renderModelHasEmissive = false;
                 this.renderModel(model, stack);
 
-                if (this.renderModelHasEmissive)
-                {
+                if (this.renderModelHasEmissive) {
                     float f = OpenGlHelper.lastBrightnessX;
                     float f1 = OpenGlHelper.lastBrightnessY;
                     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, f1);
@@ -184,8 +167,7 @@ public class RenderItem implements IResourceManagerReloadListener
                     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, f, f1);
                 }
 
-                if (stack.hasEffect() && (!Config.isCustomItems() || !CustomItems.renderCustomEffect(this, stack, model)))
-                {
+                if (stack.hasEffect() && (!Config.isCustomItems() || !CustomItems.renderCustomEffect(this, stack, model))) {
                     this.renderEffect(model);
                 }
             }
@@ -194,34 +176,30 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    private void renderEffect(IBakedModel model)
-    {
-        if (!Config.isCustomItems() || CustomItems.isUseGlint())
-        {
-            if (!Config.isShaders() || !Shaders.isShadowPass)
-            {
+    private void renderEffect(IBakedModel model) {
+        if (!Config.isCustomItems() || CustomItems.isUseGlint()) {
+            if (!Config.isShaders() || !Shaders.isShadowPass) {
                 GlStateManager.depthMask(false);
                 GlStateManager.depthFunc(514);
                 GlStateManager.disableLighting();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
                 this.textureManager.bindTexture(RES_ITEM_GLINT);
 
-                if (Config.isShaders() && !this.renderItemGui)
-                {
+                if (Config.isShaders() && !this.renderItemGui) {
                     ShadersRender.renderEnchantedGlintBegin();
                 }
 
                 GlStateManager.matrixMode(5890);
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(8.0F, 8.0F, 8.0F);
-                float f = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F / 8.0F;
+                float f = (float) (Minecraft.getSystemTime() % 3000L) / 3000.0F / 8.0F;
                 GlStateManager.translate(f, 0.0F, 0.0F);
                 GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
                 this.renderModel(model, -8372020);
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(8.0F, 8.0F, 8.0F);
-                float f1 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F / 8.0F;
+                float f1 = (float) (Minecraft.getSystemTime() % 4873L) / 4873.0F / 8.0F;
                 GlStateManager.translate(-f1, 0.0F, 0.0F);
                 GlStateManager.rotate(10.0F, 0.0F, 0.0F, 1.0F);
                 this.renderModel(model, -8372020);
@@ -233,42 +211,32 @@ public class RenderItem implements IResourceManagerReloadListener
                 GlStateManager.depthMask(true);
                 this.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-                if (Config.isShaders() && !this.renderItemGui)
-                {
+                if (Config.isShaders() && !this.renderItemGui) {
                     ShadersRender.renderEnchantedGlintEnd();
                 }
             }
         }
     }
 
-    private void putQuadNormal(BufferBuilder renderer, BakedQuad quad)
-    {
+    private void putQuadNormal(BufferBuilder renderer, BakedQuad quad) {
         Vec3i vec3i = quad.getFace().getDirectionVec();
-        renderer.putNormal((float)vec3i.getX(), (float)vec3i.getY(), (float)vec3i.getZ());
+        renderer.putNormal((float) vec3i.getX(), (float) vec3i.getY(), (float) vec3i.getZ());
     }
 
-    private void renderQuad(BufferBuilder renderer, BakedQuad quad, int color)
-    {
-        if (this.renderModelEmissive)
-        {
-            if (quad.getQuadEmissive() == null)
-            {
+    private void renderQuad(BufferBuilder renderer, BakedQuad quad, int color) {
+        if (this.renderModelEmissive) {
+            if (quad.getQuadEmissive() == null) {
                 return;
             }
 
             quad = quad.getQuadEmissive();
-        }
-        else if (quad.getQuadEmissive() != null)
-        {
+        } else if (quad.getQuadEmissive() != null) {
             this.renderModelHasEmissive = true;
         }
 
-        if (renderer.isMultiTexture())
-        {
+        if (renderer.isMultiTexture()) {
             renderer.addVertexData(quad.getVertexDataSingle());
-        }
-        else
-        {
+        } else {
             renderer.addVertexData(quad.getVertexData());
         }
 
@@ -277,27 +245,22 @@ public class RenderItem implements IResourceManagerReloadListener
         this.putQuadNormal(renderer, quad);
     }
 
-    private void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack)
-    {
+    private void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack) {
         boolean flag = color == -1 && !stack.isEmpty();
         int i = 0;
 
-        for (int j = quads.size(); i < j; ++i)
-        {
+        for (int j = quads.size(); i < j; ++i) {
             BakedQuad bakedquad = quads.get(i);
             int k = color;
 
-            if (flag && bakedquad.hasTintIndex())
-            {
+            if (flag && bakedquad.hasTintIndex()) {
                 k = this.itemColors.colorMultiplier(stack, bakedquad.getTintIndex());
 
-                if (Config.isCustomColors())
-                {
+                if (Config.isCustomColors()) {
                     k = CustomColors.getColorFromItemStack(stack, bakedquad.getTintIndex(), k);
                 }
 
-                if (EntityRenderer.anaglyphEnable)
-                {
+                if (EntityRenderer.anaglyphEnable) {
                     k = TextureUtil.anaglyphColor(k);
                 }
 
@@ -308,65 +271,51 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    public boolean shouldRenderItemIn3D(ItemStack stack)
-    {
+    public boolean shouldRenderItemIn3D(ItemStack stack) {
         IBakedModel ibakedmodel = this.itemModelMesher.getItemModel(stack);
         return ibakedmodel != null && ibakedmodel.isGui3d();
     }
 
-    public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType cameraTransformType)
-    {
-        if (!stack.isEmpty())
-        {
+    public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType cameraTransformType) {
+        if (!stack.isEmpty()) {
             IBakedModel ibakedmodel = this.getItemModelWithOverrides(stack, null, null);
             this.renderItemModel(stack, ibakedmodel, cameraTransformType, false);
         }
     }
 
-    public IBakedModel getItemModelWithOverrides(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entitylivingbaseIn)
-    {
+    public IBakedModel getItemModelWithOverrides(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entitylivingbaseIn) {
         IBakedModel ibakedmodel = this.itemModelMesher.getItemModel(stack);
         Item item = stack.getItem();
 
-        if (Config.isCustomItems())
-        {
-            if (item.hasCustomProperties())
-            {
+        if (Config.isCustomItems()) {
+            if (item.hasCustomProperties()) {
                 this.modelLocation = ibakedmodel.getOverrides().applyOverride(stack, worldIn, entitylivingbaseIn);
             }
 
             IBakedModel ibakedmodel1 = CustomItems.getCustomItemModel(stack, ibakedmodel, this.modelLocation, true);
 
-            if (ibakedmodel1 != ibakedmodel)
-            {
+            if (ibakedmodel1 != ibakedmodel) {
                 return ibakedmodel1;
             }
         }
 
-        if (item != null && item.hasCustomProperties())
-        {
+        if (item != null && item.hasCustomProperties()) {
             ResourceLocation resourcelocation = ibakedmodel.getOverrides().applyOverride(stack, worldIn, entitylivingbaseIn);
             return resourcelocation == null ? ibakedmodel : this.itemModelMesher.getModelManager().getModel(new ModelResourceLocation(resourcelocation, "inventory"));
-        }
-        else
-        {
+        } else {
             return ibakedmodel;
         }
     }
 
-    public void renderItem(ItemStack stack, EntityLivingBase entitylivingbaseIn, ItemCameraTransforms.TransformType transform, boolean leftHanded)
-    {
-        if (!stack.isEmpty() && entitylivingbaseIn != null)
-        {
+    public void renderItem(ItemStack stack, EntityLivingBase entitylivingbaseIn, ItemCameraTransforms.TransformType transform, boolean leftHanded) {
+        if (!stack.isEmpty() && entitylivingbaseIn != null) {
             IBakedModel ibakedmodel = this.getItemModelWithOverrides(stack, entitylivingbaseIn.world, entitylivingbaseIn);
             this.renderItemModel(stack, ibakedmodel, transform, leftHanded);
         }
     }
 
-    protected void renderItemModel(ItemStack stack, IBakedModel bakedmodel, ItemCameraTransforms.TransformType transform, boolean leftHanded)
-    {
-        if (!stack.isEmpty())
-        {
+    protected void renderItemModel(ItemStack stack, IBakedModel bakedmodel, ItemCameraTransforms.TransformType transform, boolean leftHanded) {
+        if (!stack.isEmpty()) {
             this.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             this.textureManager.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -379,8 +328,7 @@ public class RenderItem implements IResourceManagerReloadListener
             ItemCameraTransforms itemcameratransforms = bakedmodel.getItemCameraTransforms();
             ItemCameraTransforms.applyTransformSide(itemcameratransforms.getTransform(transform), leftHanded);
 
-            if (this.isThereOneNegativeScale(itemcameratransforms.getTransform(transform)))
-            {
+            if (this.isThereOneNegativeScale(itemcameratransforms.getTransform(transform))) {
                 GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
             }
 
@@ -399,18 +347,15 @@ public class RenderItem implements IResourceManagerReloadListener
     /**
      * Return true if only one scale is negative
      */
-    private boolean isThereOneNegativeScale(ItemTransformVec3f itemTranformVec)
-    {
+    private boolean isThereOneNegativeScale(ItemTransformVec3f itemTranformVec) {
         return itemTranformVec.scale.x < 0.0F ^ itemTranformVec.scale.y < 0.0F ^ itemTranformVec.scale.z < 0.0F;
     }
 
-    public void renderItemIntoGUI(ItemStack stack, int x, int y)
-    {
+    public void renderItemIntoGUI(ItemStack stack, int x, int y) {
         this.renderItemModelIntoGUI(stack, x, y, this.getItemModelWithOverrides(stack, null, null));
     }
 
-    protected void renderItemModelIntoGUI(ItemStack stack, int x, int y, IBakedModel bakedmodel)
-    {
+    protected void renderItemModelIntoGUI(ItemStack stack, int x, int y, IBakedModel bakedmodel) {
         this.renderItemGui = true;
         GlStateManager.pushMatrix();
         this.textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -435,68 +380,50 @@ public class RenderItem implements IResourceManagerReloadListener
         this.renderItemGui = false;
     }
 
-    private void setupGuiTransform(int xPosition, int yPosition, boolean isGui3d)
-    {
-        GlStateManager.translate((float)xPosition, (float)yPosition, 100.0F + this.zLevel);
+    private void setupGuiTransform(int xPosition, int yPosition, boolean isGui3d) {
+        GlStateManager.translate((float) xPosition, (float) yPosition, 100.0F + this.zLevel);
         GlStateManager.translate(8.0F, 8.0F, 0.0F);
         GlStateManager.scale(1.0F, -1.0F, 1.0F);
         GlStateManager.scale(16.0F, 16.0F, 16.0F);
 
-        if (isGui3d)
-        {
+        if (isGui3d) {
             GlStateManager.enableLighting();
-        }
-        else
-        {
+        } else {
             GlStateManager.disableLighting();
         }
     }
 
-    public void renderItemAndEffectIntoGUI(ItemStack stack, int xPosition, int yPosition)
-    {
+    public void renderItemAndEffectIntoGUI(ItemStack stack, int xPosition, int yPosition) {
         this.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().player, stack, xPosition, yPosition);
     }
 
-    public void renderItemAndEffectIntoGUI(@Nullable EntityLivingBase p_184391_1_, final ItemStack p_184391_2_, int p_184391_3_, int p_184391_4_)
-    {
-        if (!p_184391_2_.isEmpty())
-        {
+    public void renderItemAndEffectIntoGUI(@Nullable EntityLivingBase p_184391_1_, final ItemStack p_184391_2_, int p_184391_3_, int p_184391_4_) {
+        if (!p_184391_2_.isEmpty()) {
             this.zLevel += 50.0F;
 
-            try
-            {
+            try {
                 this.renderItemModelIntoGUI(p_184391_2_, p_184391_3_, p_184391_4_, this.getItemModelWithOverrides(p_184391_2_, null, p_184391_1_));
-            }
-            catch (Throwable throwable)
-            {
+            } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
-                crashreportcategory.addDetail("Item Type", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
+                crashreportcategory.addDetail("Item Type", new ICrashReportDetail<String>() {
+                    public String call() throws Exception {
                         return String.valueOf(p_184391_2_.getItem());
                     }
                 });
 
-                crashreportcategory.addDetail("Item Aux", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
+                crashreportcategory.addDetail("Item Aux", new ICrashReportDetail<String>() {
+                    public String call() throws Exception {
                         return String.valueOf(p_184391_2_.getMetadata());
                     }
                 });
-                crashreportcategory.addDetail("Item NBT", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
+                crashreportcategory.addDetail("Item NBT", new ICrashReportDetail<String>() {
+                    public String call() throws Exception {
                         return String.valueOf(p_184391_2_.getTagCompound());
                     }
                 });
-                crashreportcategory.addDetail("Item Foil", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
+                crashreportcategory.addDetail("Item Foil", new ICrashReportDetail<String>() {
+                    public String call() throws Exception {
                         return String.valueOf(p_184391_2_.hasEffect());
                     }
                 });
@@ -507,32 +434,27 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    public void renderItemOverlays(FontRenderer fr, ItemStack stack, int xPosition, int yPosition)
-    {
+    public void renderItemOverlays(FontRenderer fr, ItemStack stack, int xPosition, int yPosition) {
         this.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, null);
     }
 
     /**
      * Renders the stack size and/or damage bar for the given ItemStack.
      */
-    public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, @Nullable String text)
-    {
-        if (!stack.isEmpty())
-        {
-            if (stack.getCount() != 1 || text != null)
-            {
+    public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, @Nullable String text) {
+        if (!stack.isEmpty()) {
+            if (stack.getCount() != 1 || text != null) {
                 String s = text == null ? String.valueOf(stack.getCount()) : text;
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
                 GlStateManager.disableBlend();
-                fr.drawStringWithShadow(s, (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), 16777215);
+                fr.drawStringWithShadow(s, (float) (xPosition + 19 - 2 - fr.getStringWidth(s)), (float) (yPosition + 6 + 3), 16777215);
                 GlStateManager.enableLighting();
                 GlStateManager.enableDepth();
                 GlStateManager.enableBlend();
             }
 
-            if (stack.isItemDamaged())
-            {
+            if (stack.isItemDamaged()) {
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
                 GlStateManager.disableTexture2D();
@@ -540,17 +462,15 @@ public class RenderItem implements IResourceManagerReloadListener
                 GlStateManager.disableBlend();
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder bufferbuilder = tessellator.getBuffer();
-                float f = (float)stack.getItemDamage();
-                float f1 = (float)stack.getMaxDamage();
+                float f = (float) stack.getItemDamage();
+                float f1 = (float) stack.getMaxDamage();
                 float f2 = Math.max(0.0F, (f1 - f) / f1);
                 int i = Math.round(13.0F - f * 13.0F / f1);
                 int j = MathHelper.hsvToRGB(f2 / 3.0F, 1.0F, 1.0F);
-                if (Config.isCustomColors())
-                {
+                if (Config.isCustomColors()) {
                     j = CustomColors.getDurabilityColor(f2, j);
                 }
-                if (Config.isCustomColors())
-                {
+                if (Config.isCustomColors()) {
                     j = CustomColors.getDurabilityColor(f2, j);
                 }
 
@@ -568,8 +488,7 @@ public class RenderItem implements IResourceManagerReloadListener
     /**
      * Draw with the WorldRenderer
      */
-    private void draw(BufferBuilder renderer, int x, int y, int width, int height, int red, int green, int blue)
-    {
+    private void draw(BufferBuilder renderer, int x, int y, int width, int height, int red, int green, int blue) {
         renderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
         renderer.pos(x, y, 0.0D).color(red, green, blue, 255).endVertex();
         renderer.pos(x, y + height, 0.0D).color(red, green, blue, 255).endVertex();
@@ -578,8 +497,7 @@ public class RenderItem implements IResourceManagerReloadListener
         Tessellator.getInstance().draw();
     }
 
-    private void registerItems()
-    {
+    private void registerItems() {
         this.registerBlock(Blocks.ANVIL, "anvil_intact");
         this.registerBlock(Blocks.ANVIL, 1, "anvil_slightly_damaged");
         this.registerBlock(Blocks.ANVIL, 2, "anvil_very_damaged");
@@ -919,8 +837,7 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerBlock(Blocks.RED_GLAZED_TERRACOTTA, "red_glazed_terracotta");
         this.registerBlock(Blocks.BLACK_GLAZED_TERRACOTTA, "black_glazed_terracotta");
 
-        for (EnumDyeColor enumdyecolor : EnumDyeColor.values())
-        {
+        for (EnumDyeColor enumdyecolor : EnumDyeColor.values()) {
             this.registerBlock(Blocks.CONCRETE, enumdyecolor.getMetadata(), enumdyecolor.getDyeColorName() + "_concrete");
             this.registerBlock(Blocks.CONCRETE_POWDER, enumdyecolor.getMetadata(), enumdyecolor.getDyeColorName() + "_concrete_powder");
         }
@@ -1100,10 +1017,8 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.CAULDRON, "cauldron");
         this.registerItem(Items.ENDER_EYE, "ender_eye");
         this.registerItem(Items.SPECKLED_MELON, "speckled_melon");
-        this.itemModelMesher.register(Items.SPAWN_EGG, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
+        this.itemModelMesher.register(Items.SPAWN_EGG, new ItemMeshDefinition() {
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
                 return new ModelResourceLocation("spawn_egg", "inventory");
             }
         });
@@ -1141,27 +1056,9 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.DIAMOND_HORSE_ARMOR, "diamond_horse_armor");
         this.registerItem(Items.LEAD, "lead");
         this.registerItem(Items.NAME_TAG, "name_tag");
-        this.itemModelMesher.register(Items.BANNER, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("banner", "inventory");
-            }
-        });
-        this.itemModelMesher.register(Items.BED, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("bed", "inventory");
-            }
-        });
-        this.itemModelMesher.register(Items.SHIELD, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("shield", "inventory");
-            }
-        });
+        this.itemModelMesher.register(Items.BANNER, stack -> new ModelResourceLocation("banner", "inventory"));
+        this.itemModelMesher.register(Items.BED, stack -> new ModelResourceLocation("bed", "inventory"));
+        this.itemModelMesher.register(Items.SHIELD, stack -> new ModelResourceLocation("shield", "inventory"));
         this.registerItem(Items.ELYTRA, "elytra");
         this.registerItem(Items.CHORUS_FRUIT, "chorus_fruit");
         this.registerItem(Items.CHORUS_FRUIT_POPPED, "chorus_fruit_popped");
@@ -1182,17 +1079,13 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.PRISMARINE_SHARD, "prismarine_shard");
         this.registerItem(Items.PRISMARINE_CRYSTALS, "prismarine_crystals");
         this.registerItem(Items.KNOWLEDGE_BOOK, "knowledge_book");
-        this.itemModelMesher.register(Items.ENCHANTED_BOOK, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
+        this.itemModelMesher.register(Items.ENCHANTED_BOOK, new ItemMeshDefinition() {
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
                 return new ModelResourceLocation("enchanted_book", "inventory");
             }
         });
-        this.itemModelMesher.register(Items.FILLED_MAP, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
+        this.itemModelMesher.register(Items.FILLED_MAP, new ItemMeshDefinition() {
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
                 return new ModelResourceLocation("filled_map", "inventory");
             }
         });
@@ -1213,8 +1106,7 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerBlock(Blocks.STRUCTURE_BLOCK, TileEntityStructure.Mode.DATA.getModeId(), "structure_block");
     }
 
-    public void onResourceManagerReload(IResourceManager resourceManager)
-    {
+    public void onResourceManagerReload(IResourceManager resourceManager) {
         this.itemModelMesher.rebuildCache();
     }
 }

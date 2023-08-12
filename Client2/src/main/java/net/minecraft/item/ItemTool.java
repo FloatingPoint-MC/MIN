@@ -1,7 +1,9 @@
 package net.minecraft.item;
 
 import com.google.common.collect.Multimap;
+
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,8 +14,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemTool extends Item
-{
+public class ItemTool extends Item {
     private final Set<Block> effectiveBlocks;
     protected float efficiency;
 
@@ -22,11 +23,12 @@ public class ItemTool extends Item
      */
     protected float attackDamage;
 
-    /** The material this tool is made from. */
+    /**
+     * The material this tool is made from.
+     */
     protected ToolMaterial toolMaterial;
 
-    protected ItemTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn)
-    {
+    protected ItemTool(float attackDamageIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         this.efficiency = 4.0F;
         this.toolMaterial = materialIn;
         this.effectiveBlocks = effectiveBlocksIn;
@@ -37,13 +39,11 @@ public class ItemTool extends Item
         this.setCreativeTab(CreativeTabs.TOOLS);
     }
 
-    protected ItemTool(ToolMaterial materialIn, Set<Block> effectiveBlocksIn)
-    {
-        this(0.0F, 0.0F, materialIn, effectiveBlocksIn);
+    protected ItemTool(ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+        this(0.0F, materialIn, effectiveBlocksIn);
     }
 
-    public float getDestroySpeed(ItemStack stack, IBlockState state)
-    {
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
         return this.effectiveBlocks.contains(state.getBlock()) ? this.efficiency : 1.0F;
     }
 
@@ -51,8 +51,7 @@ public class ItemTool extends Item
      * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
      * the damage on the stack.
      */
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         stack.damageItem(2, attacker);
         return true;
     }
@@ -60,10 +59,8 @@ public class ItemTool extends Item
     /**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
      */
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
-    {
-        if (!worldIn.isRemote && (double)state.getBlockHardness(worldIn, pos) != 0.0D)
-        {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        if (!worldIn.isRemote && (double) state.getBlockHardness(worldIn, pos) != 0.0D) {
             stack.damageItem(1, entityLiving);
         }
 
@@ -73,44 +70,38 @@ public class ItemTool extends Item
     /**
      * Returns True is the item is renderer in full 3D when hold.
      */
-    public boolean isFull3D()
-    {
+    public boolean isFull3D() {
         return true;
     }
 
     /**
      * Return the enchantability factor of the item, most of the time is based on material.
      */
-    public int getItemEnchantability()
-    {
+    public int getItemEnchantability() {
         return this.toolMaterial.getEnchantability();
     }
 
     /**
      * Return the name for this tool's material.
      */
-    public String getToolMaterialName()
-    {
+    public String getToolMaterialName() {
         return this.toolMaterial.toString();
     }
 
     /**
      * Return whether this item is repairable in an anvil.
-     *  
+     *
      * @param toRepair the {@code ItemStack} being repaired
-     * @param repair the {@code ItemStack} being used to perform the repair
+     * @param repair   the {@code ItemStack} being used to perform the repair
      */
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
-    {
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return this.toolMaterial.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
-    {
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-        {
+        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", this.attackDamage, 0));
         }
 
