@@ -98,6 +98,11 @@ public class Bootstrap extends JFrame {
     private void clientStart() {
         new Thread(() -> {
             try {
+                label.setText("Checking java: ");
+                if (Integer.parseInt(System.getProperty("java.version").split("\\.")[0]) < 17) {
+                    JOptionPane.showMessageDialog(this, "请使用Java17以上版本启动。Please use Java(version upper 17) to launch me!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
                 label.setText("Checking status: ");
                 String url = WebUtil.getPlatform() + "data.json";
                 progressBar.setValue(33);
@@ -181,10 +186,12 @@ public class Bootstrap extends JFrame {
             Method launchMethod = launcherClass.getMethod("launch", String[].class);
             this.setVisible(false);
             launchMethod.invoke(launcherClass, (Object) args);
-        } catch (IOException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                  IllegalAccessException e) {
             JOptionPane.showMessageDialog(this, "Error while launching game.", "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         System.exit(0);
     }
