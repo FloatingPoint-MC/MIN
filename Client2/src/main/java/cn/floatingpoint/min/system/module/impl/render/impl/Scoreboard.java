@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  */
 public class Scoreboard extends RenderModule implements DraggableGameView {
     private final ModeValue font = new ModeValue(new String[]{"Minecraft", "SourceSans"}, "Minecraft");
+    private final ModeValue alignmentV = new ModeValue(new String[]{"Top", "Center", "Bottom"}, "Top");
     private final OptionValue shadow = new OptionValue(false);
     private final OptionValue redNumber = new OptionValue(true);
     private final OptionValue background = new OptionValue(true);
@@ -40,7 +41,8 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
                 new Pair<>("Font", font),
                 new Pair<>("Shadow", shadow),
                 new Pair<>("RedNumber", redNumber),
-                new Pair<>("Background", background)
+                new Pair<>("Background", background),
+                new Pair<>("AlignmentV", alignmentV)
         );
         setCanBeEnabled(false);
     }
@@ -150,7 +152,15 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         return drawable;
     }
 
-
+    @Override
+    public int yOffset() {
+        if (alignmentV.isCurrentMode("Center")) {
+            return (int) (-height * scale / 2);
+        } else if (alignmentV.isCurrentMode("Bottom")) {
+            return (int) (-height * scale);
+        }
+        return 0;
+    }
 
     @Override
     public int getWidth() {

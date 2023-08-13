@@ -26,6 +26,7 @@ public class ClientManager implements Manager {
     public HashSet<String> cooldown = new HashSet<>();
     public boolean firstStart;
     public boolean lock;
+    public boolean adsorption;
 
     @Override
     public String getName() {
@@ -53,6 +54,7 @@ public class ClientManager implements Manager {
             titleSize = jsonObject.getFloat("Title-Size");
             titleX = jsonObject.getFloat("Title-X");
             titleY = jsonObject.getFloat("Title-Y");
+            adsorption = jsonObject.getBoolean("Adsorption");
         } catch (Exception e) {
             firstStart = true;
         }

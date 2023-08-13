@@ -32,7 +32,7 @@ jobs:
         run: mvn -B package --file pom.xml
       # 将打包好的 Jar 包 放到 staging 文件夹
       - name: Copy files
-        run: mkdir staging && cp Client/target/libs/*.jar staging && cp Client/target/libs/*.sha1 staging
+        run: mkdir staging && cp Client2/target/libs/*.jar staging && cp Client2/target/libs/*.sha1 staging
       # 设置 jobs Maven pom 版本环境变量
       - name: Setup Environments
         run: |

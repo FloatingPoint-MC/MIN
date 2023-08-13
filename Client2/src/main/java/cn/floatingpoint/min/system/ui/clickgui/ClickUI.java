@@ -361,6 +361,9 @@ public class ClickUI extends GuiScreen {
             drawRect(animationRight + 280, height / 2 - 22, animationRight + 400, height / 2 - 14, categoryColor);
             drawRect(animationRight + 279 + titleYAnimation, height / 2 - 23, animationRight + 280 + titleYAnimation, height / 2 - 13, cardColor);
             Managers.fontManager.sourceHansSansCN_Regular_14.drawCenteredString(decimalFormat.format(Managers.clientManager.titleY), animationRight + 280 + titleYAnimation, height / 2 - 11, textColorInNumberValue);
+
+            Managers.fontManager.sourceHansSansCN_Regular_20.drawString(Managers.i18NManager.getTranslation("clickgui.adsorption"), animationRight + 150, height / 2 + 10, textColor);
+            RenderUtil.drawRoundedRect(animationRight + 394, height / 2 + 13, animationRight + 400, height / 2 + 19, 3, Managers.clientManager.adsorption ? enableColor : disableColor);
         }
         RenderUtil.drawImage(new ResourceLocation("min/logo.png"), animationLeft - 110, height / 2 - 140, 100, 100);
         RenderUtil.drawImage(new ResourceLocation("min/uis/setting.png"), animationLeft - 118, height / 2 + 142, 16, 16);
@@ -498,6 +501,8 @@ public class ClickUI extends GuiScreen {
                     selectedTitleX = true;
                 } else if (isHovered(animationRight + 280, height / 2 - 22, animationRight + 400, height / 2 - 14, mouseX, mouseY)) {
                     selectedTitleY = true;
+                } else if (isHovered(animationRight + 394, height / 2 + 13, animationRight + 400, height / 2 + 19, mouseX, mouseY)) {
+                    Managers.clientManager.adsorption = !Managers.clientManager.adsorption;
                 }
             } else {
                 selectedCategory = null;

@@ -36,6 +36,16 @@ public class Launcher {
             frame.setVisible(true);
             return;
         }
+        if (Integer.parseInt(System.getProperty("java.version").split("\\.")[0]) < 9) {
+            JFrame frame = new JFrame("MIN Client - 1.12.2");
+            frame.setSize(854, 480);
+            frame.setLocationRelativeTo(null);
+            JTextField textField = new JTextField("请使用Java9以上版本启动本产品。");
+            frame.add(textField);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+            return;
+        }
         OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();
         optionparser.accepts("demo");

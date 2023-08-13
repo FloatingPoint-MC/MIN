@@ -30,6 +30,7 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
     private final ModeValue mode = new ModeValue(new String[]{"MC", "FPSMaster"}, "MC");
     private final OptionValue shadow = new OptionValue(false, () -> mode.isCurrentMode("FPSMaster"));
     private final OptionValue background = new OptionValue(false, () -> mode.isCurrentMode("FPSMaster"));
+    private final ModeValue alignmentV = new ModeValue(new String[]{"Top", "Center", "Bottom"}, "Top", () -> mode.isCurrentMode("FPSMaster"));
     public static GuiIngame guiIngame;
     private int width, height;
     private boolean drawable;
@@ -39,7 +40,8 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
         addValues(
                 new Pair<>("Mode", mode),
                 new Pair<>("Shadow", shadow),
-                new Pair<>("Background", background)
+                new Pair<>("Background", background),
+                new Pair<>("AlignmentV", alignmentV)
         );
     }
 
@@ -170,7 +172,15 @@ public class PotionDisplay extends RenderModule implements DraggableGameView {
         return drawable;
     }
 
-
+    @Override
+    public int yOffset() {
+        if (alignmentV.isCurrentMode("Center")) {
+            return (int) (-height * scale / 2);
+        } else if (alignmentV.isCurrentMode("Bottom")) {
+            return (int) (-height * scale);
+        }
+        return 0;
+    }
 
     @Override
     public int getWidth() {

@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>Client</module>
         <module>Bootstrap</module>
+        <module>Client</module>
         <module>Client2</module>
     </modules>
 

@@ -210,6 +210,7 @@ public class FileManager implements Manager {
                 .put("Title-Size", Managers.clientManager.titleSize)
                 .put("Title-X", Managers.clientManager.titleX)
                 .put("Title-Y", Managers.clientManager.titleY)
+                .put("Adsorption", Managers.clientManager.adsorption)
                 .toString(), false);
     }
 }

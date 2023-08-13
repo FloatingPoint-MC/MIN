@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -128,19 +129,22 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
         ScaledResolution scaledresolution = new ScaledResolution(mc);
-        for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
-            DraggableGameView draggableGameView = entry.getKey();
-            Vec2i position = entry.getValue();
-            if (isHovered(scaledresolution.getScaledWidth() / 2 + position.x, position.y, scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.getWidth(), position.y + draggableGameView.getHeight(), mouseX, mouseY)) {
-                int dWheel = Mouse.getDWheel();
-                if (dWheel > 0) {
-                    draggableGameView.multiplyScale();
-                } else if (dWheel < 0) {
-                    draggableGameView.divideScale();
+        int dWheel = Mouse.getDWheel();
+        if (dWheel != 0) {
+            for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
+                DraggableGameView draggableGameView = entry.getKey();
+                Vec2i position = entry.getValue();
+                if (isHovered(scaledresolution.getScaledWidth() / 2 + position.x, position.y, scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.getWidth(), position.y + draggableGameView.getHeight(), mouseX, mouseY)) {
+                    if (dWheel > 0) {
+                        draggableGameView.multiplyScale();
+                    } else {
+                        draggableGameView.divideScale();
+                    }
+                    return;
                 }
-                return;
             }
         }
+
         int i = Mouse.getEventDWheel();
         if (i != 0) {
             if (i > 1) {
@@ -163,6 +167,17 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
      */
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        ScaledResolution scaledresolution = new ScaledResolution(mc);
+        if (clickedDraggable == null && mouseButton == 0) {
+            for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
+                DraggableGameView draggableGameView = entry.getKey();
+                Vec2i position = entry.getValue();
+                if (isHovered(scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.xOffset(), position.y + draggableGameView.yOffset(), scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.getWidth() + draggableGameView.xOffset(), position.y + draggableGameView.getHeight() + draggableGameView.yOffset(), mouseX, mouseY)) {
+                    clickedDraggable = draggableGameView;
+                    return;
+                }
+            }
+        }
         if (mouseButton == 0) {
             ITextComponent itextcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
 
@@ -172,17 +187,6 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         }
 
         this.inputField.mouseClicked(mouseX, mouseY, mouseButton);
-        ScaledResolution scaledresolution = new ScaledResolution(mc);
-        if (clickedDraggable == null && mouseButton == 0) {
-            for (Map.Entry<DraggableGameView, Vec2i> entry : Managers.draggableGameViewManager.draggableMap.entrySet()) {
-                DraggableGameView draggableGameView = entry.getKey();
-                Vec2i position = entry.getValue();
-                if (isHovered(scaledresolution.getScaledWidth() / 2 + position.x, position.y, scaledresolution.getScaledWidth() / 2 + position.x + draggableGameView.getWidth(), position.y + draggableGameView.getHeight(), mouseX, mouseY)) {
-                    clickedDraggable = draggableGameView;
-                    return;
-                }
-            }
-        }
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
@@ -235,15 +239,38 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
                 int height = scaledResolution.getScaledHeight();
                 int x = Math.max(prevPosition.x + mouseX - prevMouseX, -width / 2);
                 int y = Math.max(prevPosition.y + mouseY - prevMouseY, 0);
-                if (width / 2 + x + clickedDraggable.getWidth() > width) {
+                if (width / 2 + x + clickedDraggable.getWidth() + clickedDraggable.xOffset() > width) {
                     x = width - clickedDraggable.getWidth() - scaledResolution.getScaledWidth() / 2;
                 }
-                if (y + clickedDraggable.getHeight() > height) {
+                if (y + clickedDraggable.getHeight() + clickedDraggable.yOffset() > height) {
                     y = height - clickedDraggable.getHeight();
                 }
+                if (Managers.clientManager.adsorption) {
+                    if (Math.abs(y - this.height / 2) < 10) {
+                        drawRect(0, this.height / 2 - 2, this.width, this.height / 2 + 2, new Color(255, 255, 85).getRGB());
+                        if (Math.abs(y - this.height / 2) < 5) {
+                            y = this.height / 2;
+                        } else {
+                            prevMouseY = mouseY;
+                        }
+                    } else {
+                        prevMouseY = mouseY;
+                    }
+                    if (Math.abs(x + scaledResolution.getScaledWidth() / 2 - this.width / 2) < 10) {
+                        drawRect(this.width / 2 - 2, 0, this.width / 2 + 2, this.height, new Color(255, 255, 85).getRGB());
+                        if (Math.abs(x + scaledResolution.getScaledWidth() / 2 - this.width / 2) < 5) {
+                            x = this.width / 2 - scaledResolution.getScaledWidth() / 2;
+                        } else {
+                            prevMouseX = mouseX;
+                        }
+                    } else {
+                        prevMouseX = mouseX;
+                    }
+                } else {
+                    prevMouseX = mouseX;
+                    prevMouseY = mouseY;
+                }
                 Managers.draggableGameViewManager.draggableMap.put(clickedDraggable, new Vec2i(x, y));
-                prevMouseX = mouseX;
-                prevMouseY = mouseY;
             } else {
                 clickedDraggable = null;
             }

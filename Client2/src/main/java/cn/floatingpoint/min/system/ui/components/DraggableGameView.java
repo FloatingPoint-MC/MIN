@@ -24,6 +24,14 @@ public interface DraggableGameView {
 
     float scalePercent();
 
+    default int xOffset() {
+        return 0;
+    }
+
+    default int yOffset() {
+        return 0;
+    }
+
     static DraggableGameView getDraggable(String name) {
         Module module = Managers.moduleManager.modules.get(name);
         if (module instanceof DraggableGameView) {
