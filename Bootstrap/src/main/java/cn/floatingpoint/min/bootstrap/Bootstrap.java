@@ -125,7 +125,7 @@ public class Bootstrap extends JFrame {
         label.setText("Fetching game: ");
         progressBar.setValue(0);
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(WebUtil.getDownloadUrl() + version + "/Client-" + version + ".jar").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(WebUtil.getDownloadUrl() + version + "/Client" + version.split("\\.")[0] + "-" + version + ".jar").openConnection();
             progressBar.setValue(33);
             try (InputStream inputStream = connection.getInputStream()) {
                 progressBar.setValue(67);
