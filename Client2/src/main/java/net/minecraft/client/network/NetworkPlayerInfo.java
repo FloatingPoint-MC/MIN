@@ -114,6 +114,9 @@ public class NetworkPlayerInfo {
             if (!this.playerTexturesLoaded) {
                 this.playerTexturesLoaded = true;
                 MIN.runAsync(() -> {
+                    if (gameProfile.getName().contains("\247")) {
+                        return;
+                    }
                     GameProfile gameProfile = null;
                     try {
                         JSONObject json = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/skin/get?username=" + this.gameProfile.getName());

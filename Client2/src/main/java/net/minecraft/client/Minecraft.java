@@ -431,7 +431,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
