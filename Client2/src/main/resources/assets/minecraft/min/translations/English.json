@@ -1,7 +1,7 @@
 {
   "WARNING": "DO NOT MODIFY THIS LANGUAGE FILE OR YOUR LANGUAGE MIGHT BE REPLACED!",
   "language.identity": "English",
-  "language.version": "4",
+  "language.version": "201",
   "module.category.Boost": "Boost",
   "module.category.Misc": "Misc",
   "module.category.Render": "Render",
@@ -57,6 +57,8 @@
   "module.implement.Animation.description": "Modify some animations in game.",
   "module.implement.Animation.OldArmorAnimation": "Old Armor Animation",
   "module.implement.Animation.OldArmorAnimation.description": "Bring armor animation back to 1.7 version.",
+  "module.implement.Animation.OldBackwardAnimation": "Old Backward Animation",
+  "module.implement.Animation.OldBackwardAnimation.description": "Bring backward animation back to 1.8 version.",
   "module.implement.Animation.OldRodAnimation": "Old Rod Animation",
   "module.implement.Animation.OldRodAnimation.description": "Bring rod animation back to 1.7 version.",
   "module.implement.Animation.OldSwingAnimation": "Old Swing Animation",

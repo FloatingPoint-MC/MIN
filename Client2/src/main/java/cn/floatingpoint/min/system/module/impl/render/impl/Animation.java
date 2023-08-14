@@ -14,6 +14,7 @@ public class Animation extends RenderModule {
     public static OptionValue oldArmorAnimation = new OptionValue(false);
     public static OptionValue oldRodAnimation = new OptionValue(false);
     public static OptionValue oldSwingAnimation = new OptionValue(false);
+    public static OptionValue oldBackwardAnimation = new OptionValue(false);
     public static ModeValue foodSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
     public static ModeValue bowSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
     public static ModeValue blockSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
@@ -21,6 +22,7 @@ public class Animation extends RenderModule {
     public Animation() {
         addValues(
                 new Pair<>("OldArmorAnimation", oldArmorAnimation),
+                new Pair<>("OldBackwardAnimation", oldBackwardAnimation),
                 new Pair<>("OldRodAnimation", oldRodAnimation),
                 new Pair<>("OldSwingAnimation", oldSwingAnimation),
                 new Pair<>("BlockSwingMode", blockSwingMode),

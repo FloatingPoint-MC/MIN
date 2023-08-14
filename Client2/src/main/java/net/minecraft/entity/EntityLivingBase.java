@@ -1,6 +1,7 @@
 package net.minecraft.entity;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import com.google.common.base.Objects;
@@ -2031,13 +2032,17 @@ public abstract class EntityLivingBase extends Entity {
         if (f3 > 0.0025000002F) {
             f = 1.0F;
             f5 = (float) Math.sqrt(f3) * 3.0F;
-            float f1 = (float) MathHelper.atan2(d1, d0) * (180F / (float) Math.PI) - 90.0F;
-            float f2 = MathHelper.abs(MathHelper.wrapDegrees(this.rotationYaw + Spinning.getCurrent(this)) - f1);
-
-            if (95.0F < f2 && f2 < 265.0F) {
-                f4 = f1 - 180.0F;
-            } else {
+            float f1 = (float) MathHelper.atan2(d1, d0) * 180F / (float) Math.PI - 90.0F;
+            if (Animation.oldBackwardAnimation.getValue()) {
                 f4 = f1;
+            } else {
+                float f2 = MathHelper.abs(MathHelper.wrapDegrees(this.rotationYaw + Spinning.getCurrent(this)) - f1);
+
+                if (95.0F < f2 && f2 < 265.0F) {
+                    f4 = f1 - 180.0F;
+                } else {
+                    f4 = f1;
+                }
             }
         }
 
@@ -2105,8 +2110,8 @@ public abstract class EntityLivingBase extends Entity {
         }
     }
 
-    protected float updateDistance(float p_110146_1_, float p_110146_2_) {
-        float f = MathHelper.wrapDegrees(p_110146_1_ - this.renderYawOffset);
+    protected float updateDistance(float renderYawOffset, float distance) {
+        float f = MathHelper.wrapDegrees(renderYawOffset - this.renderYawOffset);
         this.renderYawOffset += f * 0.3F;
         float f1 = MathHelper.wrapDegrees(this.rotationYaw - this.renderYawOffset);
         boolean flag = f1 < -90.0F || f1 >= 90.0F;
@@ -2126,10 +2131,10 @@ public abstract class EntityLivingBase extends Entity {
         }
 
         if (flag) {
-            p_110146_2_ *= -1.0F;
+            distance *= -1.0F;
         }
 
-        return p_110146_2_;
+        return distance;
     }
 
     /**

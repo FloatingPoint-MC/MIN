@@ -354,9 +354,9 @@ public abstract class EntityLiving extends EntityLivingBase {
         }
     }
 
-    protected float updateDistance(float yawOffset, float dist) {
+    protected float updateDistance(float renderYawOffset, float distance) {
         this.bodyHelper.updateRenderAngles();
-        return dist;
+        return distance;
     }
 
     @Nullable
