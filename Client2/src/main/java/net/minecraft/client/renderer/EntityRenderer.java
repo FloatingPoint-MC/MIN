@@ -541,13 +541,13 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
             if (useFOVSetting) {
                 if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue());
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / 2.0f);
                 } else {
                     screenScale = f / 4.0F;
                 }
             } else {
                 if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue());
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / 2.0f);
                 } else {
                     screenScale2 = f / 4.0F;
                 }
@@ -563,13 +563,13 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         if (!Config.zoomMode) {
             if (useFOVSetting) {
                 if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue());
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue() / 2.0f);
                 } else {
                     screenScale = f;
                 }
             } else {
                 if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale2, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue());
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale2, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue() / 2.0f);
                 } else {
                     screenScale2 = f;
                 }
