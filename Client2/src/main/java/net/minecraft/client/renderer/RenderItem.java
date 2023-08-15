@@ -406,27 +406,11 @@ public class RenderItem implements IResourceManagerReloadListener {
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
-                crashreportcategory.addDetail("Item Type", new ICrashReportDetail<String>() {
-                    public String call() throws Exception {
-                        return String.valueOf(p_184391_2_.getItem());
-                    }
-                });
+                crashreportcategory.addDetail("Item Type", () -> String.valueOf(p_184391_2_.getItem()));
 
-                crashreportcategory.addDetail("Item Aux", new ICrashReportDetail<String>() {
-                    public String call() throws Exception {
-                        return String.valueOf(p_184391_2_.getMetadata());
-                    }
-                });
-                crashreportcategory.addDetail("Item NBT", new ICrashReportDetail<String>() {
-                    public String call() throws Exception {
-                        return String.valueOf(p_184391_2_.getTagCompound());
-                    }
-                });
-                crashreportcategory.addDetail("Item Foil", new ICrashReportDetail<String>() {
-                    public String call() throws Exception {
-                        return String.valueOf(p_184391_2_.hasEffect());
-                    }
-                });
+                crashreportcategory.addDetail("Item Aux", () -> String.valueOf(p_184391_2_.getMetadata()));
+                crashreportcategory.addDetail("Item NBT", () -> String.valueOf(p_184391_2_.getTagCompound()));
+                crashreportcategory.addDetail("Item Foil", () -> String.valueOf(p_184391_2_.hasEffect()));
                 throw new ReportedException(crashreport);
             }
 

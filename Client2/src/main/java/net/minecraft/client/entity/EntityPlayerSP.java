@@ -830,6 +830,7 @@ public class EntityPlayerSP extends AbstractClientPlayer {
         boolean flag = this.movementInput.jump;
         boolean flag1 = this.movementInput.sneak;
         boolean flag2 = this.movementInput.moveForward >= 0.8F;
+        this.movementInput.updatePlayerMoveState();
 
         if (this.isHandActive() && !this.isRiding()) {
             this.movementInput.moveStrafe *= 0.2F;

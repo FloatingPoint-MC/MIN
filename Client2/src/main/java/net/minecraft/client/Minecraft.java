@@ -150,21 +150,8 @@ import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.FrameTimer;
-import net.minecraft.util.IThreadListener;
-import net.minecraft.util.MinecraftError;
-import net.minecraft.util.MouseHelper;
-import net.minecraft.util.MovementInputFromOptions;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ScreenShotHelper;
-import net.minecraft.util.Session;
+import net.minecraft.util.*;
 import net.minecraft.util.Timer;
-import net.minecraft.util.Util;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.math.BlockPos;
@@ -2237,7 +2224,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
             this.player.preparePlayerToSpawn();
             worldClientIn.spawnEntity(this.player);
-            this.player.movementInput = new MovementInputFromOptions(this.gameSettings);
+            this.player.movementInput = new MovementInput(this.gameSettings);
             this.playerController.setPlayerCapabilities(this.player);
             this.renderViewEntity = this.player;
         } else {
@@ -2274,7 +2261,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         this.player.setServerBrand(brand);
         this.world.spawnEntity(this.player);
         this.playerController.flipPlayer(this.player);
-        this.player.movementInput = new MovementInputFromOptions(this.gameSettings);
+        this.player.movementInput = new MovementInput(this.gameSettings);
         this.player.setEntityId(entityId);
         this.playerController.setPlayerCapabilities(this.player);
         this.player.setReducedDebug(oldPlayer.hasReducedDebug());

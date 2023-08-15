@@ -416,10 +416,10 @@ public class PlayerControllerMP {
             } else {
                 int i = itemstack.getCount();
                 ActionResult<ItemStack> actionresult = itemstack.useItemRightClick(worldIn, player, hand);
-                ItemStack itemstack1 = actionresult.getResult();
+                ItemStack result = actionresult.getResult();
 
-                if (itemstack1 != itemstack || itemstack1.getCount() != i) {
-                    player.setHeldItem(hand, itemstack1);
+                if (result != itemstack || result.getCount() != i) {
+                    player.setHeldItem(hand, result);
                 }
 
                 return actionresult.getType();

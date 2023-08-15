@@ -22,15 +22,19 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
@@ -399,7 +403,9 @@ public class GuiIngame extends Gui {
         }
         Managers.draggableGameViewManager.draggableMap.forEach((draggableGameView, vec2i) -> {
             GlStateManager.pushMatrix();
-            GlStateManager.scale(draggableGameView.scalePercent(), draggableGameView.scalePercent(), 0.0f);
+            float scale = draggableGameView.scalePercent();
+            GlStateManager.scale(scale, scale, 0.0f);
+            GlStateManager.translate((1.0f - scale) * (vec2i.x + scaledresolution.getScaledWidth() / 2.0f), (1.0f - scale) * vec2i.y / 2.0f, 0.0f);
             draggableGameView.draw(scaledresolution.getScaledWidth() / 2 + vec2i.x + draggableGameView.xOffset(), vec2i.y + draggableGameView.yOffset());
             GlStateManager.popMatrix();
         });
@@ -574,6 +580,24 @@ public class GuiIngame extends Gui {
 
             if (this.highlightingItemStack.hasDisplayName()) {
                 s = TextFormatting.ITALIC + s;
+            }
+
+            if (!this.highlightingItemStack.isEmpty()) {
+                if (this.highlightingItemStack.getItem() == Items.GOLDEN_AXE) {
+                    NBTTagList nbttaglist = this.highlightingItemStack.getEnchantmentTagList();
+                    for (int j = 0; j < nbttaglist.tagCount(); ++j) {
+                        NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(j);
+                        int k = nbttagcompound.getShort("id");
+                        int l = nbttagcompound.getShort("lvl");
+                        Enchantment enchantment = Enchantment.getEnchantmentByID(k);
+
+                        if (enchantment != null) {
+                            if (k == 16 && l == 666) {
+                                s = "\2476\247l秒人斧！！！\247e\247l我\2471\247ka\2472\247ka\2473\247ka\2474\247ka\2475\247ka\2477.\2478.\2479.";
+                            }
+                        }
+                    }
+                }
             }
 
             int i = (scaledRes.getScaledWidth() - this.getFontRenderer().getStringWidth(s)) / 2;
