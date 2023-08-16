@@ -23,8 +23,8 @@ public class ShaderLinkHelper
 
     public void deleteShader(ShaderManager manager)
     {
-        manager.getFragmentShaderLoader().deleteShader(manager);
-        manager.getVertexShaderLoader().deleteShader(manager);
+        manager.getFragmentShaderLoader().deleteShader();
+        manager.getVertexShaderLoader().deleteShader();
         OpenGlHelper.glDeleteProgram(manager.getProgram());
     }
 
