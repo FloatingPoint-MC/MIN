@@ -1,14 +1,14 @@
-#version 120
+#version 150
 
-attribute vec4 Position;
+in vec4 Position;
 
 uniform mat4 ProjMat;
 uniform vec2 OutSize;
 
 uniform float SubPixelShift;
 
-varying vec2 texCoord;
-varying vec4 posPos;
+out vec2 texCoord;
+out vec4 posPos;
 
 void main() 
 {
@@ -16,7 +16,6 @@ void main()
     gl_Position = vec4(outPos.xy, 0.2, 1.0);
 
     texCoord = Position.xy / OutSize;
-    texCoord.y = 1.0 - texCoord.y;
     
     posPos.xy = texCoord.xy + (0.5/OutSize * vec2(0.5 - SubPixelShift));
     posPos.zw = texCoord.xy - (0.5/OutSize * vec2(0.5 + SubPixelShift));

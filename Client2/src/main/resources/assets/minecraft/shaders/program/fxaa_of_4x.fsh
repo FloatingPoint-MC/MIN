@@ -1,11 +1,11 @@
-#version 120
-
-#extension GL_EXT_gpu_shader4 : enable
+#version 150
 
 uniform sampler2D DiffuseSampler;
 uniform vec2 OutSize;
 
-varying vec2 texCoord;
+in vec2 texCoord;
+
+out vec4 fragColor;
 
 //#define FXAA_GREEN_AS_LUMA 1
 //#define FXAA_DISCARD 1
@@ -55,7 +55,7 @@ varying vec2 texCoord;
     #define FxaaTex sampler2D
 /*--------------------------------------------------------------------------*/
 
-    #define FxaaTexTop(t, p) texture2DLod(t, p, 0.0)
+    #define FxaaTexTop(t, p) textureLod(t, p, 0.0)
 
 /*============================================================================
                    GREEN AS LUMA OPTION SUPPORT FUNCTION
@@ -251,5 +251,5 @@ void main()
     float edgeThresholdMin = 0.05;
     //
     vec4 fxaaCol = FxaaPixelShader(texCoord, posPos, DiffuseSampler, rcpFrameOpt, rcpFrameOpt2, edgeSharpness, edgeThreshold, edgeThresholdMin);
-    gl_FragColor = vec4(fxaaCol.xyz, 1.0);
+    fragColor = vec4(fxaaCol.xyz, 1.0);
 }

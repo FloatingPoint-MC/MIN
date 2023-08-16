@@ -1,9 +1,9 @@
-#version 120
+#version 150
 
 uniform sampler2D DiffuseSampler;
 
-varying vec2 texCoord;
-varying vec2 oneTexel;
+in vec2 texCoord;
+in vec2 oneTexel;
 
 uniform vec2 InSize;
 
@@ -11,11 +11,13 @@ uniform float Time;
 uniform vec2 Frequency;
 uniform vec2 WobbleAmount;
 
+out vec4 fragColor;
+
 vec3 hue(float h)
 {
     float r = abs(h * 6.0 - 3.0) - 1.0;
-    float g = 2 - abs(h * 6.0 - 2.0);
-    float b = 2 - abs(h * 6.0 - 4.0);
+    float g = 2.0 - abs(h * 6.0 - 2.0);
+    float b = 2.0 - abs(h * 6.0 - 4.0);
     return clamp(vec3(r,g,b), 0.0, 1.0);
 }
 
@@ -29,7 +31,7 @@ vec3 RGBtoHSV(vec3 rgb) {
     float min = min(rgb.r, min(rgb.g, rgb.b));
     float c = hsv.z - min;
 
-    if (c != 0)
+    if (c != 0.0)
     {
         hsv.y = c / hsv.z;
         vec3 delta = (hsv.z - rgb) / c;
@@ -51,8 +53,8 @@ void main() {
     float xOffset = sin(texCoord.y * Frequency.x + Time * 3.1415926535 * 2.0) * WobbleAmount.x;
     float yOffset = cos(texCoord.x * Frequency.y + Time * 3.1415926535 * 2.0) * WobbleAmount.y;
     vec2 offset = vec2(xOffset, yOffset);
-    vec4 rgb = texture2D(DiffuseSampler, texCoord + offset);
+    vec4 rgb = texture(DiffuseSampler, texCoord + offset);
     vec3 hsv = RGBtoHSV(rgb.rgb);
     hsv.x = fract(hsv.x + Time);
-    gl_FragColor = vec4(HSVtoRGB(hsv), 1.0);
+    fragColor = vec4(HSVtoRGB(hsv), 1.0);
 }
