@@ -3,7 +3,7 @@ package cn.floatingpoint.min;
 import cn.floatingpoint.min.management.Managers;
 
 public class MIN {
-    public static final String VERSION = "2.0.3";
+    public static final String VERSION = "2.1";
     private static final AsyncLoopThread asyncLoopThread = new AsyncLoopThread();
 
     public static void init() {

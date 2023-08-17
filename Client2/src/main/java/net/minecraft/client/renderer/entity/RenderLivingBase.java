@@ -2,6 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
+import cn.floatingpoint.min.system.module.impl.render.impl.Headless;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import com.google.common.collect.Lists;
 
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.EntityLivingBase;
@@ -471,6 +473,12 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
     protected void renderLayers(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleIn) {
         for (LayerRenderer<T> layerrenderer : this.layerRenderers) {
+            if (layerrenderer instanceof LayerCustomHead) {
+                if (Managers.moduleManager.renderModules.get("Headless").isEnabled()) {
+                    if (Headless.who.isCurrentMode("O") && entitylivingbaseIn instanceof EntityPlayerSP) continue;
+                    if (Headless.who.isCurrentMode("Y") && !(entitylivingbaseIn instanceof EntityPlayerSP)) continue;
+                }
+            }
             boolean flag1 = false;
             if (Animation.oldArmorAnimation.getValue() && layerrenderer instanceof LayerBipedArmor) {
                 flag1 = this.setDoRenderBrightness(entitylivingbaseIn, partialTicks);

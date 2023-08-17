@@ -48,13 +48,17 @@ public class ClientManager implements Manager {
             }
             int version = jsonObject.getInt("Config-Version");
             if (version != FileManager.VERSION) {
-                return;
+                if (version == 201) {
+                    adsorption = false;
+                } else {
+                    adsorption = jsonObject.getBoolean("Adsorption");
+                    return;
+                }
             }
             Managers.i18NManager.setSelectedLanguage(jsonObject.getString("Language"));
             titleSize = jsonObject.getFloat("Title-Size");
             titleX = jsonObject.getFloat("Title-X");
             titleY = jsonObject.getFloat("Title-Y");
-            adsorption = jsonObject.getBoolean("Adsorption");
         } catch (Exception e) {
             firstStart = true;
         }

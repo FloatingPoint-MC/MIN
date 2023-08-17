@@ -62,6 +62,7 @@ public class ModuleManager implements Manager {
         renderModules.put("FreeLook", new FreeLook());
         renderModules.put("FullBright", new FullBright());
         renderModules.put("FurtherCamera", new FurtherCamera());
+        renderModules.put("Headless", new Headless());
         renderModules.put("ItemPhysics", new ItemPhysics());
         renderModules.put("KeyStrokes", new KeyStrokes());
         renderModules.put("MinimizedBobbing", new MinimizedBobbing());
