@@ -2,7 +2,6 @@ package net.minecraft.crash;
 
 import com.google.common.collect.Lists;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,7 +34,7 @@ public class CrashReport
     private final Throwable cause;
 
     /** Category of crash */
-    private final CrashReportCategory systemDetailsCategory = new CrashReportCategory(this, "System Details");
+    private final CrashReportCategory systemDetailsCategory = new CrashReportCategory("System Details");
     private final List<CrashReportCategory> crashReportSections = Lists.newArrayList();
 
     /** File of crash report. */
@@ -294,7 +293,7 @@ public class CrashReport
      */
     public CrashReportCategory makeCategoryDepth(String categoryName, int stacktraceLength)
     {
-        CrashReportCategory crashreportcategory = new CrashReportCategory(this, categoryName);
+        CrashReportCategory crashreportcategory = new CrashReportCategory(categoryName);
 
         if (this.firstCategoryInCrashReport)
         {

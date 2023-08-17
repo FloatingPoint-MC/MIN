@@ -3432,6 +3432,9 @@ public class Shaders {
             isSleeping = entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPlayerSleeping();
             eyePosY = (float) entity.posY * partialTicks + (float) entity.lastTickPosY * (1.0F - partialTicks);
             eyeBrightness = entity.getBrightnessForRender();
+            if (Managers.moduleManager.renderModules.get("FullBright").isEnabled()) {
+                eyeBrightness = 15728880;
+            }
             f1 = (float) diffSystemTime * 0.01F;
             float f2 = (float) Math.exp(Math.log(0.5D) * (double) f1 / (double) eyeBrightnessHalflife);
             eyeBrightnessFadeX = eyeBrightnessFadeX * f2 + (float) (eyeBrightness & 65535) * (1.0F - f2);

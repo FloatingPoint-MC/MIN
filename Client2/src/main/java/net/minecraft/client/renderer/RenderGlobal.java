@@ -310,7 +310,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
     }
 
     protected boolean isRenderEntityOutlines() {
-        if (!Config.isFastRender() && !Config.isShaders() && !Config.isAntialiasing()) {
+        if (!Config.isFastRender() && !Config.isShaders() && !Config.isAntialiasing() && !Managers.moduleManager.renderModules.get("FullBright").isEnabled()) {
             return this.entityOutlineFramebuffer != null && this.entityOutlineShader != null && this.mc.player != null;
         } else {
             return false;
