@@ -541,13 +541,13 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
             if (useFOVSetting) {
                 if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / 2.0f);
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
                 } else {
                     screenScale = f / 4.0F;
                 }
             } else {
                 if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / 2.0f);
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
                 } else {
                     screenScale2 = f / 4.0F;
                 }

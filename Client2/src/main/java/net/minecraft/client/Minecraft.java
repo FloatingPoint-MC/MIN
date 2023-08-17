@@ -186,6 +186,8 @@ import org.lwjglx.opengl.OpenGLException;
 import org.lwjglx.opengl.PixelFormat;
 import org.lwjglx.util.glu.GLU;
 
+import static org.lwjgl.opengl.GL11.GL_VERSION;
+
 public class Minecraft implements IThreadListener, ISnooperInfo {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final ResourceLocation LOCATION_MOJANG_PNG = new ResourceLocation("min/loading.png");

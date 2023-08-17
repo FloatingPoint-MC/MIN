@@ -745,8 +745,8 @@ public abstract class World implements IBlockAccess {
     }
 
     public void notifyLightSet(BlockPos pos) {
-        for (int i = 0; i < this.eventListeners.size(); ++i) {
-            this.eventListeners.get(i).notifyLightSet(pos);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            eventListener.notifyLightSet(pos);
         }
     }
 

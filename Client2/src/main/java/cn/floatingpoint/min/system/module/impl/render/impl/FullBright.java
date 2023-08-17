@@ -9,6 +9,7 @@ public class FullBright extends RenderModule {
     public void onEnable() {
         oldGamma = mc.gameSettings.gammaSetting;
         mc.gameSettings.gammaSetting = 15.0f;
+
     }
 
     @Override

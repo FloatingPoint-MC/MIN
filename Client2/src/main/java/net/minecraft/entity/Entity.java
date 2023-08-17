@@ -1346,11 +1346,11 @@ public abstract class Entity implements ICommandSender {
     }
 
     public int getBrightnessForRender() {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(MathHelper.floor(this.posX), 0, MathHelper.floor(this.posZ));
+        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(MathHelper.floor(this.posX), 0, MathHelper.floor(this.posZ));
 
-        if (this.world.isBlockLoaded(blockpos$mutableblockpos)) {
-            blockpos$mutableblockpos.setY(MathHelper.floor(this.posY + (double) this.getEyeHeight()));
-            return this.world.getCombinedLight(blockpos$mutableblockpos, 0);
+        if (this.world.isBlockLoaded(blockPos)) {
+            blockPos.setY(MathHelper.floor(this.posY + (double) this.getEyeHeight()));
+            return this.world.getCombinedLight(blockPos, 0);
         } else {
             return 0;
         }

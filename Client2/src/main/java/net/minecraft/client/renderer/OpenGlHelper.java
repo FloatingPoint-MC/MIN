@@ -361,11 +361,11 @@ public class OpenGlHelper {
         return arbShaders ? ARBShaderObjects.glCreateShaderObjectARB(type) : GL20.glCreateShader(type);
     }
 
-    public static void glShaderSource(int shaderIn, ByteBuffer string) {
+    public static void glShaderSource(int shaderIn, String string) {
         if (arbShaders) {
-            ARBShaderObjects.glShaderSourceARB(shaderIn, string.toString());
+            ARBShaderObjects.glShaderSourceARB(shaderIn, string);
         } else {
-            GL20.glShaderSource(shaderIn, string.toString());
+            GL20.glShaderSource(shaderIn, string);
         }
     }
 

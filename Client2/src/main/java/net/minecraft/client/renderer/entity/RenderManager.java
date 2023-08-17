@@ -354,7 +354,7 @@ public class RenderManager {
         float f = entityIn.prevRotationYaw + (entityIn.rotationYaw - entityIn.prevRotationYaw) * partialTicks;
         int i = entityIn.getBrightnessForRender();
 
-        if (entityIn.isBurning()) {
+        if (entityIn.isBurning() || Managers.moduleManager.renderModules.get("FullBright").isEnabled()) {
             i = 15728880;
         }
 

@@ -97,10 +97,11 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         int l1 = x - i - 3;
         int j;
 
-        for (j = 0; j < scores.size(); j++) {
+        for (j = 0; j < scores.size();) {
+            ++j;
             int k = y - j * fontRenderer.FONT_HEIGHT;
             int l = x - 3 + 2;
-            if (j == scores.size() - 1) {
+            if (j == scores.size()) {
                 width = l + 2 - l1;
                 height = y - k;
             }
