@@ -3,14 +3,16 @@ package net.minecraft.util.math;
 import java.util.Random;
 import java.util.UUID;
 
-import net.optifine.util.MathUtils;
-
 public class MathHelper {
-    public static final float PI = MathUtils.roundToFloat(Math.PI);
-    public static final float PId2 = MathUtils.roundToFloat((Math.PI / 2D));
-    public static final float deg2Rad = MathUtils.roundToFloat(0.017453292519943295D);
+    public static final float PI = (float) Math.PI;
+    public static final float PId2 = ((float) Math.PI / 2F);
+    public static final float deg2Rad = 0.017453292F;
+    private static final float[] SIN_TABLE_FAST = new float[4096];
+    /**
+     * A table of sin values computed from 0 (inclusive) to 2*pi (exclusive), with steps of 2*PI / 65536.
+     */
+    private static final float[] SIN_TABLE = new float[65536];
     private static final Random RANDOM = new Random();
-
     /**
      * Though it looks like an array, this is really more like a mapping.  Key (index of this array) is the upper 5 bits
      * of the result of multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
@@ -22,28 +24,31 @@ public class MathHelper {
     private static final double FRAC_BIAS;
     private static final double[] ASINE_TAB;
     private static final double[] COS_TAB;
-
-    private static final float BF_PI = 3.1415927f;
-
-    private static final int BF_SIN_BITS = 14; // 16KB. Adjust for accuracy.
-    private static final int BF_SIN_MASK = ~(-1 << BF_SIN_BITS);
-    private static final int BF_SIN_COUNT = BF_SIN_MASK + 1;
-
-    private static final float BF_radFull = BF_PI * 2;
-    private static final float BF_degFull = 360;
-    private static final float BF_radToIndex = BF_SIN_COUNT / BF_radFull;
-    private static final float BF_degToIndex = BF_SIN_COUNT / BF_degFull;
-
-    private static final float BF_degreesToRadians = BF_PI / 180;
-
-    private static final float[] BF_table = new float[BF_SIN_COUNT];
+    public static boolean fastMath = false;
 
     static {
-        for (int i = 0; i < BF_SIN_COUNT; i++) {
-            BF_table[i] = (float) Math.sin((i + 0.5f) / BF_SIN_COUNT * BF_radFull);
+        for (int i = 0; i < 65536; ++i) {
+            SIN_TABLE[i] = (float) Math.sin((double) i * Math.PI * 2.0D / 65536.0D);
         }
-        for (int i = 0; i < 360; i += 90) {
-            BF_table[(int) (i * BF_degToIndex) & BF_SIN_MASK] = (float) Math.sin(i * BF_degreesToRadians);
+
+        for (int j = 0; j < 4096; ++j) {
+            SIN_TABLE_FAST[j] = (float) Math.sin(((float) j + 0.5F) / 4096.0F * ((float) Math.PI * 2F));
+        }
+
+        for (int k = 0; k < 360; k += 90) {
+            SIN_TABLE_FAST[(int) ((float) k * 11.377778F) & 4095] = (float) Math.sin((float) k * 0.017453292F);
+        }
+
+        MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[]{0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
+        FRAC_BIAS = Double.longBitsToDouble(4805340802404319232L);
+        ASINE_TAB = new double[257];
+        COS_TAB = new double[257];
+
+        for (int l = 0; l < 257; ++l) {
+            double d0 = (double) l / 256.0D;
+            double d1 = Math.asin(d0);
+            COS_TAB[l] = Math.cos(d1);
+            ASINE_TAB[l] = d1;
         }
     }
 
@@ -51,14 +56,14 @@ public class MathHelper {
      * sin looked up in a table
      */
     public static float sin(float value) {
-        return BF_table[(int) (value * BF_radToIndex) & BF_SIN_MASK];
+        return fastMath ? SIN_TABLE_FAST[(int) (value * 651.8986F) & 4095] : SIN_TABLE[(int) (value * 10430.378F) & 65535];
     }
 
     /**
      * cos looked up in the sin table with the appropriate offset
      */
     public static float cos(float value) {
-        return BF_table[(int) ((value + BF_PI / 2) * BF_radToIndex) & BF_SIN_MASK];
+        return fastMath ? SIN_TABLE_FAST[(int) ((value + ((float) Math.PI / 2F)) * 651.8986F) & 4095] : SIN_TABLE[(int) (value * 10430.378F + 16384.0F) & 65535];
     }
 
     public static float sqrt(float value) {
@@ -95,9 +100,13 @@ public class MathHelper {
     /**
      * Long version of floor()
      */
-    public static long lfloor(double value) {
+    public static long lFloor(double value) {
         long i = (long) value;
         return value < (double) i ? i - 1L : i;
+    }
+
+    public static int absFloor(double value) {
+        return (int) (value >= 0.0D ? value : -value + 1.0D);
     }
 
     public static float abs(float value) {
@@ -129,7 +138,7 @@ public class MathHelper {
         if (num < min) {
             return min;
         } else {
-            return Math.min(num, max);
+            return num > max ? max : num;
         }
     }
 
@@ -141,7 +150,7 @@ public class MathHelper {
         if (num < min) {
             return min;
         } else {
-            return Math.min(num, max);
+            return num > max ? max : num;
         }
     }
 
@@ -149,7 +158,7 @@ public class MathHelper {
         if (num < min) {
             return min;
         } else {
-            return Math.min(num, max);
+            return num > max ? max : num;
         }
     }
 
@@ -173,7 +182,7 @@ public class MathHelper {
             p_76132_2_ = -p_76132_2_;
         }
 
-        return Math.max(p_76132_0_, p_76132_2_);
+        return p_76132_0_ > p_76132_2_ ? p_76132_0_ : p_76132_2_;
     }
 
     /**
@@ -217,8 +226,8 @@ public class MathHelper {
         return (numerator % denominator + denominator) % denominator;
     }
 
-    public static double positiveModulo(double numerator, double denominator) {
-        return (numerator % denominator + denominator) % denominator;
+    public static double func_191273_b(double p_191273_0_, double p_191273_2_) {
+        return (p_191273_0_ % p_191273_2_ + p_191273_2_) % p_191273_2_;
     }
 
     /**
@@ -258,7 +267,7 @@ public class MathHelper {
     /**
      * Adjust the angle so that his value is in range [-180;180[
      */
-    public static int wrapDegrees(int angle) {
+    public static int clampAngle(int angle) {
         angle = angle % 360;
 
         if (angle >= 180) {
@@ -385,8 +394,8 @@ public class MathHelper {
         int j = (p_180188_1_ & 16711680) >> 16;
         int k = (p_180188_0_ & 65280) >> 8;
         int l = (p_180188_1_ & 65280) >> 8;
-        int i1 = p_180188_0_ & 255;
-        int j1 = p_180188_1_ & 255;
+        int i1 = (p_180188_0_ & 255) >> 0;
+        int j1 = (p_180188_1_ & 255) >> 0;
         int k1 = (int) ((float) i * (float) j / 255.0F);
         int l1 = (int) ((float) k * (float) l / 255.0F);
         int i2 = (int) ((float) i1 * (float) j1 / 255.0F);
@@ -405,7 +414,7 @@ public class MathHelper {
     }
 
     public static long getCoordinateRandom(int x, int y, int z) {
-        long i = (x * 3129871L) ^ (long) z * 116129781L ^ (long) y;
+        long i = (long) (x * 3129871L) ^ (long) z * 116129781L ^ (long) y;
         i = i * i * 42317861L + i * 11L;
         return i;
     }
@@ -481,10 +490,6 @@ public class MathHelper {
         }
     }
 
-    /**
-     * Computes 1/sqrt(n) using <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">the fast inverse square
-     * root</a> with a constant of 0x5FE6EB50C7B537AA.
-     */
     public static double fastInvSqrt(double p_181161_0_) {
         double d0 = 0.5D * p_181161_0_;
         long i = Double.doubleToRawLongBits(p_181161_0_);
@@ -558,19 +563,5 @@ public class MathHelper {
         p_188208_0_ = p_188208_0_ * -1028477387;
         p_188208_0_ = p_188208_0_ ^ p_188208_0_ >>> 16;
         return p_188208_0_;
-    }
-
-    static {
-        MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[]{0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
-        FRAC_BIAS = Double.longBitsToDouble(4805340802404319232L);
-        ASINE_TAB = new double[257];
-        COS_TAB = new double[257];
-
-        for (int k = 0; k < 257; ++k) {
-            double d0 = (double) k / 256.0D;
-            double d1 = Math.asin(d0);
-            COS_TAB[k] = Math.cos(d1);
-            ASINE_TAB[k] = d1;
-        }
     }
 }

@@ -1569,7 +1569,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             Managers.moduleManager.boostModules.values().stream().filter(Module::isEnabled).forEach(BoostModule::tick);
             Managers.moduleManager.miscModules.values().stream().filter(Module::isEnabled).forEach(MiscModule::tick);
             Spinning.current += Spinning.speed.getValue() * (Spinning.direction.isCurrentMode("P") ? 1 : -1);
-            if (this.player.ticksExisted % 600000 == 0) {
+            if (this.player.ticksExisted % 600 == 0) {
                 MIN.runAsync(Managers.fileManager::saveConfig);
                 MIN.runAsync(() -> {
                     try {
@@ -1765,6 +1765,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     for (Module module : Managers.moduleManager.modules.values()) {
                         if (module.getKey() == i) {
                             module.toggle();
+                        }
+                    }
+                    if (Managers.clientManager.vexGui) {
+                        if (i == 37) {
+                            this.player.sendChatMessage("/kh");
                         }
                     }
                     if (i == 1) {

@@ -27,6 +27,7 @@ public class ClientManager implements Manager {
     public boolean firstStart;
     public boolean lock;
     public boolean adsorption;
+    public boolean vexGui;
 
     @Override
     public String getName() {
@@ -40,6 +41,7 @@ public class ClientManager implements Manager {
         titleX = 0.0f;
         titleY = 0.0f;
         firstStart = false;
+        vexGui = false;
         try {
             String context = Managers.fileManager.readAsString("config.json");
             JSONObject jsonObject = new JSONObject(context);

@@ -461,4 +461,23 @@ public class ParticleManager {
 
         return false;
     }
+
+    public EnumParticleTypes getId(Particle particle) {
+        if (particle instanceof ParticleWaterWake) {
+            return EnumParticleTypes.WATER_WAKE;
+        } else if (particle instanceof ParticleEnchantmentTable) {
+            return EnumParticleTypes.ENCHANTMENT_TABLE;
+        } else if (particle instanceof ParticleLava) {
+            return EnumParticleTypes.LAVA;
+        } else if (particle instanceof ParticleBreaking) {
+            return EnumParticleTypes.ITEM_CRACK;
+        } else if (particle instanceof ParticleDigging) {
+            return EnumParticleTypes.BLOCK_CRACK;
+        } else if (particle instanceof ParticleBlockDust) {
+            return EnumParticleTypes.BLOCK_DUST;
+        } else if (particle instanceof ParticleRain) {
+            return EnumParticleTypes.WATER_DROP;
+        }
+        return EnumParticleTypes.SUSPENDED;
+    }
 }

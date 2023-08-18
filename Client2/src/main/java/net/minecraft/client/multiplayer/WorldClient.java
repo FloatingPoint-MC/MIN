@@ -100,6 +100,7 @@ public class WorldClient extends World {
         Managers.fileManager.shouldSave = true;
         Managers.clientManager.cooldown.clear();
         Managers.clientManager.lock = false;
+        Managers.clientManager.vexGui = false;
     }
 
     private static WorldProvider makeWorldProvider(int p_makeWorldProvider_0_) {

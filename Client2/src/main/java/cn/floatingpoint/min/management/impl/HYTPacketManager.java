@@ -2,8 +2,7 @@ package cn.floatingpoint.min.management.impl;
 
 import cn.floatingpoint.min.management.Manager;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
-import cn.floatingpoint.min.system.hyt.packet.impl.GermModPacket;
-import cn.floatingpoint.min.system.hyt.packet.impl.VexViewPacket;
+import cn.floatingpoint.min.system.hyt.packet.impl.*;
 
 import java.util.HashSet;
 
@@ -18,7 +17,7 @@ public class HYTPacketManager implements Manager {
     @Override
     public void init() {
         packets.add(new GermModPacket());
-        //packets.add(new Hyt0Packet());
+        packets.add(new Hyt0Packet());
         packets.add(new VexViewPacket());
     }
 }
