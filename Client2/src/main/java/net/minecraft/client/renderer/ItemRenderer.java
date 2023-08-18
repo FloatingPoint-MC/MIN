@@ -409,9 +409,7 @@ public class ItemRenderer {
                                 break;
 
                             case BLOCK:
-                                GlStateManager.enableTexture2D();
                                 GlStateManager.translate(Animation.blockX.getValue(), Animation.blockY.getValue(), 0.0F);
-                                GlStateManager.disableTexture2D();
                                 this.transformFirstPersonItem(enumhandside == EnumHandSide.RIGHT ? 1.0F : -1.0F, equippedProgress, Animation.blockSwingMode.isCurrentMode("None") ? 0.0f : swingProgress);
                                 break;
 
