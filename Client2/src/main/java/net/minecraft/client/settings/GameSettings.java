@@ -88,7 +88,6 @@ public class GameSettings {
     private static final String[] AMBIENT_OCCLUSIONS = new String[]{"options.ao.off", "options.ao.min", "options.ao.max"};
     private static final String[] CLOUDS_TYPES = new String[]{"options.off", "options.clouds.fast", "options.clouds.fancy"};
     private static final String[] ATTACK_INDICATORS = new String[]{"options.off", "options.attack.crosshair", "options.attack.hotbar"};
-    public static final String[] NARRATOR_MODES = new String[]{"options.narrator.off", "options.narrator.all", "options.narrator.chat", "options.narrator.system"};
     public float mouseSensitivity = 0.5F;
     public boolean invertMouse;
     public int renderDistanceChunks = -1;
@@ -262,6 +261,7 @@ public class GameSettings {
     public boolean ofCustomItems = true;
     public boolean ofNaturalTextures = false;
     public boolean ofEmissiveTextures = true;
+    public boolean ofFastMath = false;
     public boolean ofFastRender = false;
     public int ofTranslucentBlocks = 0;
     public boolean ofDynamicFov = true;
@@ -1689,6 +1689,11 @@ public class GameSettings {
             this.mc.refreshResources();
         }
 
+        if (options == GameSettings.Options.FAST_MATH) {
+            this.ofFastMath = !this.ofFastMath;
+            MathHelper.fastMath = this.ofFastMath;
+        }
+
         if (options == Options.FAST_RENDER) {
             if (!this.ofFastRender && Config.isShaders()) {
                 Config.showGuiMessage(Lang.get("of.message.fr.shaders1"), Lang.get("of.message.fr.shaders2"));
@@ -2073,7 +2078,9 @@ public class GameSettings {
             return this.ofNaturalTextures ? s + Lang.getOn() : s + Lang.getOff();
         } else if (options == Options.EMISSIVE_TEXTURES) {
             return this.ofEmissiveTextures ? s + Lang.getOn() : s + Lang.getOff();
-        } else if (options == Options.FAST_RENDER) {
+        } else if (options == GameSettings.Options.FAST_MATH) {
+            return this.ofFastMath ? s + Lang.getOn() : s + Lang.getOff();
+        }else if (options == Options.FAST_RENDER) {
             return this.ofFastRender ? s + Lang.getOn() : s + Lang.getOff();
         } else if (options == Options.TRANSLUCENT_BLOCKS) {
             if (this.ofTranslucentBlocks == 1) {
@@ -2447,6 +2454,11 @@ public class GameSettings {
                         this.ofFullscreenMode = astring[1];
                     }
 
+                    if (astring[0].equals("ofFastMath") && astring.length >= 2) {
+                        this.ofFastMath = Boolean.parseBoolean(astring[1]);
+                        MathHelper.fastMath = this.ofFastMath;
+                    }
+
                     if (astring[0].equals("ofFastRender") && astring.length >= 2) {
                         this.ofFastRender = Boolean.parseBoolean(astring[1]);
                     }
@@ -2545,6 +2557,7 @@ public class GameSettings {
             printwriter.println("ofCustomGuis:" + this.ofCustomGuis);
             printwriter.println("ofShowGlErrors:" + this.ofShowGlErrors);
             printwriter.println("ofFullscreenMode:" + this.ofFullscreenMode);
+            printwriter.println("ofFastMath:" + this.ofFastMath);
             printwriter.println("ofFastRender:" + this.ofFastRender);
             printwriter.println("ofTranslucentBlocks:" + this.ofTranslucentBlocks);
             printwriter.println("key_" + this.ofKeyBindZoom.getKeyDescription() + ":" + this.ofKeyBindZoom.getKeyCode());
@@ -2606,6 +2619,7 @@ public class GameSettings {
         this.ofSmoothWorld = Config.isSingleProcessor();
         this.ofLazyChunkLoading = false;
         this.ofRenderRegions = false;
+        this.ofFastMath = false;
         this.ofFastRender = false;
         this.ofTranslucentBlocks = 0;
         this.ofDynamicFov = true;
@@ -2845,6 +2859,7 @@ public class GameSettings {
         DROPPED_ITEMS("of.options.DROPPED_ITEMS", false, false),
         LAZY_CHUNK_LOADING("of.options.LAZY_CHUNK_LOADING", false, false),
         CUSTOM_SKY("of.options.CUSTOM_SKY", false, false),
+        FAST_MATH("of.options.FAST_MATH", false, false),
         FAST_RENDER("of.options.FAST_RENDER", false, false),
         TRANSLUCENT_BLOCKS("of.options.TRANSLUCENT_BLOCKS", false, false),
         DYNAMIC_FOV("of.options.DYNAMIC_FOV", false, false),
