@@ -471,10 +471,10 @@ public class ParticleManager {
             return EnumParticleTypes.LAVA;
         } else if (particle instanceof ParticleBreaking) {
             return EnumParticleTypes.ITEM_CRACK;
-        } else if (particle instanceof ParticleDigging) {
-            return EnumParticleTypes.BLOCK_CRACK;
         } else if (particle instanceof ParticleBlockDust) {
             return EnumParticleTypes.BLOCK_DUST;
+        } else if (particle instanceof ParticleDigging) {
+            return EnumParticleTypes.BLOCK_CRACK;
         } else if (particle instanceof ParticleRain) {
             return EnumParticleTypes.WATER_DROP;
         }

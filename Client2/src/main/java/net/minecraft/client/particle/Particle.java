@@ -189,43 +189,43 @@ public class Particle {
     public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         switch (Minecraft.getMinecraft().effectRenderer.getId(this)) {
             case WATER_WAKE: {
-                if (Particles.waterWake.getValue()) {
+                if (!Particles.waterWake.getValue()) {
                     return;
                 }
                 break;
             }
             case ENCHANTMENT_TABLE: {
-                if (Particles.enchantTable.getValue()) {
+                if (!Particles.enchantTable.getValue()) {
                     return;
                 }
                 break;
             }
             case LAVA: {
-                if (Particles.lava.getValue()) {
+                if (!Particles.lava.getValue()) {
                     return;
                 }
                 break;
             }
             case ITEM_CRACK: {
-                if (Particles.itemCrack.getValue()) {
+                if (!Particles.itemCrack.getValue()) {
                     return;
                 }
                 break;
             }
             case BLOCK_CRACK: {
-                if (Particles.blockCrack.getValue()) {
+                if (!Particles.blockCrack.getValue()) {
                     return;
                 }
                 break;
             }
             case BLOCK_DUST: {
-                if (Particles.blockDust.getValue()) {
+                if (!Particles.blockDust.getValue()) {
                     return;
                 }
                 break;
             }
             case WATER_DROP: {
-                if (Particles.waterDrop.getValue()) {
+                if (!Particles.waterDrop.getValue()) {
                     return;
                 }
                 break;

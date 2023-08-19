@@ -70,7 +70,7 @@ public class IRCMessageGrabber {
                 JSONObject jsonObject = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/irc/current");
                 if (jsonObject.has("Code")) {
                     if (jsonObject.getInt("Code") == 0) {
-                        startLoc = jsonObject.getInt("Current");
+                        startLoc = jsonObject.getInt("Current") + 1;
                         enabled.set(true);
                     }
                 }
