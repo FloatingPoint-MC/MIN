@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.irc.IRCSender;
 import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import cn.floatingpoint.min.utils.math.Vec2i;
 import net.minecraft.client.Minecraft;
@@ -65,6 +66,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         this.inputField.setFocused(true);
         this.inputField.setText(this.defaultInputFieldText);
         this.inputField.setCanLoseFocus(false);
+        this.buttonList.add(new GuiButton(666, 4, this.height - 34, 100, 20, Managers.i18NManager.getTranslation("chat.channel") + ": " + Managers.i18NManager.getTranslation("chat.channel." + Managers.clientManager.channel.name().toLowerCase())));
         this.tabCompleter = new GuiChat.ChatTabCompleter(this.inputField);
     }
 
@@ -113,11 +115,23 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         } else {
             String s = this.inputField.getText().trim();
 
-            if (!s.isEmpty()) {
-                this.sendChatMessage(s);
-            }
+            this.sendChatMessage(s);
 
             this.mc.displayGuiScreen(null);
+        }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+        if (button.id == 666) {
+            switch (Managers.clientManager.channel) {
+                case WORLD:
+                    Managers.clientManager.channel = Channel.MIN;
+                    break;
+                case MIN:
+                    Managers.clientManager.channel = Channel.WORLD;
+            }
+            button.displayString = Managers.i18NManager.getTranslation("chat.channel") + ": " + Managers.i18NManager.getTranslation("chat.channel." + Managers.clientManager.channel.name().toLowerCase());
         }
     }
 
@@ -337,5 +351,10 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
 
             return blockpos;
         }
+    }
+
+    public enum Channel {
+        WORLD,
+        MIN
     }
 }

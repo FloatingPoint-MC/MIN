@@ -5,6 +5,7 @@ import cn.floatingpoint.min.management.Manager;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
 import cn.floatingpoint.min.utils.client.WebUtil;
+import net.minecraft.client.gui.GuiChat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ public class ClientManager implements Manager {
     public boolean lock;
     public boolean adsorption;
     public boolean vexGui;
+    public GuiChat.Channel channel;
 
     @Override
     public String getName() {
@@ -50,12 +52,19 @@ public class ClientManager implements Manager {
             }
             int version = jsonObject.getInt("Config-Version");
             if (version != FileManager.VERSION) {
-                if (version == 201) {
-                    adsorption = false;
-                } else {
-                    adsorption = jsonObject.getBoolean("Adsorption");
+                if (version < 200) {
                     return;
                 }
+                if (version == 201) {
+                    adsorption = false;
+                    channel = GuiChat.Channel.WORLD;
+                } else if (version == 202) {
+                    adsorption = jsonObject.getBoolean("Adsorption");
+                    channel = GuiChat.Channel.WORLD;
+                }
+            } else {
+                adsorption = jsonObject.getBoolean("Adsorption");
+                channel = GuiChat.Channel.valueOf(jsonObject.getString("Chat-Channel").toUpperCase());
             }
             Managers.i18NManager.setSelectedLanguage(jsonObject.getString("Language"));
             titleSize = jsonObject.getFloat("Title-Size");

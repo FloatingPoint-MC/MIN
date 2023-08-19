@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.irc.IRCSender;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -356,8 +358,18 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
         if (addToChat) {
             this.mc.ingameGUI.getChatGUI().addToSentMessages(msg);
         }
-
-        this.mc.player.sendChatMessage(msg);
+        if (!msg.startsWith("/")) {
+            switch (Managers.clientManager.channel) {
+                case WORLD:
+                    this.mc.player.sendChatMessage(msg);
+                    break;
+                case MIN:
+                    IRCSender.sendMessage(msg);
+                    break;
+            }
+        } else {
+            this.mc.player.sendChatMessage(msg);
+        }
     }
 
     /**

@@ -17,7 +17,7 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 public class FileManager implements Manager {
-    public static final int VERSION = 202;
+    public static final int VERSION = 203;
     public File dir = null;
     public boolean shouldSave = false;
 
@@ -211,6 +211,7 @@ public class FileManager implements Manager {
                 .put("Title-X", Managers.clientManager.titleX)
                 .put("Title-Y", Managers.clientManager.titleY)
                 .put("Adsorption", Managers.clientManager.adsorption)
+                .put("Chat-Channel", Managers.clientManager.channel.name())
                 .toString(), false);
     }
 }

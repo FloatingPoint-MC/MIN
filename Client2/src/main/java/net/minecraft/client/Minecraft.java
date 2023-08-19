@@ -3,6 +3,7 @@ package net.minecraft.client;
 import cn.floatingpoint.min.DaemonThread;
 import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.irc.IRCMessageGrabber;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
@@ -1576,6 +1577,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                         throw new RuntimeException(e);
                     }
                 });
+            }
+            if (this.player.ticksExisted == 5) {
+                IRCMessageGrabber.reset();
+            }
+            if (this.player.ticksExisted % 100 == 0) {
+                IRCMessageGrabber.grabMessage();
             }
         }
 

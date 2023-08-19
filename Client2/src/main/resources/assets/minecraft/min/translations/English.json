@@ -1,7 +1,7 @@
 {
   "WARNING": "DO NOT MODIFY THIS LANGUAGE FILE OR YOUR LANGUAGE MIGHT BE REPLACED!",
   "language.identity": "English",
-  "language.version": "202",
+  "language.version": "203",
   "module.category.Boost": "Boost",
   "module.category.Misc": "Misc",
   "module.category.Render": "Render",
@@ -295,5 +295,9 @@
   "start.skip": "Skip",
   "start.clickUiSetting": "You can click here to edit some client settings.",
   "start.press": "Press any key to continue...",
-  "menu.setting": "Open Config Settings"
+  "menu.setting": "Open Config Settings",
+  "chat.slowdown": "Please slow down chatting!",
+  "chat.channel": "Chat Channel",
+  "chat.channel.min": "MIN Server",
+  "chat.channel.world": "Current World"
 }

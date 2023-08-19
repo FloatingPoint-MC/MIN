@@ -1,7 +1,7 @@
 {
   "WARNING": "不要修改此语言文件，否则你的语言将会丢失！",
   "language.identity": "简体中文",
-  "language.version": "202",
+  "language.version": "203",
   "module.category.Boost": "优化类",
   "module.category.Misc": "杂项类",
   "module.category.Render": "视觉类",
@@ -295,5 +295,9 @@
   "start.skip": "跳过",
   "start.clickUiSetting": "点此可以更改客户端设置。",
   "start.press": "按下任意按键继续...",
-  "menu.setting": "打开配置设置"
+  "menu.setting": "打开配置设置",
+  "chat.slowdown": "请慢一点说话！",
+  "chat.channel": "聊天频道",
+  "chat.channel.min": "MIN服务器",
+  "chat.channel.world": "当前世界"
 }
