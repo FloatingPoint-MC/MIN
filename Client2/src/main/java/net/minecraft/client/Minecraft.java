@@ -186,8 +186,6 @@ import org.lwjglx.opengl.OpenGLException;
 import org.lwjglx.opengl.PixelFormat;
 import org.lwjglx.util.glu.GLU;
 
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-
 public class Minecraft implements IThreadListener, ISnooperInfo {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final ResourceLocation LOCATION_MOJANG_PNG = new ResourceLocation("min/loading.png");
@@ -1569,7 +1567,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             Managers.moduleManager.boostModules.values().stream().filter(Module::isEnabled).forEach(BoostModule::tick);
             Managers.moduleManager.miscModules.values().stream().filter(Module::isEnabled).forEach(MiscModule::tick);
             Spinning.current += Spinning.speed.getValue() * (Spinning.direction.isCurrentMode("P") ? 1 : -1);
-            if (this.player.ticksExisted % 600 == 0) {
+            if (this.player.ticksExisted % 1200 == 0) {
                 MIN.runAsync(Managers.fileManager::saveConfig);
                 MIN.runAsync(() -> {
                     try {
