@@ -727,11 +727,6 @@ public class GuiTextField extends Gui
         }
 
         this.isFocused = isFocusedIn;
-
-        if (Minecraft.getMinecraft().currentScreen != null)
-        {
-            Minecraft.getMinecraft().currentScreen.setFocused(isFocusedIn);
-        }
     }
 
     /**

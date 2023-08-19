@@ -1,11 +1,9 @@
 package net.minecraft.client.gui;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.awt.Toolkit;
-import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -38,10 +36,11 @@ import org.apache.logging.log4j.Logger;
 import org.lwjglx.input.Keyboard;
 import org.lwjglx.input.Mouse;
 
+import javax.annotation.Nullable;
+
 public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Set<String> PROTOCOLS = Sets.newHashSet("http", "https");
-    private static final Splitter NEWLINE_SPLITTER = Splitter.on('\n');
 
     /**
      * Reference to the Minecraft object.
@@ -83,7 +82,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
      */
     private int touchValue;
     private URI clickedLinkURI;
-    private boolean focused;
 
     /**
      * Draws the screen and all the components in it.
@@ -127,7 +125,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
             if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 return (String) transferable.getTransferData(DataFlavor.stringFlavor);
             }
-        } catch (Exception var1) {
+        } catch (Exception ignored) {
         }
 
         return "";
@@ -141,7 +139,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
             try {
                 StringSelection stringselection = new StringSelection(copyText);
                 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
-            } catch (Exception var2) {
+            } catch (Exception ignored) {
             }
         }
     }
@@ -169,14 +167,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
      */
     public void drawHoveringText(String text, int x, int y) {
         this.drawHoveringText(Collections.singletonList(text), x, y);
-    }
-
-    public void setFocused(boolean hasFocusedControlIn) {
-        this.focused = hasFocusedControlIn;
-    }
-
-    public boolean isFocused() {
-        return this.focused;
     }
 
     /**
@@ -216,14 +206,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
 
             this.zLevel = 300.0F;
             this.itemRender.zLevel = 300.0F;
-            int l = -267386864;
             this.drawGradientRect(l1 - 3, i2 - 4, l1 + i + 3, i2 - 3, -267386864, -267386864);
             this.drawGradientRect(l1 - 3, i2 + k + 3, l1 + i + 3, i2 + k + 4, -267386864, -267386864);
             this.drawGradientRect(l1 - 3, i2 - 3, l1 + i + 3, i2 + k + 3, -267386864, -267386864);
             this.drawGradientRect(l1 - 4, i2 - 3, l1 - 3, i2 + k + 3, -267386864, -267386864);
             this.drawGradientRect(l1 + i + 3, i2 - 3, l1 + i + 4, i2 + k + 3, -267386864, -267386864);
-            int i1 = 1347420415;
-            int j1 = 1344798847;
             this.drawGradientRect(l1 - 3, i2 - 3 + 1, l1 - 3 + 1, i2 + k + 3 - 1, 1347420415, 1344798847);
             this.drawGradientRect(l1 + i + 2, i2 - 3 + 1, l1 + i + 3, i2 + k + 3 - 1, 1347420415, 1344798847);
             this.drawGradientRect(l1 - 3, i2 - 3, l1 + i + 3, i2 - 3 + 1, 1347420415, 1347420415);
@@ -252,7 +239,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
     /**
      * Draws the hover event specified by the given chat component
      */
-    protected void handleComponentHover(ITextComponent component, int x, int y) {
+    protected void handleComponentHover(@Nullable ITextComponent component, int x, int y) {
         if (component != null && component.getStyle().getHoverEvent() != null) {
             HoverEvent hoverevent = component.getStyle().getHoverEvent();
 
@@ -260,12 +247,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                 ItemStack itemstack = ItemStack.EMPTY;
 
                 try {
-                    NBTBase nbtbase = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
-
-                    if (nbtbase instanceof NBTTagCompound) {
-                        itemstack = new ItemStack((NBTTagCompound) nbtbase);
-                    }
-                } catch (NBTException var9) {
+                    NBTTagCompound nbtbase = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
+                    itemstack = new ItemStack(nbtbase);
+                } catch (NBTException ignored) {
                 }
 
                 if (itemstack.isEmpty()) {
@@ -308,10 +292,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
     /**
      * Executes the click event specified by the given chat component
      */
-    public boolean handleComponentClick(ITextComponent component) {
-        if (component == null) {
-            return false;
-        } else {
+    public boolean handleComponentClick(@Nullable ITextComponent component) {
+        if (component != null) {
             ClickEvent clickevent = component.getStyle().getClickEvent();
 
             if (isShiftKeyDown()) {
@@ -359,8 +341,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                 return true;
             }
 
-            return false;
         }
+        return false;
     }
 
     /**
@@ -561,7 +543,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         this.mc.getTextureManager().bindTexture(OPTIONS_BACKGROUND);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        float f = 32.0F;
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         bufferbuilder.pos(0.0D, this.height, 0.0D).tex(0.0D, (float) this.height / 32.0F + (float) tint).color(64, 64, 64, 255).endVertex();
         bufferbuilder.pos(this.width, this.height, 0.0D).tex((float) this.width / 32.0F, (float) this.height / 32.0F + (float) tint).color(64, 64, 64, 255).endVertex();

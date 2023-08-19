@@ -403,7 +403,7 @@ public class InputField {
                 k = s.length();
             }
 
-            if (s.length() > 0) {
+            if (!s.isEmpty()) {
                 String s1 = flag ? s.substring(0, j) : s;
                 Managers.fontManager.sourceHansSansCN_Regular_18.drawString(s1, l, i1, new Color(216, 216, 216).getRGB());
                 j1 += Managers.fontManager.sourceHansSansCN_Regular_18.getStringWidth(s1);
@@ -512,17 +512,6 @@ public class InputField {
         }
 
         this.isFocused = isFocusedIn;
-
-        if (Minecraft.getMinecraft().currentScreen != null) {
-            Minecraft.getMinecraft().currentScreen.setFocused(isFocusedIn);
-        }
-    }
-
-    /**
-     * Getter for the focused field
-     */
-    public boolean isFocused() {
-        return this.isFocused;
     }
 
     /**

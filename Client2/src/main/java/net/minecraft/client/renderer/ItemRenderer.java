@@ -409,7 +409,8 @@ public class ItemRenderer {
                                 break;
 
                             case BLOCK:
-                                GlStateManager.translate(Animation.blockX.getValue(), Animation.blockY.getValue(), 0.0F);
+                                GlStateManager.translate(Animation.blockX.getValue() / 100.0f, Animation.blockY.getValue() / 100.0f, Animation.blockX.getValue() / 100.0f);
+                                GlStateManager.scale((1.0f - Animation.blockX.getValue() / 100.0f), (1.0f - Animation.blockX.getValue() / 100.0f), (1.0f - Animation.blockX.getValue() / 100.0f));
                                 this.transformFirstPersonItem(enumhandside == EnumHandSide.RIGHT ? 1.0F : -1.0F, equippedProgress, Animation.blockSwingMode.isCurrentMode("None") ? 0.0f : swingProgress);
                                 break;
 
