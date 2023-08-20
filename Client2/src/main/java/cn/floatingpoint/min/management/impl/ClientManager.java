@@ -44,6 +44,8 @@ public class ClientManager implements Manager {
         titleY = 0.0f;
         firstStart = false;
         vexGui = false;
+        adsorption = false;
+        channel = GuiChat.Channel.WORLD;
         try {
             String context = Managers.fileManager.readAsString("config.json");
             JSONObject jsonObject = new JSONObject(context);

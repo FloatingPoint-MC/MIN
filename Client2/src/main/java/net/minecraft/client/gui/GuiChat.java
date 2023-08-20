@@ -115,7 +115,9 @@ public class GuiChat extends GuiScreen implements ITabCompleter {
         } else {
             String s = this.inputField.getText().trim();
 
-            this.sendChatMessage(s);
+            if (!s.isEmpty()) {
+                this.sendChatMessage(s);
+            }
 
             this.mc.displayGuiScreen(null);
         }
