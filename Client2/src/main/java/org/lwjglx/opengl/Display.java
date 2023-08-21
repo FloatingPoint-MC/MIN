@@ -252,6 +252,13 @@ public class Display {
             }
         };
 
+        Window.framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+
+            @Override
+            public void invoke(long window, int width, int height) {
+            }
+        };
+
         Window.setCallbacks();
 
         displayWidth = mode.getWidth();
@@ -486,10 +493,6 @@ public class Display {
 
     public static Drawable getDrawable() {
         return drawable;
-    }
-
-    static DisplayImplementation getImplementation() {
-        return null;
     }
 
     private static class Window {
