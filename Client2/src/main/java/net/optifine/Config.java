@@ -70,7 +70,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjglx.opengl.GLContext;
-import org.lwjglx.opengl.PixelFormat;
 
 public class Config {
     private static String build = null;
@@ -1596,35 +1595,20 @@ public class Config {
             try {
                 Display.destroy();
                 Display.setDisplayMode(displaymode);
-                Display.create((new PixelFormat()).withDepthBits(24).withSamples(i));
-
-                if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                    Display.setResizable(false);
-                    Display.setResizable(true);
-                }
+                Display.create();
             } catch (Exception lwjglexception2) {
                 warn("Error setting FSAA: " + i + "x");
                 lwjglexception2.printStackTrace();
 
                 try {
                     Display.setDisplayMode(displaymode);
-                    Display.create((new PixelFormat()).withDepthBits(24));
-
-                    if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                        Display.setResizable(false);
-                        Display.setResizable(true);
-                    }
+                    Display.create();
                 } catch (Exception lwjglexception1) {
                     lwjglexception1.printStackTrace();
 
                     try {
                         Display.setDisplayMode(displaymode);
                         Display.create();
-
-                        if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                            Display.setResizable(false);
-                            Display.setResizable(true);
-                        }
                     } catch (Exception lwjglexception) {
                         lwjglexception.printStackTrace();
                     }
@@ -1724,11 +1708,6 @@ public class Config {
                 mc.gameSettings.updateVSync();
                 Display.update();
                 GlStateManager.enableTexture2D();
-
-                if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                    Display.setResizable(false);
-                    Display.setResizable(true);
-                }
             }
         } catch (Exception exception) {
             exception.printStackTrace();

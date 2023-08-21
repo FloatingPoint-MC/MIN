@@ -183,8 +183,6 @@ import org.lwjglx.opengl.ContextCapabilities;
 import org.lwjglx.opengl.Display;
 import org.lwjglx.opengl.DisplayMode;
 import org.lwjglx.opengl.GLContext;
-import org.lwjglx.opengl.OpenGLException;
-import org.lwjglx.opengl.PixelFormat;
 import org.lwjglx.util.glu.GLU;
 
 public class Minecraft implements IThreadListener, ISnooperInfo {
@@ -600,12 +598,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             this.toggleFullscreen();
         }
 
-        try {
-            Display.setVSyncEnabled(this.gameSettings.enableVsync);
-        } catch (OpenGLException var2) {
-            this.gameSettings.enableVsync = false;
-            this.gameSettings.saveOptions();
-        }
+        Display.setVSyncEnabled(this.gameSettings.enableVsync);
 
         this.renderGlobal.makeEntityOutlineShader();
         MIN.init();
@@ -652,7 +645,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     }
 
     private void createDisplay() {
-        Display.setResizable(true);
         if (DEBUG_MODE) {
             Display.setTitle("MIN Client(Minecraft 1.12.2) - DEBUG MODE");
         } else {
@@ -660,7 +652,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         }
 
         try {
-            Display.create((new PixelFormat()).withDepthBits(24));
+            Display.create();
         } catch (Exception e) {
             LOGGER.error("Couldn't set pixel format", e);
 

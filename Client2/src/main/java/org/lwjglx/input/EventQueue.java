@@ -55,20 +55,12 @@ class EventQueue {
         return true;
     }
 
-    int getEventCount() {
-        return eventCount;
-    }
-
     int getMaxEvents() {
         return maxEvents;
     }
 
     int getCurrentPos() {
         return readEventPos;
-    }
-
-    int getLastWrittenPos() {
-        return (writeEventPos + maxEvents - 1) % maxEvents;
     }
 
     int getNextPos() {

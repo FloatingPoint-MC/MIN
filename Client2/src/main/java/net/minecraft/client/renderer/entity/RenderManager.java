@@ -120,6 +120,7 @@ import net.optifine.entity.model.CustomEntityModels;
 import net.optifine.player.PlayerItemsLayer;
 import net.optifine.shaders.Shaders;
 
+@SuppressWarnings("rawtypes")
 public class RenderManager {
     private final Map<Class, Render> entityRenderMap = Maps.newHashMap();
     private final Map<String, RenderPlayer> skinMap = Maps.newHashMap();

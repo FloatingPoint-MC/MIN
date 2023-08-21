@@ -27,27 +27,6 @@ public final class BufferUtils {
     public static ByteBuffer createByteBuffer(int size) {
         return ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder());
     }
-
-    /**
-     * Construct a direct native-order shortbuffer with the specified number of elements.
-     * 
-     * @param size The size, in shorts
-     * @return a ShortBuffer
-     */
-    public static ShortBuffer createShortBuffer(int size) {
-        return createByteBuffer(size << 1).asShortBuffer();
-    }
-
-    /**
-     * Construct a direct native-order charbuffer with the specified number of elements.
-     * 
-     * @param size The size, in chars
-     * @return an CharBuffer
-     */
-    public static CharBuffer createCharBuffer(int size) {
-        return createByteBuffer(size << 1).asCharBuffer();
-    }
-
     /**
      * Construct a direct native-order intbuffer with the specified number of elements.
      * 
@@ -59,16 +38,6 @@ public final class BufferUtils {
     }
 
     /**
-     * Construct a direct native-order longbuffer with the specified number of elements.
-     * 
-     * @param size The size, in longs
-     * @return an LongBuffer
-     */
-    public static LongBuffer createLongBuffer(int size) {
-        return createByteBuffer(size << 3).asLongBuffer();
-    }
-
-    /**
      * Construct a direct native-order floatbuffer with the specified number of elements.
      * 
      * @param size The size, in floats
@@ -76,26 +45,6 @@ public final class BufferUtils {
      */
     public static FloatBuffer createFloatBuffer(int size) {
         return createByteBuffer(size << 2).asFloatBuffer();
-    }
-
-    /**
-     * Construct a direct native-order doublebuffer with the specified number of elements.
-     * 
-     * @param size The size, in floats
-     * @return a FloatBuffer
-     */
-    public static DoubleBuffer createDoubleBuffer(int size) {
-        return createByteBuffer(size << 3).asDoubleBuffer();
-    }
-
-    /**
-     * Construct a PointerBuffer with the specified number of elements.
-     * 
-     * @param size The size, in memory addresses
-     * @return a PointerBuffer
-     */
-    public static PointerBuffer createPointerBuffer(int size) {
-        return PointerBuffer.allocateDirect(size);
     }
 
     /**
@@ -116,40 +65,5 @@ public final class BufferUtils {
      */
     public static int getOffset(Buffer buffer) {
         return buffer.position() << getElementSizeExponent(buffer);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(ByteBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(ShortBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(CharBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(IntBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(FloatBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(LongBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
-    }
-
-    /** Fill buffer with zeros from position to remaining */
-    public static void zeroBuffer(DoubleBuffer b) {
-        org.lwjgl.BufferUtils.zeroBuffer(b);
     }
 }

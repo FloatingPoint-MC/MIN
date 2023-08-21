@@ -34,13 +34,10 @@ public class Display {
     private static boolean displayFocused = false;
     private static boolean displayVisible = true;
     private static boolean displayDirty = false;
-    private static boolean displayResizable = false;
     private static boolean startFullscreen = false;
 
     private static DisplayMode mode = new DisplayMode(854, 480);
-    private static DisplayMode desktopDisplayMode = new DisplayMode(854, 480);
-
-    private static final int latestEventKey = 0;
+    private static DisplayMode desktopDisplayMode;
 
     private static int displayX = 0;
     private static int displayY = 0;
@@ -48,8 +45,6 @@ public class Display {
     private static boolean displayResized = false;
     private static int displayWidth = 0;
     private static int displayHeight = 0;
-    private static int displayFramebufferWidth = 0;
-    private static int displayFramebufferHeight = 0;
 
     private static boolean latestResized = false;
     private static int latestWidth = 0;
@@ -70,36 +65,6 @@ public class Display {
         int monitorRefreshRate = vidmode.refreshRate();
 
         desktopDisplayMode = new DisplayMode(monitorWidth, monitorHeight, monitorBitPerPixel, monitorRefreshRate);
-    }
-
-    /**
-     * Create the OpenGL context with the given minimum parameters. If isFullscreen() is true or if windowed context are
-     * not supported on the platform, the display mode will be switched to the mode returned by getDisplayMode(), and a
-     * fullscreen context will be created. If isFullscreen() is false, a windowed context will be created with the
-     * dimensions given in the mode returned by getDisplayMode(). If a context can't be created with the given
-     * parameters, a LWJGLException will be thrown.
-     * <p/>
-     * <p>
-     * The window created will be set up in orthographic 2D projection, with 1:1 pixel ratio with GL coordinates.
-     *
-     * @param pixel_format    Describes the minimum specifications the context must fulfill.
-     * @param shared_drawable The Drawable to share context with. (optional, may be null)
-     *
-     * @throws org.lwjglx.LWJGLException
-     */
-    public static void create(PixelFormat pixel_format, Drawable shared_drawable) {
-        System.out.println("TODO: Implement Display.create(PixelFormat, Drawable)"); // TODO
-        create();
-    }
-
-    public static void create(PixelFormat pixel_format, ContextAttribs attribs) {
-        System.out.println("TODO: Implement Display.create(PixelFormat, ContextAttribs)"); // TODO
-        create();
-    }
-
-    public static void create(PixelFormat pixel_format) {
-        System.out.println("TODO: Implement Display.create(PixelFormat)"); // TODO
-        create();
     }
 
     public static void create() {
@@ -155,7 +120,7 @@ public class Display {
                 if (key > GLFW_KEY_SPACE && key <= GLFW_KEY_GRAVE_ACCENT) { // Handle keys have a char. Exclude space to
                                                                             // avoid extra input when switching IME
                     if ((GLFW_MOD_CONTROL & mods) != 0 && (GLFW_MOD_ALT & mods) == 0) { // Handle ctrl + x/c/v.
-                        Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, (char) (key & 0x1f));
+                        Keyboard.addGlfwKeyEvent(key, action, (char) (key & 0x1f));
                         cancelNextChar = true; // Cancel char event from ctrl key since its already handled here
                     } else if (action > 0) { // Delay press and repeat key event to actual char input. There is ALWAYS a
                                              // char after them
@@ -168,7 +133,7 @@ public class Display {
                         if (ingredientKeyEvent != null && ingredientKeyEvent.key == KeyCodes.glfwToLwjgl(key)) {
                             ingredientKeyEvent.queueOutOfOrderRelease = true;
                         }
-                        Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, '\0');
+                        Keyboard.addGlfwKeyEvent(key, action, '\0');
                     }
                 } else { // Other key with no char event associated
                     char mappedChar;
@@ -194,7 +159,7 @@ public class Display {
                             break;
                         }
                     }
-                    Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, mappedChar);
+                    Keyboard.addGlfwKeyEvent(key, action, mappedChar);
                 }
             }
         };
@@ -215,7 +180,7 @@ public class Display {
                     }
                     ingredientKeyEvent = null;
                 } else {
-                    Keyboard.addCharEvent(0, (char) codepoint); // Non-ASCII chars
+                    Keyboard.addCharEvent((char) codepoint); // Non-ASCII chars
                 }
             }
         };
@@ -287,15 +252,6 @@ public class Display {
             }
         };
 
-        Window.framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-
-            @Override
-            public void invoke(long window, int width, int height) {
-                displayFramebufferWidth = width;
-                displayFramebufferHeight = height;
-            }
-        };
-
         Window.setCallbacks();
 
         displayWidth = mode.getWidth();
@@ -304,8 +260,6 @@ public class Display {
         IntBuffer fbw = BufferUtils.createIntBuffer(1);
         IntBuffer fbh = BufferUtils.createIntBuffer(1);
         GLFW.glfwGetFramebufferSize(Window.handle, fbw, fbh);
-        displayFramebufferWidth = fbw.get(0);
-        displayFramebufferHeight = fbh.get(0);
 
         displayX = (monitorWidth - mode.getWidth()) / 2;
         displayY = (monitorHeight - mode.getHeight()) / 2;
@@ -344,10 +298,6 @@ public class Display {
 
     public static boolean isVisible() {
         return displayVisible;
-    }
-
-    public static void setLocation(int new_x, int new_y) {
-        System.out.println("TODO: Implement Display.setLocation(int, int)");
     }
 
     public static void setVSyncEnabled(boolean sync) {
@@ -450,14 +400,6 @@ public class Display {
         return displayHeight;
     }
 
-    public static int getFramebufferWidth() {
-        return displayFramebufferWidth;
-    }
-
-    public static int getFramebufferHeight() {
-        return displayFramebufferHeight;
-    }
-
     public static void setTitle(String title) {
         windowTitle = title;
     }
@@ -470,14 +412,10 @@ public class Display {
         return displayDirty;
     }
 
-    public static void setInitialBackground(float red, float green, float blue) {
-        // no-op
-    }
-
-    public static int setIcon(ByteBuffer[] icons) {
+    public static void setIcon(ByteBuffer[] icons) {
         if (getWindow() == 0) {
             savedIcons = icons;
-            return 0;
+            return;
         }
         GLFWImage.Buffer glfwImages = GLFWImage.calloc(icons.length);
         ByteBuffer[] nativeBuffers = new ByteBuffer[icons.length];
@@ -489,25 +427,12 @@ public class Display {
             if (dimension * dimension * 4 != nativeBuffers[icon].limit()) {
                 throw new IllegalStateException();
             }
-            glfwImages.put(icon, GLFWImage.create().set(dimension, dimension, nativeBuffers[icon]));
+            try (GLFWImage glfwImage = GLFWImage.create()) {
+                glfwImages.put(icon, glfwImage.set(dimension, dimension, nativeBuffers[icon]));
+            }
         }
         GLFW.glfwSetWindowIcon(getWindow(), glfwImages);
         glfwImages.free();
-        return 0;
-    }
-
-    public static void setResizable(boolean resizable) {
-        displayResizable = resizable;
-        // Ignore the request because why would you make the game window non-resizable
-    }
-
-    public static boolean isResizable() {
-        return displayResizable;
-    }
-
-    public static void setDisplayModeAndFullscreen(DisplayMode mode) {
-        // TODO
-        System.out.println("TODO: Implement Display.setDisplayModeAndFullscreen(DisplayMode)");
     }
 
     public static void setFullscreen(boolean fullscreen) {
@@ -520,13 +445,12 @@ public class Display {
         if (currentState == fullscreen) {
             return;
         }
+        long monitorId = glfwGetPrimaryMonitor();
+        final GLFWVidMode vidMode = glfwGetVideoMode(monitorId);
+        assert vidMode != null;
         if (fullscreen) {
-            long monitorId = glfwGetPrimaryMonitor();
-            final GLFWVidMode vidMode = glfwGetVideoMode(monitorId);
             glfwSetWindowMonitor(window, monitorId, 0, 0, vidMode.width(), vidMode.height(), vidMode.refreshRate());
         } else {
-            long monitorId = glfwGetPrimaryMonitor();
-            final GLFWVidMode vidMode = glfwGetVideoMode(monitorId);
             int width = mode.getWidth();
             int height = mode.getHeight();
             int x = (vidMode.width() - width) / 2;
@@ -540,29 +464,6 @@ public class Display {
             return glfwGetWindowMonitor(getWindow()) != NULL;
         }
         return false;
-    }
-
-    public static void setParent(java.awt.Canvas parent) {
-        // Do nothing as set parent not supported
-    }
-
-    public static void releaseContext() {
-        glfwMakeContextCurrent(0);
-    }
-
-    public static boolean isCurrent() {
-        return true;
-    }
-
-    public static void makeCurrent() {
-        glfwMakeContextCurrent(Window.handle);
-    }
-
-    public static String getAdapter() {
-        if (isCreated()) {
-            return GL11.glGetString(GL11.GL_VENDOR);
-        }
-        return "Unknown";
     }
 
     public static String getVersion() {

@@ -1,6 +1,5 @@
 package org.lwjglx.input;
 
-import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -15,11 +14,6 @@ import org.lwjglx.Sys;
 import org.lwjglx.opengl.Display;
 
 public class Keyboard {
-
-    /**
-     * The special character meaning that no character was translated for the event.
-     */
-    public static final int CHAR_NONE = '\0';
 
     /**
      * The special keycode meaning that only the translated character is valid.
@@ -117,28 +111,15 @@ public class Keyboard {
     public static final int KEY_F16 = 0x67; /* Extended Function keys - (Mac) */
     public static final int KEY_F17 = 0x68;
     public static final int KEY_F18 = 0x69;
-    public static final int KEY_KANA = 0x70; /* (Japanese keyboard) */
     public static final int KEY_F19 = 0x71; /* Extended Function keys - (Mac) */
-    public static final int KEY_CONVERT = 0x79; /* (Japanese keyboard) */
-    public static final int KEY_NOCONVERT = 0x7B; /* (Japanese keyboard) */
     public static final int KEY_YEN = 0x7D; /* (Japanese keyboard) */
     public static final int KEY_NUMPADEQUALS = 0x8D; /* = on numeric keypad (NEC PC98) */
     public static final int KEY_CIRCUMFLEX = 0x90; /* (Japanese keyboard) */
-    public static final int KEY_AT = 0x91; /* (NEC PC98) */
-    public static final int KEY_COLON = 0x92; /* (NEC PC98) */
-    public static final int KEY_UNDERLINE = 0x93; /* (NEC PC98) */
-    public static final int KEY_KANJI = 0x94; /* (Japanese keyboard) */
-    public static final int KEY_STOP = 0x95; /* (NEC PC98) */
-    public static final int KEY_AX = 0x96; /* (Japan AX) */
     public static final int KEY_UNLABELED = 0x97; /* (J3100) */
     public static final int KEY_NUMPADENTER = 0x9C; /* Enter on numeric keypad */
     public static final int KEY_RCONTROL = 0x9D;
-    public static final int KEY_SECTION = 0xA7; /* Section symbol (Mac) */
-    public static final int KEY_NUMPADCOMMA = 0xB3; /* , on numeric keypad (NEC PC98) */
     public static final int KEY_DIVIDE = 0xB5; /* / on numeric keypad */
-    public static final int KEY_SYSRQ = 0xB7;
     public static final int KEY_RMENU = 0xB8; /* right Alt */
-    public static final int KEY_FUNCTION = 0xC4; /* Function (Mac) */
     public static final int KEY_PAUSE = 0xC5; /* Pause */
     public static final int KEY_HOME = 0xC7; /* Home on arrow keypad */
     public static final int KEY_UP = 0xC8; /* UpArrow on arrow keypad */
@@ -150,14 +131,8 @@ public class Keyboard {
     public static final int KEY_NEXT = 0xD1; /* PgDn on arrow keypad */
     public static final int KEY_INSERT = 0xD2; /* Insert on arrow keypad */
     public static final int KEY_DELETE = 0xD3; /* Delete on arrow keypad */
-    public static final int KEY_CLEAR = 0xDA; /* Clear key (Mac) */
     public static final int KEY_LMETA = 0xDB; /* Left Windows/Option key */
-    public static final int KEY_LWIN = KEY_LMETA; /* Left Windows key */
     public static final int KEY_RMETA = 0xDC; /* Right Windows/Option key */
-    public static final int KEY_RWIN = KEY_RMETA; /* Right Windows key */
-    public static final int KEY_APPS = 0xDD; /* AppMenu key */
-    public static final int KEY_POWER = 0xDE;
-    public static final int KEY_SLEEP = 0xDF;
 
     public static final int keyCount;
 
@@ -175,8 +150,6 @@ public class Keyboard {
     }
 
     private static boolean doRepeatEvents = true;
-
-    public static final int KEYBOARD_SIZE = Short.MAX_VALUE;
     public static Queue<KeyEvent> eventQueue = new ArrayBlockingQueue<>(256);
     private static final String[] keyName = new String[Short.MAX_VALUE];
     private static final Map<String, Integer> keyMap = new HashMap<>(Short.MAX_VALUE);
@@ -199,7 +172,7 @@ public class Keyboard {
                     keyCounter++;
                 }
             }
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         keyCount = keyCounter;
         for (int i = 0; i < keyName.length; i++) {
             if (keyName[i] == null) {
@@ -221,15 +194,11 @@ public class Keyboard {
         }
     }
 
-    public static void addGlfwKeyEvent(long window, int key, int scancode, int action, int mods, char c) {
+    public static void addGlfwKeyEvent(int key, int action, char c) {
         KeyState state;
         switch (action) {
             case GLFW.GLFW_PRESS: {
                 state = KeyState.PRESS;
-                break;
-            }
-            case GLFW.GLFW_RELEASE: {
-                state = KeyState.RELEASE;
                 break;
             }
             case GLFW.GLFW_REPEAT: {
@@ -245,7 +214,7 @@ public class Keyboard {
         addRawKeyEvent(new KeyEvent(KeyCodes.glfwToLwjgl(key), c, state, Sys.getNanoTime()));
     }
 
-    public static void addCharEvent(int key, char c) {
+    public static void addCharEvent(char c) {
         try {
             eventQueue.add(new KeyEvent(KEY_NONE, c, KeyState.PRESS, Sys.getNanoTime()));
         } catch (IllegalStateException ignored) {}
@@ -265,19 +234,8 @@ public class Keyboard {
         doRepeatEvents = enable;
     }
 
-    public static boolean areRepeatEventsEnabled() {
-        return doRepeatEvents;
-    }
-
-    public static int getKeyCount() {
-        return keyCount;
-    }
-
-    public static int getNumKeyboardEvents() {
-        return eventQueue.size();
-    }
-
     public static boolean isRepeatEvent() {
+        assert eventQueue.peek() != null;
         return eventQueue.peek().state == KeyState.REPEAT;
     }
 
@@ -290,20 +248,19 @@ public class Keyboard {
     }
 
     public static int getEventKey() {
+        assert eventQueue.peek() != null;
         return eventQueue.peek().key;
     }
 
     public static char getEventCharacter() {
+        assert eventQueue.peek() != null;
         return eventQueue.peek().aChar;
 
     }
 
     public static boolean getEventKeyState() {
+        assert eventQueue.peek() != null;
         return eventQueue.peek().state.isPressed;
-    }
-
-    public static long getEventNanoseconds() {
-        return eventQueue.peek().nano;
     }
 
     public static String getKeyName(int key) {

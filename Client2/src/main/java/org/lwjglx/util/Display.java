@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2002-2008 LWJGL Project All rights reserved. Redistribution and use in source and binary forms, with or
- * without modification, are permitted provided that the following conditions are met: * Redistributions of source code
- * must retain the above copyright notice, this list of conditions and the following disclaimer. * Redistributions in
- * binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution. * Neither the name of 'LWJGL' nor the names of
- * its contributors may be used to endorse or promote products derived from this software without specific prior written
- * permission. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package org.lwjglx.util;
 
 import java.util.ArrayList;
@@ -96,15 +81,14 @@ public final class Display {
      * which you would like them sorted in descending order. This method attempts to create the topmost display mode; if
      * that fails, it will try the next one, and so on, until there are no modes left. If no mode is set at the end, an
      * exception is thrown.
-     * 
+     *
      * @param dm    a list of display modes to choose from
      * @param param the names of the DisplayMode fields in the order in which you would like them sorted.
-     * @return the chosen display mode
      * @throws NoSuchFieldException if one of the params is not a field in DisplayMode
      * @throws Exception            if no display mode could be set
      * @see org.lwjgl.opengl.DisplayMode
      */
-    public static DisplayMode setDisplayMode(DisplayMode[] dm, final String[] param) throws Exception {
+    public static void setDisplayMode(DisplayMode[] dm, final String[] param) throws Exception {
 
         class FieldAccessor {
 
@@ -201,7 +185,7 @@ public final class Display {
             try {
                 if (LWJGLUtil.DEBUG || DEBUG) System.out.println("Attempting to set displaymode: " + aDm);
                 org.lwjglx.opengl.Display.setDisplayMode(aDm);
-                return aDm;
+                return;
             } catch (Exception e) {
                 if (LWJGLUtil.DEBUG || DEBUG) {
                     System.out.println("Failed to set display mode to " + aDm);

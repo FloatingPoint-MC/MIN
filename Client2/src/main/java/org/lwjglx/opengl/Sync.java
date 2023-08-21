@@ -17,6 +17,8 @@ package org.lwjglx.opengl;
 
 import org.lwjglx.Sys;
 
+import java.util.Arrays;
+
 /**
  * A highly accurate sync method that continually adapts to the system it runs on to provide reliable results.
  *
@@ -51,7 +53,7 @@ class Sync {
         try {
             // sleep until the average sleep time is greater than the time remaining till nextFrame
             for (long t0 = getTime(), t1; (nextFrame - t0) > sleepDurations.avg(); t0 = t1) {
-                Thread.sleep(1);
+                Thread.sleep(1L);
                 sleepDurations.add((t1 = getTime()) - t0); // update average sleep time
             }
 
@@ -63,7 +65,7 @@ class Sync {
                 Thread.yield();
                 yieldDurations.add((t1 = getTime()) - t0); // update average yield time
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
 
         }
 
@@ -74,7 +76,6 @@ class Sync {
     /**
      * This method will initialise the sync method by setting initial values for sleepDurations/yieldDurations and
      * nextFrame.
-     *
      * If running on windows it will start the sleep timer fix.
      */
     private static void initialise() {
@@ -95,7 +96,7 @@ class Sync {
             Thread timerAccuracyThread = new Thread(() -> {
                 try {
                     Thread.sleep(Long.MAX_VALUE);
-                } catch (Exception e) {}
+                } catch (Exception ignored) {}
             });
 
             timerAccuracyThread.setName("LWJGL Timer");
@@ -119,7 +120,6 @@ class Sync {
         private int offset;
 
         private static final long DAMPEN_THRESHOLD = 10 * 1000L * 1000L; // 10ms
-        private static final float DAMPEN_FACTOR = 0.9f; // don't change: 0.9f is exactly right!
 
         public RunningAvg(int slotCount) {
             this.slots = new long[slotCount];
@@ -147,9 +147,7 @@ class Sync {
 
         public void dampenForLowResTicker() {
             if (this.avg() > DAMPEN_THRESHOLD) {
-                for (int i = 0; i < this.slots.length; i++) {
-                    this.slots[i] *= DAMPEN_FACTOR;
-                }
+                Arrays.fill(this.slots, 0);
             }
         }
     }

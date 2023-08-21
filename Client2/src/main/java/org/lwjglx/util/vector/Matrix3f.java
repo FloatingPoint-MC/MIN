@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2002-2008 LWJGL Project All rights reserved. Redistribution and use in source and binary forms, with or
- * without modification, are permitted provided that the following conditions are met: * Redistributions of source code
- * must retain the above copyright notice, this list of conditions and the following disclaimer. * Redistributions in
- * binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution. * Neither the name of 'LWJGL' nor the names of
- * its contributors may be used to endorse or promote products derived from this software without specific prior written
- * permission. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package org.lwjglx.util.vector;
 
 import java.io.Serializable;
@@ -94,27 +79,6 @@ public class Matrix3f extends Matrix implements Serializable {
     }
 
     /**
-     * Load from a float buffer. The buffer stores the matrix in row major (maths) order.
-     *
-     * @param buf A float buffer to read from
-     * @return this
-     */
-    public Matrix loadTranspose(FloatBuffer buf) {
-
-        m00 = buf.get();
-        m10 = buf.get();
-        m20 = buf.get();
-        m01 = buf.get();
-        m11 = buf.get();
-        m21 = buf.get();
-        m02 = buf.get();
-        m12 = buf.get();
-        m22 = buf.get();
-
-        return this;
-    }
-
-    /**
      * Store this matrix in a float buffer. The matrix is stored in column major (openGL) order.
      * 
      * @param buf The buffer to store this matrix in
@@ -128,24 +92,6 @@ public class Matrix3f extends Matrix implements Serializable {
         buf.put(m12);
         buf.put(m20);
         buf.put(m21);
-        buf.put(m22);
-        return this;
-    }
-
-    /**
-     * Store this matrix in a float buffer. The matrix is stored in row major (maths) order.
-     * 
-     * @param buf The buffer to store this matrix in
-     */
-    public Matrix storeTranspose(FloatBuffer buf) {
-        buf.put(m00);
-        buf.put(m10);
-        buf.put(m20);
-        buf.put(m01);
-        buf.put(m11);
-        buf.put(m21);
-        buf.put(m02);
-        buf.put(m12);
         buf.put(m22);
         return this;
     }
@@ -308,18 +254,16 @@ public class Matrix3f extends Matrix implements Serializable {
      * @return the determinant of the matrix
      */
     public float determinant() {
-        float f = m00 * (m11 * m22 - m12 * m21) + m01 * (m12 * m20 - m10 * m22) + m02 * (m10 * m21 - m11 * m20);
-        return f;
+        return m00 * (m11 * m22 - m12 * m21) + m01 * (m12 * m20 - m10 * m22) + m02 * (m10 * m21 - m11 * m20);
     }
 
     /**
      * Returns a string representation of this matrix
      */
     public String toString() {
-        String buf = String.valueOf(m00) + ' ' + m10 + ' ' + m20 + ' ' + '\n' +
+        return String.valueOf(m00) + ' ' + m10 + ' ' + m20 + ' ' + '\n' +
                 m01 + ' ' + m11 + ' ' + m21 + ' ' + '\n' +
                 m02 + ' ' + m12 + ' ' + m22 + ' ' + '\n';
-        return buf;
     }
 
     /**
@@ -443,16 +387,7 @@ public class Matrix3f extends Matrix implements Serializable {
     }
 
     /**
-     * Set this matrix to 0.
-     * 
-     * @return this
-     */
-    public Matrix setZero() {
-        return setZero(this);
-    }
-
-    /**
-     * Set the matrix matrix to 0.
+     * Set the matrix to 0.
      * 
      * @param m The matrix to be set to 0
      * @return m

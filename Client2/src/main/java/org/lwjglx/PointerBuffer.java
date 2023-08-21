@@ -3,8 +3,9 @@ package org.lwjglx;
 import java.lang.reflect.Field;
 import java.nio.*;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
+@SuppressWarnings("all")
 public class PointerBuffer extends org.lwjgl.PointerBuffer {
 
     private static final Field containerAccess;
@@ -30,9 +31,11 @@ public class PointerBuffer extends org.lwjgl.PointerBuffer {
         super(ver3.address(), getContainer(ver3), ver3.position(), ver3.position(), ver3.limit(), ver3.capacity());
     }
 
+    @Nonnull
     public static PointerBuffer allocateDirect(int capacity) {
         return new PointerBuffer(org.lwjgl.PointerBuffer.allocateDirect(capacity));
     }
+    @Nonnull
     public static PointerBuffer create(long address, int capacity) {
         return new PointerBuffer(org.lwjgl.PointerBuffer.create(address, capacity));
     }
@@ -42,21 +45,8 @@ public class PointerBuffer extends org.lwjgl.PointerBuffer {
      *
      * @param source the source buffer
      */
+    @Nonnull
     public static PointerBuffer create(ByteBuffer source) {
         return new PointerBuffer(org.lwjgl.PointerBuffer.create(source));
-    }
-
-    /** Returns true if the underlying architecture is 64bit. */
-    public static boolean is64Bit() {
-        return Sys.is64Bit();
-    }
-
-    /**
-     * Returns the pointer size in bytes, based on the underlying architecture.
-     *
-     * @return The pointer size in bytes
-     */
-    public static int getPointerSize() {
-        return is64Bit() ? 8 : 4;
     }
 }
