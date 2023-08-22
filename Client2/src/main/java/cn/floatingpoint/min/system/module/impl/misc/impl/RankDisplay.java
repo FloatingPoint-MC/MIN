@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * @date: 2023-07-22 15:07:57
  */
 public class RankDisplay extends MiscModule {
-    public static ModeValue game = new ModeValue(new String[]{"bw", "bw-xp", "sw", "kit"}, "bw") {
+    public static ModeValue game = new ModeValue(new String[]{"bw", "sw", "kit"}, "bw") {
         @Override
         public void setValue(String value) {
             Managers.clientManager.ranks.clear();
@@ -21,11 +21,13 @@ public class RankDisplay extends MiscModule {
             super.setValue(value);
         }
     };
+    public static final OptionValue kd = new OptionValue(false);
     public static final OptionValue self = new OptionValue(true);
 
     public RankDisplay() {
         addValues(
                 new Pair<>("Game", game),
+                new Pair<>("KD", kd),
                 new Pair<>("Self", self)
         );
     }

@@ -1,9 +1,11 @@
 package net.minecraft.client.renderer.entity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
+import cn.floatingpoint.min.utils.client.Rank;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -408,24 +410,12 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             if (Managers.moduleManager.miscModules.get("RankDisplay").isEnabled() && str.contains(entityIn.getName())) {
                 if (RankDisplay.self.getValue() || entityIn != Minecraft.getMinecraft().player) {
                     if (Managers.clientManager.ranks.containsKey(entityIn.getName())) {
-                        int rank = Managers.clientManager.ranks.get(entityIn.getName());
-                        String rankLabel;
-                        if (rank <= 999) {
-                            if (rank <= 100) {
-                                rankLabel = "\2474[No." + rank + "]";
-                            } else {
-                                rankLabel = "\247c[No." + rank + "]";
-                            }
-                        } else {
-                            rank /= 1000;
-                            if (rank <= 9) {
-                                rankLabel = "\2476[No." + rank + "k+]\247f";
-                            } else {
-                                rank /= 10;
-                                rankLabel = "\247e[No." + rank + "w+]\247f";
-                            }
-                        }
+                        Rank rank = Managers.clientManager.ranks.get(entityIn.getName());
+                        String rankLabel = getRankLabel(rank);
                         if (entityIn.getDistance(this.renderManager.renderViewEntity) <= 64) {
+                            if (RankDisplay.kd.getValue()) {
+                                EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), "K/D: " + rank.getKd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.5F : 0.25F), (float) z, i, f, f1, flag1, flag);
+                            }
                             EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), rankLabel, (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.25F : 0.0F), (float) z, i, f, f1, flag1, flag);
                         }
                     }
@@ -433,6 +423,28 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             }
             EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), str, (float)x, (float)y + f2, (float)z, i, f, f1, flag1, flag);
         }
+    }
+
+    @Nonnull
+    private static String getRankLabel(Rank rank) {
+        int iRank = rank.getRank();
+        String rankLabel;
+        if (iRank <= 999) {
+            if (iRank <= 100) {
+                rankLabel = "\2474[No." + iRank + "]";
+            } else {
+                rankLabel = "\247c[No." + iRank + "]";
+            }
+        } else {
+            iRank /= 1000;
+            if (iRank <= 9) {
+                rankLabel = "\2476[No." + iRank + "k+]\247f";
+            } else {
+                iRank /= 10;
+                rankLabel = "\247e[No." + iRank + "w+]\247f";
+            }
+        }
+        return rankLabel;
     }
 
     public RenderManager getRenderManager()

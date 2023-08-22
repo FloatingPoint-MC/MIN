@@ -4,6 +4,7 @@ import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Manager;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
+import cn.floatingpoint.min.utils.client.Rank;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import net.minecraft.client.gui.GuiChat;
 import org.json.JSONException;
@@ -22,7 +23,7 @@ import java.util.UUID;
  */
 public class ClientManager implements Manager {
     public HashMap<UUID, Integer> clientMateUuids;
-    public HashMap<String, Integer> ranks = new HashMap<>();
+    public HashMap<String, Rank> ranks = new HashMap<>();
     public float titleSize, titleX, titleY;
     public HashSet<String> cooldown = new HashSet<>();
     public boolean firstStart;
@@ -63,6 +64,9 @@ public class ClientManager implements Manager {
                 } else if (version == 202) {
                     adsorption = jsonObject.getBoolean("Adsorption");
                     channel = GuiChat.Channel.WORLD;
+                } else if (version == 203) {
+                    adsorption = jsonObject.getBoolean("Adsorption");
+                    channel = GuiChat.Channel.valueOf(jsonObject.getString("Chat-Channel").toUpperCase());
                 }
             } else {
                 adsorption = jsonObject.getBoolean("Adsorption");
@@ -93,14 +97,14 @@ public class ClientManager implements Manager {
                     JSONObject json = null;
                     if (RankDisplay.game.isCurrentMode("bw")) {
                         json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwars.html?uid=" + id);
-                    } else if (RankDisplay.game.isCurrentMode("bw-xp")) {
-                        json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwarsxp.html?uid=" + id);
+                        ranks.put(id, new Rank(json.getInt("rank"), json.getJSONObject("person").getDouble("killDead")));
                     } else if (RankDisplay.game.isCurrentMode("sw")) {
                         json = WebUtil.getJSON("http://mc-api.16163.com/search/skywars.html?uid=" + id);
+                        ranks.put(id, new Rank(json.getInt("rank"), json.getJSONObject("person").getDouble("killDead")));
                     } else if (RankDisplay.game.isCurrentMode("kit")) {
                         json = WebUtil.getJSON("http://mc-api.16163.com/search/kitbattle.html?uid=" + id);
+                        ranks.put(id, new Rank(json.getInt("rank"), json.getDouble("killDead")));
                     }
-                    ranks.put(id, json.getInt("rank"));
                     cooldown.remove(id);
                 } catch (IOException | URISyntaxException | JSONException ignore) {
                 }

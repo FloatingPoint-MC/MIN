@@ -17,7 +17,7 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 public class FileManager implements Manager {
-    public static final int VERSION = 203;
+    public static final int VERSION = 204;
     public File dir = null;
     public boolean shouldSave = false;
 
