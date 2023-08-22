@@ -5,6 +5,7 @@ import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import cn.floatingpoint.min.system.module.value.impl.OptionValue;
 import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import cn.floatingpoint.min.utils.client.Pair;
+import cn.floatingpoint.min.utils.math.FunctionUtil;
 import net.minecraft.client.gui.Gui;
 import org.lwjglx.input.Keyboard;
 import org.lwjglx.input.Mouse;
@@ -112,7 +113,7 @@ public class KeyStrokes extends RenderModule implements DraggableGameView {
             colors.put(identity, 39);
         } else {
             if (current > 0) {
-                colors.put(identity, current -= 3);
+                colors.put(identity, FunctionUtil.decreasedSpeed(current, 39, 0, 2));
             }
         }
         Gui.drawRect(x, y, x + width, y + 22, new Color(40 + current * 2, 40 + current * 2, 40 + current * 2, 102 + current).getRGB());

@@ -64,13 +64,15 @@ public class IRCMessageGrabber {
     }
 
     public static void reset() {
-        enabled.set(false);
         MIN.runAsync(() -> {
             try {
                 JSONObject jsonObject = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/irc/current");
                 if (jsonObject.has("Code")) {
                     if (jsonObject.getInt("Code") == 0) {
                         startLoc = jsonObject.getInt("Current") + 1;
+                        if (!enabled.get()) {
+                            ChatUtil.printToChatWithPrefix("IRC已经联通!");
+                        }
                         enabled.set(true);
                     }
                 }
