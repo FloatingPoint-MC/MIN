@@ -85,7 +85,7 @@ public class GuiTutorial extends GuiScreen {
                     background -= 5;
                 }
                 if (background == 0) {
-                    mc.displayGuiScreen(new GuiMainMenu(true));
+                    mc.displayGuiScreen(new GuiDamnJapaneseAction(new GuiMainMenu(true)));
                 }
             }
         }

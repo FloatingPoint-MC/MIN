@@ -1628,7 +1628,6 @@ public abstract class World implements IBlockAccess {
         if (!(entityIn instanceof EntityPlayer)) {
             int j2 = MathHelper.floor(entityIn.posX);
             int k2 = MathHelper.floor(entityIn.posZ);
-            int l2 = 32;
 
             if (forceUpdate && !this.isAreaLoaded(j2 - 32, 0, k2 - 32, j2 + 32, 0, k2 + 32, true)) {
                 return;

@@ -61,7 +61,7 @@ public class GuiLoading extends GuiScreen {
                 if (Managers.clientManager.firstStart) {
                     mc.displayGuiScreen(new GuiFirstStart());
                 } else {
-                    mc.displayGuiScreen(new GuiMainMenu(true));
+                    mc.displayGuiScreen(new GuiDamnJapaneseAction(new GuiMainMenu(true)));
                 }
             }
         }

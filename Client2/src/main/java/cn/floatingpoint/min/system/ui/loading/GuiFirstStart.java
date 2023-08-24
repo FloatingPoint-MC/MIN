@@ -59,7 +59,7 @@ public class GuiFirstStart extends GuiScreen {
                 Gui.drawRect(0, 0, width, height, new Color(0, 0, 0, alpha).getRGB());
                 if (alpha == 255) {
                     if (stage == -2) {
-                        mc.displayGuiScreen(new GuiMainMenu(true));
+                        mc.displayGuiScreen(new GuiDamnJapaneseAction(new GuiMainMenu(true)));
                     } else if (stage == 1) {
                         mc.displayGuiScreen(new GuiTutorial());
                     }

@@ -10,6 +10,7 @@ import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.KeyStrokes;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
+import cn.floatingpoint.min.system.ui.loading.GuiDamnJapaneseAction;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Lists;
@@ -584,7 +585,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         this.ingameGUI = new GuiIngame(this);
 
         if (this.serverName != null) {
-            this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(false), this, this.serverName, this.serverPort));
+            this.displayGuiScreen(new GuiDamnJapaneseAction(new GuiConnecting(new GuiMainMenu(false), this, this.serverName, this.serverPort)));
         } else {
             this.displayGuiScreen(new GuiLoading());
         }
