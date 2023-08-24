@@ -7,6 +7,8 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @projectName: MIN
@@ -19,6 +21,15 @@ public class GuiDamnJapaneseAction extends GuiScreen {
 
     public GuiDamnJapaneseAction(GuiScreen nextScreen) {
         this.nextScreen = nextScreen;
+    }
+
+    @Override
+    public void initGui() {
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+        String date = format.format(new Date());
+        if (!date.equals("8-24") && !date.equals("08-24")) {
+            mc.displayGuiScreen(nextScreen);
+        }
         animation = -15;
     }
 
