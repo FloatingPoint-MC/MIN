@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import cn.floatingpoint.min.system.command.CommandMin;
 import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
+import cn.floatingpoint.min.utils.client.ChatUtil;
+import cn.floatingpoint.min.utils.math.TimeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ElytraSound;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -75,9 +77,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class EntityPlayerSP extends AbstractClientPlayer {
@@ -169,6 +174,9 @@ public class EntityPlayerSP extends AbstractClientPlayer {
     private boolean rowingBoat;
     private int autoJumpTime;
     private boolean wasFallFlying;
+    private final TimeHelper timer = new TimeHelper();
+    private final String[] messages = new String[]{"党啊!你伟大的功绩将雕刻在历史的丰碑上，将永远留在我的心中！", "改革创造大奇迹，中华文明留记忆;发展才是硬道理，祖国翻天又覆地。", "一百年年风雨兼程，一百年年岁月沧桑，如今，强大的中国已经屹立在世界的东方。", "未来是美好的，党的方针政策是英明的，我们要永远拥护中国共产党，永远跟\n\247b\247l党走。永远！", "一个锤子，一把镰刀交织一起，看上去是一个普普通通的图案，可它贴到鲜红\n\247b\247l的旗帜上，它就是代表我们国家的一个政党：中国共产党。", "人生再大的困难也不比红军过草地艰难，生活再大的坎儿也不比红军过雪\n\247b\247l山艰辛，只要有勇气和信心，一切困难都是纸老虎。祝建党节快乐！", "英雄的中国共产党是中国人民的领导的核心，是领导中国人民从一个胜利\n\247b\247l走向另一个胜利的掌舵者，是指引中国走向繁荣昌盛富强明主的航灯！", "中国共产党，你是大树。你在风雨中展现自己的魅力，保护脚下的小草，让生\n\247b\247l命得以延续，让小草免受风雨的摧残，酷日的侵袭，严寒的凌辱。", "历史车轮滚滚向前，无情碾碎旧的封建的主义，先进的中国共产党应运而生，\n\247b\247l她带领中国走过几十年的风风雨雨，领导我们越过一个个坎坎坷坷。", "我坚信，我们就是沃土里的一颗种子，阳光下的一朵葵花，在党的关怀下，\n\247b\247l在和煦的阳光下，我们将会茁壮成长，把祖国的明天建设得更加富强。", "我们的伟大领袖毛主席曾经说过：“世界是你们的，也是我们的，但是归根\n\247b\247l结底是你们的。你们好像早晨八九点钟的太阳，希望寄托在你们身上。“", "歌颂共产党，没有共产党，就没有新中国!拌颂中国共产党，没有共产党，就没\n\247b\247l有人民当家做主!拌颂共产党，没有共产党，就没有我们的幸福生活。", "走进七月，所有的花都在绽放中吐露芬芳，所有的心都在祝福歌唱。党哺育\n\247b\247l我们快乐成长，党教导我们天天向上，我们一定不忘党的培养，为国贡献更多力量！", "确定今天的方针，设置明天的路线，存储坚定的信念，粘贴无悔的誓言，复制\n\247b\247l优秀的楷模，打印高尚的境界，发送深切的祝愿!祝党永远年轻，祝你永远快乐！", "革命风云变，夜沉沉，刀光剑影，奸徒背叛。革命航船何处去，党把乾坤扭转\n\247b\247l。听八一，南昌天半，一片枪声惊广宇。看城头，风卷红旗遍。喜此日，我军建。", "伟大的国家伟大的党，红日东升照四方，伟大的人民顶天立地，伟大的军队握\n\247b\247l紧枪，伟大的领袖毛泽东，领导我们向前，大海不能拦，高山不能挡，高山不能挡！", "从建立至今，中国共产党历经了无数的风雨，是我们最最敬爱的党员先烈们\n\247b\247l用自己的血肉身躯保家卫国，捍卫了中华大地不败的魄气，换来了今日的绚\n\247b\247l丽七彩虹！", "天府之国，万里长江肥沃良土，孕育佳品芳香飘逸，流连忘返境由心生，自在娇子\n\247b\247l。中国娇子，川渝骄傲阳光助学，兼济天下党的关怀，给予力量厚积薄发，再创辉煌。", "伟大的国家伟大的党，革命的旗帜高高飘扬，伟大的人民不怕风浪，伟大的军\n\247b\247l队步伐坚强，伟大的领袖毛泽东，领导我们向前，祖国要富强，人类要解放，人类要解放！", "在党的领导下，中华人民共和国成立了，社会主义实现了，改革开放成功了，\n\247b\247l香港、澳门回归了。我们的祖国已接脱了过去的屈辱和贫穷，发展成为较\n\247b\247l为繁荣昌盛的新中国。", "中国共产党，你是蜡烛。你不停地燃烧自己，你用自己的微光去照亮他人，却\n\247b\247l无遗憾。你用这光引领着无数人民去探索未知领域，为人民开辟了一条有\n\247b\247l中国特色的社会主义道路。", "一唱雄鸡天下白，唤来春天照人间。从此，我们的祖国进入了建设社会主义\n\247b\247l的新时代。国民经济和各项事业取得了举世瞩目的巨大成就，一个充满生\n\247b\247l机活力的中国崛起在世界的东方。", "五颗金星映党旗，党的光辉耀寰宇，一百载书华章，民族复兴展伟业，国人共\n\247b\247l圆中国梦。百年风雨育娇子，天之娇子世传承，龙飞凤舞成吉祥，激情奋进续\n\247b\247l传奇，全员齐筑娇子梦。", "历史的接力棒传入我们新一代人手中，历史给了我们足够的选择，过平平坦\n\247b\247l坦的生活。我们应把这交付于我们手中的祖国带向更昌盛富强的时代，让\n\247b\247l我们用生命，来创造历史的另一个辉煌！", "中国共产党，你是玉兰。你纯洁高雅，弃妖冶之色，去轻佻之态。你不选择在\n\247b\247l温暖舒适的暮春中吐艳，却在冷雨中挺立，在寒风中怒放。你无论高缀枝头，还是\n\247b\247l飘落在地，始终保持着一尘不染的品格。", "每个人的信仰是不同的。但是，信仰一个政党，加入一个先进的组织，这是人\n\247b\247l生最高尚的追求。中国共产党之所以值得信仰是因为她有光辉的历史，是\n\247b\247l中华民族的希望所在，也是我们炎黄子孙的骄傲。", "悠悠一百载，走过了多少坎坷与荆棘，品尝了多少屈辱和血泪，更记载了多少\n\247b\247l沧海变桑田的伟大业绩！", "中国共产党，中国拥有你，有了一个光明的前程，我们拥有你，便有了一个\n\247b\247l不舍的信念、不弃的追求。"};
+    private int tick = 0;
 
     public EntityPlayerSP(Minecraft p_i47378_1_, World p_i47378_2_, NetHandlerPlayClient p_i47378_3_, StatisticsManager p_i47378_4_, RecipeBook p_i47378_5_) {
         super(p_i47378_2_, p_i47378_3_.getGameProfile());
@@ -230,6 +238,18 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      */
     public void onUpdate() {
         if (this.world.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+            String date = format.format(new Date());
+            if (date.equals("7-1") || date.equals("07-1") || date.equals("7-01") || date.equals("07-01")) {
+                if (this.timer.isDelayComplete(60000L)) {
+                    this.timer.reset();
+                    ChatUtil.printToChat(new TextComponentString("\247b\247l" + this.messages[this.tick]));
+                    this.tick++;
+                    if (this.tick >= this.messages.length) {
+                        this.tick = 0;
+                    }
+                }
+            }
             super.onUpdate();
 
             if (this.isRiding()) {
