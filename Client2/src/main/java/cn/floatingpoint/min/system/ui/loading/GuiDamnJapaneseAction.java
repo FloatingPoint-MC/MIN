@@ -44,7 +44,7 @@ public class GuiDamnJapaneseAction extends GuiScreen {
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("日本已经在2023年8月24日宣布它将", width / 2, height / 2 - 56, white);
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("into the Pacific Ocean on Aug 24 2023.", width / 2, height / 2 - 42, white);
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("排放核废水到太平洋中", width / 2, height / 2 - 28, white);
-        Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("We consider this as a dangerous action which does", width / 2, height / 2 - 4, white);
+        Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("We consider this as a dangerous actions which does", width / 2, height / 2 - 4, white);
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("我们认为这是一个对于人类", width / 2, height / 2 + 10, white);
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("giant harm to human beings.", width / 2, height / 2 + 24, white);
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("产生巨大危害的行为。", width / 2, height / 2 + 38, white);
@@ -54,10 +54,10 @@ public class GuiDamnJapaneseAction extends GuiScreen {
         Managers.fontManager.sourceHansSansCN_Regular_26.drawCenteredString("我们不希望这一天变成世界海洋灾难日，必须阻止这一肮脏的行为。", width / 2, height / 2 + 104, white);
         int black = new Color(0, 0, 0, 126).getRGB();
         RenderUtil.drawRoundedRect(width / 2 - 250, height / 2 + 144, width / 2 - 10, height / 2 + 174, 5, black);
-        Managers.fontManager.sourceHansSansCN_Regular_22.drawCenteredString("I don't think this action is wrong and exit", width / 2 - 130, height / 2 + 148, white);
+        Managers.fontManager.sourceHansSansCN_Regular_22.drawCenteredString("I don't think this actions is wrong and exit", width / 2 - 130, height / 2 + 148, white);
         Managers.fontManager.sourceHansSansCN_Regular_22.drawCenteredString("我不认为该决定有问题并退出", width / 2 - 130, height / 2 + 162, white);
         RenderUtil.drawRoundedRect(width / 2 + 10, height / 2 + 144, width / 2 + 250, height / 2 + 174, 5, black);
-        Managers.fontManager.sourceHansSansCN_Regular_22.drawCenteredString("Resolutely resist fucking irresponsible action", width / 2 + 130, height / 2 + 148, white);
+        Managers.fontManager.sourceHansSansCN_Regular_22.drawCenteredString("Resolutely resist fucking irresponsible actions", width / 2 + 130, height / 2 + 148, white);
         Managers.fontManager.sourceHansSansCN_Regular_22.drawCenteredString("坚决抵制该不负责任的行为", width / 2 + 130, height / 2 + 162, white);
         if (animation < 0) {
             drawRect(0, 0, width, height, new Color(0, 0, 0, -animation * 17).getRGB());

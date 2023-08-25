@@ -10,6 +10,7 @@ import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.KeyStrokes;
 import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
+import cn.floatingpoint.min.system.shortcut.Shortcut;
 import cn.floatingpoint.min.system.ui.loading.GuiDamnJapaneseAction;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
 import cn.floatingpoint.min.utils.client.WebUtil;
@@ -418,7 +419,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
@@ -1765,6 +1766,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                             module.toggle();
                         }
                     }
+                    for (Shortcut shortcut : Managers.clientManager.shortcuts) {
+                        if (i == shortcut.key()) {
+                            shortcut.actions().forEach(Shortcut.Action::run);
+                        }
+                    }
                     if (Managers.clientManager.vexGui) {
                         if (i == 37) {
                             this.player.sendChatMessage("/kh");
@@ -2519,7 +2525,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     }
 
     /**
-     * Return the current action's name
+     * Return the current actions's name
      */
     private String getCurrentAction() {
         if (this.integratedServer != null) {

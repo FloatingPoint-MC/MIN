@@ -55,7 +55,7 @@ public class ItemFood extends Item
 
     /**
      * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
-     * the Item before the action is complete.
+     * the Item before the actions is complete.
      */
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
@@ -94,7 +94,7 @@ public class ItemFood extends Item
     }
 
     /**
-     * returns the action that specifies what animation to play when the items is being used
+     * returns the actions that specifies what animation to play when the items is being used
      */
     public EnumAction getItemUseAction(ItemStack stack)
     {

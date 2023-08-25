@@ -1,6 +1,7 @@
 package net.minecraft.tileentity;
 
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
@@ -19,75 +20,67 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public abstract class TileEntity
-{
+public abstract class TileEntity {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> REGISTRY = new RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> ();
+    private static final RegistryNamespaced<ResourceLocation, Class<? extends TileEntity>> REGISTRY = new RegistryNamespaced<ResourceLocation, Class<? extends TileEntity>>();
 
-    /** the instance of the world the tile entity is in. */
+    /**
+     * the instance of the world the tile entity is in.
+     */
     protected World world;
     protected BlockPos pos = BlockPos.ORIGIN;
     protected boolean tileEntityInvalid;
     private int blockMetadata = -1;
 
-    /** the Block type that this TileEntity is contained within */
+    /**
+     * the Block type that this TileEntity is contained within
+     */
     protected Block blockType;
 
-    private static void register(String id, Class <? extends TileEntity > clazz)
-    {
+    private static void register(String id, Class<? extends TileEntity> clazz) {
         REGISTRY.putObject(new ResourceLocation(id), clazz);
     }
 
     @Nullable
-    public static ResourceLocation getKey(Class <? extends TileEntity > clazz)
-    {
+    public static ResourceLocation getKey(Class<? extends TileEntity> clazz) {
         return REGISTRY.getNameForObject(clazz);
     }
 
     /**
      * Returns the worldObj for this tileEntity.
      */
-    public World getWorld()
-    {
+    public World getWorld() {
         return this.world;
     }
 
     /**
      * Sets the worldObj for this tileEntity.
      */
-    public void setWorld(World worldIn)
-    {
+    public void setWorld(World worldIn) {
         this.world = worldIn;
     }
 
     /**
      * Returns true if the worldObj isn't null.
      */
-    public boolean hasWorld()
-    {
+    public boolean hasWorld() {
         return this.world != null;
     }
 
-    public void readFromNBT(NBTTagCompound compound)
-    {
+    public void readFromNBT(NBTTagCompound compound) {
         this.pos = new BlockPos(compound.getInteger("x"), compound.getInteger("y"), compound.getInteger("z"));
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         return this.writeInternal(compound);
     }
 
-    private NBTTagCompound writeInternal(NBTTagCompound compound)
-    {
+    private NBTTagCompound writeInternal(NBTTagCompound compound) {
         ResourceLocation resourcelocation = REGISTRY.getNameForObject(this.getClass());
 
-        if (resourcelocation == null)
-        {
+        if (resourcelocation == null) {
             throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
-        }
-        else
-        {
+        } else {
             compound.setString("id", resourcelocation.toString());
             compound.setInteger("x", this.pos.getX());
             compound.setInteger("y", this.pos.getY());
@@ -97,54 +90,40 @@ public abstract class TileEntity
     }
 
     @Nullable
-    public static TileEntity create(World worldIn, NBTTagCompound compound)
-    {
+    public static TileEntity create(World worldIn, NBTTagCompound compound) {
         TileEntity tileentity = null;
         String s = compound.getString("id");
 
-        try
-        {
-            Class <? extends TileEntity > oclass = REGISTRY.getObject(new ResourceLocation(s));
+        try {
+            Class<? extends TileEntity> oclass = REGISTRY.getObject(new ResourceLocation(s));
 
-            if (oclass != null)
-            {
-                tileentity = oclass.newInstance();
+            if (oclass != null) {
+                tileentity = oclass.getDeclaredConstructor().newInstance();
             }
-        }
-        catch (Throwable throwable1)
-        {
+        } catch (Throwable throwable1) {
             LOGGER.error("Failed to create block entity {}", s, throwable1);
         }
 
-        if (tileentity != null)
-        {
-            try
-            {
+        if (tileentity != null) {
+            try {
                 tileentity.setWorldCreate(worldIn);
                 tileentity.readFromNBT(compound);
-            }
-            catch (Throwable throwable)
-            {
+            } catch (Throwable throwable) {
                 LOGGER.error("Failed to load data for block entity {}", s, throwable);
                 tileentity = null;
             }
-        }
-        else
-        {
+        } else {
             LOGGER.warn("Skipping BlockEntity with id {}", s);
         }
 
         return tileentity;
     }
 
-    protected void setWorldCreate(World worldIn)
-    {
+    protected void setWorldCreate(World worldIn) {
     }
 
-    public int getBlockMetadata()
-    {
-        if (this.blockMetadata == -1)
-        {
+    public int getBlockMetadata() {
+        if (this.blockMetadata == -1) {
             IBlockState iblockstate = this.world.getBlockState(this.pos);
             this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
         }
@@ -156,16 +135,13 @@ public abstract class TileEntity
      * For tile entities, ensures the chunk containing the tile entity is saved to disk later - the game won't think it
      * hasn't changed and skip it.
      */
-    public void markDirty()
-    {
-        if (this.world != null)
-        {
+    public void markDirty() {
+        if (this.world != null) {
             IBlockState iblockstate = this.world.getBlockState(this.pos);
             this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
             this.world.markChunkDirty(this.pos, this);
 
-            if (this.getBlockType() != Blocks.AIR)
-            {
+            if (this.getBlockType() != Blocks.AIR) {
                 this.world.updateComparatorOutputLevel(this.pos, this.getBlockType());
             }
         }
@@ -174,75 +150,65 @@ public abstract class TileEntity
     /**
      * Returns the square of the distance between this entity and the passed in coordinates.
      */
-    public double getDistanceSq(double x, double y, double z)
-    {
-        double d0 = (double)this.pos.getX() + 0.5D - x;
-        double d1 = (double)this.pos.getY() + 0.5D - y;
-        double d2 = (double)this.pos.getZ() + 0.5D - z;
+    public double getDistanceSq(double x, double y, double z) {
+        double d0 = (double) this.pos.getX() + 0.5D - x;
+        double d1 = (double) this.pos.getY() + 0.5D - y;
+        double d2 = (double) this.pos.getZ() + 0.5D - z;
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
-    public double getMaxRenderDistanceSquared()
-    {
+    public double getMaxRenderDistanceSquared() {
         return 4096.0D;
     }
 
-    public BlockPos getPos()
-    {
+    public BlockPos getPos() {
         return this.pos;
     }
 
     /**
      * Gets the block type at the location of this entity (client-only).
      */
-    public Block getBlockType()
-    {
-        if (this.blockType == null && this.world != null)
-        {
+    public Block getBlockType() {
+        if (this.blockType == null && this.world != null) {
             this.blockType = this.world.getBlockState(this.pos).getBlock();
         }
 
         return this.blockType;
     }
 
-    @Nullable
 
     /**
      * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
      * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
      */
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket() {
         return null;
     }
 
     /**
      * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
-     * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+     * many blocks change at once. This compound comes back to you clientside in {@link net.minecraft.entity.Entity#handleUpdateTag}
      */
-    public NBTTagCompound getUpdateTag()
-    {
+    public NBTTagCompound getUpdateTag() {
         return this.writeInternal(new NBTTagCompound());
     }
 
-    public boolean isInvalid()
-    {
+    public boolean isInvalid() {
         return this.tileEntityInvalid;
     }
 
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
-    {
+    public void invalidate() {
         this.tileEntityInvalid = true;
     }
 
     /**
      * validates a tile entity
      */
-    public void validate()
-    {
+    public void validate() {
         this.tileEntityInvalid = false;
     }
 
@@ -250,85 +216,58 @@ public abstract class TileEntity
      * See {@link Block#eventReceived} for more information. This must return true serverside before it is called
      * clientside.
      */
-    public boolean receiveClientEvent(int id, int type)
-    {
+    public boolean receiveClientEvent(int id, int type) {
         return false;
     }
 
-    public void updateContainingBlockInfo()
-    {
+    public void updateContainingBlockInfo() {
         this.blockType = null;
         this.blockMetadata = -1;
     }
 
-    public void addInfoToCrashReport(CrashReportCategory reportCategory)
-    {
-        reportCategory.addDetail("Name", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return TileEntity.REGISTRY.getNameForObject(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
-            }
-        });
+    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
+        reportCategory.addDetail("Name", () -> TileEntity.REGISTRY.getNameForObject(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName());
 
-        if (this.world != null)
-        {
+        if (this.world != null) {
             CrashReportCategory.addBlockInfo(reportCategory, this.pos, this.getBlockType(), this.getBlockMetadata());
-            reportCategory.addDetail("Actual block type", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    int i = Block.getIdFromBlock(TileEntity.this.world.getBlockState(TileEntity.this.pos).getBlock());
+            reportCategory.addDetail("Actual block type", () -> {
+                int i = Block.getIdFromBlock(TileEntity.this.world.getBlockState(TileEntity.this.pos).getBlock());
 
-                    try
-                    {
-                        return String.format("ID #%d (%s // %s)", i, Block.getBlockById(i).getTranslationKey(), Block.getBlockById(i).getClass().getCanonicalName());
-                    }
-                    catch (Throwable var3)
-                    {
-                        return "ID #" + i;
-                    }
+                try {
+                    return String.format("ID #%d (%s // %s)", i, Block.getBlockById(i).getTranslationKey(), Block.getBlockById(i).getClass().getCanonicalName());
+                } catch (Throwable var3) {
+                    return "ID #" + i;
                 }
             });
-            reportCategory.addDetail("Actual block data value", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    IBlockState iblockstate = TileEntity.this.world.getBlockState(TileEntity.this.pos);
-                    int i = iblockstate.getBlock().getMetaFromState(iblockstate);
+            reportCategory.addDetail("Actual block data value", () -> {
+                IBlockState iblockstate = TileEntity.this.world.getBlockState(TileEntity.this.pos);
+                int i = iblockstate.getBlock().getMetaFromState(iblockstate);
 
-                    if (i < 0)
-                    {
-                        return "Unknown? (Got " + i + ")";
-                    }
-                    else
-                    {
-                        String s = String.format("%4s", Integer.toBinaryString(i)).replace(" ", "0");
-                        return String.format("%1$d / 0x%1$X / 0b%2$s", i, s);
-                    }
+                if (i < 0) {
+                    return "Unknown? (Got " + i + ")";
+                } else {
+                    String s = String.format("%4s", Integer.toBinaryString(i)).replace(" ", "0");
+                    return String.format("%1$d / 0x%1$X / 0b%2$s", i, s);
                 }
             });
         }
     }
 
-    public void setPos(BlockPos posIn)
-    {
+    public void setPos(BlockPos posIn) {
         this.pos = posIn.toImmutable();
     }
 
-    public boolean onlyOpsCanSetNbt()
-    {
+    public boolean onlyOpsCanSetNbt() {
         return false;
     }
 
-    @Nullable
 
     /**
      * Returns a displayable component representing this thing's name. This method should be implemented slightly
      * differently depending on the interface (for <a href="https://github.com/ModCoderPack/MCPBot-
      * Issues/issues/14">technical reasons</a> the same method is used for both IWorldNameable and ICommandSender), but
      * unlike {@link #getName()} this method will generally behave sanely.
-     *  
+     *
      * <dl>
      * <dt>{@link net.minecraft.util.INameable#getDisplayName() INameable.getDisplayName()}</dt>
      * <dd>A normal component. Might be a translation component or a text component depending on the context. Usually
@@ -344,21 +283,18 @@ public abstract class TileEntity
      * <dd>For non-entity command senders, this will return the result of {@link #getName()} in a text component.</dd>
      * </dl>
      */
-    public ITextComponent getDisplayName()
-    {
+    @Nullable
+    public ITextComponent getDisplayName() {
         return null;
     }
 
-    public void rotate(Rotation rotationIn)
-    {
+    public void rotate(Rotation rotationIn) {
     }
 
-    public void mirror(Mirror mirrorIn)
-    {
+    public void mirror(Mirror mirrorIn) {
     }
 
-    static
-    {
+    static {
         register("furnace", TileEntityFurnace.class);
         register("chest", TileEntityChest.class);
         register("ender_chest", TileEntityEnderChest.class);

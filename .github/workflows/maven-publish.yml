@@ -14,11 +14,11 @@ jobs:
     steps:
       # 下载代码
       - uses: actions/checkout@v3
-      - name: Set up JDK 8
+      - name: Set up JDK 17
         # 安装 JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
           cache: maven
       # 配置 settings.xml 一般用于 Maven 私库验证等

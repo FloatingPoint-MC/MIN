@@ -151,7 +151,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
     }
 
     /**
-     * Writes one queued IO action.
+     * Writes one queued IO actions.
      *  
      * @return true if there are more IO actions to perform afterwards, or false if there are none (and this instance of
      * IThreadedFileIO should be removed from the queued list)

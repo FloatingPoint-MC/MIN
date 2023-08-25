@@ -81,7 +81,7 @@ public class LWJGLUtil {
     }
 
     /**
-     * Gets a boolean property as a privileged action.
+     * Gets a boolean property as a privileged actions.
      */
     public static boolean getPrivilegedBoolean(final String property_name) {
         return AccessController.doPrivileged((PrivilegedAction<Boolean>) () -> Boolean.getBoolean(property_name));

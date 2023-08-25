@@ -945,7 +945,7 @@ public class LibraryLWJGLOpenAL extends Library {
      * Sets or returns the value of boolean 'alPitchSupported'.
      *
      * @param action Action to perform (GET or SET).
-     * @param value  New value if action is SET, otherwise XXX.
+     * @param value  New value if actions is SET, otherwise XXX.
      * @return value of boolean 'alPitchSupported'.
      */
     private static synchronized boolean alPitchSupported(boolean action,

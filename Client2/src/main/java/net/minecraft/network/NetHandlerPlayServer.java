@@ -747,7 +747,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                 }
 
             default:
-                throw new IllegalArgumentException("Invalid player action");
+                throw new IllegalArgumentException("Invalid player actions");
         }
     }
 
@@ -1008,7 +1008,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
     }
 
     /**
-     * Processes a range of action-types: sneaking, sprinting, waking from sleep, opening the inventory or setting jump
+     * Processes a range of actions-types: sneaking, sprinting, waking from sleep, opening the inventory or setting jump
      * height of the horse the player is riding
      */
     public void processEntityAction(CPacketEntityAction packetIn)

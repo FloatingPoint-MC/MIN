@@ -16,7 +16,7 @@ public class ItemChorusFruit extends ItemFood
 
     /**
      * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
-     * the Item before the action is complete.
+     * the Item before the actions is complete.
      */
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {

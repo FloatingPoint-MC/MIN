@@ -18,7 +18,7 @@ public class CPacketClickWindow implements Packet<INetHandlerPlayServer>
     /** Button used */
     private int packedClickData;
 
-    /** A unique number for the action, used for transaction handling */
+    /** A unique number for the actions, used for transaction handling */
     private short actionNumber;
 
     /** The item stack present in the slot */

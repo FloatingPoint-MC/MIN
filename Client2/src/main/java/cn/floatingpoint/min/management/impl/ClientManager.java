@@ -14,6 +14,7 @@ import org.lwjglx.input.Keyboard;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -74,7 +75,16 @@ public class ClientManager implements Manager {
                 channel = GuiChat.Channel.valueOf(jsonObject.getString("Chat-Channel").toUpperCase());
                 for (Object object : jsonObject.getJSONArray("Shortcuts")) {
                     if (object instanceof JSONObject json) {
-                        shortcuts.add(new Shortcut(Keyboard.getKeyIndex(json.getString("KeyBind").toUpperCase()), new Shortcut.Action(Shortcut.Action.Type.valueOf(json.getString("Action")), json.getString("context"))));
+                        ArrayList<Shortcut.Action> actions = new ArrayList<>();
+                        for (Object o : json.getJSONArray("Actions")) {
+                            if (o instanceof JSONObject action) {
+                                actions.add(new Shortcut.Action(
+                                        Shortcut.Action.Type.valueOf(action.getString("Type")),
+                                        action.getString("Context")
+                                ));
+                            }
+                        }
+                        shortcuts.add(new Shortcut(Keyboard.getKeyIndex(json.getString("KeyBind").toUpperCase()), actions));
                     }
                 }
             }

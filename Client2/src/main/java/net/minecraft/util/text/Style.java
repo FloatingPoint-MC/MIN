@@ -553,7 +553,7 @@ public class Style
 
                         if (jsonobject1 != null)
                         {
-                            JsonPrimitive jsonprimitive = jsonobject1.getAsJsonPrimitive("action");
+                            JsonPrimitive jsonprimitive = jsonobject1.getAsJsonPrimitive("actions");
                             ClickEvent.Action clickevent$action = jsonprimitive == null ? null : ClickEvent.Action.getValueByCanonicalName(jsonprimitive.getAsString());
                             JsonPrimitive jsonprimitive1 = jsonobject1.getAsJsonPrimitive("value");
                             String s = jsonprimitive1 == null ? null : jsonprimitive1.getAsString();
@@ -571,7 +571,7 @@ public class Style
 
                         if (jsonobject2 != null)
                         {
-                            JsonPrimitive jsonprimitive2 = jsonobject2.getAsJsonPrimitive("action");
+                            JsonPrimitive jsonprimitive2 = jsonobject2.getAsJsonPrimitive("actions");
                             HoverEvent.Action hoverevent$action = jsonprimitive2 == null ? null : HoverEvent.Action.getValueByCanonicalName(jsonprimitive2.getAsString());
                             ITextComponent itextcomponent = p_deserialize_3_.deserialize(jsonobject2.get("value"), ITextComponent.class);
 
@@ -640,7 +640,7 @@ public class Style
                 if (p_serialize_1_.clickEvent != null)
                 {
                     JsonObject jsonobject1 = new JsonObject();
-                    jsonobject1.addProperty("action", p_serialize_1_.clickEvent.getAction().getCanonicalName());
+                    jsonobject1.addProperty("actions", p_serialize_1_.clickEvent.getAction().getCanonicalName());
                     jsonobject1.addProperty("value", p_serialize_1_.clickEvent.getValue());
                     jsonobject.add("clickEvent", jsonobject1);
                 }
@@ -648,7 +648,7 @@ public class Style
                 if (p_serialize_1_.hoverEvent != null)
                 {
                     JsonObject jsonobject2 = new JsonObject();
-                    jsonobject2.addProperty("action", p_serialize_1_.hoverEvent.getAction().getCanonicalName());
+                    jsonobject2.addProperty("actions", p_serialize_1_.hoverEvent.getAction().getCanonicalName());
                     jsonobject2.add("value", p_serialize_3_.serialize(p_serialize_1_.hoverEvent.getValue()));
                     jsonobject.add("hoverEvent", jsonobject2);
                 }

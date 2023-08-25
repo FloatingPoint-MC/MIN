@@ -116,7 +116,7 @@ public interface INetHandlerPlayServer extends INetHandler
     void processPlayerDigging(CPacketPlayerDigging packetIn);
 
     /**
-     * Processes a range of action-types: sneaking, sprinting, waking from sleep, opening the inventory or setting jump
+     * Processes a range of actions-types: sneaking, sprinting, waking from sleep, opening the inventory or setting jump
      * height of the horse the player is riding
      */
     void processEntityAction(CPacketEntityAction packetIn);

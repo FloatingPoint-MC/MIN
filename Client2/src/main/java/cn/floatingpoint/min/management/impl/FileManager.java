@@ -14,10 +14,9 @@ import org.json.JSONObject;
 import org.lwjglx.input.Keyboard;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Map;
 
-@SuppressWarnings("all")
+
 public class FileManager implements Manager {
     public static final int VERSION = 205;
     public File dir = null;
@@ -94,37 +93,6 @@ public class FileManager implements Manager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public ArrayList<String> readAsList(final String file) {
-        try {
-            final File f = new File(this.dir, file);
-            if (!f.exists()) {
-                if (f.getParentFile() != null && !f.getParentFile().exists()) {
-                    if (!f.getParentFile().mkdirs()) {
-                        return new ArrayList<>();
-                    }
-                }
-                if (!f.createNewFile()) {
-                    return new ArrayList<>();
-                }
-            }
-            ArrayList<String> arrayList = new ArrayList<>();
-            try (FileInputStream fis = new FileInputStream(f)) {
-                try (InputStreamReader isr = new InputStreamReader(fis)) {
-                    try (BufferedReader br = new BufferedReader(isr)) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            arrayList.add(line);
-                        }
-                    }
-                }
-            }
-            return arrayList;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
     }
 
     public String readAsString(final String file) {
@@ -208,11 +176,17 @@ public class FileManager implements Manager {
         save("draggable.json", draggableMap.toString(), false);
         JSONArray shortcuts = new JSONArray();
         for (Shortcut shortcut : Managers.clientManager.shortcuts) {
+            JSONArray actions = new JSONArray();
+            shortcut.actions().forEach(action ->
+                    actions.put(new JSONObject()
+                            .put("Type", action.type().name())
+                            .put("Context", action.context())
+                    )
+            );
             shortcuts.put(
                     new JSONObject()
                             .put("KeyBind", Keyboard.getKeyName(shortcut.key()).replace("NONE", "None"))
-                            .put("Action", shortcut.action().type().name())
-                            .put("Context", shortcut.action().context())
+                            .put("Actions", actions)
             );
         }
         save("config.json", new JSONObject()

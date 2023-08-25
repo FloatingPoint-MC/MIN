@@ -15,7 +15,7 @@ public class ClickEvent
     }
 
     /**
-     * Gets the action to perform when this event is raised.
+     * Gets the actions to perform when this event is raised.
      */
     public Action getAction()
     {
@@ -23,7 +23,7 @@ public class ClickEvent
     }
 
     /**
-     * Gets the value to perform the action on when this event is raised.  For example, if the action is "open URL",
+     * Gets the value to perform the actions on when this event is raised.  For example, if the actions is "open URL",
      * this would be the URL to open.
      */
     public String getValue()
@@ -62,7 +62,7 @@ public class ClickEvent
 
     public String toString()
     {
-        return "ClickEvent{action=" + this.action + ", value='" + this.value + '\'' + '}';
+        return "ClickEvent{actions=" + this.action + ", value='" + this.value + '\'' + '}';
     }
 
     public int hashCode()

@@ -485,7 +485,7 @@ public class PlayerControllerMP {
 
     /**
      * GuiEnchantment uses this during multiplayer to tell PlayerControllerMP to send a packet indicating the
-     * enchantment action the player has taken.
+     * enchantment actions the player has taken.
      */
     public void sendEnchantPacket(int windowID, int button) {
         this.connection.sendPacket(new CPacketEnchantItem(windowID, button));

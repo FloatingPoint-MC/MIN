@@ -1,7 +1,7 @@
 {
   "WARNING": "DO NOT MODIFY THIS LANGUAGE FILE OR YOUR LANGUAGE MIGHT BE REPLACED!",
   "language.identity": "English",
-  "language.version": "204",
+  "language.version": "205",
   "module.category.Boost": "Boost",
   "module.category.Misc": "Misc",
   "module.category.Render": "Render",
@@ -291,6 +291,7 @@
   "clickgui.titleX": "Title X",
   "clickgui.titleY": "Title Y",
   "clickgui.adsorption": "UI Adsorption",
+  "clickgui.shortcut": "Manage shortcuts",
   "start.welcome": "Welcome to Min Client, dear Minecraft player.",
   "start.continue": "Start travel with Min!",
   "start.skip": "Skip",
@@ -300,5 +301,9 @@
   "chat.slowdown": "Please slow down chatting!",
   "chat.channel": "Chat Channel",
   "chat.channel.min": "MIN Server",
-  "chat.channel.world": "Current World"
+  "chat.channel.world": "Current World",
+  "shortcut": "Shortcuts",
+  "shortcut.action": "Action",
+  "shortcut.action.SEND_MESSAGE": "Send a message",
+  "shortcut.action.QUIT_NETWORK": "Quit network"
 }

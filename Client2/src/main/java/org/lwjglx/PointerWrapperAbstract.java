@@ -15,7 +15,7 @@ public abstract class PointerWrapperAbstract implements PointerWrapper {
 
     /**
      * Returns true if this object represents a valid pointer. The pointer might be invalid because it is NULL or
-     * because some other action has deleted the object that this pointer represents.
+     * because some other actions has deleted the object that this pointer represents.
      *
      * @return true if the pointer is valid
      */

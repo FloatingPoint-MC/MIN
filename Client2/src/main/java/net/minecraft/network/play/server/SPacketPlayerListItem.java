@@ -217,7 +217,7 @@ public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
 
     public String toString()
     {
-        return MoreObjects.toStringHelper(this).add("action", this.action).add("entries", this.players).toString();
+        return MoreObjects.toStringHelper(this).add("actions", this.action).add("entries", this.players).toString();
     }
 
     public enum Action

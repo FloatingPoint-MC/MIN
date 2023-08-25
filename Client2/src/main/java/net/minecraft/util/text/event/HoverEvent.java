@@ -16,7 +16,7 @@ public class HoverEvent
     }
 
     /**
-     * Gets the action to perform when this event is raised.
+     * Gets the actions to perform when this event is raised.
      */
     public Action getAction()
     {
@@ -24,7 +24,7 @@ public class HoverEvent
     }
 
     /**
-     * Gets the value to perform the action on when this event is raised.  For example, if the action is "show item",
+     * Gets the value to perform the actions on when this event is raised.  For example, if the actions is "show item",
      * this would be the item to show.
      */
     public ITextComponent getValue()
@@ -63,7 +63,7 @@ public class HoverEvent
 
     public String toString()
     {
-        return "HoverEvent{action=" + this.action + ", value='" + this.value + '\'' + '}';
+        return "HoverEvent{actions=" + this.action + ", value='" + this.value + '\'' + '}';
     }
 
     public int hashCode()

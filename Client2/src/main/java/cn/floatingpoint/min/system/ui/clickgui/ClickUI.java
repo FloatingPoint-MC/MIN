@@ -364,6 +364,8 @@ public class ClickUI extends GuiScreen {
 
             Managers.fontManager.sourceHansSansCN_Regular_20.drawString(Managers.i18NManager.getTranslation("clickgui.adsorption"), animationRight + 150, height / 2 + 10, textColor);
             RenderUtil.drawRoundedRect(animationRight + 394, height / 2 + 13, animationRight + 400, height / 2 + 19, 3, Managers.clientManager.adsorption ? enableColor : disableColor);
+            RenderUtil.drawRoundedRect(animationRight + 150, height / 2 + 39, animationRight + 250, height / 2 + 49, 3, categoryColor);
+            Managers.fontManager.sourceHansSansCN_Regular_20.drawCenteredString(Managers.i18NManager.getTranslation("clickgui.shortcut"), animationRight + 200, height / 2 + 40, textColor);
         }
         RenderUtil.drawImage(new ResourceLocation("min/logo.png"), animationLeft - 110, height / 2 - 140, 100, 100);
         RenderUtil.drawImage(new ResourceLocation("min/uis/setting.png"), animationLeft - 118, height / 2 + 142, 16, 16);
@@ -418,11 +420,10 @@ public class ClickUI extends GuiScreen {
                                 if (!module.getValues().isEmpty()) {
                                     if (modulesOpenedValues.contains(module)) {
                                         modulesOpenedValues.remove(module);
-                                        return;
                                     } else {
                                         modulesOpenedValues.add(module);
-                                        return;
                                     }
+                                    return;
                                 }
                             } else if (mouseButton == 2) {
                                 moduleToBindKey = module;
@@ -503,6 +504,8 @@ public class ClickUI extends GuiScreen {
                     selectedTitleY = true;
                 } else if (isHovered(animationRight + 394, height / 2 + 13, animationRight + 400, height / 2 + 19, mouseX, mouseY)) {
                     Managers.clientManager.adsorption = !Managers.clientManager.adsorption;
+                } else if (isHovered(animationRight + 150, height / 2 + 39, animationRight + 250, height / 2 + 49, mouseX, mouseY)) {
+                    mc.displayGuiScreen(new GuiManageShortcut(this));
                 }
             } else {
                 selectedCategory = null;
