@@ -5,9 +5,11 @@ import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.value.Value;
 import cn.floatingpoint.min.system.module.value.impl.*;
+import cn.floatingpoint.min.system.shortcut.Shortcut;
 import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import cn.floatingpoint.min.utils.math.Vec2i;
 import net.minecraft.client.Minecraft;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjglx.input.Keyboard;
 
@@ -17,7 +19,7 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 public class FileManager implements Manager {
-    public static final int VERSION = 204;
+    public static final int VERSION = 205;
     public File dir = null;
     public boolean shouldSave = false;
 
@@ -204,6 +206,15 @@ public class FileManager implements Manager {
             draggableMap.put(entry.getKey().getIdentity(), positionMap);
         }
         save("draggable.json", draggableMap.toString(), false);
+        JSONArray shortcuts = new JSONArray();
+        for (Shortcut shortcut : Managers.clientManager.shortcuts) {
+            shortcuts.put(
+                    new JSONObject()
+                            .put("KeyBind", Keyboard.getKeyName(shortcut.key()).replace("NONE", "None"))
+                            .put("Action", shortcut.action().type().name())
+                            .put("Context", shortcut.action().context())
+            );
+        }
         save("config.json", new JSONObject()
                 .put("Config-Version", FileManager.VERSION)
                 .put("Language", Managers.i18NManager.getSelectedLanguage())
@@ -212,6 +223,7 @@ public class FileManager implements Manager {
                 .put("Title-Y", Managers.clientManager.titleY)
                 .put("Adsorption", Managers.clientManager.adsorption)
                 .put("Chat-Channel", Managers.clientManager.channel.name())
+                .put("Shortcuts", shortcuts)
                 .toString(), false);
     }
 }

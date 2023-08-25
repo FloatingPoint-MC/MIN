@@ -131,14 +131,10 @@ public class ModuleManager implements Manager {
     }
 
     public HashMap<String, ? extends Module> getModulesByCategory(Category category) {
-        switch (category) {
-            case Boost:
-                return boostModules;
-            case Misc:
-                return miscModules;
-            case Render:
-                return renderModules;
-        }
-        return null;
+        return switch (category) {
+            case Boost -> boostModules;
+            case Misc -> miscModules;
+            case Render -> renderModules;
+        };
     }
 }

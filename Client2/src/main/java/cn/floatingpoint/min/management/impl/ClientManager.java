@@ -4,11 +4,13 @@ import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Manager;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.module.impl.misc.impl.RankDisplay;
+import cn.floatingpoint.min.system.shortcut.Shortcut;
 import cn.floatingpoint.min.utils.client.Rank;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import net.minecraft.client.gui.GuiChat;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.lwjglx.input.Keyboard;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,9 +25,10 @@ import java.util.UUID;
  */
 public class ClientManager implements Manager {
     public HashMap<UUID, Integer> clientMateUuids;
-    public HashMap<String, Rank> ranks = new HashMap<>();
+    public HashMap<String, Rank> ranks;
     public float titleSize, titleX, titleY;
-    public HashSet<String> cooldown = new HashSet<>();
+    public HashSet<String> cooldown;
+    public HashSet<Shortcut> shortcuts;
     public boolean firstStart;
     public boolean lock;
     public boolean adsorption;
@@ -40,9 +43,12 @@ public class ClientManager implements Manager {
     @Override
     public void init() {
         clientMateUuids = new HashMap<>();
+        ranks = new HashMap<>();
         titleSize = 1.0f;
         titleX = 0.0f;
         titleY = 0.0f;
+        cooldown = new HashSet<>();
+        shortcuts = new HashSet<>();
         firstStart = false;
         vexGui = false;
         adsorption = false;
@@ -57,20 +63,20 @@ public class ClientManager implements Manager {
             if (version != FileManager.VERSION) {
                 if (version < 200) {
                     return;
-                }
-                if (version == 201) {
-                    adsorption = false;
-                    channel = GuiChat.Channel.WORLD;
                 } else if (version == 202) {
                     adsorption = jsonObject.getBoolean("Adsorption");
-                    channel = GuiChat.Channel.WORLD;
-                } else if (version == 203) {
+                } else if (version == 203 || version == 204) {
                     adsorption = jsonObject.getBoolean("Adsorption");
                     channel = GuiChat.Channel.valueOf(jsonObject.getString("Chat-Channel").toUpperCase());
                 }
             } else {
                 adsorption = jsonObject.getBoolean("Adsorption");
                 channel = GuiChat.Channel.valueOf(jsonObject.getString("Chat-Channel").toUpperCase());
+                for (Object object : jsonObject.getJSONArray("Shortcuts")) {
+                    if (object instanceof JSONObject json) {
+                        shortcuts.add(new Shortcut(Keyboard.getKeyIndex(json.getString("KeyBind").toUpperCase()), new Shortcut.Action(Shortcut.Action.Type.valueOf(json.getString("Action")), json.getString("context"))));
+                    }
+                }
             }
             Managers.i18NManager.setSelectedLanguage(jsonObject.getString("Language"));
             titleSize = jsonObject.getFloat("Title-Size");
