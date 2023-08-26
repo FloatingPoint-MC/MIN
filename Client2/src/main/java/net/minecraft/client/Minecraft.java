@@ -1576,6 +1576,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                 IRCMessageGrabber.reset();
             }
             if (this.player.ticksExisted % 100 == 0) {
+                MIN.checkIfAsyncThreadAlive();
                 IRCMessageGrabber.grabMessage();
             }
         }

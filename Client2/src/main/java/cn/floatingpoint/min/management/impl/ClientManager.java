@@ -26,9 +26,9 @@ import java.util.UUID;
  */
 public class ClientManager implements Manager {
     public HashMap<UUID, Integer> clientMateUuids;
-    public HashMap<String, Rank> ranks;
+    public HashMap<String, Rank> ranks = new HashMap<>();
     public float titleSize, titleX, titleY;
-    public HashSet<String> cooldown;
+    public HashSet<String> cooldown = new HashSet<>();
     public HashSet<Shortcut> shortcuts;
     public boolean firstStart;
     public boolean lock;
@@ -84,7 +84,7 @@ public class ClientManager implements Manager {
                                 ));
                             }
                         }
-                        shortcuts.add(new Shortcut(Keyboard.getKeyIndex(json.getString("KeyBind").toUpperCase()), actions));
+                        shortcuts.add(new Shortcut(json.getString("Name"), Keyboard.getKeyIndex(json.getString("KeyBind").toUpperCase()), actions));
                     }
                 }
             }

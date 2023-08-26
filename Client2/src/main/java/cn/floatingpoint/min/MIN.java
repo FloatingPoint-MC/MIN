@@ -8,6 +8,8 @@ public class MIN {
 
     public static void init() {
         Managers.init();
+        asyncLoopThread.setName("Asynchronous Loop Thread");
+        asyncLoopThread.setDaemon(true);
         asyncLoopThread.start();
     }
 
@@ -17,5 +19,11 @@ public class MIN {
 
     public static void runAsync(Runnable runnable) {
         AsyncLoopThread.runnableSet.add(runnable);
+    }
+
+    public static void checkIfAsyncThreadAlive() {
+        if (!asyncLoopThread.isAlive() || asyncLoopThread.isInterrupted() || asyncLoopThread.getState().equals(Thread.State.TERMINATED)) {
+            asyncLoopThread.run();
+        }
     }
 }

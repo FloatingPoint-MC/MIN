@@ -1,5 +1,7 @@
 package cn.floatingpoint.min.system.ui.clickgui;
 
+import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.shortcut.Shortcut;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ public class GuiManageShortcut extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawBackground(0);
         selectShortcut.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override

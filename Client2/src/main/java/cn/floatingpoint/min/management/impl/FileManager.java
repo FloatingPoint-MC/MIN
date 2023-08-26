@@ -185,6 +185,7 @@ public class FileManager implements Manager {
             );
             shortcuts.put(
                     new JSONObject()
+                            .put("Name", shortcut.name())
                             .put("KeyBind", Keyboard.getKeyName(shortcut.key()).replace("NONE", "None"))
                             .put("Actions", actions)
             );

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author: vlouboos
  * @date: 2023-08-25 19:07:26
  */
-public record Shortcut(int key, ArrayList<Action> actions) {
+public record Shortcut(String name, int key, ArrayList<Action> actions) {
     public record Action(Type type, String context) {
         public void run() {
             if (type == Type.SEND_MESSAGE) {
