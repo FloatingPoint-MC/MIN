@@ -29,7 +29,11 @@ public class AsyncLoopThread extends Thread {
                     Runnable runnable = runnableSet.stream().findAny().get();
                     runnableSet.remove(runnable);
                     logger.info("Running task: #" + Integer.toHexString(runnable.hashCode()));
-                    runnable.run();
+                    try {
+                        runnable.run();
+                    } catch (Exception e) {
+                        logger.error("Unhandled exception(That's not your fault, contact the author for help): ", e);
+                    }
                 }
             } catch (Exception ignored) {
             }

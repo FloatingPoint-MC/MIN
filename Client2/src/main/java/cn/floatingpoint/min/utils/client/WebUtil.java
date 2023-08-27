@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @projectName: MIN
@@ -32,13 +33,17 @@ public class WebUtil {
         connection.connect();
         JSONObject jsonObject;
         try (InputStream inputStream = connection.getInputStream()) {
-            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                int len;
-                byte[] bytes = new byte[4096];
-                while ((len = inputStream.read(bytes)) != -1) {
-                    out.write(bytes, 0, len);
+            if (connection.getResponseCode() == 200) {
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                    int len;
+                    byte[] bytes = new byte[4096];
+                    while ((len = inputStream.read(bytes)) != -1) {
+                        out.write(bytes, 0, len);
+                    }
+                    jsonObject = new JSONObject(out.toString(StandardCharsets.UTF_8));
                 }
-                jsonObject = new JSONObject(out.toString("UTF8"));
+            } else {
+                return new JSONObject();
             }
         }
         connection.disconnect();

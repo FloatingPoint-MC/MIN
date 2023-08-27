@@ -305,5 +305,12 @@
   "shortcut": "Shortcuts",
   "shortcut.action": "Action",
   "shortcut.action.SEND_MESSAGE": "Send a message",
-  "shortcut.action.QUIT_NETWORK": "Quit network"
+  "shortcut.action.QUIT_NETWORK": "Quit network",
+  "irc.DEVELOPER": "DEVELOPER",
+  "irc.ADMIN": "ADMIN",
+  "irc.SERVER": "SERVER",
+  "error.first": "It's sad for us to meet you here that Minecraft ran into an unfixable error.",
+  "error.second": "Therefore, we're forced to interrupt your game.",
+  "error.third": "We feel so sorry about this. You can later relaunch the game and continue playing.",
+  "error.exit": "Exit Game"
 }

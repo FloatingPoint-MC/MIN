@@ -305,5 +305,12 @@
   "shortcut": "快捷方式",
   "shortcut.action": "行为",
   "shortcut.action.SEND_MESSAGE": "发送消息",
-  "shortcut.action.QUIT_NETWORK": "离开服务器"
+  "shortcut.action.QUIT_NETWORK": "离开服务器",
+  "irc.DEVELOPER": "开发者",
+  "irc.ADMIN": "管理员",
+  "irc.SERVER": "服务器",
+  "error.first": "虽然我们不愿意在此与您见面，但是Minecraft遇到了一个无法修复的错误。",
+  "error.second": "因此，我们不得不打断您的游戏。",
+  "error.third": "我们对此深感抱歉，您稍后可以重启游戏并继续游玩。",
+  "error.exit": "退出游戏"
 }

@@ -1,7 +1,5 @@
 package net.minecraft.network;
 
-import cn.floatingpoint.min.MIN;
-import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
@@ -29,16 +27,13 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketAddress;
-import java.net.URISyntaxException;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.LazyLoadBase;
@@ -272,12 +267,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
      * Closes the channel, the parameter can be used for an exit message (not certain how it gets sent)
      */
     public void closeChannel(ITextComponent message) {
-        MIN.runAsync(() -> {
-            try {
-                WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/deactivate?username=" + Minecraft.getMinecraft().player.getName());
-            } catch (URISyntaxException | IOException ignored) {
-            }
-        });
         if (this.channel.isOpen()) {
             this.channel.close().awaitUninterruptibly();
             this.terminationReason = message;

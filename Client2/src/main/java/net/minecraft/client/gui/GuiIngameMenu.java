@@ -1,8 +1,12 @@
 package net.minecraft.client.gui;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
+import cn.floatingpoint.min.MIN;
+import cn.floatingpoint.min.utils.client.WebUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
 import net.minecraft.client.resources.I18n;
@@ -41,6 +45,13 @@ public class GuiIngameMenu extends GuiScreen {
             case 1:
                 boolean flag = this.mc.isIntegratedServerRunning();
                 button.enabled = false;
+                String username = Minecraft.getMinecraft().player.getName();
+                MIN.runAsync(() -> {
+                    try {
+                        WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/deactivate?username=" + username);
+                    } catch (URISyntaxException | IOException ignored) {
+                    }
+                });
                 this.mc.world.sendQuittingDisconnectingPacket();
                 this.mc.loadWorld(null);
 

@@ -1,6 +1,8 @@
 package cn.floatingpoint.min;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.ui.clickgui.GuiError;
+import net.minecraft.client.Minecraft;
 
 public class MIN {
     public static final String VERSION = "2.3";
@@ -23,7 +25,9 @@ public class MIN {
 
     public static void checkIfAsyncThreadAlive() {
         if (!asyncLoopThread.isAlive() || asyncLoopThread.isInterrupted() || asyncLoopThread.getState().equals(Thread.State.TERMINATED)) {
-            asyncLoopThread.run();
+            Minecraft.getMinecraft().world.sendQuittingDisconnectingPacket();
+            Minecraft.getMinecraft().loadWorld(null);
+            Minecraft.getMinecraft().displayGuiScreen(new GuiError());
         }
     }
 }

@@ -113,10 +113,10 @@ public class ClientManager implements Manager {
                     JSONObject json = null;
                     if (RankDisplay.game.isCurrentMode("bw")) {
                         json = WebUtil.getJSON("http://mc-api.16163.com/search/bedwars.html?uid=" + id);
-                        ranks.put(id, new Rank(json.getInt("rank"), json.getJSONObject("person").getDouble("killDead")));
+                        ranks.put(id, new Rank(json.getInt("rank"), json.getDouble("killDead")));
                     } else if (RankDisplay.game.isCurrentMode("sw")) {
                         json = WebUtil.getJSON("http://mc-api.16163.com/search/skywars.html?uid=" + id);
-                        ranks.put(id, new Rank(json.getInt("rank"), json.getJSONObject("person").getDouble("killDead")));
+                        ranks.put(id, new Rank(json.getInt("rank"), json.getDouble("killDead")));
                     } else if (RankDisplay.game.isCurrentMode("kit")) {
                         json = WebUtil.getJSON("http://mc-api.16163.com/search/kitbattle.html?uid=" + id);
                         ranks.put(id, new Rank(json.getInt("rank"), json.getDouble("killDead")));
