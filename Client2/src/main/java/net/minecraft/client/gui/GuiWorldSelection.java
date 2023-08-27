@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 public class GuiWorldSelection extends GuiScreen
 {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /** The screen to return to when this closes (always Main Menu). */
     protected GuiScreen prevScreen;

@@ -1,4 +1,4 @@
-package cn.floatingpoint.min.system.ui.clickgui;
+package cn.floatingpoint.min.system.ui.client;
 
 import cn.floatingpoint.min.management.Managers;
 import net.minecraft.client.gui.GuiButton;

@@ -5,6 +5,7 @@ import cn.floatingpoint.min.system.module.Category;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.value.Value;
 import cn.floatingpoint.min.system.module.value.impl.*;
+import cn.floatingpoint.min.system.ui.shortcut.GuiManageShortcut;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
 import cn.floatingpoint.min.utils.math.Vec3f;
 import cn.floatingpoint.min.utils.render.RenderUtil;

@@ -1,4 +1,4 @@
-package cn.floatingpoint.min.system.ui.clickgui;
+package cn.floatingpoint.min.system.ui.shortcut;
 
 /**
  * @projectName: MIN
