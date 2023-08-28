@@ -257,7 +257,7 @@ public abstract class GuiSlot {
             tessellator.draw();
             int j1 = this.getMaxScroll();
 
-            if (j1 > 0) {
+            if (j1 > 0 && this.getContentHeight() != 0) {
                 int k1 = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
                 k1 = MathHelper.clamp(k1, 32, this.bottom - this.top - 8);
                 int l1 = (int) this.amountScrolled * (this.bottom - this.top - k1) / j1 + this.top;

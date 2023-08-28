@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public class GuiSelectAction extends GuiListExtended {
     private final ArrayList<GuiActionEntry> actions = new ArrayList<>();
 
-    public GuiSelectAction(Shortcut shortcut, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
+    public GuiSelectAction(Shortcut shortcut, GuiEditShortcut parent, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(Minecraft.getMinecraft(), widthIn, heightIn, topIn, bottomIn, slotHeightIn);
         if (shortcut != null) {
-            shortcut.actions().forEach(action -> actions.add(new GuiActionEntry(action)));
+            shortcut.actions().forEach(action -> actions.add(new GuiActionEntry(action, parent)));
         }
     }
 
@@ -33,13 +33,9 @@ public class GuiSelectAction extends GuiListExtended {
         return actions.size();
     }
 
-    public void addAction(Shortcut.Action action) {
-        actions.add(new GuiActionEntry(action));
-    }
-
     public ArrayList<Shortcut.Action> getActions() {
         ArrayList<Shortcut.Action> actions = new ArrayList<>();
-        this.actions.forEach(guiActionEntry -> actions.add(guiActionEntry.getAction()));
+        this.actions.forEach(guiActionEntry -> actions.add(guiActionEntry.action()));
         return actions;
     }
 }

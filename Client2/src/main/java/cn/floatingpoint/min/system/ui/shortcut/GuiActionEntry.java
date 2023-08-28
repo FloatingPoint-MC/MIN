@@ -1,6 +1,7 @@
 package cn.floatingpoint.min.system.ui.shortcut;
 
 import cn.floatingpoint.min.system.shortcut.Shortcut;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
 
 /**
@@ -8,12 +9,7 @@ import net.minecraft.client.gui.GuiListExtended;
  * @author: vlouboos
  * @date: 2023-08-27 17:31:38
  */
-public class GuiActionEntry implements GuiListExtended.IGuiListEntry {
-    private final Shortcut.Action action;
-
-    public GuiActionEntry(Shortcut.Action action) {
-        this.action = action;
-    }
+public record GuiActionEntry(Shortcut.Action action, GuiEditShortcut parent) implements GuiListExtended.IGuiListEntry {
 
     @Override
     public void updatePosition(int slotIndex, int x, int y, float partialTicks) {
@@ -22,20 +18,19 @@ public class GuiActionEntry implements GuiListExtended.IGuiListEntry {
 
     @Override
     public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks) {
-
+        Minecraft.getMinecraft().fontRenderer.drawString(action.type().name(), x + 4, y + 1, 16777215);
     }
 
     @Override
     public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY) {
-        return false;
+        parent.selectedAction = action;
+        parent.edit.enabled = true;
+        parent.delete.enabled = true;
+        return true;
     }
 
     @Override
     public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
 
-    }
-
-    public Shortcut.Action getAction() {
-        return action;
     }
 }

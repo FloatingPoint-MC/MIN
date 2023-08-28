@@ -13,6 +13,7 @@ import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import cn.floatingpoint.min.system.shortcut.Shortcut;
 import cn.floatingpoint.min.system.ui.loading.GuiDamnJapaneseAction;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
+import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -1769,6 +1770,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     }
                     for (Shortcut shortcut : Managers.clientManager.shortcuts) {
                         if (i == shortcut.key()) {
+                            ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("shortcut.execute"));
                             shortcut.actions().forEach(Shortcut.Action::run);
                         }
                     }

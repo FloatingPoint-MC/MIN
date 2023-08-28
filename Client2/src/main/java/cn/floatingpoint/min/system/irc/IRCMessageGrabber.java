@@ -1,6 +1,7 @@
 package cn.floatingpoint.min.system.irc;
 
 import cn.floatingpoint.min.MIN;
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import net.minecraft.util.text.TextComponentString;
@@ -45,7 +46,12 @@ public class IRCMessageGrabber {
                         prevMessages.sort(Comparator.comparingInt(Integer::intValue));
                         currentMessages.sort(Comparator.comparingInt(Integer::intValue));
                         for (int prevIndex : prevMessages) {
-                            TextComponentString text = new TextComponentString("\247b[MIN-IRC]" + messages.get("prev" + prevIndex));
+                            String originMessage = messages.getString("prev" + prevIndex);
+                            if (originMessage.startsWith("\2476[DEVELOPER]") || originMessage.startsWith("\2474[ADMIN]") || originMessage.startsWith("\2474[SERVER]")) {
+                                String identity = originMessage.split("]")[0].split("\\[")[1];
+                                originMessage = originMessage.replaceFirst(identity, Managers.i18NManager.getTranslation(identity));
+                            }
+                            TextComponentString text = new TextComponentString("\247b[MIN-IRC]" + originMessage);
                             ChatUtil.printToChat(text);
                         }
                         int lastIndex = 0;

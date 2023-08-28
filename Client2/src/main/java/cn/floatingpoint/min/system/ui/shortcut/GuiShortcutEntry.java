@@ -30,7 +30,10 @@ public class GuiShortcutEntry implements GuiListExtended.IGuiListEntry {
 
     @Override
     public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY) {
-        return parent.delete.enabled = true;
+        parent.selectedShortcut = shortcut;
+        parent.delete.enabled = true;
+        parent.edit.enabled = true;
+        return true;
     }
 
     @Override

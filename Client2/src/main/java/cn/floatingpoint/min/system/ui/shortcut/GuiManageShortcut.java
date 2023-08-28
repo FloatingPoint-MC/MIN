@@ -1,6 +1,7 @@
 package cn.floatingpoint.min.system.ui.shortcut;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.shortcut.Shortcut;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
  */
 public class GuiManageShortcut extends GuiScreen {
     private final GuiScreen prevScreen;
+    public Shortcut selectedShortcut;
     private GuiSelectShortcut selectShortcut;
     protected GuiButton delete;
     protected GuiButton edit;
@@ -32,7 +34,6 @@ public class GuiManageShortcut extends GuiScreen {
         this.buttonList.add(edit);
         edit.enabled = false;
         this.buttonList.add(new GuiButton(3, width / 2 + 2, height - 30, 98, 20, Managers.i18NManager.getTranslation("shortcut.back")));
-        super.initGui();
     }
 
     @Override
@@ -53,6 +54,11 @@ public class GuiManageShortcut extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.id == 0) {
             mc.displayGuiScreen(new GuiEditShortcut(null, this));
+        } else if (button.id == 1) {
+            mc.displayGuiScreen(new GuiEditShortcut(selectedShortcut, this));
+        } else if (button.id == 2) {
+            Managers.clientManager.shortcuts.remove(selectedShortcut);
+            mc.displayGuiScreen(new GuiManageShortcut(prevScreen));
         } else if (button.id == 3) {
             mc.displayGuiScreen(prevScreen);
         }
