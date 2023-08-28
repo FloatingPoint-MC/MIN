@@ -47,17 +47,12 @@ public class IRCMessageGrabber {
                         currentMessages.sort(Comparator.comparingInt(Integer::intValue));
                         for (int prevIndex : prevMessages) {
                             String originMessage = messages.getString("prev" + prevIndex);
-                            if (originMessage.startsWith("\2476[DEVELOPER]") || originMessage.startsWith("\2474[ADMIN]") || originMessage.startsWith("\2474[SERVER]")) {
-                                String identity = originMessage.split("]")[0].split("\\[")[1];
-                                originMessage = originMessage.replaceFirst(identity, Managers.i18NManager.getTranslation(identity));
-                            }
-                            TextComponentString text = new TextComponentString("\247b[MIN-IRC]" + originMessage);
-                            ChatUtil.printToChat(text);
+                            printMessage(originMessage);
                         }
                         int lastIndex = 0;
                         for (int index : currentMessages) {
-                            TextComponentString text = new TextComponentString("\247b[MIN-IRC]" + messages.get(String.valueOf(index)));
-                            ChatUtil.printToChat(text);
+                            String originMessage = messages.getString(String.valueOf(index));
+                            printMessage(originMessage);
                             lastIndex = index;
                         }
                         startLoc = lastIndex + 1;
@@ -67,6 +62,15 @@ public class IRCMessageGrabber {
                 }
             });
         }
+    }
+
+    private static void printMessage(String originMessage) {
+        if (originMessage.contains("\2476[DEVELOPER]") || originMessage.contains("\2474[ADMIN]") || originMessage.contains("\2474[SERVER]")) {
+            String identity = originMessage.split("]")[0].split("\\[")[1];
+            originMessage = originMessage.replaceFirst(identity, Managers.i18NManager.getTranslation("irc." + identity));
+        }
+        TextComponentString text = new TextComponentString("\247b[MIN-IRC]" + originMessage);
+        ChatUtil.printToChat(text);
     }
 
     public static void reset() {
