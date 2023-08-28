@@ -1566,10 +1566,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (this.player.ticksExisted % 1200 == 0) {
                 MIN.runAsync(Managers.fileManager::saveConfig);
                 MIN.runAsync(() -> {
-                    try {
-                        WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/activate?username=" + this.player.getName() + "&uuid=" + this.player.getUniqueID());
-                    } catch (URISyntaxException | IOException e) {
-                        throw new RuntimeException(e);
+                    if (this.player != null) {
+                        try {
+                            WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/online/activate?username=" + this.player.getName() + "&uuid=" + this.player.getUniqueID());
+                        } catch (URISyntaxException | IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 });
             }
