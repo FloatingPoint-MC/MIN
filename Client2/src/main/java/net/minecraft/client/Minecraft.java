@@ -1770,7 +1770,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     }
                     for (Shortcut shortcut : Managers.clientManager.shortcuts) {
                         if (i == shortcut.key()) {
-                            ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("shortcut.execute"));
+                            ChatUtil.printToChatWithPrefix(Managers.i18NManager.getTranslation("shortcut.execute") + ": " + shortcut.name());
                             shortcut.actions().forEach(Shortcut.Action::run);
                         }
                     }
