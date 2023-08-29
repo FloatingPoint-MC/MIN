@@ -34,7 +34,7 @@ public class AsyncLoopThread extends Thread {
                         Runnable runnable = high.get();
                         runnableSet.remove(runnable);
                         runnable.run();
-                        return;
+                        continue;
                     }
                     Runnable runnable = runnableSet.stream().findAny().get();
                     runnableSet.remove(runnable);
