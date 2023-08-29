@@ -27,12 +27,12 @@ public class GuiManageShortcut extends GuiScreen {
     public void initGui() {
         selectShortcut = new GuiSelectShortcut(this, this.width, this.height, 32, this.height - 64, 36);
         this.buttonList.add(new GuiButton(0, width / 2 - 100, height - 52, 98, 20, Managers.i18NManager.getTranslation("shortcut.add")));
-        delete = new GuiButton(1, width / 2 + 2, height - 52, 98, 20, Managers.i18NManager.getTranslation("shortcut.delete"));
-        this.buttonList.add(delete);
-        delete.enabled = false;
-        edit = new GuiButton(2, width / 2 - 100, height - 30, 98, 20, Managers.i18NManager.getTranslation("shortcut.edit"));
+        edit = new GuiButton(1, width / 2 - 100, height - 30, 98, 20, Managers.i18NManager.getTranslation("shortcut.edit"));
         this.buttonList.add(edit);
         edit.enabled = false;
+        delete = new GuiButton(2, width / 2 + 2, height - 52, 98, 20, Managers.i18NManager.getTranslation("shortcut.delete"));
+        this.buttonList.add(delete);
+        delete.enabled = false;
         this.buttonList.add(new GuiButton(3, width / 2 + 2, height - 30, 98, 20, Managers.i18NManager.getTranslation("shortcut.back")));
     }
 

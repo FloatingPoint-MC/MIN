@@ -2,16 +2,18 @@ package cn.floatingpoint.min.system.irc;
 
 import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.runnable.Runnable;
 import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import cn.floatingpoint.min.utils.math.TimeHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @projectName: MIN
@@ -30,14 +32,30 @@ public class IRCSender {
             ChatUtil.printToChatWithPrefix("\2477" + Managers.i18NManager.getTranslation("chat.slowdown"));
         } else {
             timer.reset();
-            MIN.runAsync(() -> {
-                try {
-                    JSONObject jsonObject = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/irc/add?username=" + mc.player.getName() + "&message=" + URLEncoder.encode(message, "UTF-8"));
-                    if (jsonObject.has("Code") && jsonObject.getInt("Code") == 0) {
-                        IRCMessageGrabber.grabMessage();
+            MIN.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONObject jsonObject = WebUtil.getJSONFromPost("https://minserver.vlouboos.repl.co/irc/add?username=" + mc.player.getName() + "&message=" + URLEncoder.encode(message, StandardCharsets.UTF_8));
+                        if (jsonObject.has("Code")) {
+                            int code = jsonObject.getInt("Code");
+                            if (code == 0) {
+                                IRCMessageGrabber.grabMessage();
+                            } else if (code == -2) {
+                                TextComponentString textComponents = new TextComponentString("\247b[MIN-IRC] \247c你已被禁言！");
+                                ChatUtil.printToChat(textComponents);
+                                textComponents = new TextComponentString("\2477原因: \247f" + jsonObject.getString("Reason"));
+                                ChatUtil.printToChat(textComponents);
+                            }
+                        }
+                    } catch (URISyntaxException | IOException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (URISyntaxException | IOException e) {
-                    throw new RuntimeException(e);
+                }
+
+                @Override
+                public byte priority() {
+                    return 0;
                 }
             });
         }

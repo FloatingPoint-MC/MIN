@@ -1,10 +1,12 @@
 package cn.floatingpoint.min;
 
+import cn.floatingpoint.min.runnable.Runnable;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 /**
  * @projectName: MIN
@@ -25,6 +27,14 @@ public class AsyncLoopThread extends Thread {
                         logger.info("There is nothing left to be run asyncly, thread sleeped.");
                         Thread.sleep(1000L);
                         continue;
+                    }
+                    // HIGH Priority
+                    Optional<Runnable> high = runnableSet.stream().filter(runnable -> runnable.priority() == 0).findAny();
+                    if (high.isPresent()) {
+                        Runnable runnable = high.get();
+                        runnableSet.remove(runnable);
+                        runnable.run();
+                        return;
                     }
                     Runnable runnable = runnableSet.stream().findAny().get();
                     runnableSet.remove(runnable);

@@ -1,6 +1,7 @@
 package cn.floatingpoint.min;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.runnable.Runnable;
 import cn.floatingpoint.min.system.ui.client.GuiError;
 import net.minecraft.client.Minecraft;
 
