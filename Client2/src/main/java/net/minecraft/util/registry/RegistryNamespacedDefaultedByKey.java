@@ -47,11 +47,11 @@ public class RegistryNamespacedDefaultedByKey<K, V> extends RegistryNamespaced<K
         return i == -1 ? super.getIDForObject(this.defaultValue) : i;
     }
 
-    @Nonnull
 
     /**
      * Gets the name we use to identify the given object.
      */
+    @Nonnull
     public K getNameForObject(V value)
     {
         K k = super.getNameForObject(value);
@@ -65,11 +65,11 @@ public class RegistryNamespacedDefaultedByKey<K, V> extends RegistryNamespaced<K
         return v == null ? this.defaultValue : v;
     }
 
-    @Nonnull
 
     /**
      * Gets the object identified by the given ID.
      */
+    @Nonnull
     public V getObjectById(int id)
     {
         V v = super.getObjectById(id);

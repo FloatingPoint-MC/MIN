@@ -97,7 +97,7 @@ public class MapGenScatteredFeature extends MapGenStructure
     public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored)
     {
         this.world = worldIn;
-        return findNearestStructurePosBySpacing(worldIn, this, pos, this.maxDistanceBetweenScatteredFeatures, 8, 14357617, false, 100, findUnexplored);
+        return findNearestStructurePosBySpacing(worldIn, this, pos, this.maxDistanceBetweenScatteredFeatures, 8, 14357617, false, findUnexplored);
     }
 
     protected StructureStart getStructureStart(int chunkX, int chunkZ)

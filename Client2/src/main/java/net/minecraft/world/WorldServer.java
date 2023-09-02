@@ -14,7 +14,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.AdvancementManager;
@@ -59,7 +58,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.VillageCollection;
 import net.minecraft.village.VillageSiege;
 import net.minecraft.world.biome.Biome;
@@ -524,10 +522,10 @@ public class WorldServer extends World implements IThreadListener
         }
     }
 
-    public boolean isBlockTickPending(BlockPos pos, Block blockType)
+    public boolean isBlockTickNotPending(BlockPos pos, Block blockType)
     {
         NextTickListEntry nextticklistentry = new NextTickListEntry(pos, blockType);
-        return this.pendingTickListEntriesThisTick.contains(nextticklistentry);
+        return !this.pendingTickListEntriesThisTick.contains(nextticklistentry);
     }
 
     /**
@@ -1212,7 +1210,7 @@ public class WorldServer extends World implements IThreadListener
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean causesFire, boolean damagesTerrain)
+    public void newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean causesFire, boolean damagesTerrain)
     {
         Explosion explosion = new Explosion(this, entityIn, x, y, z, strength, causesFire, damagesTerrain);
         explosion.doExplosionA();
@@ -1231,7 +1229,6 @@ public class WorldServer extends World implements IThreadListener
             }
         }
 
-        return explosion;
     }
 
     public void addBlockEvent(BlockPos pos, Block blockIn, int eventID, int eventParam)

@@ -2,6 +2,7 @@ package cn.floatingpoint.min.system.hyt.packet.impl;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
+import cn.floatingpoint.min.system.hyt.world.HYTChunkExecutor;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;
 
@@ -22,8 +23,22 @@ public class Hyt0Packet implements CustomPacket {
         byte status = packetBuffer.readByte();
         if (status == 0) {
             String worldName = packetBuffer.readString(123456);
+            HYTChunkExecutor.worldName = worldName;
             if (worldName.equals("lobby1")) {
                 Managers.clientManager.vexGui = true;
+            }
+        } else if (status == 1) {
+            if (mc.world == null) {
+                return;
+            }
+            HYTChunkExecutor.injectWorldProperties();
+            int chunks = packetBuffer.readShort();
+            int i = 0;
+            while (i < chunks) {
+                int x = packetBuffer.readInt();
+                int z = packetBuffer.readInt();
+                HYTChunkExecutor.markUpdated(x, z);
+                ++i;
             }
         }
     }

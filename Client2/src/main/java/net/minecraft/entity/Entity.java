@@ -683,7 +683,7 @@ public abstract class Entity implements ICommandSender {
      * Determines if a liquid is present within the specified AxisAlignedBB.
      */
     private boolean isLiquidPresentInAABB(AxisAlignedBB bb) {
-        return this.world.getCollisionBoxes(this, bb).isEmpty() && !this.world.containsAnyLiquid(bb);
+        return this.world.getCollisionBoxes(this, bb).isEmpty() && this.world.containsNoLiquid(bb);
     }
 
     /**

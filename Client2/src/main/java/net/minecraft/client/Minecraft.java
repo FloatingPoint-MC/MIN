@@ -1,8 +1,8 @@
 package net.minecraft.client;
 
-import cn.floatingpoint.min.DaemonThread;
 import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.hyt.world.HYTChunkExecutor;
 import cn.floatingpoint.min.system.irc.IRCMessageGrabber;
 import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
@@ -420,7 +420,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
@@ -506,7 +506,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         this.gameSettings = new GameSettings(this, this.gameDir);
         this.creativeSettings = new CreativeSettings(this, this.gameDir);
         this.defaultResourcePacks.add(this.defaultResourcePack);
-        new DaemonThread();
 
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0) {
             this.displayWidth = this.gameSettings.overrideWidth;
@@ -1375,9 +1374,13 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
-                if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR && this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit)) {
-                    this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
-                    this.player.swingArm(EnumHand.MAIN_HAND, true);
+                assert blockpos != null;
+                if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
+                    assert this.objectMouseOver.sideHit != null;
+                    if (this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit)) {
+                        this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
+                        this.player.swingArm(EnumHand.MAIN_HAND, true);
+                    }
                 }
             } else {
                 this.playerController.resetBlockRemoving();
@@ -1397,13 +1400,16 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             } else if (!this.player.isRowingBoat()) {
                 switch (this.objectMouseOver.typeOfHit) {
                     case ENTITY:
+                        assert this.objectMouseOver.entityHit != null;
                         this.playerController.attackEntity(this.player, this.objectMouseOver.entityHit);
                         break;
 
                     case BLOCK:
                         BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
+                        assert blockpos != null;
                         if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
+                            assert this.objectMouseOver.sideHit != null;
                             this.playerController.clickBlock(blockpos, this.objectMouseOver.sideHit);
                             break;
                         }
@@ -1440,22 +1446,21 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
                     if (this.objectMouseOver != null) {
                         switch (this.objectMouseOver.typeOfHit) {
-                            case ENTITY:
+                            case ENTITY -> {
+                                assert this.objectMouseOver.entityHit != null;
                                 if (this.playerController.interactWithEntity(this.player, this.objectMouseOver.entityHit, this.objectMouseOver, enumhand) == EnumActionResult.SUCCESS) {
                                     return;
                                 }
-
                                 if (this.playerController.interactWithEntity(this.player, this.objectMouseOver.entityHit, enumhand) == EnumActionResult.SUCCESS) {
                                     return;
                                 }
-
-                                break;
-
-                            case BLOCK:
+                            }
+                            case BLOCK -> {
                                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
-
+                                assert blockpos != null;
                                 if (this.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
                                     int i = itemstack.getCount();
+                                    assert this.objectMouseOver.sideHit != null;
                                     EnumActionResult enumactionresult = this.playerController.processRightClickBlock(this.player, this.world, blockpos, this.objectMouseOver.sideHit, this.objectMouseOver.hitVec, enumhand);
 
                                     if (enumactionresult == EnumActionResult.SUCCESS) {
@@ -1468,6 +1473,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                                         return;
                                     }
                                 }
+                            }
                         }
                     }
 
@@ -1558,6 +1564,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         if (this.rightClickDelayTimer > 0) {
             --this.rightClickDelayTimer;
         }
+
+        HYTChunkExecutor.tick();
 
         if (this.world != null) {
             Managers.moduleManager.boostModules.values().stream().filter(Module::isEnabled).forEach(BoostModule::tick);
@@ -1973,57 +1981,54 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (!this.player.isRowingBoat() && this.objectMouseOver != null) {
                 if (this.player.getActiveItemStack().getItem() instanceof ItemSword) {
                     switch (Animation.blockSwingMode.getValue()) {
-                        case "None":
-                        case "Old":
-                            break;
-                        case "AimBlock":
+                        case "None", "Old" -> {
+                        }
+                        case "AimBlock" -> {
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                                     this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
-                            break;
-                        case "Whenever":
+                        }
+                        case "Whenever" -> {
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 this.player.swingArm(EnumHand.MAIN_HAND, false);
                             }
-                            break;
+                        }
                     }
                 } else if (this.player.getActiveItemStack().getItem() instanceof ItemBow) {
                     switch (Animation.bowSwingMode.getValue()) {
-                        case "None":
-                        case "Old":
-                            break;
-                        case "AimBlock":
+                        case "None", "Old" -> {
+                        }
+                        case "AimBlock" -> {
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                                     this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
-                            break;
-                        case "Whenever":
+                        }
+                        case "Whenever" -> {
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 this.player.swingArm(EnumHand.MAIN_HAND, false);
                             }
-                            break;
+                        }
                     }
                 } else if (this.player.getActiveItemStack().getItem() instanceof ItemFood || this.player.getActiveItemStack().getItem() instanceof ItemPotion) {
                     switch (Animation.foodSwingMode.getValue()) {
-                        case "None":
-                        case "Old":
-                            break;
-                        case "AimBlock":
+                        case "None", "Old" -> {
+                        }
+                        case "AimBlock" -> {
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                                     this.player.swingArm(EnumHand.MAIN_HAND, false);
                                 }
                             }
-                            break;
-                        case "Whenever":
+                        }
+                        case "Whenever" -> {
                             if (this.gameSettings.keyBindAttack.isKeyDown()) {
                                 this.player.swingArm(EnumHand.MAIN_HAND, false);
                             }
-                            break;
+                        }
                     }
                 }
             }
@@ -2178,6 +2183,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      * par2Str is displayed on the loading screen to the user unloads the current world first
      */
     public void loadWorld(@Nullable WorldClient worldClientIn, String loadingMessage) {
+        if (world != null) {
+            HYTChunkExecutor.reset();
+        }
+
         if (worldClientIn == null) {
             NetHandlerPlayClient nethandlerplayclient = this.getConnection();
 
@@ -2314,6 +2323,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
             if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
+                assert blockpos != null;
                 IBlockState iblockstate = this.world.getBlockState(blockpos);
                 Block block = iblockstate.getBlock();
 
@@ -2339,8 +2349,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     itemstack = new ItemStack(Items.PAINTING);
                 } else if (this.objectMouseOver.entityHit instanceof EntityLeashKnot) {
                     itemstack = new ItemStack(Items.LEAD);
-                } else if (this.objectMouseOver.entityHit instanceof EntityItemFrame) {
-                    EntityItemFrame entityitemframe = (EntityItemFrame) this.objectMouseOver.entityHit;
+                } else if (this.objectMouseOver.entityHit instanceof EntityItemFrame entityitemframe) {
                     ItemStack itemstack1 = entityitemframe.getDisplayedItem();
 
                     if (itemstack1.isEmpty()) {
@@ -2348,34 +2357,15 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                     } else {
                         itemstack = itemstack1.copy();
                     }
-                } else if (this.objectMouseOver.entityHit instanceof EntityMinecart) {
-                    EntityMinecart entityminecart = (EntityMinecart) this.objectMouseOver.entityHit;
-                    Item item1;
-
-                    switch (entityminecart.getType()) {
-                        case FURNACE:
-                            item1 = Items.FURNACE_MINECART;
-                            break;
-
-                        case CHEST:
-                            item1 = Items.CHEST_MINECART;
-                            break;
-
-                        case TNT:
-                            item1 = Items.TNT_MINECART;
-                            break;
-
-                        case HOPPER:
-                            item1 = Items.HOPPER_MINECART;
-                            break;
-
-                        case COMMAND_BLOCK:
-                            item1 = Items.COMMAND_BLOCK_MINECART;
-                            break;
-
-                        default:
-                            item1 = Items.MINECART;
-                    }
+                } else if (this.objectMouseOver.entityHit instanceof EntityMinecart entityminecart) {
+                    Item item1 = switch (entityminecart.getType()) {
+                        case FURNACE -> Items.FURNACE_MINECART;
+                        case CHEST -> Items.CHEST_MINECART;
+                        case TNT -> Items.TNT_MINECART;
+                        case HOPPER -> Items.HOPPER_MINECART;
+                        case COMMAND_BLOCK -> Items.COMMAND_BLOCK_MINECART;
+                        default -> Items.MINECART;
+                    };
 
                     itemstack = new ItemStack(item1);
                 } else if (this.objectMouseOver.entityHit instanceof EntityBoat) {
@@ -2400,8 +2390,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
                 String s = "";
 
                 if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
+                    assert this.objectMouseOver.getBlockPos() != null;
                     s = Block.REGISTRY.getNameForObject(this.world.getBlockState(this.objectMouseOver.getBlockPos()).getBlock()).toString();
                 } else if (this.objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY) {
+                    assert this.objectMouseOver.entityHit != null;
                     s = "" + EntityList.getKey(this.objectMouseOver.entityHit);
                 }
 
@@ -2470,7 +2462,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             StringBuilder stringbuilder = new StringBuilder();
 
             for (String s : Minecraft.this.gameSettings.resourcePacks) {
-                if (stringbuilder.length() > 0) {
+                if (!stringbuilder.isEmpty()) {
                     stringbuilder.append(", ");
                 }
 
@@ -2933,5 +2925,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
 
     public GuiToast getToastGui() {
         return this.toastGui;
+    }
+
+    public DefaultResourcePack getDefaultResourcePack() {
+        return defaultResourcePack;
     }
 }

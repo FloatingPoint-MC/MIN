@@ -537,4 +537,9 @@ public class WorldClient extends World {
     public boolean isPlayerUpdate() {
         return this.playerUpdate;
     }
+
+    public void setClientChunkProvider(ChunkProviderClient chunkLoader) {
+        clientChunkProvider = chunkLoader;
+        chunkProvider = chunkLoader;
+    }
 }

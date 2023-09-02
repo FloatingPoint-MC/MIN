@@ -2627,7 +2627,7 @@ public abstract class EntityLivingBase extends Entity {
             if (flag1) {
                 this.setPositionAndUpdate(this.posX, this.posY, this.posZ);
 
-                if (world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(this.getEntityBoundingBox())) {
+                if (world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && world.containsNoLiquid(this.getEntityBoundingBox())) {
                     flag = true;
                 }
             }

@@ -2,7 +2,9 @@ package net.minecraft.entity.monster;
 
 import com.google.common.base.Predicate;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nullable;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -86,25 +88,15 @@ public class EntityElderGuardian extends EntityGuardian
     protected void updateAITasks()
     {
         super.updateAITasks();
-        int i = 1200;
 
         if ((this.ticksExisted + this.getEntityId()) % 1200 == 0)
         {
             Potion potion = MobEffects.MINING_FATIGUE;
-            List<EntityPlayerMP> list = this.world.getPlayers(EntityPlayerMP.class, new Predicate<EntityPlayerMP>()
-            {
-                public boolean apply(@Nullable EntityPlayerMP p_apply_1_)
-                {
-                    return EntityElderGuardian.this.getDistanceSq(p_apply_1_) < 2500.0D && p_apply_1_.interactionManager.survivalOrAdventure();
-                }
-            });
-            int j = 2;
-            int k = 6000;
-            int l = 1200;
+            List<EntityPlayerMP> list = this.world.getPlayers(EntityPlayerMP.class, (Predicate<EntityPlayerMP>) p_apply_1_ -> EntityElderGuardian.this.getDistanceSq(p_apply_1_) < 2500.0D && p_apply_1_.interactionManager.survivalOrAdventure());
 
             for (EntityPlayerMP entityplayermp : list)
             {
-                if (!entityplayermp.isPotionActive(potion) || entityplayermp.getActivePotionEffect(potion).getAmplifier() < 2 || entityplayermp.getActivePotionEffect(potion).getDuration() < 1200)
+                if (!entityplayermp.isPotionActive(potion) || Objects.requireNonNull(entityplayermp.getActivePotionEffect(potion)).getAmplifier() < 2 || Objects.requireNonNull(entityplayermp.getActivePotionEffect(potion)).getDuration() < 1200)
                 {
                     entityplayermp.connection.sendPacket(new SPacketChangeGameState(10, 0.0F));
                     entityplayermp.addPotionEffect(new PotionEffect(potion, 6000, 2));

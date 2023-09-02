@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -199,7 +198,7 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
 
     protected void updateState(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!worldIn.isBlockTickPending(pos, this))
+        if (worldIn.isBlockTickNotPending(pos, this))
         {
             int i = this.calculateOutput(worldIn, pos, state);
             TileEntity tileentity = worldIn.getTileEntity(pos);

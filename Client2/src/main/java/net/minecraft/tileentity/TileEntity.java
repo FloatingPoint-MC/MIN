@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -139,7 +138,7 @@ public abstract class TileEntity {
         if (this.world != null) {
             IBlockState iblockstate = this.world.getBlockState(this.pos);
             this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
-            this.world.markChunkDirty(this.pos, this);
+            this.world.markChunkDirty(this.pos);
 
             if (this.getBlockType() != Blocks.AIR) {
                 this.world.updateComparatorOutputLevel(this.pos, this.getBlockType());

@@ -60,7 +60,7 @@ public class MapGenMineshaft extends MapGenStructure
                         this.rand.setSeed((long)(k1 ^ l1) ^ worldIn.getSeed());
                         this.rand.nextInt();
 
-                        if (this.canSpawnStructureAtCoords(k1, l1) && (!findUnexplored || !worldIn.isChunkGeneratedAt(k1, l1)))
+                        if (this.canSpawnStructureAtCoords(k1, l1) && (!findUnexplored || worldIn.isChunkNotGeneratedAt(k1, l1)))
                         {
                             return new BlockPos((k1 << 4) + 8, 64, (l1 << 4) + 8);
                         }

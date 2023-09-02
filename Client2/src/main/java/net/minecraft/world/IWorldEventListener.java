@@ -19,9 +19,9 @@ public interface IWorldEventListener
      */
     void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2);
 
-    void playSoundToAllNearExcept(EntityPlayer player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch);
+    void playSoundToAllNearExcept(@Nullable EntityPlayer player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch);
 
-    void playRecord(SoundEvent soundIn, BlockPos pos);
+    void playRecord(@Nullable SoundEvent soundIn, BlockPos pos);
 
     void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters);
 

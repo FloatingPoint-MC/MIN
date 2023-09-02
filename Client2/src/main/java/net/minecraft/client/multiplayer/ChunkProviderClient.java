@@ -3,7 +3,6 @@ package net.minecraft.client.multiplayer;
 import com.google.common.base.MoreObjects;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import javax.annotation.Nullable;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -22,12 +21,9 @@ public class ChunkProviderClient implements IChunkProvider
      * coordinates.
      */
     private final Chunk blankChunk;
-    public final Long2ObjectMap<Chunk> loadedChunks = new Long2ObjectOpenHashMap<Chunk>(8192)
-    {
-        protected void rehash(int p_rehash_1_)
-        {
-            if (p_rehash_1_ > this.key.length)
-            {
+    public final Long2ObjectMap<Chunk> loadedChunks = new Long2ObjectOpenHashMap<>(8192) {
+        protected void rehash(int p_rehash_1_) {
+            if (p_rehash_1_ > this.key.length) {
                 super.rehash(p_rehash_1_);
             }
         }
@@ -86,11 +82,8 @@ public class ChunkProviderClient implements IChunkProvider
     public boolean tick()
     {
         long i = System.currentTimeMillis();
-        ObjectIterator objectiterator = this.loadedChunks.values().iterator();
 
-        while (objectiterator.hasNext())
-        {
-            Chunk chunk = (Chunk)objectiterator.next();
+        for (Chunk chunk : this.loadedChunks.values()) {
             chunk.onTick(System.currentTimeMillis() - i > 5L);
         }
 

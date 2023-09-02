@@ -8,11 +8,11 @@ import net.minecraft.world.chunk.Chunk;
 
 public interface IChunkLoader
 {
-    @Nullable
 
     /**
      * Loads the specified(XZ) chunk into the specified world.
      */
+    @Nullable
     Chunk loadChunk(World worldIn, int x, int z) throws IOException;
 
     void saveChunk(World worldIn, Chunk chunkIn) throws MinecraftException, IOException;
