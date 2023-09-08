@@ -57,7 +57,7 @@ public class DefaultResourcePack implements IResourcePack {
         try {
             URL url = DefaultResourcePack.class.getResource(s);
             return url != null && this.validatePath(new File(url.getFile()), s) ? DefaultResourcePack.class.getResourceAsStream(s) : null;
-        } catch (IOException var5) {
+        } catch (IOException e) {
             return DefaultResourcePack.class.getResourceAsStream(s);
         }
     }

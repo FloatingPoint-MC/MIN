@@ -32,14 +32,11 @@ extends ChunkProviderClient {
         return this.chunkMap.get(seed);
     }
 
-    public HYTChunkProviderClient(World world, Properties properties) {
+    public HYTChunkProviderClient(World world, String worldName) {
         super(world);
         this.loadedChunks = Sets.newHashSet();
         this.world = world;
-        String[] stringArray = new String[2];
-        stringArray[0] = "Cache";
-        stringArray[1] = properties.getProperty("respath");
-        chunkLoader = new HYTChunkLoader(new File(Managers.fileManager.dir, Arrays.stream(stringArray).map(string -> new StringBuilder().insert(0, "/").append(string).toString()).collect(Collectors.joining())), Minecraft.getMinecraft().getDataFixer());
+        this.chunkLoader = new HYTChunkLoader(worldName, Minecraft.getMinecraft().getDataFixer());
         this.chunkMap = super.loadedChunks;
     }
 

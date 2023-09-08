@@ -28,32 +28,10 @@ public class HYTChunkExecutor {
 
     public static void injectWorldProperties() {
         if (!loaded) {
-            Properties properties = new Properties();
-            String s = "min/hyt/saves/" + worldName + "/setting.properties";
-
-            try {
-                InputStream inputStream = mc.getDefaultResourcePack().getInputStream(new ResourceLocation(s));
-
-                try {
-                    properties.load(inputStream);
-                    properties.setProperty("respath", (new StringBuilder()).insert(0, "worlds/").append(worldName).toString());
-                } finally {
-                    if (Collections.singletonList(inputStream).get(0) != null) {
-                        inputStream.close();
-                    }
-
-                }
-            } catch (IOException var9) {
-                properties.setProperty("respath", (new StringBuilder()).insert(0, "worlds/").append(worldName).toString());
-            }
-            setChunkLoader(properties);
+            chunkLoader = new HYTChunkProviderClient(mc.world, worldName);
+            mc.world.setClientChunkProvider(chunkLoader);
             loaded = true;
         }
-    }
-
-    private static void setChunkLoader(Properties properties) {
-        chunkLoader = new HYTChunkProviderClient(mc.world, properties);
-        mc.world.setClientChunkProvider(chunkLoader);
     }
 
     public static void markUpdated(int x, int z) {

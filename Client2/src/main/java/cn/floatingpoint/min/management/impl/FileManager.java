@@ -9,6 +9,7 @@ import cn.floatingpoint.min.system.shortcut.Shortcut;
 import cn.floatingpoint.min.system.ui.components.DraggableGameView;
 import cn.floatingpoint.min.utils.math.Vec2i;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjglx.input.Keyboard;
@@ -200,5 +201,26 @@ public class FileManager implements Manager {
                 .put("Chat-Channel", Managers.clientManager.channel.name())
                 .put("Shortcuts", shortcuts)
                 .toString(), false);
+    }
+
+    public void extractFile(ResourceLocation source, File destination) {
+        try (InputStream in = Minecraft.getMinecraft().getDefaultResourcePack().getResourceStream(source)) {
+            if (in != null) {
+                while (!destination.exists()) {
+                    if (!destination.mkdirs() && !destination.createNewFile()) {
+                        throw new IOException();
+                    }
+                }
+                try (FileOutputStream out = new FileOutputStream(destination)) {
+                    byte[] bytes = new byte[4096];
+                    int len;
+                    while ((len = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, len);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
