@@ -38,6 +38,7 @@ import java.net.SocketAddress;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -174,7 +175,6 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -420,7 +420,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
@@ -2648,7 +2648,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         GameProfile gameprofile = this.session.getProfile();
 
         if (gameprofile.getId() != null) {
-            playerSnooper.addStatToSnooper("uuid", Hashing.sha1().hashBytes(gameprofile.getId().toString().getBytes(Charsets.ISO_8859_1)).toString());
+            playerSnooper.addStatToSnooper("uuid", Hashing.sha1().hashBytes(gameprofile.getId().toString().getBytes(StandardCharsets.ISO_8859_1)).toString());
         }
     }
 

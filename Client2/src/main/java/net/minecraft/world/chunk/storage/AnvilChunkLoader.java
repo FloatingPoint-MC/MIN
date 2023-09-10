@@ -51,11 +51,11 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         this.fixer = dataFixerIn;
     }
 
-    @Nullable
 
     /**
      * Loads the specified(XZ) chunk into the specified world.
      */
+    @Nullable
     public Chunk loadChunk(World worldIn, int x, int z) throws IOException
     {
         ChunkPos chunkpos = new ChunkPos(x, z);
@@ -83,11 +83,11 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         return nbttagcompound != null || RegionFileCache.chunkExists(this.chunkSaveLocation, x, z);
     }
 
-    @Nullable
 
     /**
      * Wraps readChunkFromNBT. Checks the coordinates and several NBT tags.
      */
+    @Nullable
     protected Chunk checkedReadChunkFromNBT(World worldIn, int x, int z, NBTTagCompound compound)
     {
         if (!compound.hasKey("Level", 10))

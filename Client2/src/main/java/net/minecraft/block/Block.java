@@ -615,6 +615,7 @@ public class Block {
      * @deprecated call via {@link IBlockState#addCollisionBoxToList(World, BlockPos, AxisAlignedBB, List, Entity, boolean)}
      * whenever possible. Implementing/overriding is fine.
      */
+    @Deprecated
     protected static void addCollisionBoxToList(BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable AxisAlignedBB blockBox) {
         if (blockBox != NULL_AABB) {
             AxisAlignedBB axisalignedbb = blockBox.offset(pos);
@@ -625,13 +626,13 @@ public class Block {
         }
     }
 
-    @Deprecated
-    @Nullable
 
     /**
      * @deprecated call via {@link IBlockState#getCollisionBoundingBox(IBlockAccess, BlockPos)} whenever possible.
      * Implementing/overriding is fine.
      */
+    @Deprecated
+    @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return blockState.getBoundingBox(worldIn, pos);
     }

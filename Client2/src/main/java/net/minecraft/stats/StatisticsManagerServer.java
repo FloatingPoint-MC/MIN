@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -43,7 +44,7 @@ public class StatisticsManagerServer extends StatisticsManager
             try
             {
                 this.statsData.clear();
-                this.statsData.putAll(this.parseJson(FileUtils.readFileToString(this.statsFile)));
+                this.statsData.putAll(this.parseJson(FileUtils.readFileToString(this.statsFile, Charset.defaultCharset())));
             }
             catch (IOException ioexception)
             {
@@ -60,7 +61,7 @@ public class StatisticsManagerServer extends StatisticsManager
     {
         try
         {
-            FileUtils.writeStringToFile(this.statsFile, dumpJson(this.statsData));
+            FileUtils.writeStringToFile(this.statsFile, dumpJson(this.statsData), Charset.defaultCharset());
         }
         catch (IOException ioexception)
         {

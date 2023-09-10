@@ -4,16 +4,11 @@ import com.google.common.collect.Sets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.Chunk;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Properties;
 
 /**
  * @projectName: MIN

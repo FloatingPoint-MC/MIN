@@ -306,6 +306,7 @@
                     <!-- 过滤后缀不需要转码的文件后缀名.crt/.ttf-->
                     <nonFilteredFileExtensions>
                         <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>mca</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
             </plugin>

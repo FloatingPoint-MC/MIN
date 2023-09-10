@@ -54,24 +54,23 @@ extends ChunkProviderClient {
     }
 
     @Nonnull
-    public Chunk loadChunk(int n, int n2) {
+    public Chunk loadChunk(int x, int z) {
         try {
             HYTChunkProviderClient HYTChunkProviderClient = this;
-            Chunk chunk = HYTChunkProviderClient.chunkLoader.loadChunk(HYTChunkProviderClient.world, n, n2);
+            Chunk chunk = HYTChunkProviderClient.chunkLoader.loadChunk(HYTChunkProviderClient.world, x, z);
             if (chunk != null) {
-                HYTChunkProviderClient class9562 = this;
-                chunk.setLastSaveTime(class9562.world.getTotalWorldTime());
-                long l = ChunkPos.asLong(n, n2);
-                class9562.loadedChunks.add(l);
+                chunk.setLastSaveTime(world.getTotalWorldTime());
+                long seed = ChunkPos.asLong(x, z);
+                loadedChunks.add(seed);
                 chunk.markLoaded(true);
-                this.chunkMap.put(l, chunk);
+                this.chunkMap.put(seed, chunk);
                 return chunk;
             }
         }
         catch (Exception exception) {
             logger.error("Couldn't load res chunk", exception);
         }
-        return super.loadChunk(n, n2);
+        return super.loadChunk(x, z);
     }
 }
 

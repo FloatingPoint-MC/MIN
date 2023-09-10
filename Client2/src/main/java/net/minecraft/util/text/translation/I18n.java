@@ -10,30 +10,30 @@ public class I18n {
      */
     private static final LanguageMap fallbackTranslator = new LanguageMap();
 
-    @Deprecated
 
     /**
      * Translates a Stat name
      */
+    @Deprecated
     public static String translateToLocal(String key) {
         return localizedName.translateKey(key);
     }
 
-    @Deprecated
 
     /**
      * Translates a Stat name with format args
      */
+    @Deprecated
     public static String translateToLocalFormatted(String key, Object... format) {
         return localizedName.translateKeyFormat(key, format);
     }
 
-    @Deprecated
 
     /**
      * Translates a Stat name using the fallback (hardcoded en_US) locale.  Looks like it's only intended to be used if
      * translateToLocal fails.
      */
+    @Deprecated
     public static String translateToFallback(String key) {
         return fallbackTranslator.translateKey(key);
     }

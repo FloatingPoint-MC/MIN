@@ -264,6 +264,12 @@ public class Display {
         displayWidth = mode.getWidth();
         displayHeight = mode.getHeight();
 
+        int width = mode.getWidth();
+        int height = mode.getHeight();
+        long monitorId = glfwGetPrimaryMonitor();
+        final GLFWVidMode vidMode = glfwGetVideoMode(monitorId);
+        glfwSetWindowMonitor(getWindow(), NULL, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2, width, height, 0);
+
         IntBuffer fbw = BufferUtils.createIntBuffer(1);
         IntBuffer fbh = BufferUtils.createIntBuffer(1);
         GLFW.glfwGetFramebufferSize(Window.handle, fbw, fbh);
