@@ -2273,8 +2273,11 @@ public abstract class Entity implements ICommandSender {
     /**
      * Returns whether this Entity is on the same team as the given Entity.
      */
-    public boolean isOnSameTeam(Entity entityIn) {
-        return this.isOnScoreboardTeam(Objects.requireNonNull(entityIn.getTeam()));
+    public boolean isOnSameTeam(@Nullable Entity entityIn) {
+        if (entityIn == null) {
+            return false;
+        }
+        return this.isOnScoreboardTeam(entityIn.getTeam());
     }
 
     /**
