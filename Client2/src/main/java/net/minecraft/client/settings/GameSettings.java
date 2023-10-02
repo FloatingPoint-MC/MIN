@@ -1882,67 +1882,37 @@ public class GameSettings {
                     return s + Lang.getDefault();
             }
         } else if (options == Options.TREES) {
-            switch (this.ofTrees) {
-                case 1:
-                    return s + Lang.getFast();
-
-                case 2:
-                    return s + Lang.getFancy();
-
-                case 3:
-                default:
-                    return s + Lang.getDefault();
-
-                case 4:
-                    return s + Lang.get("of.general.smart");
-            }
+            return switch (this.ofTrees) {
+                case 1 -> s + Lang.getFast();
+                case 2 -> s + Lang.getFancy();
+                default -> s + Lang.getDefault();
+                case 4 -> s + Lang.get("of.general.smart");
+            };
         } else if (options == Options.DROPPED_ITEMS) {
-            switch (this.ofDroppedItems) {
-                case 1:
-                    return s + Lang.getFast();
-
-                case 2:
-                    return s + Lang.getFancy();
-
-                default:
-                    return s + Lang.getDefault();
-            }
+            return switch (this.ofDroppedItems) {
+                case 1 -> s + Lang.getFast();
+                case 2 -> s + Lang.getFancy();
+                default -> s + Lang.getDefault();
+            };
         } else if (options == Options.RAIN) {
-            switch (this.ofRain) {
-                case 1:
-                    return s + Lang.getFast();
-
-                case 2:
-                    return s + Lang.getFancy();
-
-                case 3:
-                    return s + Lang.getOff();
-
-                default:
-                    return s + Lang.getDefault();
-            }
+            return switch (this.ofRain) {
+                case 1 -> s + Lang.getFast();
+                case 2 -> s + Lang.getFancy();
+                case 3 -> s + Lang.getOff();
+                default -> s + Lang.getDefault();
+            };
         } else if (options == Options.ANIMATED_WATER) {
-            switch (this.ofAnimatedWater) {
-                case 1:
-                    return s + Lang.get("of.options.animation.dynamic");
-
-                case 2:
-                    return s + Lang.getOff();
-
-                default:
-                    return s + Lang.getOn();
-            }
+            return switch (this.ofAnimatedWater) {
+                case 1 -> s + Lang.get("of.options.animation.dynamic");
+                case 2 -> s + Lang.getOff();
+                default -> s + Lang.getOn();
+            };
         } else if (options == Options.ANIMATED_LAVA) {
-            switch (this.ofAnimatedLava) {
-                case 1:
-                    return s + Lang.get("of.options.animation.dynamic");
-
-                case 2:
-                    return s + Lang.getOff();
-
-                default:
-                    return s + Lang.getOn();
-            }
+            return switch (this.ofAnimatedLava) {
+                case 1 -> s + Lang.get("of.options.animation.dynamic");
+                case 2 -> s + Lang.getOff();
+                default -> s + Lang.getOn();
+            };
         } else if (options == Options.ANIMATED_FIRE) {
             return this.ofAnimatedFire ? s + Lang.getOn() : s + Lang.getOff();
         } else if (options == Options.ANIMATED_PORTAL) {
