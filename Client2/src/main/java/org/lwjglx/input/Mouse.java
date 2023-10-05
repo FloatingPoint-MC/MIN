@@ -8,9 +8,6 @@ import org.lwjglx.opengl.Display;
 public class Mouse {
     private static boolean grabbed = false;
 
-    private static int lastX = 0;
-    private static int lastY = 0;
-
     private static int latestX = 0;
     private static int latestY = 0;
 
@@ -25,7 +22,7 @@ public class Mouse {
     private static final int[] yEvents = new int[queue.getMaxEvents()];
     private static final int[] wheelEvents = new int[queue.getMaxEvents()];
 
-    private static final boolean clipPostionToDisplay = true;
+    private static final boolean clipPositionToDisplay = true;
     private static int ignoreNextDelta = 0;
     private static int ignoreNextMove = 0;
     private static int dWheel;
@@ -41,8 +38,6 @@ public class Mouse {
             ignoreNextDelta--;
             x = latestX;
             y = latestY;
-            lastX = latestX;
-            lastY = latestY;
         }
 
         xEvents[queue.getNextPos()] = latestX;
@@ -99,10 +94,8 @@ public class Mouse {
     }
 
     public static void poll() {
-        lastX = x;
-        lastY = y;
 
-        if (!grabbed && clipPostionToDisplay) {
+        if (!grabbed && clipPositionToDisplay) {
             if (latestX < 0) latestX = 0;
             if (latestY < 0) latestY = 0;
             if (latestX > Display.getWidth() - 1) latestX = Display.getWidth() - 1;
@@ -113,7 +106,8 @@ public class Mouse {
         y = latestY;
     }
 
-    public static void create() throws LWJGLException {}
+    public static void create() throws LWJGLException {
+    }
 
     public static boolean isCreated() {
         return Display.isCreated();
@@ -172,14 +166,6 @@ public class Mouse {
         return y;
     }
 
-    public static int getDX() {
-        return (ignoreNextDelta > 0) ? 0 : (x - lastX);
-    }
-
-    public static int getDY() {
-        return (ignoreNextDelta > 0) ? 0 : (y - lastY);
-    }
-
     public static int getDWheel() {
         int result = dWheel;
         dWheel = 0;
@@ -193,7 +179,9 @@ public class Mouse {
         GLFW.glfwSetCursorPos(Display.getWindow(), new_x, new_y);
         addMoveEvent(new_x, new_y);
     }
-    public static void destroy() {}
+
+    public static void destroy() {
+    }
 
     public static boolean isInsideWindow() {
         return Display.isVisible();

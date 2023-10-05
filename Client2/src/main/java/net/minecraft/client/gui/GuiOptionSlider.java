@@ -44,7 +44,6 @@ public class GuiOptionSlider extends GuiButton {
                 this.displayString = mc.gameSettings.getKeyBinding(this.options);
             }
 
-            //mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             RenderUtil.drawRoundedRect(this.x + (int) (this.sliderValue * (float) (this.width - 5)),
                     this.y + 1,
@@ -52,8 +51,6 @@ public class GuiOptionSlider extends GuiButton {
                     this.y + 19,
                     3,
                     new Color(255, 255, 255).getRGB());
-            //this.drawTexturedModalRect(this.x + (int) (this.sliderValue * (float) (this.width - 8)), this.y, 0, 66, 4, 20);
-            //this.drawTexturedModalRect(this.x + (int) (this.sliderValue * (float) (this.width - 8)) + 4, this.y, 196, 66, 4, 20);
         }
     }
 

@@ -1,4 +1,4 @@
-package cn.floatingpoint.min;
+package cn.floatingpoint.min.threads;
 
 import cn.floatingpoint.min.runnable.Runnable;
 import net.minecraft.client.Minecraft;

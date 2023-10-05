@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import cn.floatingpoint.min.system.mouse.RawMouseController;
 import net.minecraft.client.Minecraft;
 import org.lwjglx.input.Mouse;
 import org.lwjglx.opengl.Display;
@@ -34,7 +35,9 @@ public class MouseHelper {
     }
 
     public void mouseXYChange() {
-        this.deltaX = Mouse.getDX();
-        this.deltaY = Mouse.getDY();
+        //this.deltaX = Mouse.getDX();
+        //this.deltaY = Mouse.getDY();
+        this.deltaX = RawMouseController.getDeltaX();
+        this.deltaY = RawMouseController.getDeltaY();
     }
 }

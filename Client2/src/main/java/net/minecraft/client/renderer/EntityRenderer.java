@@ -5,7 +5,7 @@ import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.render.RenderModule;
 import cn.floatingpoint.min.system.module.impl.render.impl.FreeLook;
 import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
-import cn.floatingpoint.min.system.module.impl.render.impl.SmoothZoom;
+import cn.floatingpoint.min.system.module.impl.render.impl.Zoom;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import com.google.gson.JsonSyntaxException;
@@ -535,26 +535,30 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         if (flag) {
             if (!Config.zoomMode) {
                 Config.zoomMode = true;
-                Config.zoomSmoothCamera = this.mc.gameSettings.smoothCamera;
-                this.mc.gameSettings.smoothCamera = true;
+                if (Zoom.filmViewToggle.getValue()) {
+                    Config.zoomSmoothCamera = this.mc.gameSettings.smoothCamera;
+                    this.mc.gameSettings.smoothCamera = true;
+                }
                 this.mc.renderGlobal.displayListEntitiesDirty = true;
             }
             if (useFOVSetting) {
-                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
+                if (Zoom.smoothZoom.getValue()) {
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, Zoom.speed.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
                 } else {
                     screenScale = f / 4.0F;
                 }
             } else {
-                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, SmoothZoom.speed.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
+                if (Zoom.smoothZoom.getValue()) {
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale, f, f / 4.0F, Zoom.speed.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
                 } else {
                     screenScale2 = f / 4.0F;
                 }
             }
         } else if (Config.zoomMode) {
             Config.zoomMode = false;
-            this.mc.gameSettings.smoothCamera = Config.zoomSmoothCamera;
+            if (Zoom.filmViewToggle.getValue()) {
+                this.mc.gameSettings.smoothCamera = Config.zoomSmoothCamera;
+            }
             this.mouseFilterXAxis = new MouseFilter();
             this.mouseFilterYAxis = new MouseFilter();
             this.mc.renderGlobal.displayListEntitiesDirty = true;
@@ -562,14 +566,14 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         if (!Config.zoomMode) {
             if (useFOVSetting) {
-                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue() / 2.0f);
+                if (Zoom.smoothZoom.getValue()) {
+                    screenScale = FunctionUtil.decreasedSpeed(screenScale, f / 4.0F, f, Zoom.speed.getValue().floatValue() / 2.0f);
                 } else {
                     screenScale = f;
                 }
             } else {
-                if (Managers.moduleManager.renderModules.get("SmoothZoom").isEnabled()) {
-                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale2, f / 4.0F, f, SmoothZoom.speed.getValue().floatValue() / 2.0f);
+                if (Zoom.smoothZoom.getValue()) {
+                    screenScale2 = FunctionUtil.decreasedSpeed(screenScale2, f / 4.0F, f, Zoom.speed.getValue().floatValue() / 2.0f);
                 } else {
                     screenScale2 = f;
                 }
