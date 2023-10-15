@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.mouse.RawMouseController;
 import net.minecraft.client.Minecraft;
 import org.lwjglx.input.Mouse;
@@ -35,9 +36,14 @@ public class MouseHelper {
     }
 
     public void mouseXYChange() {
-        //this.deltaX = Mouse.getDX();
-        //this.deltaY = Mouse.getDY();
-        this.deltaX = RawMouseController.getDeltaX();
-        this.deltaY = RawMouseController.getDeltaY();
+        int deltaX = RawMouseController.getDeltaX();
+        int deltaY = RawMouseController.getDeltaY();
+        if (Managers.moduleManager.boostModules.get("RawMouseInput").isEnabled()) {
+            this.deltaX = deltaX;
+            this.deltaY = deltaY;
+        } else {
+            this.deltaX = Mouse.getDX();
+            this.deltaY = Mouse.getDY();
+        }
     }
 }

@@ -8,6 +8,8 @@ import org.lwjglx.opengl.Display;
 public class Mouse {
     private static boolean grabbed = false;
 
+    private static int lastX = 0;
+    private static int lastY = 0;
     private static int latestX = 0;
     private static int latestY = 0;
 
@@ -38,6 +40,8 @@ public class Mouse {
             ignoreNextDelta--;
             x = latestX;
             y = latestY;
+            lastX = latestX;
+            lastY = latestY;
         }
 
         xEvents[queue.getNextPos()] = latestX;
@@ -94,6 +98,8 @@ public class Mouse {
     }
 
     public static void poll() {
+        lastX = x;
+        lastY = y;
 
         if (!grabbed && clipPositionToDisplay) {
             if (latestX < 0) latestX = 0;
@@ -164,6 +170,14 @@ public class Mouse {
 
     public static int getY() {
         return y;
+    }
+
+    public static int getDX() {
+        return (ignoreNextDelta > 0) ? 0 : (x - lastX);
+    }
+
+    public static int getDY() {
+        return (ignoreNextDelta > 0) ? 0 : (y - lastY);
     }
 
     public static int getDWheel() {

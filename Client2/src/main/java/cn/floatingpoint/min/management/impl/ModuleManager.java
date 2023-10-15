@@ -7,6 +7,7 @@ import cn.floatingpoint.min.system.module.Module;
 import cn.floatingpoint.min.system.module.impl.boost.BoostModule;
 import cn.floatingpoint.min.system.module.impl.boost.impl.FastLoad;
 import cn.floatingpoint.min.system.module.impl.boost.impl.MemoryManager;
+import cn.floatingpoint.min.system.module.impl.boost.impl.RawMouseInput;
 import cn.floatingpoint.min.system.module.impl.boost.impl.Sprint;
 import cn.floatingpoint.min.system.module.impl.misc.MiscModule;
 import cn.floatingpoint.min.system.module.impl.misc.impl.*;
@@ -41,6 +42,7 @@ public class ModuleManager implements Manager {
         boostModules.put("FastLoad", new FastLoad());
         boostModules.put("MemoryManager", new MemoryManager());
         boostModules.put("Sprint", new Sprint());
+        boostModules.put("RawMouseInput", new RawMouseInput());
         // Misc
         miscModules.put("AutoBan", new AutoBan());
         miscModules.put("AutoText", new AutoText());

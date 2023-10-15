@@ -21,6 +21,8 @@
   "module.implement.Sprint.ShowText.description": "Show a text in the game hud.",
   "module.implement.Sprint.Text": "Text",
   "module.implement.Sprint.Text.description": "Text to be shown.",
+  "module.implement.RawMouseInput": "Raw Mouse Input",
+  "module.implement.RawMouseInput.description": "Make the mouse sensitivity meet the system settings.",
   "module.implement.AutoBan": "Auto Ban",
   "module.implement.AutoBan.description": "What are you doing?",
   "module.implement.AutoText": "Auto Text",

@@ -21,6 +21,8 @@
   "module.implement.Sprint.ShowText.description": "在游戏界面显示一串文字。",
   "module.implement.Sprint.Text": "文字",
   "module.implement.Sprint.Text.description": "待显示的文字。",
+  "module.implement.RawMouseInput": "原始鼠标输入",
+  "module.implement.RawMouseInput.description": "使鼠标灵敏度符合系统设置。",
   "module.implement.AutoBan": "自动封禁",
   "module.implement.AutoBan.description": "你在干什么?",
   "module.implement.AutoText": "自动发送消息",
