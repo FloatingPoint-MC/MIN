@@ -41,8 +41,8 @@ public class ModuleManager implements Manager {
         // Boost
         boostModules.put("FastLoad", new FastLoad());
         boostModules.put("MemoryManager", new MemoryManager());
-        boostModules.put("Sprint", new Sprint());
         boostModules.put("RawMouseInput", new RawMouseInput());
+        boostModules.put("Sprint", new Sprint());
         // Misc
         miscModules.put("AutoBan", new AutoBan());
         miscModules.put("AutoText", new AutoText());
