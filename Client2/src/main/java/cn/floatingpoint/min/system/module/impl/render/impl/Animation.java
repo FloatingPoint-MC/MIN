@@ -18,9 +18,10 @@ public class Animation extends RenderModule {
     public static OptionValue oldBackwardAnimation = new OptionValue(false);
     public static IntegerValue blockX = new IntegerValue(-200, 200, 1, 0);
     public static IntegerValue blockY = new IntegerValue(-200, 200, 1, 0);
-    public static ModeValue foodSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
-    public static ModeValue bowSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
     public static ModeValue blockSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
+    public static ModeValue bowSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
+    public static ModeValue foodSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
+    public static ModeValue foodSwingAnimationMode = new ModeValue(new String[]{"MC", "MIN"}, "MC", () -> !foodSwingMode.isCurrentMode("None"));
 
     public Animation() {
         addValues(
@@ -32,7 +33,9 @@ public class Animation extends RenderModule {
                 new Pair<>("BlockY", blockY),
                 new Pair<>("BlockSwingMode", blockSwingMode),
                 new Pair<>("BowSwingMode", bowSwingMode),
-                new Pair<>("FoodSwingMode", foodSwingMode));
+                new Pair<>("FoodSwingMode", foodSwingMode),
+                new Pair<>("FoodSwingAnimationMode", foodSwingAnimationMode)
+        );
         setCanBeEnabled(false);
     }
 

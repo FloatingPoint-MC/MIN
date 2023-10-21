@@ -358,6 +358,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                     break;
                 case MIN:
                     IRCSender.sendMessage(msg);
+                    this.mc.ingameGUI.getChatGUI().addToSentMessages(msg);
                     break;
             }
         } else {

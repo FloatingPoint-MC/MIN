@@ -386,25 +386,31 @@ public class ItemRenderer {
 
                             case EAT:
                             case DRINK:
-                                if (!Animation.foodSwingMode.isCurrentMode("None") && swingProgress != 0.0f) {
-                                    GlStateManager.translate(sideCode * 0.56, -0.52 + equippedProgress * -0.6, -0.72);
-                                    GlStateManager.rotate(45.0F, 0, 0, 0);
-                                    float f = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
-                                    float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
-                                    GlStateManager.rotate(f * 20.0F, 0, -1, 0);
-                                    GlStateManager.rotate(f1 * 20.0F, 0, 0, -1);
-                                    GlStateManager.rotate(f1 * 80.0F, -1, 0, 0);
-                                    GlStateManager.translate(-0.8f, 0.2f, 0f);
-                                    GlStateManager.rotate(30f, 0f, 1f, 0f);
-                                    GlStateManager.rotate(-80f, 1f, 0f, 0f);
-                                    GlStateManager.rotate(60f, 0f, 1f, 0f);
-                                    GlStateManager.scale(1.4f, 1.4f, 1.4f);
-                                    break;
+                                if (!Animation.foodSwingMode.isCurrentMode("None")) {
+                                    if (Animation.foodSwingAnimationMode.isCurrentMode("MIN") && swingProgress != 0.0f) {
+                                        GlStateManager.translate(sideCode * 0.56, -0.52 + equippedProgress * -0.6, -0.72);
+                                        GlStateManager.rotate(45.0F, 0, 0, 0);
+                                        float f = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
+                                        float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
+                                        GlStateManager.rotate(f * 20.0F, 0, -1, 0);
+                                        GlStateManager.rotate(f1 * 20.0F, 0, 0, -1);
+                                        GlStateManager.rotate(f1 * 80.0F, -1, 0, 0);
+                                        GlStateManager.translate(-0.8f, 0.2f, 0f);
+                                        GlStateManager.rotate(30f, 0f, 1f, 0f);
+                                        GlStateManager.rotate(-80f, 1f, 0f, 0f);
+                                        GlStateManager.rotate(60f, 0f, 1f, 0f);
+                                        GlStateManager.scale(1.4f, 1.4f, 1.4f);
+                                        break;
+                                    }
                                 }
                                 this.transformEatFirstPerson(partialTicks, enumhandside, stack);
                                 this.transformSideFirstPerson(enumhandside, equippedProgress);
                                 if (!Animation.foodSwingMode.isCurrentMode("None")) {
-                                    doSwingAnimation(swingProgress);
+                                    if (Animation.foodSwingAnimationMode.isCurrentMode("MIN")){
+                                        doSwingAnimation(swingProgress);
+                                    } else {
+                                        transformFirstPerson(enumhandside, swingProgress);
+                                    }
                                 }
                                 break;
 
