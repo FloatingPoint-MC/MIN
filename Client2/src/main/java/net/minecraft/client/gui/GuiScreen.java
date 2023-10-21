@@ -351,25 +351,25 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
      * Used to add chat messages to the client's GuiChat.
      */
     public void sendChatMessage(String msg) {
-        this.sendChatMessage(msg, true);
-    }
-
-    public void sendChatMessage(String msg, boolean addToChat) {
-        if (addToChat) {
-            this.mc.ingameGUI.getChatGUI().addToSentMessages(msg);
-        }
         if (!msg.startsWith("/")) {
             switch (Managers.clientManager.channel) {
                 case WORLD:
-                    this.mc.player.sendChatMessage(msg);
+                    this.sendChatMessage(msg, true);
                     break;
                 case MIN:
                     IRCSender.sendMessage(msg);
                     break;
             }
         } else {
-            this.mc.player.sendChatMessage(msg);
+            this.sendChatMessage(msg, true);
         }
+    }
+
+    public void sendChatMessage(String msg, boolean addToChat) {
+        if (addToChat) {
+            this.mc.ingameGUI.getChatGUI().addToSentMessages(msg);
+        }
+        this.mc.player.sendChatMessage(msg);
     }
 
     /**
