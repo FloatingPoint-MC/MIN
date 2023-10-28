@@ -76,7 +76,7 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         net.minecraft.scoreboard.Scoreboard scoreboard = scoreObjective.getScoreboard();
         List<Score> list = scoreboard.getSortedScores(scoreObjective).stream().filter(p_apply_1_ -> !p_apply_1_.getPlayerName().startsWith("#")).collect(Collectors.toList());
         ArrayList<Score> scores = new ArrayList<>();
-        Score score = new Score(scoreboard, scoreObjective, "  \247fMIN官方KOOK: \247b14221788  ");
+        Score score = new Score(scoreboard, scoreObjective, "\247bsuo.im/min  ");
         score.setScorePoints(0);
         scores.add(score);
 
@@ -97,7 +97,7 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
         int l1 = x - i - 3;
         int j;
 
-        for (j = 0; j < scores.size();) {
+        for (j = 0; j < scores.size(); ) {
             ++j;
             int k = y - j * fontRenderer.FONT_HEIGHT;
             int l = x - 3 + 2;
@@ -119,6 +119,9 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
             if (background.getValue()) {
                 Gui.drawRect(l1 - 2, k, l, k + fontRenderer.FONT_HEIGHT, 1342177280);
             }
+            if (j == 1) {
+                l1 += (width / 2 - fontRenderer.getStringWidth(s1) / 2);
+            }
             if (shadow.getValue()) {
                 fontRenderer.drawStringWithShadow(s1, l1, k, new Color(553648127).getRGB());
             } else {
@@ -130,6 +133,9 @@ public class Scoreboard extends RenderModule implements DraggableGameView {
                 } else {
                     fontRenderer.drawString(s2, l - fontRenderer.getStringWidth(s2), k, new Color(553648127).getRGB());
                 }
+            }
+            if (j == 1) {
+                l1 -= (width / 2 - fontRenderer.getStringWidth(s1) / 2);
             }
 
             if (j == scores.size()) {

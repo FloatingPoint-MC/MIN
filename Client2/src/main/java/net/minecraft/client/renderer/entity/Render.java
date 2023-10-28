@@ -414,7 +414,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                         String rankLabel = getRankLabel(rank);
                         if (entityIn.getDistance(this.renderManager.renderViewEntity) <= 64) {
                             if (RankDisplay.kd.getValue()) {
-                                EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), "K/D: " + rank.getKd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.5F : 0.25F), (float) z, i, f, f1, flag1, flag);
+                                EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), "\247aK/D: " + rank.getKd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.5F : 0.25F), (float) z, i, f, f1, flag1, flag);
                             }
                             EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), rankLabel, (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.25F : 0.0F), (float) z, i, f, f1, flag1, flag);
                         }
