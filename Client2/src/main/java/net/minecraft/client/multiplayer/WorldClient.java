@@ -526,8 +526,7 @@ public class WorldClient extends World {
     }
 
     private boolean isPlayerActing() {
-        if (this.mc.playerController instanceof PlayerControllerOF) {
-            PlayerControllerOF playercontrollerof = (PlayerControllerOF) this.mc.playerController;
+        if (this.mc.playerController instanceof PlayerControllerOF playercontrollerof) {
             return playercontrollerof.isActing();
         } else {
             return false;

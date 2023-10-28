@@ -53,7 +53,8 @@ public enum EnumParticleTypes
     END_ROD("endRod", 43, false),
     FALLING_DUST("fallingdust", 46, false, 1),
     TOTEM("totem", 47, false),
-    SPIT("spit", 48, true);
+    SPIT("spit", 48, true),
+    NOTHING("", 44, false);
 
     private final String particleName;
     private final int particleID;
@@ -100,14 +101,14 @@ public enum EnumParticleTypes
         return this.shouldIgnoreRange;
     }
 
-    @Nullable
 
     /**
      * Gets the relative EnumParticleTypes by id.
      */
+    @Nullable
     public static EnumParticleTypes getParticleFromId(int particleId)
     {
-        return PARTICLES.get(Integer.valueOf(particleId));
+        return PARTICLES.get(particleId);
     }
 
     @Nullable
@@ -119,7 +120,7 @@ public enum EnumParticleTypes
     static {
         for (EnumParticleTypes enumparticletypes : values())
         {
-            PARTICLES.put(Integer.valueOf(enumparticletypes.getParticleID()), enumparticletypes);
+            PARTICLES.put(enumparticletypes.getParticleID(), enumparticletypes);
             BY_NAME.put(enumparticletypes.getParticleName(), enumparticletypes);
         }
     }

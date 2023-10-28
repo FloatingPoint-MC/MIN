@@ -1831,6 +1831,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void handleParticles(SPacketParticles packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
 
+        if (packetIn.getParticleType() == EnumParticleTypes.NOTHING) return;
+
         if (packetIn.getParticleCount() == 0) {
             double d0 = packetIn.getParticleSpeed() * packetIn.getXOffset();
             double d2 = packetIn.getParticleSpeed() * packetIn.getYOffset();
