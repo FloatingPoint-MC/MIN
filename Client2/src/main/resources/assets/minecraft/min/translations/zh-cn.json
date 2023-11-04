@@ -146,6 +146,8 @@
   "module.implement.CleanView.description": "移除自身的药水粒子。",
   "module.implement.ClickGUI": "Click GUI",
   "module.implement.ClickGUI.description": "你现在看到的界面。",
+  "module.implement.DamageParticles": "伤害显示",
+  "module.implement.DamageParticles.description": "用粒子显示造成的伤害。",
   "module.implement.FireFilter": "火焰过滤",
   "module.implement.FireFilter.description": "当你有抗火药水效果时不显示火焰。",
   "module.implement.FreeLook": "自由视角",

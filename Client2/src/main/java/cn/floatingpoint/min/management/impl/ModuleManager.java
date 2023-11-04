@@ -60,6 +60,7 @@ public class ModuleManager implements Manager {
         renderModules.put("ChatBar", new ChatBar());
         renderModules.put("CleanView", new CleanView());
         renderModules.put("ClickGUI", new ClickGUI());
+        //renderModules.put("DamageParticles", new DamageParticles());
         renderModules.put("FireFilter", new FireFilter());
         renderModules.put("FreeLook", new FreeLook());
         renderModules.put("FullBright", new FullBright());

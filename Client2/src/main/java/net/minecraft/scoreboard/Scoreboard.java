@@ -2,16 +2,14 @@ package net.minecraft.scoreboard;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class Scoreboard {
     private final Map<String, ScoreObjective> scoreObjectives = Maps.newHashMap();
@@ -349,27 +347,21 @@ public class Scoreboard {
      */
     @Nullable
     public static String getObjectiveDisplaySlot(int id) {
-        switch (id) {
-            case 0:
-                return "list";
-
-            case 1:
-                return "sidebar";
-
-            case 2:
-                return "belowName";
-
-            default:
+        return switch (id) {
+            case 0 -> "list";
+            case 1 -> "sidebar";
+            case 2 -> "belowName";
+            default -> {
                 if (id >= 3 && id <= 18) {
                     TextFormatting textformatting = TextFormatting.fromColorIndex(id - 3);
 
                     if (textformatting != null && textformatting != TextFormatting.RESET) {
-                        return "sidebar.team." + textformatting.getFriendlyName();
+                        yield "sidebar.team." + textformatting.getFriendlyName();
                     }
                 }
-
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 
     /**

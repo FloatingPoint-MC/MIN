@@ -146,6 +146,8 @@
   "module.implement.CleanView.description": "Remove the potion particles of yourself.",
   "module.implement.ClickGUI": "Click GUI",
   "module.implement.ClickGUI.description": "The gui you're now looking at.",
+  "module.implement.DamageParticles": "Damage Particles",
+  "module.implement.DamageParticles.description": "Render a particle of the damage caused.",
   "module.implement.FireFilter": "Fire Filter",
   "module.implement.FireFilter.description": "Hide fire when you are of Fire Resistance.",
   "module.implement.FreeLook": "Free Look",

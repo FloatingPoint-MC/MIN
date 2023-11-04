@@ -760,11 +760,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     public void onDisconnect(ITextComponent reason) {
         this.client.loadWorld(null);
 
-        if (this.guiScreenServer != null) {
-            this.client.displayGuiScreen(new GuiDisconnected(this.guiScreenServer, "disconnect.lost", reason));
-        } else {
-            this.client.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu(false)), "disconnect.lost", reason));
-        }
+        this.client.displayGuiScreen(new GuiDisconnected(Objects.requireNonNullElseGet(this.guiScreenServer, () -> new GuiMultiplayer(new GuiMainMenu(false))), "disconnect.lost", reason));
     }
 
     public void sendPacket(Packet<?> packetIn) {
@@ -1060,8 +1056,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         } else {
             boolean flag = false;
 
-            if (this.client.currentScreen instanceof GuiContainerCreative) {
-                GuiContainerCreative guicontainercreative = (GuiContainerCreative) this.client.currentScreen;
+            if (this.client.currentScreen instanceof GuiContainerCreative guicontainercreative) {
                 flag = guicontainercreative.getSelectedTabIndex() != CreativeTabs.INVENTORY.getIndex();
             }
 
@@ -1225,9 +1220,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 this.client.displayGuiScreen(new GuiDownloadTerrain());
             } else if (j == 1) {
                 this.client.displayGuiScreen(new GuiWinGame(true, () ->
-                {
-                    this.client.player.connection.sendPacket(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
-                }));
+                        this.client.player.connection.sendPacket(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN))));
             }
         } else if (i == 5) {
             GameSettings gamesettings = this.client.gameSettings;
@@ -1608,7 +1601,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
     }
 
     private FutureCallback<Object> createDownloadCallback() {
-        return new FutureCallback<Object>() {
+        return new FutureCallback<>() {
             public void onSuccess(@Nullable Object p_onSuccess_1_) {
                 NetHandlerPlayClient.this.netManager.sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.SUCCESSFULLY_LOADED));
             }
@@ -1787,7 +1780,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         } else {
             scoreplayerteam = scoreboard.getTeam(packetIn.getName());
         }
-
+        assert scoreplayerteam != null;
         if (packetIn.getAction() == 0 || packetIn.getAction() == 2) {
             scoreplayerteam.setDisplayName(packetIn.getDisplayName());
             scoreplayerteam.setPrefix(packetIn.getPrefix());
