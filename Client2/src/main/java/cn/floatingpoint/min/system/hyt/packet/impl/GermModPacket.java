@@ -1,5 +1,6 @@
 package cn.floatingpoint.min.system.hyt.packet.impl;
 
+import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
 import cn.floatingpoint.min.system.ui.hyt.germ.GermModButton;
 import cn.floatingpoint.min.system.ui.hyt.germ.GuiButtonPage;
@@ -24,7 +25,9 @@ public class GermModPacket implements CustomPacket {
     public void process(ByteBuf byteBuf) {
         PacketBuffer packetBuffer = new PacketBuffer(byteBuf);
         int packetId = packetBuffer.readInt();
+        //System.out.println(packetId);
         if (packetId == 73) {
+            // Gui
             PacketBuffer packetBuffer1 = new PacketBuffer(packetBuffer.copy());
             String identity = packetBuffer1.readString(Short.MAX_VALUE);
             if (identity.equalsIgnoreCase("gui")) {
@@ -70,6 +73,14 @@ public class GermModPacket implements CustomPacket {
                     }
                 }
             }
+        } else if (packetId == 737) {
+            // Damage Display
+            if (Managers.moduleManager.renderModules.get("DamageParticles").isEnabled()) {
+                String damage = packetBuffer.readString(30000);
+                //System.out.println(damage);
+            }
+        } else {
+            //System.out.println("Unknown packet id: " + packetId + ", size=" + packetBuffer.readableBytes());
         }
     }
 }
