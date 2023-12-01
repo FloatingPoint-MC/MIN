@@ -153,7 +153,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
             if (d0 < (double)(f * f))
             {
                 String s = entity.getDisplayedItem().getDisplayName();
-                this.renderLivingLabel(entity, s, x, y, z, 64);
+                this.renderLivingLabel(entity, s, x, y, z);
             }
         }
     }
