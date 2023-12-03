@@ -13,7 +13,7 @@ public class FunctionUtil {
 
     public static int decreasedSpeed(int current, int start, int target, float speed) {
         float k = speed / (start - target);
-        return current + ((int) (k * (current - start)) + (int)  speed) * (start > target ? -1 : 1);
+        return current + ((int) (k * (current - start)) + (int) speed) * (start > target ? -1 : 1);
     }
 
     public static int smooth(int current, int target, float speed) {

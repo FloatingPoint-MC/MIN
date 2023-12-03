@@ -1040,7 +1040,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         this.profiler.endSection();
         this.profiler.startSection("tick");
 
-        for (int j = 0; j < Math.min(10, this.timer.elapsedTicks); ++j) {
+        for (int j = 0; j < this.timer.elapsedTicks; ++j) {
             this.runTick();
         }
 

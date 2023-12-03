@@ -369,11 +369,11 @@ public abstract class Render<T extends Entity> implements IEntityRenderer {
                         String rankLabel = getRankLabel(rank);
                         if (!rankLabel.isEmpty()) {
                             if (RankDisplay.kd.getValue()) {
-                                EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), "\247aK/D: " + rank.kd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.5F : 0.25F), (float) z, i, f, f1, flag1, flag);
+                                EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), str.substring(0, 2) + "K/D: " + rank.kd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.5F : 0.25F), (float) z, i, f, f1, flag1, flag);
                             }
                             EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), rankLabel, (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.25F : 0.0F), (float) z, i, f, f1, flag1, flag);
                         } else {
-                            EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), "\247aK/D: " + rank.kd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.25F : 0.0F), (float) z, i, f, f1, flag1, flag);
+                            EntityRenderer.drawNameplate(entityIn, this.getFontRendererFromRenderManager(), str.substring(0, 2) + "K/D: " + rank.kd(), (float) x, (float) y + f2 + (canRenderName(entityIn) ? 0.25F : 0.0F), (float) z, i, f, f1, flag1, flag);
                         }
                     }
                 }

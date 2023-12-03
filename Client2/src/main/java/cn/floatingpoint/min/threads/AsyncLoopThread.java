@@ -33,6 +33,7 @@ public class AsyncLoopThread extends Thread {
                     if (high.isPresent()) {
                         Runnable runnable = high.get();
                         runnableSet.remove(runnable);
+                        logger.info("Running high-priority task: #" + Integer.toHexString(runnable.hashCode()));
                         runnable.run();
                         continue;
                     }

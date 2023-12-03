@@ -72,25 +72,25 @@ public class GermModPacket implements CustomPacket {
                     }
                 }
             }
-        } else if (packetId == 737) {
-            // Damage Display
-            //if (Managers.moduleManager.renderModules.get("DamageParticles").isEnabled()) {
-            //    String damage = packetBuffer.readString(30000);
-            //    System.out.println("Damage:" + damage);
-            //}
-        } else if (packetId == -1) {
-            //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
-        } else if (packetId == 2141) { // 大喇叭
-            //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
-        } else if (packetId == 78) {
-            //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
-            //System.out.println(packetBuffer.readInt());
-            //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
-        } else {
-            int size = packetBuffer.readableBytes();
-            if (size > 0) {
-                //System.out.println("Unknown packet id: " + packetId + ", size=" + size);
-            }
+        //} else if (packetId == 737) {
+        //    // Damage Display
+        //    //if (Managers.moduleManager.renderModules.get("DamageParticles").isEnabled()) {
+        //    //    String damage = packetBuffer.readString(30000);
+        //    //    System.out.println("Damage:" + damage);
+        //    //}
+        //} else if (packetId == -1) {
+        //    //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
+        //} else if (packetId == 2141) { // 大喇叭
+        //    //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
+        //} else if (packetId == 78) {
+        //    //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
+        //    //System.out.println(packetBuffer.readInt());
+        //    //System.out.println(packetBuffer.readString(Short.MAX_VALUE));
+        //} else {
+        //    //int size = packetBuffer.readableBytes();
+        //    //if (size > 0) {
+        //        //System.out.println("Unknown packet id: " + packetId + ", size=" + size);
+        //    //}
         }
     }
 }
