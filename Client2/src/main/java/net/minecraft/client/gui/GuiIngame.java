@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.module.impl.render.impl.Animation;
 import cn.floatingpoint.min.system.module.impl.render.impl.AttackIndicator;
 import cn.floatingpoint.min.system.module.impl.render.impl.PotionDisplay;
 import com.google.common.collect.Lists;
@@ -627,8 +628,7 @@ public class GuiIngame extends Gui {
     }
 
     private void renderPlayerStats(ScaledResolution scaledRes) {
-        if (this.mc.getRenderViewEntity() instanceof EntityPlayer) {
-            EntityPlayer entityplayer = (EntityPlayer) this.mc.getRenderViewEntity();
+        if (this.mc.getRenderViewEntity() instanceof EntityPlayer entityplayer) {
             int i = MathHelper.ceil(entityplayer.getHealth());
             boolean flag = this.healthUpdateCounter > (long) this.updateCounter && (this.healthUpdateCounter - (long) this.updateCounter) / 3L % 2L == 1L;
 
@@ -726,31 +726,60 @@ public class GuiIngame extends Gui {
 
                 this.drawTexturedModalRect(k4, l4, 16 + i4 * 9, 9 * i5, 9, 9);
 
-                if (flag) {
-                    if (j5 * 2 + 1 < j) {
-                        this.drawTexturedModalRect(k4, l4, k5 + 54, 9 * i5, 9, 9);
+                if (!Animation.oldHeartAnimation.getValue()) {
+                    if (flag) {
+                        if (j5 * 2 + 1 < j) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 54, 9 * i5, 9, 9);
+                        }
+
+                        if (j5 * 2 + 1 == j) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 63, 9 * i5, 9, 9);
+                        }
                     }
 
-                    if (j5 * 2 + 1 == j) {
-                        this.drawTexturedModalRect(k4, l4, k5 + 63, 9 * i5, 9, 9);
-                    }
-                }
-
-                if (l2 > 0) {
-                    if (l2 == k1 && k1 % 2 == 1) {
-                        this.drawTexturedModalRect(k4, l4, k5 + 153, 9 * i5, 9, 9);
-                        --l2;
+                    if (l2 > 0) {
+                        if (l2 == k1 && k1 % 2 == 1) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 153, 9 * i5, 9, 9);
+                            --l2;
+                        } else {
+                            this.drawTexturedModalRect(k4, l4, k5 + 144, 9 * i5, 9, 9);
+                            l2 -= 2;
+                        }
                     } else {
-                        this.drawTexturedModalRect(k4, l4, k5 + 144, 9 * i5, 9, 9);
-                        l2 -= 2;
+                        if (j5 * 2 + 1 < i) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 36, 9 * i5, 9, 9);
+                        }
+
+                        if (j5 * 2 + 1 == i) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 45, 9 * i5, 9, 9);
+                        }
                     }
                 } else {
-                    if (j5 * 2 + 1 < i) {
-                        this.drawTexturedModalRect(k4, l4, k5 + 36, 9 * i5, 9, 9);
-                    }
+                    if (flag) {
+                        if (j5 * 2 + 1 < j) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 54, 9 * i5, 9, 9);
+                        }
 
-                    if (j5 * 2 + 1 == i) {
-                        this.drawTexturedModalRect(k4, l4, k5 + 45, 9 * i5, 9, 9);
+                        if (j5 * 2 + 1 == j) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 63, 9 * i5, 9, 9);
+                        }
+                    }
+                    if (l2 <= 0.0F) {
+                        if (j5 * 2 + 1 < i) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 36, 9 * i5, 9, 9);
+                        }
+
+                        if (j5 * 2 + 1 == i) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 45, 9 * i5, 9, 9);
+                        }
+                    } else {
+                        if (l2 == k1 && k1 % 2.0F == 1.0F) {
+                            this.drawTexturedModalRect(k4, l4, k5 + 153, 9 * i5, 9, 9);
+                        } else {
+                            this.drawTexturedModalRect(k4, l4, k5 + 144, 9 * i5, 9, 9);
+                        }
+
+                        l2 -= 2;
                     }
                 }
             }
