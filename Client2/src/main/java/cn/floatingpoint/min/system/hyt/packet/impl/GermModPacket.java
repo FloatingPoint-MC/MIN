@@ -19,7 +19,6 @@ import java.security.SecureRandom;
 import java.util.*;
 
 public class GermModPacket implements CustomPacket {
-    public static int packetId = -1;
     private boolean shouldSend = false;
     private final Base32 base32 = new Base32();
 
@@ -34,9 +33,6 @@ public class GermModPacket implements CustomPacket {
     public void process(ByteBuf byteBuf) {
         PacketBuffer packetBuffer = new PacketBuffer(byteBuf);
         int packetId = packetBuffer.readInt();
-        if (this.packetId == -1) {
-            this.packetId = packetId;
-        }
         if (packetId == 73) {
             // Gui
             PacketBuffer packetBuffer1 = new PacketBuffer(packetBuffer.copy());

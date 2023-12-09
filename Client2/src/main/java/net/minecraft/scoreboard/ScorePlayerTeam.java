@@ -215,7 +215,7 @@ public class ScorePlayerTeam extends Team {
      * Sets the color for this team. The team color is used mainly for team kill objectives and team-specific setDisplay
      * usage; it does _not_ affect all situations (for instance, the prefix is used for the glowing effect).
      */
-    public void setColor(TextFormatting color) {
+    public void setColor(@Nullable TextFormatting color) {
         this.color = color;
     }
 

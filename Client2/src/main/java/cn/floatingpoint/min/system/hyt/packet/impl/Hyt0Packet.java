@@ -12,6 +12,8 @@ import net.minecraft.network.PacketBuffer;
  * @date: 2023-08-18 15:04:40
  */
 public class Hyt0Packet implements CustomPacket {
+    public static boolean loadChunk = false;
+
     @Override
     public String getChannel() {
         return "hyt0";
@@ -27,6 +29,7 @@ public class Hyt0Packet implements CustomPacket {
             if (worldName.equals("lobby1")) {
                 Managers.clientManager.vexGui = true;
             }
+            loadChunk = true;
         } else if (status == 1) {
             if (mc.world == null) {
                 return;
