@@ -1,6 +1,7 @@
 package net.minecraft.client.multiplayer;
 
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.hyt.packet.impl.GermModPacket;
 import com.google.common.collect.Sets;
 
 import java.util.Random;

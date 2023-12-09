@@ -2,6 +2,7 @@ package net.minecraft.client.network;
 
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.system.hyt.packet.CustomPacket;
+import cn.floatingpoint.min.system.hyt.packet.impl.GermModPacket;
 import cn.floatingpoint.min.system.module.impl.misc.impl.AutoText;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
@@ -758,6 +759,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
      * Invoked when disconnecting, the parameter is a ChatComponent describing the reason for termination
      */
     public void onDisconnect(ITextComponent reason) {
+        GermModPacket.packetId = -1;
         this.client.loadWorld(null);
 
         this.client.displayGuiScreen(new GuiDisconnected(Objects.requireNonNullElseGet(this.guiScreenServer, () -> new GuiMultiplayer(new GuiMainMenu(false))), "disconnect.lost", reason));

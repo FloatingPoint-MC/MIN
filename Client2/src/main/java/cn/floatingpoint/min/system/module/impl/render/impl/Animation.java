@@ -16,6 +16,7 @@ public class Animation extends RenderModule {
     public static OptionValue oldRodAnimation = new OptionValue(false);
     public static OptionValue oldSwingAnimation = new OptionValue(false);
     public static OptionValue oldBackwardAnimation = new OptionValue(false);
+    public static OptionValue sneakAnimation = new OptionValue(false);
     public static IntegerValue blockX = new IntegerValue(-200, 200, 1, 0);
     public static IntegerValue blockY = new IntegerValue(-200, 200, 1, 0);
     public static ModeValue blockSwingMode = new ModeValue(new String[]{"None", "Old", "AimBlock", "Whenever"}, "None");
@@ -29,6 +30,7 @@ public class Animation extends RenderModule {
                 new Pair<>("OldBackwardAnimation", oldBackwardAnimation),
                 new Pair<>("OldRodAnimation", oldRodAnimation),
                 new Pair<>("OldSwingAnimation", oldSwingAnimation),
+                new Pair<>("SneakAnimation", sneakAnimation),
                 new Pair<>("BlockX", blockX),
                 new Pair<>("BlockY", blockY),
                 new Pair<>("BlockSwingMode", blockSwingMode),

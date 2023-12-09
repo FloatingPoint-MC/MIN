@@ -1,5 +1,6 @@
 package net.minecraft.network;
 
+import cn.floatingpoint.min.system.hyt.packet.impl.GermModPacket;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
@@ -399,6 +400,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
                 LOGGER.warn("handleDisconnection() called twice");
             } else {
                 this.disconnected = true;
+                GermModPacket.packetId = -1;
 
                 if (this.getExitMessage() != null) {
                     this.getNetHandler().onDisconnect(this.getExitMessage());

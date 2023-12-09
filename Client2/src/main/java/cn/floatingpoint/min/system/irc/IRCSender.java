@@ -26,6 +26,8 @@ public class IRCSender {
 
     public static void sendMessage(String message) {
         if (!IRCMessageGrabber.enabled.get()) {
+            TextComponentString textComponents = new TextComponentString("\247b[MIN-IRC] \247cIRC未连接！");
+            ChatUtil.printToChat(textComponents);
             return;
         }
         if (!timer.isDelayComplete(3000L)) {
@@ -42,10 +44,14 @@ public class IRCSender {
                             if (code == 0) {
                                 IRCMessageGrabber.grabMessage();
                             } else if (code == -2) {
-                                TextComponentString textComponents = new TextComponentString("\247b[MIN-IRC] \247c你已被禁言！");
+                                ChatUtil.printToChat(new TextComponentString("\247m--------------------------------------------"));
+                                ChatUtil.printToChat(new TextComponentString(""));
+                                TextComponentString textComponents = new TextComponentString("   \247b[MIN-IRC] \247c你已被禁言！");
                                 ChatUtil.printToChat(textComponents);
-                                textComponents = new TextComponentString("\2477原因: \247f" + jsonObject.getString("Reason"));
+                                textComponents = new TextComponentString("\2477   原因: \247f" + jsonObject.getString("Reason"));
                                 ChatUtil.printToChat(textComponents);
+                                ChatUtil.printToChat(new TextComponentString(""));
+                                ChatUtil.printToChat(new TextComponentString("\247m--------------------------------------------"));
                             }
                         }
                     } catch (URISyntaxException | IOException e) {

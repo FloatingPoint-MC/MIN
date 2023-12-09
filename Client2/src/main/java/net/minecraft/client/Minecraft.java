@@ -2,6 +2,7 @@ package net.minecraft.client;
 
 import cn.floatingpoint.min.MIN;
 import cn.floatingpoint.min.management.Managers;
+import cn.floatingpoint.min.system.hyt.packet.impl.GermModPacket;
 import cn.floatingpoint.min.system.hyt.world.HYTChunkExecutor;
 import cn.floatingpoint.min.system.irc.IRCMessageGrabber;
 import cn.floatingpoint.min.system.module.Module;
@@ -1698,6 +1699,13 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         if (!this.isGamePaused) {
             this.musicTicker.update();
             this.soundHandler.update();
+        }
+
+        if (!DEBUG_MODE && player != null && player.ticksExisted > 2) {
+            if (GermModPacket.packetId == -1) {
+                world.sendQuittingDisconnectingPacket();
+                player.connection.onDisconnect(new TextComponentString("\247c请进入花雨庭服务器!"));
+            }
         }
 
         if (this.world != null) {

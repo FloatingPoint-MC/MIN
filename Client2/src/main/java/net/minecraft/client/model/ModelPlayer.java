@@ -4,8 +4,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHandSide;
 
-public class ModelPlayer extends ModelBiped
-{
+public class ModelPlayer extends ModelBiped {
     public ModelRenderer bipedLeftArmwear;
     public ModelRenderer bipedRightArmwear;
     public ModelRenderer bipedLeftLegwear;
@@ -15,8 +14,7 @@ public class ModelPlayer extends ModelBiped
     private final ModelRenderer bipedDeadmau5Head;
     private final boolean smallArms;
 
-    public ModelPlayer(float modelSize, boolean smallArmsIn)
-    {
+    public ModelPlayer(float modelSize, boolean smallArmsIn) {
         super(modelSize, 0.0F, 64, 64);
         this.smallArms = smallArmsIn;
         this.bipedDeadmau5Head = new ModelRenderer(this, 24, 0);
@@ -25,8 +23,7 @@ public class ModelPlayer extends ModelBiped
         this.bipedCape.setTextureSize(64, 32);
         this.bipedCape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, modelSize);
 
-        if (smallArmsIn)
-        {
+        if (smallArmsIn) {
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
@@ -39,9 +36,7 @@ public class ModelPlayer extends ModelBiped
             this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
             this.bipedRightArmwear.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
             this.bipedRightArmwear.setRotationPoint(-5.0F, 2.5F, 10.0F);
-        }
-        else
-        {
+        } else {
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
@@ -70,49 +65,35 @@ public class ModelPlayer extends ModelBiped
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
-    {
+    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.pushMatrix();
 
-        if (this.isChild)
-        {
-            float f = 2.0F;
+        if (this.isChild) {
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
             GlStateManager.translate(0.0F, 24.0F * scale, 0.0F);
-            this.bipedLeftLegwear.render(scale);
-            this.bipedRightLegwear.render(scale);
-            this.bipedLeftArmwear.render(scale);
-            this.bipedRightArmwear.render(scale);
-            this.bipedBodyWear.render(scale);
-        }
-        else
-        {
-            if (entityIn.isSneaking())
-            {
+        } else {
+            if (entityIn.isSneaking()) {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
-
-            this.bipedLeftLegwear.render(scale);
-            this.bipedRightLegwear.render(scale);
-            this.bipedLeftArmwear.render(scale);
-            this.bipedRightArmwear.render(scale);
-            this.bipedBodyWear.render(scale);
         }
+        this.bipedLeftLegwear.render(scale);
+        this.bipedRightLegwear.render(scale);
+        this.bipedLeftArmwear.render(scale);
+        this.bipedRightArmwear.render(scale);
+        this.bipedBodyWear.render(scale);
 
         GlStateManager.popMatrix();
     }
 
-    public void renderDeadmau5Head(float scale)
-    {
+    public void renderDeadmau5Head(float scale) {
         copyModelAngles(this.bipedHead, this.bipedDeadmau5Head);
         this.bipedDeadmau5Head.rotationPointX = 0.0F;
         this.bipedDeadmau5Head.rotationPointY = 0.0F;
         this.bipedDeadmau5Head.render(scale);
     }
 
-    public void renderCape(float scale)
-    {
+    public void renderCape(float scale) {
         this.bipedCape.render(scale);
     }
 
@@ -121,8 +102,7 @@ public class ModelPlayer extends ModelBiped
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
         copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
@@ -131,8 +111,7 @@ public class ModelPlayer extends ModelBiped
         copyModelAngles(this.bipedBody, this.bipedBodyWear);
     }
 
-    public void setVisible(boolean visible)
-    {
+    public void setVisible(boolean visible) {
         super.setVisible(visible);
         this.bipedLeftArmwear.showModel = visible;
         this.bipedRightArmwear.showModel = visible;
@@ -143,19 +122,15 @@ public class ModelPlayer extends ModelBiped
         this.bipedDeadmau5Head.showModel = visible;
     }
 
-    public void postRenderArm(float scale, EnumHandSide side)
-    {
+    public void postRenderArm(float scale, EnumHandSide side) {
         ModelRenderer modelrenderer = this.getArmForSide(side);
 
-        if (this.smallArms)
-        {
-            float f = 0.5F * (float)(side == EnumHandSide.RIGHT ? 1 : -1);
+        if (this.smallArms) {
+            float f = 0.5F * (float) (side == EnumHandSide.RIGHT ? 1 : -1);
             modelrenderer.rotationPointX += f;
             modelrenderer.postRender(scale);
             modelrenderer.rotationPointX -= f;
-        }
-        else
-        {
+        } else {
             modelrenderer.postRender(scale);
         }
     }

@@ -66,6 +66,8 @@
   "module.implement.Animation.OldRodAnimation.description": "Bring rod animation back to 1.7 version.",
   "module.implement.Animation.OldSwingAnimation": "Old Swing Animation",
   "module.implement.Animation.OldSwingAnimation.description": "Bring swing animation back to 1.7 version.",
+  "module.implement.Animation.SneakAnimation": "Sneak Animation",
+  "module.implement.Animation.SneakAnimation.description": "Create an animation when you sneak.",
   "module.implement.Animation.BlockX": "Block X",
   "module.implement.Animation.BlockX.description": "Modify the blocking x position.",
   "module.implement.Animation.BlockY": "Block Y",
