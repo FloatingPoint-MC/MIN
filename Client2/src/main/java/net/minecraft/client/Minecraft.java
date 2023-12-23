@@ -14,6 +14,8 @@ import cn.floatingpoint.min.system.module.impl.render.impl.Spinning;
 import cn.floatingpoint.min.system.shortcut.Shortcut;
 import cn.floatingpoint.min.system.ui.loading.GuiDamnJapaneseAction;
 import cn.floatingpoint.min.system.ui.loading.GuiLoading;
+import cn.floatingpoint.min.system.ui.mainmenu.DebugMainMenu;
+import cn.floatingpoint.min.system.ui.mainmenu.MINMainMenu;
 import cn.floatingpoint.min.utils.client.ChatUtil;
 import cn.floatingpoint.min.utils.client.WebUtil;
 import com.google.common.collect.Lists;
@@ -337,7 +339,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     private int serverPort;
 
     /**
-     * Does the actual gameplay have focus. If so then mouse and keys will effect the player instead of menus.
+     * Does the actual gameplay have focus. If so then mouse and keys will affect the player instead of menus.
      */
     public boolean inGameHasFocus;
     long systemTime = getSystemTime();
@@ -422,6 +424,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     private String debugProfilerName = "root";
 
     public static final boolean DEBUG_MODE = false;
+    public GuiMainMenu mainMenu;
 
     public Minecraft(GameConfiguration gameConfig) {
         instance = this;
@@ -586,12 +589,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
 
+        if (DEBUG_MODE) {
+            this.mainMenu = new DebugMainMenu();
+        } else {
+            this.mainMenu = new MINMainMenu();
+        }
+
         if (this.serverName != null) {
-            this.displayGuiScreen(new GuiDamnJapaneseAction(new GuiConnecting(new GuiMainMenu(false), this, this.serverName, this.serverPort)));
+            this.displayGuiScreen(new GuiDamnJapaneseAction(new GuiConnecting(this.mainMenu, this, this.serverName, this.serverPort)));
         } else {
             this.displayGuiScreen(new GuiLoading());
         }
-
         this.renderEngine.deleteTexture(this.mojangLogo);
         this.mojangLogo = null;
         this.loadingScreen = new LoadingScreenRenderer(this);
@@ -945,7 +953,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
         }
 
         if (guiScreenIn == null && this.world == null) {
-            guiScreenIn = new GuiMainMenu(false);
+            guiScreenIn = this.mainMenu;
         } else if (guiScreenIn == null && this.player.getHealth() <= 0.0F) {
             guiScreenIn = new GuiGameOver(null);
         }
@@ -2530,7 +2538,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
     }
 
     /**
-     * Return the current actions's name
+     * Return the current action's name
      */
     private String getCurrentAction() {
         if (this.integratedServer != null) {

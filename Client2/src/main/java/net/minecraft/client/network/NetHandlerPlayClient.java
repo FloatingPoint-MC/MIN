@@ -35,7 +35,6 @@ import net.minecraft.client.gui.GuiCommandBlock;
 import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiGameOver;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
@@ -762,7 +761,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         Hyt0Packet.loadChunk = false;
         this.client.loadWorld(null);
 
-        this.client.displayGuiScreen(new GuiDisconnected(Objects.requireNonNullElseGet(this.guiScreenServer, () -> new GuiMultiplayer(new GuiMainMenu(false))), "disconnect.lost", reason));
+        this.client.displayGuiScreen(new GuiDisconnected(Objects.requireNonNullElseGet(this.guiScreenServer, () -> new GuiMultiplayer(client.mainMenu)), "disconnect.lost", reason));
     }
 
     public void sendPacket(Packet<?> packetIn) {

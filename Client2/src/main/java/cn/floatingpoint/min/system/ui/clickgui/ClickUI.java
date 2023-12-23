@@ -369,7 +369,7 @@ public class ClickUI extends GuiScreen {
             Managers.fontManager.sourceHansSansCN_Regular_20.drawCenteredString(Managers.i18NManager.getTranslation("clickgui.shortcut"), animationRight + 200, height / 2 + 40, textColor);
         }
         RenderUtil.drawImage(new ResourceLocation("min/logo.png"), animationLeft - 110, height / 2 - 140, 100, 100);
-        RenderUtil.drawImage(new ResourceLocation("min/uis/setting.png"), animationLeft - 118, height / 2 + 142, 16, 16);
+        RenderUtil.drawImage(new ResourceLocation("min/uis/clickgui/setting.png"), animationLeft - 118, height / 2 + 142, 16, 16);
         if (moduleToBindKey != null) {
             drawRect(0, 0, width, height, categoryColor);
             Managers.fontManager.sourceHansSansCN_Regular_30.drawCenteredString(Managers.i18NManager.getTranslation("clickgui.bind"), width / 2, height / 2 - 8, brightTextColor);

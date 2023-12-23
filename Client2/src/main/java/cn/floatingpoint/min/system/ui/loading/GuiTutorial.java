@@ -5,7 +5,6 @@ import cn.floatingpoint.min.system.module.Category;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
@@ -85,7 +84,7 @@ public class GuiTutorial extends GuiScreen {
                     background -= 5;
                 }
                 if (background == 0) {
-                    mc.displayGuiScreen(new GuiDamnJapaneseAction(new GuiMainMenu(true)));
+                    mc.displayGuiScreen(new GuiDamnJapaneseAction(mc.mainMenu));
                 }
             }
         }

@@ -19,18 +19,18 @@ public class GuiIngameMenu extends GuiScreen {
      */
     public void initGui() {
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + -16, I18n.format("menu.returnToMenu")));
+        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 - 16, I18n.format("menu.returnToMenu")));
 
         if (!this.mc.isIntegratedServerRunning()) {
             (this.buttonList.get(0)).displayString = I18n.format("menu.disconnect");
         }
 
-        this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + -16, I18n.format("menu.returnToGame")));
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + -16, 98, 20, I18n.format("menu.options")));
-        GuiButton guibutton = this.addButton(new GuiButton(7, this.width / 2 + 2, this.height / 4 + 96 + -16, 98, 20, I18n.format("menu.shareToLan")));
+        this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 - 16, I18n.format("menu.returnToGame")));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 - 16, 98, 20, I18n.format("menu.options")));
+        GuiButton guibutton = this.addButton(new GuiButton(7, this.width / 2 + 2, this.height / 4 + 96 - 16, 98, 20, I18n.format("menu.shareToLan")));
         guibutton.enabled = this.mc.isSingleplayer() && !Objects.requireNonNull(this.mc.getIntegratedServer()).getPublic();
-        this.buttonList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 + -16, 98, 20, I18n.format("gui.advancements")));
-        this.buttonList.add(new GuiButton(6, this.width / 2 + 2, this.height / 4 + 48 + -16, 98, 20, I18n.format("gui.stats")));
+        this.buttonList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 - 16, 98, 20, I18n.format("gui.advancements")));
+        this.buttonList.add(new GuiButton(6, this.width / 2 + 2, this.height / 4 + 48 - 16, 98, 20, I18n.format("gui.stats")));
     }
 
     /**
@@ -56,9 +56,9 @@ public class GuiIngameMenu extends GuiScreen {
                 this.mc.loadWorld(null);
 
                 if (flag) {
-                    this.mc.displayGuiScreen(new GuiMainMenu(false));
+                    this.mc.displayGuiScreen(mc.mainMenu);
                 } else {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu(false)));
+                    this.mc.displayGuiScreen(new GuiMultiplayer(mc.mainMenu));
                 }
 
             case 2:
