@@ -8,7 +8,7 @@ import cn.floatingpoint.min.threads.MouseHandlerThread;
 import net.minecraft.client.Minecraft;
 
 public class MIN {
-    public static final String VERSION = "2.9.1";
+    public static final String VERSION = "2.10";
     private static final AsyncLoopThread asyncLoopThread = new AsyncLoopThread();
 
     public static void init() {

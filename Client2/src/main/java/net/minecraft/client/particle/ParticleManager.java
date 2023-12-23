@@ -1,5 +1,6 @@
 package net.minecraft.client.particle;
 
+import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -309,25 +311,63 @@ public class ParticleManager {
                     for (final Particle particle : this.fxLayers[j][k]) {
                         try {
                             if (flag || !(particle instanceof ParticleSuspend)) {
+                                switch (Minecraft.getMinecraft().effectRenderer.getId(particle)) {
+                                    case WATER_WAKE: {
+                                        if (!Particles.waterWake.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                    case ENCHANTMENT_TABLE: {
+                                        if (!Particles.enchantTable.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                    case LAVA: {
+                                        if (!Particles.lava.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                    case ITEM_CRACK: {
+                                        if (!Particles.itemCrack.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                    case BLOCK_CRACK: {
+                                        if (!Particles.blockCrack.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                    case BLOCK_DUST: {
+                                        if (!Particles.blockDust.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                    case WATER_DROP: {
+                                        if (!Particles.waterDrop.getValue()) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+                                }
                                 particle.renderParticle(bufferbuilder, entityIn, partialTicks, f, f4, f1, f2, f3);
                             }
                         } catch (Throwable throwable) {
                             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering Particle");
                             CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being rendered");
-                            crashreportcategory.addDetail("Particle", new ICrashReportDetail<String>() {
-                                public String call() throws Exception {
-                                    return particle.toString();
-                                }
-                            });
-                            crashreportcategory.addDetail("Particle Type", new ICrashReportDetail<String>() {
-                                public String call() throws Exception {
-                                    if (j == 0) {
-                                        return "MISC_TEXTURE";
-                                    } else if (j == 1) {
-                                        return "TERRAIN_TEXTURE";
-                                    } else {
-                                        return "Unknown - " + j;
-                                    }
+                            crashreportcategory.addDetail("Particle", particle::toString);
+                            crashreportcategory.addDetail("Particle Type", () -> {
+                                if (j == 0) {
+                                    return "MISC_TEXTURE";
+                                } else if (j == 1) {
+                                    return "TERRAIN_TEXTURE";
+                                } else {
+                                    return "Unknown - " + j;
                                 }
                             });
                             throw new ReportedException(crashreport);

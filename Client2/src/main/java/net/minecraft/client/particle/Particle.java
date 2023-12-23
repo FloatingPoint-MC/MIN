@@ -3,8 +3,6 @@ package net.minecraft.client.particle;
 import java.util.List;
 import java.util.Random;
 
-import cn.floatingpoint.min.system.module.impl.render.impl.Particles;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -187,50 +185,6 @@ public class Particle {
      * Renders the particle
      */
     public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        switch (Minecraft.getMinecraft().effectRenderer.getId(this)) {
-            case WATER_WAKE: {
-                if (!Particles.waterWake.getValue()) {
-                    return;
-                }
-                break;
-            }
-            case ENCHANTMENT_TABLE: {
-                if (!Particles.enchantTable.getValue()) {
-                    return;
-                }
-                break;
-            }
-            case LAVA: {
-                if (!Particles.lava.getValue()) {
-                    return;
-                }
-                break;
-            }
-            case ITEM_CRACK: {
-                if (!Particles.itemCrack.getValue()) {
-                    return;
-                }
-                break;
-            }
-            case BLOCK_CRACK: {
-                if (!Particles.blockCrack.getValue()) {
-                    return;
-                }
-                break;
-            }
-            case BLOCK_DUST: {
-                if (!Particles.blockDust.getValue()) {
-                    return;
-                }
-                break;
-            }
-            case WATER_DROP: {
-                if (!Particles.waterDrop.getValue()) {
-                    return;
-                }
-                break;
-            }
-        }
         float f = (float) this.particleTextureIndexX / 16.0F;
         float f1 = f + 0.0624375F;
         float f2 = (float) this.particleTextureIndexY / 16.0F;
