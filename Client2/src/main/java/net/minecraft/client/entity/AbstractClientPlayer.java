@@ -180,6 +180,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
         return f;
     }
 
+    @Nullable
     public String getNameClear() {
         return this.nameClear;
     }

@@ -2,9 +2,8 @@ package net.optifine.player;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
 import java.util.regex.Pattern;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -14,35 +13,26 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.optifine.Config;
 import net.minecraft.util.ResourceLocation;
 
-public class CapeUtils
-{
+public class CapeUtils {
     private static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]+");
 
-    public static void downloadCape(AbstractClientPlayer player)
-    {
-        String s = player.getNameClear();
+    public static void downloadCape(AbstractClientPlayer player) {
+        String name = player.getNameClear();
 
-        if (s != null && !s.isEmpty() && !s.contains("\u0000") && PATTERN_USERNAME.matcher(s).matches())
-        {
-            String s1 = "http://s.optifine.net/capes/" + s + ".png";
-            ResourceLocation resourcelocation = new ResourceLocation("capeof/" + s);
+        if (name != null && !name.isEmpty() && !name.contains("\u0000") && PATTERN_USERNAME.matcher(name).matches()) {
+            String s1 = "http://s.optifine.net/capes/" + name + ".png";
+            ResourceLocation resourcelocation = new ResourceLocation("capeof/" + name);
             TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
             ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
-            if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
-            {
-                ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
+            if (itextureobject instanceof ThreadDownloadImageData threadDownloadImageData) {
 
-                if (threaddownloadimagedata.imageFound != null)
-                {
-                    if (threaddownloadimagedata.imageFound.booleanValue())
-                    {
+                if (threadDownloadImageData.imageFound != null) {
+                    if (threadDownloadImageData.imageFound) {
                         player.setLocationOfCape(resourcelocation);
 
-                        if (threaddownloadimagedata.getImageBuffer() instanceof CapeImageBuffer)
-                        {
-                            CapeImageBuffer capeimagebuffer1 = (CapeImageBuffer)threaddownloadimagedata.getImageBuffer();
-                            player.setElytraOfCape(capeimagebuffer1.isElytraOfCape());
+                        if (threadDownloadImageData.getImageBuffer() instanceof CapeImageBuffer capeImageBuffer) {
+                            player.setElytraOfCape(capeImageBuffer.isElytraOfCape());
                         }
                     }
 
@@ -54,17 +44,40 @@ public class CapeUtils
             ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(null, s1, null, capeimagebuffer);
             threaddownloadimagedata1.pipeline = true;
             texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
+
+            s1 = "https://minserver.vlouboos.repl.co/cape?username=" + name;
+            resourcelocation = new ResourceLocation("capeof/" + name);
+            texturemanager = Minecraft.getMinecraft().getTextureManager();
+            itextureobject = texturemanager.getTexture(resourcelocation);
+
+            if (itextureobject instanceof ThreadDownloadImageData threadDownloadImageData) {
+
+                if (threadDownloadImageData.imageFound != null) {
+                    if (threadDownloadImageData.imageFound) {
+                        player.setLocationOfCape(resourcelocation);
+
+                        if (threadDownloadImageData.getImageBuffer() instanceof CapeImageBuffer capeImageBuffer) {
+                            player.setElytraOfCape(capeImageBuffer.isElytraOfCape());
+                        }
+                    }
+
+                    return;
+                }
+            }
+
+            capeimagebuffer = new CapeImageBuffer(player, resourcelocation);
+            threaddownloadimagedata1 = new ThreadDownloadImageData(null, s1, null, capeimagebuffer);
+            threaddownloadimagedata1.pipeline = true;
+            texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
         }
     }
 
-    public static BufferedImage parseCape(BufferedImage img)
-    {
+    public static BufferedImage parseCape(BufferedImage img) {
         int i = 64;
         int j = 32;
         int k = img.getWidth();
 
-        for (int l = img.getHeight(); i < k || j < l; j *= 2)
-        {
+        for (int l = img.getHeight(); i < k || j < l; j *= 2) {
             i *= 2;
         }
 
@@ -75,21 +88,17 @@ public class CapeUtils
         return bufferedimage;
     }
 
-    public static boolean isElytraCape(BufferedImage imageRaw, BufferedImage imageFixed)
-    {
+    public static boolean isElytraCape(BufferedImage imageRaw, BufferedImage imageFixed) {
         return imageRaw.getWidth() > imageFixed.getHeight();
     }
 
-    public static void reloadCape(AbstractClientPlayer player)
-    {
+    public static void reloadCape(AbstractClientPlayer player) {
         String s = player.getNameClear();
         ResourceLocation resourcelocation = new ResourceLocation("capeof/" + s);
         TextureManager texturemanager = Config.getTextureManager();
         ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
-        if (itextureobject instanceof SimpleTexture)
-        {
-            SimpleTexture simpletexture = (SimpleTexture)itextureobject;
+        if (itextureobject instanceof SimpleTexture simpletexture) {
             simpletexture.deleteGlTexture();
             texturemanager.deleteTexture(resourcelocation);
         }

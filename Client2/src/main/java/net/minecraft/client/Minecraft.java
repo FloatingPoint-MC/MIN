@@ -1709,7 +1709,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             this.soundHandler.update();
         }
 
-        if (!DEBUG_MODE && player != null && player.ticksExisted > 2) {
+        if (!DEBUG_MODE && player != null && player.ticksExisted > 10) {
             if (!Hyt0Packet.loadChunk) {
                 world.sendQuittingDisconnectingPacket();
                 player.connection.onDisconnect(new TextComponentString("\247c请进入花雨庭服务器!"));
