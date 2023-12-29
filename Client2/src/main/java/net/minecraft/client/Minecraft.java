@@ -423,7 +423,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
      */
     private String debugProfilerName = "root";
 
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
     public GuiMainMenu mainMenu;
 
     public Minecraft(GameConfiguration gameConfig) {
@@ -1595,7 +1595,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo {
             if (this.player.ticksExisted == 5) {
                 IRCMessageGrabber.reset();
             }
-            if (this.player.ticksExisted % 100 == 0) {
+            if (this.player.ticksExisted % 60 == 0) {
                 MIN.checkIfAsyncThreadAlive();
                 IRCMessageGrabber.grabMessage();
             }
