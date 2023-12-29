@@ -1,3 +1,4 @@
+# 该仓库已废弃！MIN将于2.10版本后闭源！
 ![LOGO.png](.github/LOGO.png)
 # MIN(Minecraft in Netease)
 一个完全免费开源的客户端软件
