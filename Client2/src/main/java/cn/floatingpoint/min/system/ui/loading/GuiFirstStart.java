@@ -3,7 +3,6 @@ package cn.floatingpoint.min.system.ui.loading;
 import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.awt.*;
@@ -59,7 +58,7 @@ public class GuiFirstStart extends GuiScreen {
                 Gui.drawRect(0, 0, width, height, new Color(0, 0, 0, alpha).getRGB());
                 if (alpha == 255) {
                     if (stage == -2) {
-                        mc.displayGuiScreen(new GuiDamnJapaneseAction(new GuiMainMenu(true)));
+                        mc.displayGuiScreen(new GuiDamnJapaneseAction(mc.mainMenu));
                     } else if (stage == 1) {
                         mc.displayGuiScreen(new GuiTutorial());
                     }

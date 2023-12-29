@@ -4,7 +4,6 @@ import cn.floatingpoint.min.management.Managers;
 import cn.floatingpoint.min.utils.math.FunctionUtil;
 import cn.floatingpoint.min.utils.render.RenderUtil;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -61,7 +60,7 @@ public class GuiLoading extends GuiScreen {
                 if (Managers.clientManager.firstStart) {
                     mc.displayGuiScreen(new GuiFirstStart());
                 } else {
-                    mc.displayGuiScreen(new GuiDamnJapaneseAction(new GuiMainMenu(true)));
+                    mc.displayGuiScreen(new GuiDamnJapaneseAction(mc.mainMenu));
                 }
             }
         }

@@ -1,7 +1,6 @@
 package cn.floatingpoint.min.system.shortcut;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public record Shortcut(String name, int key, ArrayList<Action> actions) {
             } else if (type == Type.QUIT_NETWORK) {
                 Minecraft.getMinecraft().world.sendQuittingDisconnectingPacket();
                 Minecraft.getMinecraft().loadWorld(null);
-                Minecraft.getMinecraft().displayGuiScreen(new GuiMultiplayer(new GuiMainMenu(false)));
+                Minecraft.getMinecraft().displayGuiScreen(new GuiMultiplayer(Minecraft.getMinecraft().mainMenu));
             }
         }
 
